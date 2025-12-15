@@ -55,7 +55,7 @@
     {
       "id": 8,
       "text": "話します",
-      "options": ["Nghe", "Đọc", "Nói, nói chuyện", "Viết"],
+      "options": ["Nghe (ききます)", "Đọc (よみます)", "Nói, nói chuyện (はなします)", "Viết (かきます)"],
       "correctAnswer": "Nói, nói chuyện",
       "explanation": "Hanashimasu: Nói chuyện."
     },

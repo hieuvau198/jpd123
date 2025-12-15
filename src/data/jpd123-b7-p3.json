@@ -6,7 +6,7 @@
     {
       "id": 1,
       "text": "書きます",
-      "options": ["Đọc", "Viết", "Nghe", "Nói"],
+      "options": ["Đọc (よみます)", "Viết (かきます)", "Nghe (ききます)", "Nói (いいます)"],
       "correctAnswer": "Viết",
       "explanation": "Kakimasu: Viết/Vẽ."
     },
@@ -20,7 +20,7 @@
     {
       "id": 3,
       "text": "聞きます",
-      "options": ["Nhìn", "Nói", "Nghe, hỏi", "Viết"],
+      "options": ["Nhìn (みます)", "Nói (いいます)", "Nghe, hỏi (ききます)", "Viết (かきます)"],
       "correctAnswer": "Nghe, hỏi",
       "explanation": "Kikimasu: Có thể là Nghe (nhạc) hoặc Hỏi (ai đó)."
     },
@@ -132,7 +132,7 @@
     {
       "id": 19,
       "text": "歌",
-      "options": ["Bức tranh", "Bộ phim", "Bài hát", "Câu chuyện"],
+      "options": ["Bức tranh (え)", "Bộ phim (えいが)", "Bài hát (うた)", "Câu chuyện (はなし)"],
       "correctAnswer": "Bài hát",
       "explanation": "Uta."
     },

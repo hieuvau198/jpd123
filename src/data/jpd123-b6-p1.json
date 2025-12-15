@@ -6,28 +6,28 @@
     {
       "id": 1,
       "text": "今週",
-      "options": ["Tuần sau", "Tuần này", "Tháng này", "Năm nay"],
+      "options": ["Tuần sau (らいしゅう)", "Tuần này (こんしゅう)", "Tháng này (こんげつ)", "Năm nay (ことし)"],
       "correctAnswer": "Tuần này",
       "explanation": "Kanji: Kim Chu (konshuu)."
     },
     {
       "id": 2,
       "text": "来週",
-      "options": ["Tuần trước", "Tuần này", "Tuần sau", "Ngày mai"],
+      "options": ["Tuần trước (せんしゅう)", "Tuần này (こんしゅう)", "Tuần sau (らいしゅう)", "Ngày mai (あした)"],
       "correctAnswer": "Tuần sau",
       "explanation": "Kanji: Lai Chu (raishuu)."
     },
     {
       "id": 3,
       "text": "今月",
-      "options": ["Tháng trước", "Tháng sau", "Tháng này", "Tuần này"],
+      "options": ["Tháng trước (せんげつ)", "Tháng sau (らいげつ)", "Tháng này (こんげつ)", "Tuần này (こんしゅう)"],
       "correctAnswer": "Tháng này",
       "explanation": "Kanji: Kim Nguyệt (kongetsu)."
     },
     {
       "id": 4,
       "text": "来月",
-      "options": ["Tháng này", "Tháng sau", "Năm sau", "Tuần sau"],
+      "options": ["Tháng này (こんげつ)", "Tháng sau (らいげつ)", "Năm sau (らいねん)", "Tuần sau (らいしゅう)"],
       "correctAnswer": "Tháng sau",
       "explanation": "Kanji: Lai Nguyệt (raigetsu)."
     },
@@ -69,7 +69,7 @@
     {
       "id": 10,
       "text": "地図",
-      "options": ["Bản đồ", "Tranh ảnh", "Vé tàu", "Thư từ"],
+      "options": ["Bản đồ (ちず)", "Tranh ảnh (え・しゃしん)", "Vé tàu (きっぷ)", "Thư từ (てがみ)"],
       "correctAnswer": "Bản đồ",
       "explanation": "Kanji: Địa Đồ (chizu)."
     },
@@ -146,14 +146,14 @@
     {
       "id": 21,
       "text": "食べ物",
-      "options": ["Đồ uống", "Đồ ăn", "Hoa quả", "Thịt"],
+      "options": ["Đồ uống (のみもの)", "Đồ ăn (たべもの)", "Hoa quả (くだもの)", "Thịt (にく)"],
       "correctAnswer": "Đồ ăn",
       "explanation": "Kanji: Thực Vật (tabemono)."
     },
     {
       "id": 22,
       "text": "飲み物",
-      "options": ["Đồ ăn", "Đồ uống", "Rượu", "Thuốc"],
+      "options": ["Đồ ăn (たべもの)", "Đồ uống (のみもの)", "Rượu (おさけ)", "Thuốc (くすり)"],
       "correctAnswer": "Đồ uống",
       "explanation": "Kanji: Ẩm Vật (nomimono)."
     },

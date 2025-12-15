@@ -13,7 +13,7 @@
     {
       "id": 2,
       "text": "木",
-      "options": ["Hoa", "Cây, gỗ", "Cỏ", "Đất"],
+      "options": ["Hoa (はな)", "Cây, gỗ (き)", "Cỏ (くさ)", "Đất (つち)"],
       "correctAnswer": "Cây, gỗ",
       "explanation": "Kanji: Mộc (Ki)."
     },
@@ -55,7 +55,7 @@
     {
       "id": 8,
       "text": "犬",
-      "options": ["Con mèo", "Con chó", "Con chim", "Con cá"],
+      "options": ["Con mèo (ねこ)", "Con chó (いぬ)", "Con chim (とり)", "Con cá (さかな)"],
       "correctAnswer": "Con chó",
       "explanation": "Kanji: Khuyển (Inu)."
     },
@@ -69,14 +69,14 @@
     {
       "id": 10,
       "text": "上",
-      "options": ["Dưới", "Trên", "Trong", "Ngoài"],
+      "options": ["Dưới (した)", "Trên (うえ)", "Trong (なか)", "Ngoài (そと)"],
       "correctAnswer": "Trên",
       "explanation": "Kanji: Thượng (Ue)."
     },
     {
       "id": 11,
       "text": "下",
-      "options": ["Trên", "Dưới", "Trái", "Phải"],
+      "options": ["Trên (うえ)", "Dưới (した)", "Trái (ひだり)", "Phải (みぎ)"],
       "correctAnswer": "Dưới",
       "explanation": "Kanji: Hạ (Shita)."
     },
@@ -104,21 +104,21 @@
     {
       "id": 15,
       "text": "外",
-      "options": ["Trong", "Ngoài", "Trên", "Dưới"],
+      "options": ["Trong (なか)", "Ngoài (そと)", "Trên (うえ)", "Dưới (した)"],
       "correctAnswer": "Ngoài",
       "explanation": "Kanji: Ngoại (Soto)."
     },
     {
       "id": 16,
       "text": "前",
-      "options": ["Sau", "Trước", "Trái", "Phải"],
+      "options": ["Sau (うしろ)", "Trước (まえ)", "Trái (ひだり)", "Phải (みぎ)"],
       "correctAnswer": "Trước",
       "explanation": "Kanji: Tiền (Mae)."
     },
     {
       "id": 17,
       "text": "後ろ",
-      "options": ["Trước", "Sau", "Trong", "Ngoài"],
+      "options": ["Trước (まえ)", "Sau (うしろ)", "Trong (なか)", "Ngoài (そと)"],
       "correctAnswer": "Sau",
       "explanation": "Kanji: Hậu (Ushiro)."
     },

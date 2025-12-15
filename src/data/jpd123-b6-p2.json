@@ -6,7 +6,7 @@
     {
       "id": 1,
       "text": "映画館",
-      "options": ["Bảo tàng", "Thư viện", "Rạp chiếu phim", "Nhà hát"],
+      "options": ["Bảo tàng (はくぶつかん)", "Thư viện (としょかん)", "Rạp chiếu phim (えいがかん)", "Nhà hát (げきじょう)"],
       "correctAnswer": "Rạp chiếu phim",
       "explanation": "Kanji: Ánh Họa Quán (eigakan)."
     },
@@ -188,7 +188,7 @@
     {
       "id": 27,
       "text": "図書館",
-      "options": ["Nhà sách", "Thư viện", "Trường học", "Bảo tàng"],
+      "options": ["Nhà sách (ほんや)", "Thư viện (としょかん)", "Trường học (がっこう)", "Bảo tàng (はくぶつかん)"],
       "correctAnswer": "Thư viện",
       "explanation": "Kanji: Đồ Thư Quán (toshokan)."
     },
