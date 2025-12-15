@@ -1,0 +1,154 @@
+{
+  "id": "jpd123-b7-p4",
+  "title": "JPD123 Bài 7 Part 4",
+  "description": "Nhà bếp, Động từ và Mẫu câu giao tiếp.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "だいどころ",
+      "options": ["Phòng khách", "Nhà bếp", "Phòng ngủ", "Nhà vệ sinh"],
+      "correctAnswer": "Nhà bếp",
+      "explanation": "Daidokoro: Nhà bếp."
+    },
+    {
+      "id": 2,
+      "text": "たばこ",
+      "options": ["Rượu", "Cà phê", "Thuốc lá", "Bật lửa"],
+      "correctAnswer": "Thuốc lá",
+      "explanation": "Tabako: Thuốc lá."
+    },
+    {
+      "id": 3,
+      "text": "でんわ",
+      "options": ["Máy tính", "Tivi", "Điện thoại", "Radio"],
+      "correctAnswer": "Điện thoại",
+      "explanation": "Denwa: Điện thoại."
+    },
+    {
+      "id": 4,
+      "text": "ピザ",
+      "options": ["Bánh mì", "Bánh ngọt", "Bánh Pizza", "Mỳ Ý"],
+      "correctAnswer": "Bánh Pizza",
+      "explanation": "Piza (Pizza)."
+    },
+    {
+      "id": 5,
+      "text": "まど",
+      "options": ["Cửa ra vào", "Cầu thang", "Cửa sổ", "Tường"],
+      "correctAnswer": "Cửa sổ",
+      "explanation": "Mado: Cửa sổ."
+    },
+    {
+      "id": 6,
+      "text": "うたいます",
+      "options": ["Nghe nhạc", "Hát", "Nhảy", "Viết"],
+      "correctAnswer": "Hát",
+      "explanation": "Utaimasu: Hát."
+    },
+    {
+      "id": 7,
+      "text": "すいます",
+      "options": ["Uống", "Ăn", "Hút", "Thổi"],
+      "correctAnswer": "Hút",
+      "explanation": "Suimasu: Hút (thuốc), hít (không khí)."
+    },
+    {
+      "id": 8,
+      "text": "話します",
+      "options": ["Nghe", "Đọc", "Nói, nói chuyện", "Viết"],
+      "correctAnswer": "Nói, nói chuyện",
+      "explanation": "Hanashimasu: Nói chuyện."
+    },
+    {
+      "id": 9,
+      "text": "ひきます",
+      "options": ["Hát", "Chơi (nhạc cụ)", "Nghe", "Vẽ"],
+      "correctAnswer": "Chơi (nhạc cụ)",
+      "explanation": "Hikimasu: Chơi nhạc cụ (đàn piano, guitar...)."
+    },
+    {
+      "id": 10,
+      "text": "もちます",
+      "options": ["Ném", "Đặt", "Mang, cầm", "Bỏ lại"],
+      "correctAnswer": "Mang, cầm",
+      "explanation": "Mochimasu: Cầm, nắm, mang theo."
+    },
+    {
+      "id": 11,
+      "text": "あけます",
+      "options": ["Đóng", "Khóa", "Mở (cửa)", "Sửa"],
+      "correctAnswer": "Mở (cửa)",
+      "explanation": "Akemasu: Mở (cửa, cửa sổ, nắp hộp...)."
+    },
+    {
+      "id": 12,
+      "text": "しめます",
+      "options": ["Mở", "Phá", "Đóng (cửa)", "Sơn"],
+      "correctAnswer": "Đóng (cửa)",
+      "explanation": "Shimemasu: Đóng (cửa, cửa sổ...)."
+    },
+    {
+      "id": 13,
+      "text": "かけます",
+      "options": ["Nghe", "Gọi (điện thoại)", "Nhắn tin", "Tắt máy"],
+      "correctAnswer": "Gọi (điện thoại)",
+      "explanation": "Kakemasu (Denwa wo ~): Gọi điện thoại."
+    },
+    {
+      "id": 14,
+      "text": "ともだちにでんわをかけます",
+      "options": ["Gặp bạn bè", "Nhắn tin cho bạn", "Gọi điện thoại cho bạn", "Đi chơi với bạn"],
+      "correctAnswer": "Gọi điện thoại cho bạn",
+      "explanation": "Mẫu câu gọi điện cho ai đó."
+    },
+    {
+      "id": 15,
+      "text": "もってきます",
+      "options": ["Mang đi", "Mang đến", "Gửi đi", "Vứt đi"],
+      "correctAnswer": "Mang đến",
+      "explanation": "Motte kimasu: Mang vật gì đó đến chỗ người nói (ngược với Motte ikimasu)."
+    },
+    {
+      "id": 16,
+      "text": "にわ",
+      "options": ["Công viên", "Sân vườn", "Nhà ga", "Sở thú"],
+      "correctAnswer": "Sân vườn",
+      "explanation": "Niwa: Khu vườn."
+    },
+    {
+      "id": 17,
+      "text": "いけ",
+      "options": ["Biển", "Dòng sông", "Cái ao", "Hồ bơi"],
+      "correctAnswer": "Cái ao",
+      "explanation": "Ike: Cái ao."
+    },
+    {
+      "id": 18,
+      "text": "つくえ",
+      "options": ["Cái ghế", "Cái bàn (làm việc/học)", "Cái giường", "Cái tủ"],
+      "correctAnswer": "Cái bàn (làm việc/học)",
+      "explanation": "Tsukue: Bàn học, bàn làm việc (Desk) - khác với Teeburu (Table)."
+    },
+    {
+      "id": 19,
+      "text": "きょうしつ",
+      "options": ["Thư viện", "Phòng học", "Nhà ăn", "Văn phòng"],
+      "correctAnswer": "Phòng học",
+      "explanation": "Kyoushitsu: Lớp học/Phòng học."
+    },
+    {
+      "id": 20,
+      "text": "まどをあけます",
+      "options": ["Đóng cửa sổ", "Mở cửa sổ", "Lau cửa sổ", "Phá cửa sổ"],
+      "correctAnswer": "Mở cửa sổ",
+      "explanation": "Hành động mở cửa sổ."
+    },
+    {
+      "id": 21,
+      "text": "テーブルのうえのしおをとってください",
+      "options": ["Hãy ăn muối trên bàn", "Hãy mua lọ muối để lên bàn", "Hãy lấy cho tôi lọ muối ở trên bàn", "Hãy cất lọ muối vào bàn"],
+      "correctAnswer": "Hãy lấy cho tôi lọ muối ở trên bàn",
+      "explanation": "Mẫu câu nhờ vả lấy đồ vật (V-te kudasai)."
+    }
+  ]
+}

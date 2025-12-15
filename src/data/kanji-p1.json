@@ -1,0 +1,56 @@
+{
+  "id": "kanji-part1",
+  "title": "Kanji Quiz Part 1",
+  "description": "7 Kanji đầu tiên: Phương hướng, Quốc gia, Con người.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "東",
+      "options": ["Tây", "Nam", "Đông", "Bắc"],
+      "correctAnswer": "Đông",
+      "explanation": "Kanji: Đông (higashi / tou)."
+    },
+    {
+      "id": 2,
+      "text": "京",
+      "options": ["Đô", "Kinh", "Thành", "Trấn"],
+      "correctAnswer": "Kinh",
+      "explanation": "Kanji: Kinh (kyou)."
+    },
+    {
+      "id": 3,
+      "text": "名",
+      "options": ["Tên", "Danh", "Hiệu", "Chữ"],
+      "correctAnswer": "Danh",
+      "explanation": "Kanji: Danh (mae / mei)."
+    },
+    {
+      "id": 4,
+      "text": "前",
+      "options": ["Hậu", "Tiền", "Tả", "Hữu"],
+      "correctAnswer": "Tiền",
+      "explanation": "Kanji: Tiền (mae / zen)."
+    },
+    {
+      "id": 5,
+      "text": "国",
+      "options": ["Gia", "Vùng", "Quốc", "Đất"],
+      "correctAnswer": "Quốc",
+      "explanation": "Kanji: Quốc (kuni / koku)."
+    },
+    {
+      "id": 6,
+      "text": "男",
+      "options": ["Nam", "Nữ", "Tử", "Phụ"],
+      "correctAnswer": "Nam",
+      "explanation": "Kanji: Nam (otoko / dan)."
+    },
+    {
+      "id": 7,
+      "text": "女",
+      "options": ["Nam", "Mẫu", "Nữ", "Thê"],
+      "correctAnswer": "Nữ",
+      "explanation": "Kanji: Nữ (onna / jo)."
+    }
+  ]
+}

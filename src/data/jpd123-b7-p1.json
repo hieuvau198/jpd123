@@ -1,0 +1,147 @@
+{
+  "id": "jpd123-b7-p1",
+  "title": "JPD123 Bài 7 Part 1",
+  "description": "Từ vựng về vị trí, phương hướng và sự tồn tại (người/động vật).",
+  "questions": [
+    {
+      "id": 1,
+      "text": "かいさつ",
+      "options": ["Cầu thang", "Soát vé", "Nhà vệ sinh", "Lối ra"],
+      "correctAnswer": "Soát vé",
+      "explanation": "Kaisatsu: Cửa soát vé."
+    },
+    {
+      "id": 2,
+      "text": "木",
+      "options": ["Hoa", "Cây, gỗ", "Cỏ", "Đất"],
+      "correctAnswer": "Cây, gỗ",
+      "explanation": "Kanji: Mộc (Ki)."
+    },
+    {
+      "id": 3,
+      "text": "こうばん",
+      "options": ["Bệnh viện", "Đồn cảnh sát", "Nhà ga", "Công viên"],
+      "correctAnswer": "Đồn cảnh sát",
+      "explanation": "Kouban."
+    },
+    {
+      "id": 4,
+      "text": "じどうはんばいき",
+      "options": ["Máy giặt", "Máy bán hàng tự động", "Tủ lạnh", "Cây ATM"],
+      "correctAnswer": "Máy bán hàng tự động",
+      "explanation": "Jidouhanbaiki."
+    },
+    {
+      "id": 5,
+      "text": "バスてい",
+      "options": ["Bến tàu", "Trạm xe buýt", "Sân bay", "Bãi đỗ xe"],
+      "correctAnswer": "Trạm xe buýt",
+      "explanation": "Basutei (Bus stop)."
+    },
+    {
+      "id": 6,
+      "text": "ポスト",
+      "options": ["Cột điện", "Hòm thư", "Cửa sổ", "Bảng tin"],
+      "correctAnswer": "Hòm thư",
+      "explanation": "Posuto (Post)."
+    },
+    {
+      "id": 7,
+      "text": "はな",
+      "options": ["Lá", "Hoa", "Rễ", "Cành"],
+      "correctAnswer": "Hoa",
+      "explanation": "Hana."
+    },
+    {
+      "id": 8,
+      "text": "犬",
+      "options": ["Con mèo", "Con chó", "Con chim", "Con cá"],
+      "correctAnswer": "Con chó",
+      "explanation": "Kanji: Khuyển (Inu)."
+    },
+    {
+      "id": 9,
+      "text": "あいだ",
+      "options": ["Bên trên", "Giữa, Ở giữa", "Bên cạnh", "Phía sau"],
+      "correctAnswer": "Giữa, Ở giữa",
+      "explanation": "Aida."
+    },
+    {
+      "id": 10,
+      "text": "上",
+      "options": ["Dưới", "Trên", "Trong", "Ngoài"],
+      "correctAnswer": "Trên",
+      "explanation": "Kanji: Thượng (Ue)."
+    },
+    {
+      "id": 11,
+      "text": "下",
+      "options": ["Trên", "Dưới", "Trái", "Phải"],
+      "correctAnswer": "Dưới",
+      "explanation": "Kanji: Hạ (Shita)."
+    },
+    {
+      "id": 12,
+      "text": "ちかく",
+      "options": ["Xa", "Gần", "Rộng", "Hẹp"],
+      "correctAnswer": "Gần",
+      "explanation": "Chikaku (vị trí gần)."
+    },
+    {
+      "id": 13,
+      "text": "となり",
+      "options": ["Đối diện", "Bên cạnh (sát vách)", "Phía sau", "Phía trước"],
+      "correctAnswer": "Bên cạnh (sát vách)",
+      "explanation": "Tonari: Bên cạnh, sát vách."
+    },
+    {
+      "id": 14,
+      "text": "なか",
+      "options": ["Ngoài", "Trong", "Giữa", "Cạnh"],
+      "correctAnswer": "Trong",
+      "explanation": "Naka."
+    },
+    {
+      "id": 15,
+      "text": "外",
+      "options": ["Trong", "Ngoài", "Trên", "Dưới"],
+      "correctAnswer": "Ngoài",
+      "explanation": "Kanji: Ngoại (Soto)."
+    },
+    {
+      "id": 16,
+      "text": "前",
+      "options": ["Sau", "Trước", "Trái", "Phải"],
+      "correctAnswer": "Trước",
+      "explanation": "Kanji: Tiền (Mae)."
+    },
+    {
+      "id": 17,
+      "text": "後ろ",
+      "options": ["Trước", "Sau", "Trong", "Ngoài"],
+      "correctAnswer": "Sau",
+      "explanation": "Kanji: Hậu (Ushiro)."
+    },
+    {
+      "id": 18,
+      "text": "よこ",
+      "options": ["Chiều dọc", "Bên cạnh (chiều ngang)", "Phía trên", "Phía dưới"],
+      "correctAnswer": "Bên cạnh (chiều ngang)",
+      "explanation": "Yoko: Bên cạnh (theo chiều ngang)."
+    },
+    {
+      "id": 19,
+      "text": "むかえにいきます",
+      "options": ["Đi về", "Đi đón", "Đi chơi", "Đi làm"],
+      "correctAnswer": "Đi đón",
+      "explanation": "Mukae ni ikimasu."
+    },
+    {
+      "id": 20,
+      "text": "います",
+      "options": ["Có (đồ vật)", "Có (người/động vật)", "Ăn", "Ngủ"],
+      "correctAnswer": "Có (người/động vật)",
+      "explanation": "Imasu: Tồn tại (dùng cho sinh vật sống)."
+    }
+  ]
+}

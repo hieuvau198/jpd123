@@ -1,0 +1,56 @@
+{
+  "id": "kanji-part3",
+  "title": "Kanji Quiz Part 3",
+  "description": "7 Kanji tiếp theo: Hành động, Ăn uống, Nghỉ ngơi.",
+  "questions": [
+    {
+      "id": 15,
+      "text": "見",
+      "options": ["Văn", "Kiến", "Ngôn", "Thoại"],
+      "correctAnswer": "Kiến",
+      "explanation": "Kanji: Kiến (mi / ken)."
+    },
+    {
+      "id": 16,
+      "text": "食",
+      "options": ["Ẩm", "Thực", "Hành", "Mãi"],
+      "correctAnswer": "Thực",
+      "explanation": "Kanji: Thực (ta / shoku)."
+    },
+    {
+      "id": 17,
+      "text": "飲",
+      "options": ["Thực", "Ẩm", "Vật", "Hưu"],
+      "correctAnswer": "Ẩm",
+      "explanation": "Kanji: Ẩm (no / in)."
+    },
+    {
+      "id": 18,
+      "text": "買",
+      "options": ["Bán", "Mãi", "Thư", "Độc"],
+      "correctAnswer": "Mãi",
+      "explanation": "Kanji: Mãi (ka / bai)."
+    },
+    {
+      "id": 19,
+      "text": "物",
+      "options": ["Nhân", "Vật", "Sự", "Lý"],
+      "correctAnswer": "Vật",
+      "explanation": "Kanji: Vật (mono / butsu)."
+    },
+    {
+      "id": 20,
+      "text": "行",
+      "options": ["Lai", "Quy", "Hành", "Hội"],
+      "correctAnswer": "Hành",
+      "explanation": "Kanji: Hành (i / kou)."
+    },
+    {
+      "id": 21,
+      "text": "休",
+      "options": ["Hưu", "Tác", "Động", "Lực"],
+      "correctAnswer": "Hưu",
+      "explanation": "Kanji: Hưu (yasu / kyuu)."
+    }
+  ]
+}

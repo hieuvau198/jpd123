@@ -1,0 +1,147 @@
+{
+  "id": "grammar-particles-1",
+  "title": "Ngữ pháp 1: Trợ từ cơ bản (は, が, を, に, で)",
+  "description": "20 câu hỏi luyện tập trợ từ. Chọn từ đúng điền vào chỗ trống.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "私＿田中です。\n(わたし＿たなかです。)\nWatashi _ Tanaka desu.",
+      "options": ["が", "は", "を", "に"],
+      "correctAnswer": "は",
+      "explanation": "Nghĩa: Tôi là Tanaka. Dùng 'は' (wa) để xác định chủ đề của câu."
+    },
+    {
+      "id": 2,
+      "text": "A: 何＿買いますか。 (なに＿かいますか。)\nB: 本を買います。 (ほんをかいます。)\nA: Nani _ kaimasu ka? B: Hon o kaimasu.",
+      "options": ["で", "に", "を", "は"],
+      "correctAnswer": "を",
+      "explanation": "Nghĩa: Bạn mua cái gì? Dùng 'を' (o) chỉ đối tượng của hành động mua."
+    },
+    {
+      "id": 3,
+      "text": "毎日、ごはん＿食べます。\n(まいにち、ごはん＿たべます。)\nMainichi, gohan _ tabemasu.",
+      "options": ["が", "へ", "を", "の"],
+      "correctAnswer": "を",
+      "explanation": "Nghĩa: Hàng ngày tôi ăn cơm. Ăn tác động lên Cơm -> Dùng 'を'."
+    },
+    {
+      "id": 4,
+      "text": "図書館＿本を読みます。\n(としょかん＿ほんをよみます。)\nToshokan _ hon o yomimasu.",
+      "options": ["に", "で", "へ", "を"],
+      "correctAnswer": "で",
+      "explanation": "Nghĩa: Tôi đọc sách ở thư viện. Dùng 'で' (de) để chỉ địa điểm nơi diễn ra hành động."
+    },
+    {
+      "id": 5,
+      "text": "明日、学校＿行きます。\n(あした、がっこう＿いきます。)\nAshita, gakkou _ ikimasu.",
+      "options": ["を", "で", "に", "が"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Ngày mai tôi đi đến trường. Dùng 'に' (ni) chỉ đích đến."
+    },
+    {
+      "id": 6,
+      "text": "A: バス＿行きますか。 (バス＿いきますか。)\nB: いいえ、タクシーです。\nA: Basu _ ikimasu ka?\nB: Iie, takushii desu.",
+      "options": ["で", "に", "を", "から"],
+      "correctAnswer": "で",
+      "explanation": "Nghĩa: Bạn đi bằng xe buýt à? Dùng 'で' (de) để chỉ phương tiện đi lại."
+    },
+    {
+      "id": 7,
+      "text": "あそこに猫＿います。\n(あそこにねこ＿います。)\nAsoko ni neko _ imasu.",
+      "options": ["は", "が", "を", "で"],
+      "correctAnswer": "が",
+      "explanation": "Nghĩa: Ở đằng kia có con mèo. Với động từ chỉ sự tồn tại 'imasu', chủ ngữ đi với 'が' (ga)."
+    },
+    {
+      "id": 8,
+      "text": "6時＿起きます。\n(ろくじ＿おきます。)\nRokuji _ okimasu.",
+      "options": ["に", "で", "を", "へ"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Tôi dậy lúc 6 giờ. Dùng 'に' (ni) để chỉ mốc thời gian cụ thể."
+    },
+    {
+      "id": 9,
+      "text": "それは 誰＿かばんですか。\n(それは だれ＿かばんですか。)\nSore wa dare _ kaban desu ka?",
+      "options": ["に", "の", "は", "も"],
+      "correctAnswer": "の",
+      "explanation": "Nghĩa: Đó là cặp của ai thế? Dùng 'の' (no) để chỉ sự sở hữu."
+    },
+    {
+      "id": 10,
+      "text": "私は 日本語＿話します。\n(わたしは にほんご＿はなします。)\nWatashi wa Nihongo _ hanashimasu.",
+      "options": ["を", "で", "に", "が"],
+      "correctAnswer": "を",
+      "explanation": "Nghĩa: Tôi nói tiếng Nhật. Hành động 'nói' tác động lên ngôn ngữ -> Dùng 'を' (o)."
+    },
+    {
+      "id": 11,
+      "text": "日本語＿レポートを書きます。\n(にほんご＿レポートをかきます。)\nNihongo _ repooto o kakimasu.",
+      "options": ["を", "で", "に", "は"],
+      "correctAnswer": "で",
+      "explanation": "Nghĩa: Tôi viết báo cáo bằng tiếng Nhật. Dùng 'で' (de) chỉ công cụ/ngôn ngữ."
+    },
+    {
+      "id": 12,
+      "text": "A: 日曜日、どこ＿行きましたか。 (にちようび、どこ＿いきましたか。)\nB: どこも行きませんでした。\nA: Nichiyoubi, doko _ ikimashita ka?",
+      "options": ["で", "を", "へ", "が"],
+      "correctAnswer": "へ",
+      "explanation": "Nghĩa: Chủ nhật bạn đã đi đâu? Dùng 'へ' (e) chỉ hướng di chuyển."
+    },
+    {
+      "id": 13,
+      "text": "友達＿会います。\n(ともだち＿あいます。)\nTomodachi _ aimasu.",
+      "options": ["を", "に", "で", "へ"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Tôi gặp bạn bè. Động từ 'gặp' (aimasu) luôn đi với trợ từ 'に' (ni)."
+    },
+    {
+      "id": 14,
+      "text": "家＿帰ります。\n(うち＿かえります。)\nUchi _ kaerimasu.",
+      "options": ["を", "に", "で", "から"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Tôi trở về nhà. Đích đến là nhà -> Dùng 'に' (ni)."
+    },
+    {
+      "id": 15,
+      "text": "部屋に 机＿あります。\n(へやに つくえ＿あります。)\nHeya ni tsukue _ arimasu.",
+      "options": ["は", "を", "が", "で"],
+      "correctAnswer": "が",
+      "explanation": "Nghĩa: Trong phòng có cái bàn. Cấu trúc tồn tại vật dùng 'が' (ga)."
+    },
+    {
+      "id": 16,
+      "text": "A: 誰＿来ましたか。 (だれ＿きましたか。)\nB: 山田さんが来ました。\nA: Dare _ kimashita ka?",
+      "options": ["は", "が", "を", "に"],
+      "correctAnswer": "が",
+      "explanation": "Nghĩa: Ai đã đến vậy? Khi từ để hỏi (Ai) làm chủ ngữ, bắt buộc dùng 'が' (ga)."
+    },
+    {
+      "id": 17,
+      "text": "喫茶店＿コーヒーを飲みます。\n(きっさてん＿コーヒーをのみます。)\nKissaten _ koohii o nomimasu.",
+      "options": ["に", "で", "を", "へ"],
+      "correctAnswer": "で",
+      "explanation": "Nghĩa: Tôi uống cà phê tại quán nước. Hành động xảy ra tại địa điểm -> Dùng 'で' (de)."
+    },
+    {
+      "id": 18,
+      "text": "先生＿聞きます。\n(せんせい＿ききます。)\nSensei _ kikimasu.",
+      "options": ["を", "に", "で", "へ"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Tôi hỏi giáo viên. Hỏi ai đó -> Dùng 'に' (ni)."
+    },
+    {
+      "id": 19,
+      "text": "ここ＿名前を書いてください。\n(ここ＿なまえをかいてください。)\nKoko _ namae o kaite kudasai.",
+      "options": ["を", "に", "で", "は"],
+      "correctAnswer": "に",
+      "explanation": "Nghĩa: Hãy viết tên vào đây. Viết 'vào' đâu đó -> Dùng 'に' (ni)."
+    },
+    {
+      "id": 20,
+      "text": "魚＿食べたいです。\n(さかな＿たべたいです。)\nSakana _ tabetai desu.",
+      "options": ["が", "に", "で", "へ"],
+      "correctAnswer": "が",
+      "explanation": "Nghĩa: Tôi muốn ăn cá. Với thể mong muốn (tai), thường dùng 'が' (ga) thay cho 'を'."
+    }
+  ]
+}

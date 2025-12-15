@@ -1,0 +1,56 @@
+{
+  "id": "kanji-part2",
+  "title": "Kanji Quiz Part 2",
+  "description": "7 Kanji tiếp theo: Địa điểm, Thời gian.",
+  "questions": [
+    {
+      "id": 8,
+      "text": "区",
+      "options": ["Thôn", "Khu", "Huyện", "Xã"],
+      "correctAnswer": "Khu",
+      "explanation": "Kanji: Khu (ku)."
+    },
+    {
+      "id": 9,
+      "text": "市",
+      "options": ["Thôn", "Trấn", "Thị", "Tỉnh"],
+      "correctAnswer": "Thị",
+      "explanation": "Kanji: Thị (ichi / shi)."
+    },
+    {
+      "id": 10,
+      "text": "先",
+      "options": ["Hậu", "Tiên", "Kim", "Cổ"],
+      "correctAnswer": "Tiên",
+      "explanation": "Kanji: Tiên (saki / sen)."
+    },
+    {
+      "id": 11,
+      "text": "週",
+      "options": ["Niên", "Nguyệt", "Nhật", "Chu"],
+      "correctAnswer": "Chu",
+      "explanation": "Kanji: Chu (shuu)."
+    },
+    {
+      "id": 12,
+      "text": "毎",
+      "options": ["Đa", "Thiểu", "Mỗi", "Nhất"],
+      "correctAnswer": "Mỗi",
+      "explanation": "Kanji: Mỗi (mai)."
+    },
+    {
+      "id": 13,
+      "text": "午",
+      "options": ["Tý", "Ngọ", "Sửu", "Mão"],
+      "correctAnswer": "Ngọ",
+      "explanation": "Kanji: Ngọ (go)."
+    },
+    {
+      "id": 14,
+      "text": "後",
+      "options": ["Tiền", "Trung", "Hậu", "Thượng"],
+      "correctAnswer": "Hậu",
+      "explanation": "Kanji: Hậu (ato / go)."
+    }
+  ]
+}

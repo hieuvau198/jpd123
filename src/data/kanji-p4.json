@@ -1,0 +1,56 @@
+{
+  "id": "kanji-part4",
+  "title": "Kanji Quiz Part 4",
+  "description": "7 Kanji tiếp theo: Thời gian, Gặp gỡ, Giao tiếp.",
+  "questions": [
+    {
+      "id": 22,
+      "text": "今",
+      "options": ["Cổ", "Kim", "Tương", "Tiền"],
+      "correctAnswer": "Kim",
+      "explanation": "Kanji: Kim (ima / kon)."
+    },
+    {
+      "id": 23,
+      "text": "来",
+      "options": ["Quy", "Hành", "Lai", "Xuất"],
+      "correctAnswer": "Lai",
+      "explanation": "Kanji: Lai (kimasu / rai)."
+    },
+    {
+      "id": 24,
+      "text": "帰",
+      "options": ["Lai", "Quy", "Nhập", "Hành"],
+      "correctAnswer": "Quy",
+      "explanation": "Kanji: Quy (kaerimasu / ki)."
+    },
+    {
+      "id": 25,
+      "text": "会",
+      "options": ["Xã", "Hội", "Thoại", "Ngôn"],
+      "correctAnswer": "Hội",
+      "explanation": "Kanji: Hội (aimasu / kai)."
+    },
+    {
+      "id": 26,
+      "text": "社",
+      "options": ["Hội", "Xã", "Thần", "Lễ"],
+      "correctAnswer": "Xã",
+      "explanation": "Kanji: Xã (yashiro / sha)."
+    },
+    {
+      "id": 27,
+      "text": "聞",
+      "options": ["Kiến", "Văn", "Khẩu", "Môn"],
+      "correctAnswer": "Văn",
+      "explanation": "Kanji: Văn (kikimasu / bun)."
+    },
+    {
+      "id": 28,
+      "text": "読",
+      "options": ["Ngôn", "Thư", "Độc", "Hội"],
+      "correctAnswer": "Độc",
+      "explanation": "Kanji: Độc (yomimasu / doku)."
+    }
+  ]
+}

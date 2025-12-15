@@ -1,0 +1,56 @@
+{
+  "id": "kanji-part5",
+  "title": "Kanji Quiz Part 5",
+  "description": "7 Kanji tiếp theo: Đọc viết, Nơi chốn, Sức mạnh.",
+  "questions": [
+    {
+      "id": 29,
+      "text": "書",
+      "options": ["Độc", "Thư", "Văn", "Họa"],
+      "correctAnswer": "Thư",
+      "explanation": "Kanji: Thư (kakimasu / sho)."
+    },
+    {
+      "id": 30,
+      "text": "話",
+      "options": ["Ngữ", "Thuyết", "Thoại", "Ký"],
+      "correctAnswer": "Thoại",
+      "explanation": "Kanji: Thoại (hanashimasu / wa)."
+    },
+    {
+      "id": 31,
+      "text": "寺",
+      "options": ["Đình", "Chùa", "Tự", "Miếu"],
+      "correctAnswer": "Tự",
+      "explanation": "Kanji: Tự (tera / ji)."
+    },
+    {
+      "id": 32,
+      "text": "言",
+      "options": ["Ngôn", "Thoại", "Khẩu", "Thuyết"],
+      "correctAnswer": "Ngôn",
+      "explanation": "Kanji: Ngôn (iimasu / gen)."
+    },
+    {
+      "id": 33,
+      "text": "具",
+      "options": ["Bối", "Chân", "Cụ", "Mục"],
+      "correctAnswer": "Cụ",
+      "explanation": "Kanji: Cụ (gu)."
+    },
+    {
+      "id": 34,
+      "text": "田",
+      "options": ["Thổ", "Địa", "Điền", "Giáp"],
+      "correctAnswer": "Điền",
+      "explanation": "Kanji: Điền (ta / den)."
+    },
+    {
+      "id": 35,
+      "text": "力",
+      "options": ["Đao", "Lực", "Phương", "Nam"],
+      "correctAnswer": "Lực",
+      "explanation": "Kanji: Lực (chikara / ryoku)."
+    }
+  ]
+}
