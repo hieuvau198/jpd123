@@ -6,50 +6,50 @@
     {
       "id": 1,
       "text": "東",
-      "options": ["Tây", "Nam", "Đông", "Bắc"],
-      "correctAnswer": "Đông",
+      "options": ["Tây (にし)", "Nam (みなみ)", "Đông (ひがし)", "Bắc (きた)"],
+      "correctAnswer": "Đông (ひがし)",
       "explanation": "Kanji: Đông (higashi / tou)."
     },
     {
       "id": 2,
       "text": "京",
-      "options": ["Đô", "Kinh", "Thành", "Trấn"],
-      "correctAnswer": "Kinh",
+      "options": ["Đô (と)", "Kinh (きょう)", "Thành (せい)", "Trấn (ちん)"],
+      "correctAnswer": "Kinh (きょう)",
       "explanation": "Kanji: Kinh (kyou)."
     },
     {
       "id": 3,
       "text": "名",
-      "options": ["Tên", "Danh", "Hiệu", "Chữ"],
-      "correctAnswer": "Danh",
+      "options": ["Tên (なまえ)", "Danh (めい)", "Hiệu (ごう)", "Chữ (じ)"],
+      "correctAnswer": "Danh (めい)",
       "explanation": "Kanji: Danh (mae / mei)."
     },
     {
       "id": 4,
       "text": "前",
-      "options": ["Hậu", "Tiền", "Tả", "Hữu"],
-      "correctAnswer": "Tiền",
+      "options": ["Hậu (うしろ)", "Tiền (まえ)", "Tả (ひだり)", "Hữu (みぎ)"],
+      "correctAnswer": "Tiền (まえ)",
       "explanation": "Kanji: Tiền (mae / zen)."
     },
     {
       "id": 5,
       "text": "国",
-      "options": ["Gia", "Vùng", "Quốc", "Đất"],
-      "correctAnswer": "Quốc",
+      "options": ["Gia (いえ)", "Vùng (ちいき)", "Quốc (くに)", "Đất (つち)"],
+      "correctAnswer": "Quốc (くに)",
       "explanation": "Kanji: Quốc (kuni / koku)."
     },
     {
       "id": 6,
       "text": "男",
-      "options": ["Nam", "Nữ", "Tử", "Phụ"],
-      "correctAnswer": "Nam",
+      "options": ["Nam (おとこ)", "Nữ (おんな)", "Tử (こ)", "Phụ (ちち)"],
+      "correctAnswer": "Nam (おとこ)",
       "explanation": "Kanji: Nam (otoko / dan)."
     },
     {
       "id": 7,
       "text": "女",
-      "options": ["Nam", "Mẫu", "Nữ", "Thê"],
-      "correctAnswer": "Nữ",
+      "options": ["Nam (おとこ)", "Mẫu (はは)", "Nữ (おんな)", "Thê (つま)"],
+      "correctAnswer": "Nữ (おんな)",
       "explanation": "Kanji: Nữ (onna / jo)."
     }
   ]

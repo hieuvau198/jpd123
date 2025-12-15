@@ -6,57 +6,57 @@
     {
       "id": 36,
       "text": "門",
-      "options": ["Vấn", "Môn", "Gian", "Khai"],
-      "correctAnswer": "Môn",
+      "options": ["Vấn (もん)", "Môn (もん)", "Gian (かん)", "Khai (かい)"],
+      "correctAnswer": "Môn (もん)",
       "explanation": "Kanji: Môn (mon)."
     },
     {
       "id": 37,
       "text": "肉",
-      "options": ["Nội", "Nhục", "Cốt", "Ngư"],
-      "correctAnswer": "Nhục",
+      "options": ["Nội (ない)", "Nhục (にく)", "Cốt (こつ)", "Ngư (ぎょ)"],
+      "correctAnswer": "Nhục (にく)",
       "explanation": "Kanji: Nhục (niku)."
     },
     {
       "id": 38,
       "text": "料",
-      "options": ["Khoa", "Liệu", "Mễ", "Đẩu"],
-      "correctAnswer": "Liệu",
+      "options": ["Khoa (か)", "Liệu (りょう)", "Mễ (べい)", "Đẩu (と)"],
+      "correctAnswer": "Liệu (りょう)",
       "explanation": "Kanji: Liệu (ryou)."
     },
     {
       "id": 39,
       "text": "理",
-      "options": ["Lý", "Ngọc", "Mai", "Vương"],
-      "correctAnswer": "Lý",
+      "options": ["Lý (り)", "Ngọc (ぎょく)", "Mai (まい)", "Vương (おう)"],
+      "correctAnswer": "Lý (り)",
       "explanation": "Kanji: Lý (ri)."
     },
     {
       "id": 40,
       "text": "野",
-      "options": ["Lý", "Thổ", "Dã", "Thôn"],
-      "correctAnswer": "Dã",
+      "options": ["Lý (り)", "Thổ (ど)", "Dã (や)", "Thôn (そん)"],
+      "correctAnswer": "Dã (や)",
       "explanation": "Kanji: Dã (no / ya)."
     },
     {
       "id": 41,
       "text": "半",
-      "options": ["Dương", "Bán", "Trung", "Bình"],
-      "correctAnswer": "Bán",
+      "options": ["Dương (よう)", "Bán (はん)", "Trung (ちゅう)", "Bình (へい)"],
+      "correctAnswer": "Bán (はん)",
       "explanation": "Kanji: Bán (naka / han)."
     },
     {
       "id": 42,
       "text": "大",
-      "options": ["Thái", "Đại", "Thiên", "Nhân"],
-      "correctAnswer": "Đại",
+      "options": ["Thái (たい)", "Đại (だい)", "Thiên (てん)", "Nhân (じん)"],
+      "correctAnswer": "Đại (だい)",
       "explanation": "Kanji: Đại (ookii / dai)."
     },
     {
       "id": 43,
       "text": "小",
-      "options": ["Thiểu", "Tiểu", "Thiếu", "Thủy"],
-      "correctAnswer": "Tiểu",
+      "options": ["Thiểu (しょう)", "Tiểu (しょう)", "Thiếu (しょう)", "Thủy (すい)"],
+      "correctAnswer": "Tiểu (しょう)",
       "explanation": "Kanji: Tiểu (chiisai / shou)."
     }
   ]

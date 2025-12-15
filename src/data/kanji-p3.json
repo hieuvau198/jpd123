@@ -6,50 +6,50 @@
     {
       "id": 15,
       "text": "見",
-      "options": ["Văn", "Kiến", "Ngôn", "Thoại"],
-      "correctAnswer": "Kiến",
+      "options": ["Văn (ぶん)", "Kiến (けん)", "Ngôn (げん)", "Thoại (わ)"],
+      "correctAnswer": "Kiến (けん)",
       "explanation": "Kanji: Kiến (mi / ken)."
     },
     {
       "id": 16,
       "text": "食",
-      "options": ["Ẩm", "Thực", "Hành", "Mãi"],
-      "correctAnswer": "Thực",
+      "options": ["Ẩm (いん)", "Thực (しょく)", "Hành (こう)", "Mãi (ばい)"],
+      "correctAnswer": "Thực (しょく)",
       "explanation": "Kanji: Thực (ta / shoku)."
     },
     {
       "id": 17,
       "text": "飲",
-      "options": ["Thực", "Ẩm", "Vật", "Hưu"],
-      "correctAnswer": "Ẩm",
+      "options": ["Thực (しょく)", "Ẩm (いん)", "Vật (ぶつ)", "Hưu (きゅう)"],
+      "correctAnswer": "Ẩm (いん)",
       "explanation": "Kanji: Ẩm (no / in)."
     },
     {
       "id": 18,
       "text": "買",
-      "options": ["Bán", "Mãi", "Thư", "Độc"],
-      "correctAnswer": "Mãi",
+      "options": ["Bán (うる)", "Mãi (ばい)", "Thư (しょ)", "Độc (どく)"],
+      "correctAnswer": "Mãi (ばい)",
       "explanation": "Kanji: Mãi (ka / bai)."
     },
     {
       "id": 19,
       "text": "物",
-      "options": ["Nhân", "Vật", "Sự", "Lý"],
-      "correctAnswer": "Vật",
+      "options": ["Nhân (じん)", "Vật (ぶつ)", "Sự (じ)", "Lý (り)"],
+      "correctAnswer": "Vật (ぶつ)",
       "explanation": "Kanji: Vật (mono / butsu)."
     },
     {
       "id": 20,
       "text": "行",
-      "options": ["Lai", "Quy", "Hành", "Hội"],
-      "correctAnswer": "Hành",
+      "options": ["Lai (らい)", "Quy (き)", "Hành (こう)", "Hội (かい)"],
+      "correctAnswer": "Hành (こう)",
       "explanation": "Kanji: Hành (i / kou)."
     },
     {
       "id": 21,
       "text": "休",
-      "options": ["Hưu", "Tác", "Động", "Lực"],
-      "correctAnswer": "Hưu",
+      "options": ["Hưu (きゅう)", "Tác (さく)", "Động (どう)", "Lực (りょく)"],
+      "correctAnswer": "Hưu (きゅう)",
       "explanation": "Kanji: Hưu (yasu / kyuu)."
     }
   ]

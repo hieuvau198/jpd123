@@ -6,50 +6,50 @@
     {
       "id": 22,
       "text": "今",
-      "options": ["Cổ", "Kim", "Tương", "Tiền"],
-      "correctAnswer": "Kim",
+      "options": ["Cổ (こ)", "Kim (こん)", "Tương (しょう)", "Tiền (ぜん)"],
+      "correctAnswer": "Kim (こん)",
       "explanation": "Kanji: Kim (ima / kon)."
     },
     {
       "id": 23,
       "text": "来",
-      "options": ["Quy", "Hành", "Lai", "Xuất"],
-      "correctAnswer": "Lai",
+      "options": ["Quy (き)", "Hành (こう)", "Lai (らい)", "Xuất (しゅつ)"],
+      "correctAnswer": "Lai (らい)",
       "explanation": "Kanji: Lai (kimasu / rai)."
     },
     {
       "id": 24,
       "text": "帰",
-      "options": ["Lai", "Quy", "Nhập", "Hành"],
-      "correctAnswer": "Quy",
+      "options": ["Lai (らい)", "Quy (き)", "Nhập (にゅう)", "Hành (こう)"],
+      "correctAnswer": "Quy (き)",
       "explanation": "Kanji: Quy (kaerimasu / ki)."
     },
     {
       "id": 25,
       "text": "会",
-      "options": ["Xã", "Hội", "Thoại", "Ngôn"],
-      "correctAnswer": "Hội",
+      "options": ["Xã (しゃ)", "Hội (かい)", "Thoại (わ)", "Ngôn (げん)"],
+      "correctAnswer": "Hội (かい)",
       "explanation": "Kanji: Hội (aimasu / kai)."
     },
     {
       "id": 26,
       "text": "社",
-      "options": ["Hội", "Xã", "Thần", "Lễ"],
-      "correctAnswer": "Xã",
+      "options": ["Hội (かい)", "Xã (しゃ)", "Thần (しん)", "Lễ (れい)"],
+      "correctAnswer": "Xã (しゃ)",
       "explanation": "Kanji: Xã (yashiro / sha)."
     },
     {
       "id": 27,
       "text": "聞",
-      "options": ["Kiến", "Văn", "Khẩu", "Môn"],
-      "correctAnswer": "Văn",
+      "options": ["Kiến (けん)", "Văn (ぶん)", "Khẩu (こう)", "Môn (もん)"],
+      "correctAnswer": "Văn (ぶん)",
       "explanation": "Kanji: Văn (kikimasu / bun)."
     },
     {
       "id": 28,
       "text": "読",
-      "options": ["Ngôn", "Thư", "Độc", "Hội"],
-      "correctAnswer": "Độc",
+      "options": ["Ngôn (げん)", "Thư (しょ)", "Độc (どく)", "Hội (かい)"],
+      "correctAnswer": "Độc (どく)",
       "explanation": "Kanji: Độc (yomimasu / doku)."
     }
   ]
