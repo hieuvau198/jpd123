@@ -7,28 +7,28 @@
       "id": 1,
       "text": "今週",
       "options": ["Tuần sau (らいしゅう)", "Tuần này (こんしゅう)", "Tháng này (こんげつ)", "Năm nay (ことし)"],
-      "correctAnswer": "Tuần này",
+      "correctAnswer": "Tuần này (こんしゅう)",
       "explanation": "Kanji: Kim Chu (konshuu)."
     },
     {
       "id": 2,
       "text": "来週",
       "options": ["Tuần trước (せんしゅう)", "Tuần này (こんしゅう)", "Tuần sau (らいしゅう)", "Ngày mai (あした)"],
-      "correctAnswer": "Tuần sau",
+      "correctAnswer": "Tuần sau (らいしゅう)",
       "explanation": "Kanji: Lai Chu (raishuu)."
     },
     {
       "id": 3,
       "text": "今月",
       "options": ["Tháng trước (せんげつ)", "Tháng sau (らいげつ)", "Tháng này (こんげつ)", "Tuần này (こんしゅう)"],
-      "correctAnswer": "Tháng này",
+      "correctAnswer": "Tháng này (こんげつ)",
       "explanation": "Kanji: Kim Nguyệt (kongetsu)."
     },
     {
       "id": 4,
       "text": "来月",
       "options": ["Tháng này (こんげつ)", "Tháng sau (らいげつ)", "Năm sau (らいねん)", "Tuần sau (らいしゅう)"],
-      "correctAnswer": "Tháng sau",
+      "correctAnswer": "Tháng sau (らいげつ)",
       "explanation": "Kanji: Lai Nguyệt (raigetsu)."
     },
     {
@@ -70,7 +70,7 @@
       "id": 10,
       "text": "地図",
       "options": ["Bản đồ (ちず)", "Tranh ảnh (え・しゃしん)", "Vé tàu (きっぷ)", "Thư từ (てがみ)"],
-      "correctAnswer": "Bản đồ",
+      "correctAnswer": "Bản đồ (ちず)",
       "explanation": "Kanji: Địa Đồ (chizu)."
     },
     {
@@ -147,14 +147,14 @@
       "id": 21,
       "text": "食べ物",
       "options": ["Đồ uống (のみもの)", "Đồ ăn (たべもの)", "Hoa quả (くだもの)", "Thịt (にく)"],
-      "correctAnswer": "Đồ ăn",
+      "correctAnswer": "Đồ ăn (たべもの)",
       "explanation": "Kanji: Thực Vật (tabemono)."
     },
     {
       "id": 22,
       "text": "飲み物",
       "options": ["Đồ ăn (たべもの)", "Đồ uống (のみもの)", "Rượu (おさけ)", "Thuốc (くすり)"],
-      "correctAnswer": "Đồ uống",
+      "correctAnswer": "Đồ uống (のみもの)",
       "explanation": "Kanji: Ẩm Vật (nomimono)."
     },
     {
