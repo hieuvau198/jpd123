@@ -1,0 +1,127 @@
+{
+  "id": "flashcard-kanji-number",
+  "title": "Đếm Ngày & Tháng",
+  "description": "Luyện tập từ vựng: Ngày & Tháng.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "1日",
+      "answer": "mùng 1",
+      "speak": "tsuitachi"
+    },
+    {
+      "id": 2,
+      "question": "2日",
+      "answer": "mùng 2, 2 ngày",
+      "speak": "futsuka"
+    },
+    {
+      "id": 3,
+      "question": "3日",
+      "answer": "mùng 3, 3 ngày",
+      "speak": "mikka"
+    },
+    {
+      "id": 4,
+      "question": "4日",
+      "answer": "mùng 4, 4 ngày",
+      "speak": "yokka"
+    },
+    {
+      "id": 5,
+      "question": "5日",
+      "answer": "mùng 5, 5 ngày",
+      "speak": "itsuka"
+    },
+    {
+      "id": 6,
+      "question": "6日",
+      "answer": "mùng 6, 6 ngày",
+      "speak": "muika"
+    },
+    {
+      "id": 7,
+      "question": "7日",
+      "answer": "mùng 7, 7 ngày",
+      "speak": "nanoka"
+    },
+    {
+      "id": 8,
+      "question": "8日",
+      "answer": "mùng 8, 8 ngày",
+      "speak": "youka"
+    },
+    {
+      "id": 9,
+      "question": "9日",
+      "answer": "mùng 9, 9 ngày",
+      "speak": "kokonoka"
+    },
+    {
+      "id": 10,
+      "question": "10日",
+      "answer": "mùng 10, 10 ngày",
+      "speak": "tooka"
+    },
+    {
+      "id": 11,
+      "question": "1月",
+      "answer": "tháng 1",
+      "speak": "ichigatsu"
+    },
+    {
+      "id": 12,
+      "question": "2月",
+      "answer": "tháng 2",
+      "speak": "nigatsu"
+    },
+    {
+      "id": 13,
+      "question": "3月",
+      "answer": "tháng 3",
+      "speak": "sangatsu"
+    },
+    {
+      "id": 14,
+      "question": "4月",
+      "answer": "tháng 4",
+      "speak": "shigatsu"
+    },
+    {
+      "id": 15,
+      "question": "5月",
+      "answer": "tháng 5",
+      "speak": "gogatsu"
+    },
+    {
+      "id": 16,
+      "question": "6月",
+      "answer": "tháng 6",
+      "speak": "rokugatsu"
+    },
+    {
+      "id": 17,
+      "question": "7月",
+      "answer": "tháng 7",
+      "speak": "shichigatsu"
+    },
+    {
+      "id": 18,
+      "question": "8月",
+      "answer": "tháng 8",
+      "speak": "hachigatsu"
+    },
+    {
+      "id": 19,
+      "question": "9月",
+      "answer": "tháng 9",
+      "speak": "kugatsu"
+    },
+    {
+      "id": 20,
+      "question": "10月",
+      "answer": "tháng 10",
+      "speak": "juugatsu"
+    }
+  ]
+}

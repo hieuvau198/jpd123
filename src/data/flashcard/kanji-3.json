@@ -1,31 +1,13 @@
 {
   "id": "flashcard-mixed-3",
   "title": "Kanji 3",
-  "description": "Luyện tập từ vựng: Thời gian, Số đếm & Con người.",
+  "description": "Luyện tập từ vựng: Thời gian & Con người.",
   "questions": [
     {
       "id": 1,
       "question": "私",
       "answer": "tôi",
       "speak": "watashi"
-    },
-    {
-      "id": 2,
-      "question": "一人",
-      "answer": "một người",
-      "speak": "hitori"
-    },
-    {
-      "id": 3,
-      "question": "二人",
-      "answer": "hai người",
-      "speak": "futari"
-    },
-    {
-      "id": 4,
-      "question": "三人",
-      "answer": "ba người",
-      "speak": "sannin"
     },
     {
       "id": 5,
@@ -76,12 +58,6 @@
       "speak": "nihongogakkou"
     },
     {
-      "id": 19,
-      "question": "一月",
-      "answer": "tháng 1",
-      "speak": "ichigatsu"
-    },
-    {
       "id": 22,
       "question": "木",
       "answer": "cây",
@@ -106,18 +82,6 @@
       "speak": "toshi"
     },
     {
-      "id": 33,
-      "question": "九時",
-      "answer": "9 giờ",
-      "speak": "kuji"
-    },
-    {
-      "id": 34,
-      "question": "四時",
-      "answer": "4 giờ",
-      "speak": "yoji"
-    },
-    {
       "id": 36,
       "question": "時間",
       "answer": "thời gian",
@@ -134,43 +98,6 @@
       "question": "分かります",
       "answer": "hiểu",
       "speak": "wakarimasu"
-    },
-    
-    {
-      "id": 41,
-      "question": "五月",
-      "answer": "tháng 5",
-      "speak": "gogatsu"
-    },
-    {
-      "id": 42,
-      "question": "六人",
-      "answer": "6 người",
-      "speak": "rokunin"
-    },
-    {
-      "id": 43,
-      "question": "七日",
-      "answer": "mùng 7, 7 ngày",
-      "speak": "nanoka"
-    },
-    {
-      "id": 44,
-      "question": "八月",
-      "answer": "tháng 8",
-      "speak": "hachigatsu"
-    },
-    {
-      "id": 45,
-      "question": "九月",
-      "answer": "tháng 9",
-      "speak": "kugatsu"
-    },
-    {
-      "id": 46,
-      "question": "十月",
-      "answer": "tháng 10",
-      "speak": "juugatsu"
     }
   ]
 }

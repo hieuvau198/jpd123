@@ -1,0 +1,109 @@
+{
+  "id": "question-type-1",
+  "title": "Speaking Practice",
+  "description": "Luyện tập hội thoại (Romaji only).",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Anata no machi wa donna tokoro desu ka?",
+      "answer": "Watashi no machi wa shizukana tokoro desu. Kireina kawa ga arimasu.",
+      "speak": "Watashi no machi wa shizukana tokoro desu. Kireina kawa ga arimasu."
+    },
+    {
+      "id": 2,
+      "question": "Yasumi no hi ni nani o shimasu ka?",
+      "answer": "Yasumi no hi ni, tomodachi to asobimasu. Tomodachi ni aimasu.",
+      "speak": "Yasumi no hi ni, tomodachi to asobimasu. Tomodachi ni aimasu."
+    },
+    {
+      "id": 3,
+      "question": "Ima nani o benkyou shite imasu ka?",
+      "answer": "Ima, nihongo o benkyou shite imasu.",
+      "speak": "Ima, nihongo o benkyou shite imasu."
+    },
+    {
+      "id": 4,
+      "question": "Anata no machi to Toukyou to dochira ga ookii desu ka?",
+      "answer": "Toukyou no hou ga ookii desu.",
+      "speak": "Toukyou no hou ga ookii desu."
+    },
+    {
+      "id": 5,
+      "question": "Shuumatsu ni nani o shitai desu ka?",
+      "answer": "Shuumatsu ni yasumitai desu.",
+      "speak": "Shuumatsu ni yasumitai desu."
+    },
+    {
+      "id": 6,
+      "question": "Anata no machi de doko ga ichiban nigiyaka desu ka?",
+      "answer": "Gakkou ga ichiban nigiyaka desu.",
+      "speak": "Gakkou ga ichiban nigiyaka desu."
+    },
+    {
+      "id": 7,
+      "question": "Anata no heya ni nani ga arimasu ka?",
+      "answer": "Tsukue to konpyuutaa ga arimasu.",
+      "speak": "Tsukue to konpyuutaa ga arimasu."
+    },
+    {
+      "id": 8,
+      "question": "Natsu yasumi ni doko e ikitai desu ka? Doushite desu ka?",
+      "answer": "Natsu yasumi ni Toukyou e ikitai desu. Tanoshii kara desu.",
+      "speak": "Natsu yasumi ni Toukyou e ikitai desu. Tanoshii kara desu."
+    },
+    {
+      "id": 9,
+      "question": "Shuumatsu ni donna supootsu o shimasu ka?",
+      "answer": "Shuumatsu ni sakkaa o shimasu.",
+      "speak": "Shuumatsu ni sakkaa o shimasu."
+    },
+    {
+      "id": 10,
+      "question": "Anata no machi wa nigiyaka desu ka?",
+      "answer": "Hai, nigiyaka desu. Hito ga ooi desu.",
+      "speak": "Hai, nigiyaka desu. Hito ga ooi desu."
+    },
+    {
+      "id": 11,
+      "question": "Anata no machi ni yama / kawa / otera / kyoukai / onsen ga arimasu ka?",
+      "answer": "Hai, yama ga arimasu. Kawa ga arimasu.",
+      "speak": "Hai, yama ga arimasu. Kawa ga arimasu."
+    },
+    {
+      "id": 12,
+      "question": "Anata no machi kara Hanoi made dono kurai desu ka?",
+      "answer": "Kuruma / hikouki de sanjikan kurai desu.",
+      "speak": "Kuruma / hikouki de sanjikan kurai desu."
+    },
+    {
+      "id": 13,
+      "question": "FPT daigaku wa donna daigaku desu ka?",
+      "answer": "FPT daigaku wa ookii daigaku desu.",
+      "speak": "FPT daigaku wa ookii daigaku desu."
+    },
+    {
+      "id": 14,
+      "question": "Kinou, doko e ikimashita ka?",
+      "answer": "Kinou, gakkou e ikimashita.",
+      "speak": "Kinou, gakkou e ikimashita."
+    },
+    {
+      "id": 15,
+      "question": "Donna supootsu / ryouri / kudamono ga ichiban suki desu ka?",
+      "answer": "Sakkaa / raamen / ringo ga ichiban suki desu.",
+      "speak": "Sakkaa / raamen / ringo ga ichiban suki desu."
+    },
+    {
+      "id": 16,
+      "question": "Betonamu kara Kankoku made hikouki de dono kurai desu ka?",
+      "answer": "Rokujikanhan gurai kakarimasu.",
+      "speak": "Rokujikanhan gurai kakarimasu."
+    },
+    {
+      "id": 17,
+      "question": "Kinou, dokoka e ikimashita ka?",
+      "answer": "Iie, doko e mo ikimasen deshita.",
+      "speak": "Iie, doko e mo ikimasen deshita."
+    }
+  ]
+}

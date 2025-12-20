@@ -1,0 +1,139 @@
+{
+  "id": "flashcard-time",
+  "title": "Time",
+  "description": "Luyện tập từ vựng: Phút & Giờ.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "1分",
+      "answer": "1 phút",
+      "speak": "ippun"
+    },
+    {
+      "id": 2,
+      "question": "2分",
+      "answer": "2 phút",
+      "speak": "nifun"
+    },
+    {
+      "id": 3,
+      "question": "3分",
+      "answer": "3 phút",
+      "speak": "sanpun"
+    },
+    {
+      "id": 4,
+      "question": "4分",
+      "answer": "4 phút",
+      "speak": "yonpun"
+    },
+    {
+      "id": 5,
+      "question": "5分",
+      "answer": "5 phút",
+      "speak": "gofun"
+    },
+    {
+      "id": 6,
+      "question": "6分",
+      "answer": "6 phút",
+      "speak": "roppun"
+    },
+    {
+      "id": 7,
+      "question": "7分",
+      "answer": "7 phút",
+      "speak": "nanafun"
+    },
+    {
+      "id": 8,
+      "question": "8分",
+      "answer": "8 phút",
+      "speak": "happun"
+    },
+    {
+      "id": 9,
+      "question": "9分",
+      "answer": "9 phút",
+      "speak": "kyuufun"
+    },
+    {
+      "id": 10,
+      "question": "10分",
+      "answer": "10 phút",
+      "speak": "juppun"
+    },
+    {
+      "id": 11,
+      "question": "11分",
+      "answer": "11 phút",
+      "speak": "juuippun"
+    },
+    {
+      "id": 12,
+      "question": "1時間",
+      "answer": "1 tiếng",
+      "speak": "ichijikan"
+    },
+    {
+      "id": 13,
+      "question": "2時間",
+      "answer": "2 tiếng",
+      "speak": "nijikan"
+    },
+    {
+      "id": 14,
+      "question": "3時間",
+      "answer": "3 tiếng",
+      "speak": "sanjikan"
+    },
+    {
+      "id": 15,
+      "question": "4時間",
+      "answer": "4 tiếng",
+      "speak": "yojikan"
+    },
+    {
+      "id": 16,
+      "question": "5時間",
+      "answer": "5 tiếng",
+      "speak": "gojikan"
+    },
+    {
+      "id": 17,
+      "question": "6時間",
+      "answer": "6 tiếng",
+      "speak": "rokujikan"
+    },
+    {
+      "id": 18,
+      "question": "7時間",
+      "answer": "7 tiếng",
+      "speak": "nanajikan"
+    },
+    {
+      "id": 19,
+      "question": "8時間",
+      "answer": "8 tiếng",
+      "speak": "hachijikan"
+    },
+    {
+      "id": 20,
+      "question": "9時間",
+      "answer": "9 tiếng",
+      "speak": "kyuujikan"
+    },
+    {
+      "id": 21,
+      "question": "10時間",
+      "answer": "10 tiếng",
+      "speak": "juujikan"
+    },
+    {
+      "id": 22,
+      "question": "11時間",
+      "answer": "11 tiếng",
+      "speak": "juuichijikan"
+    }
+  ]
+}
