@@ -59,6 +59,7 @@ h1, h2, h3 {
 .home-header {
   margin-bottom: 40px;
   text-align: center;
+  position: relative; /* For absolute back button */
 }
 
 .brand-title {
@@ -376,4 +377,171 @@ h1, h2, h3 {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mode Selection --- */
+.mode-selection {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.mode-card {
+  background: rgba(255,255,255,0.1);
+  border: 2px solid white;
+  color: white;
+  padding: 30px;
+  width: 280px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mode-card:hover {
+  background: white;
+  color: black;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.mode-card h3 {
+  margin: 15px 0 10px;
+  font-size: 1.8rem;
+}
+
+/* --- Flashcard Flip Animation --- */
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  height: 400px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+}
+
+.flashcard-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: #fdfdfd;
+  border: 4px solid black;
+}
+
+.fc-text {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.fc-sub {
+  font-size: 1.5rem;
+  color: #666;
+  margin-top: 20px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.fc-hint {
+  margin-top: 40px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #aaa;
+  letter-spacing: 2px;
+}
+
+.fc-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.fc-controls button {
+  background: white;
+  border: 2px solid black;
+  padding: 10px 20px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-controls button:hover:not(:disabled) {
+  background: black;
+  color: white;
+}
+
+.fc-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- Speaking Mode --- */
+.speak-input {
+  width: 100%;
+  padding: 15px;
+  font-size: 2rem;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-family: 'Roboto', sans-serif;
+}
+
+.speak-input:focus {
+  border-color: black;
+}
+
+.input-correct {
+  border-color: green;
+  background-color: #e6f5e6;
+  color: green;
+}
+
+.feedback-error {
+  background: #ffe6e6;
+  color: #d8000c;
+  padding: 20px;
+  border: 2px solid #d8000c;
+  font-size: 1.5rem;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }

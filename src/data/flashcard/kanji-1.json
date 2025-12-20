@@ -1,0 +1,163 @@
+{
+  "id": "flashcard-mixed-1",
+  "title": "Kanji 1",
+  "description": "Luyện tập từ vựng: Ẩm thực, Trường học, Công ty & Động từ.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "理由",
+      "answer": "lý do",
+      "speak": "riyuu"
+    },
+    {
+      "id": 2,
+      "question": "野菜",
+      "answer": "rau củ",
+      "speak": "yasai"
+    },
+    {
+      "id": 3,
+      "question": "半分",
+      "answer": "một nửa",
+      "speak": "hanbun"
+    },
+    {
+      "id": 4,
+      "question": "半年",
+      "answer": "nửa năm",
+      "speak": "hantoshi"
+    },
+    {
+      "id": 5,
+      "question": "三時半",
+      "answer": "3 giờ rưỡi",
+      "speak": "sanjihan"
+    },
+    {
+      "id": 6,
+      "question": "大学",
+      "answer": "đại học",
+      "speak": "daigaku"
+    },
+    {
+      "id": 7,
+      "question": "大きい",
+      "answer": "to, lớn",
+      "speak": "ookii"
+    },
+    {
+      "id": 8,
+      "question": "小さい",
+      "answer": "nhỏ",
+      "speak": "chiisai"
+    },
+    {
+      "id": 9,
+      "question": "小さな",
+      "answer": "nhỏ (dạng bổ nghĩa)",
+      "speak": "chiisana"
+    },
+    {
+      "id": 10,
+      "question": "田んぼ",
+      "answer": "ruộng lúa",
+      "speak": "tanbo"
+    },
+    {
+      "id": 11,
+      "question": "力",
+      "answer": "sức lực",
+      "speak": "chikara"
+    },
+    {
+      "id": 12,
+      "question": "門",
+      "answer": "cổng",
+      "speak": "mon"
+    },
+    {
+      "id": 13,
+      "question": "校門",
+      "answer": "cổng trường",
+      "speak": "koumon"
+    },
+    {
+      "id": 14,
+      "question": "肉",
+      "answer": "thịt",
+      "speak": "niku"
+    },
+    {
+      "id": 15,
+      "question": "牛肉",
+      "answer": "thịt bò",
+      "speak": "gyuuniku"
+    },
+    {
+      "id": 16,
+      "question": "豚肉",
+      "answer": "thịt heo",
+      "speak": "butaniku"
+    },
+    {
+      "id": 17,
+      "question": "料理",
+      "answer": "món ăn, nấu ăn",
+      "speak": "ryouri"
+    },
+    {
+      "id": 18,
+      "question": "会社",
+      "answer": "công ty",
+      "speak": "kaisha"
+    },
+    {
+      "id": 19,
+      "question": "会います",
+      "answer": "gặp",
+      "speak": "aimasu"
+    },
+    {
+      "id": 20,
+      "question": "会話",
+      "answer": "hội thoại",
+      "speak": "kaiwa"
+    },
+    {
+      "id": 21,
+      "question": "社員",
+      "answer": "nhân viên công ty",
+      "speak": "shain"
+    },
+    {
+      "id": 22,
+      "question": "社会",
+      "answer": "xã hội",
+      "speak": "shakai"
+    },
+    {
+      "id": 23,
+      "question": "聞きます",
+      "answer": "nghe",
+      "speak": "kikimasu"
+    },
+    {
+      "id": 24,
+      "question": "読みます",
+      "answer": "đọc",
+      "speak": "yomimasu"
+    },
+    {
+      "id": 25,
+      "question": "書きます",
+      "answer": "viết",
+      "speak": "kakimasu"
+    },
+    {
+      "id": 26,
+      "question": "お寺",
+      "answer": "chùa",
+      "speak": "otera"
+    }
+  ]
+}
