@@ -1,0 +1,193 @@
+{
+  "id": "flashcard-mixed-2",
+  "title": "Kanji 2",
+  "description": "Luyện tập từ vựng: Động từ, Thời gian, Phương hướng & Con người.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "物",
+      "answer": "đồ vật",
+      "speak": "mono"
+    },
+    {
+      "id": 2,
+      "question": "行きます",
+      "answer": "đi",
+      "speak": "ikimasu"
+    },
+    {
+      "id": 3,
+      "question": "休みます",
+      "answer": "nghỉ",
+      "speak": "yasumimasu"
+    },
+    {
+      "id": 4,
+      "question": "今",
+      "answer": "bây giờ",
+      "speak": "ima"
+    },
+    {
+      "id": 5,
+      "question": "来ます",
+      "answer": "đến",
+      "speak": "kimasu"
+    },
+    {
+      "id": 6,
+      "question": "帰ります",
+      "answer": "về",
+      "speak": "kaerimasu"
+    },
+    {
+      "id": 7,
+      "question": "毎日",
+      "answer": "mỗi ngày",
+      "speak": "mainichi"
+    },
+    {
+      "id": 8,
+      "question": "午前",
+      "answer": "buổi sáng",
+      "speak": "gozen"
+    },
+    {
+      "id": 9,
+      "question": "午後",
+      "answer": "buổi chiều",
+      "speak": "gogo"
+    },
+    {
+      "id": 10,
+      "question": "後",
+      "answer": "sau",
+      "speak": "ato"
+    },
+    {
+      "id": 11,
+      "question": "見ます",
+      "answer": "xem",
+      "speak": "mimasu"
+    },
+    {
+      "id": 12,
+      "question": "食べます",
+      "answer": "ăn",
+      "speak": "tabemasu"
+    },
+    {
+      "id": 13,
+      "question": "飲みます",
+      "answer": "uống",
+      "speak": "nomimasu"
+    },
+    {
+      "id": 14,
+      "question": "買います",
+      "answer": "mua",
+      "speak": "kaimasu"
+    },
+    {
+      "id": 15,
+      "question": "東",
+      "answer": "phía Đông",
+      "speak": "higashi"
+    },
+    {
+      "id": 16,
+      "question": "東京",
+      "answer": "Tokyo",
+      "speak": "toukyou"
+    },
+    {
+      "id": 17,
+      "question": "名前",
+      "answer": "tên",
+      "speak": "namae"
+    },
+    {
+      "id": 18,
+      "question": "国",
+      "answer": "quốc gia",
+      "speak": "kuni"
+    },
+    {
+      "id": 19,
+      "question": "男",
+      "answer": "nam, đàn ông",
+      "speak": "otoko"
+    },
+    {
+      "id": 20,
+      "question": "男の人",
+      "answer": "người đàn ông",
+      "speak": "otokonohito"
+    },
+    {
+      "id": 21,
+      "question": "女",
+      "answer": "nữ, phụ nữ",
+      "speak": "onna"
+    },
+    {
+      "id": 22,
+      "question": "女の人",
+      "answer": "người phụ nữ",
+      "speak": "onnanohito"
+    },
+    {
+      "id": 23,
+      "question": "区",
+      "answer": "quận",
+      "speak": "ku"
+    },
+    {
+      "id": 24,
+      "question": "市",
+      "answer": "thành phố",
+      "speak": "shi"
+    },
+    {
+      "id": 25,
+      "question": "先生",
+      "answer": "giáo viên",
+      "speak": "sensei"
+    },
+    {
+      "id": 26,
+      "question": "今週",
+      "answer": "tuần này",
+      "speak": "konshuu"
+    },
+    {
+      "id": 27,
+      "question": "来週",
+      "answer": "tuần sau",
+      "speak": "raishuu"
+    },
+    {
+      "id": 28,
+      "question": "毎週",
+      "answer": "mỗi tuần",
+      "speak": "maishuu"
+    },
+    {
+      "id": 29,
+      "question": "言います",
+      "answer": "nói",
+      "speak": "iimasu"
+    },
+    {
+      "id": 30,
+      "question": "話します",
+      "answer": "nói chuyện, nói năng",
+      "speak": "hanashimasu"
+    },
+    {
+      "id": 31,
+      "question": "道具",
+      "answer": "Dụng cụ, công cụ, đạo cụ",
+      "speak": "dougu"
+    }
+  ]
+}
