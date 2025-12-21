@@ -114,7 +114,7 @@ const FlashcardSession = ({ data, onHome }) => {
   if (!mode) {
     return (
       <div className="app-container" style={{ textAlign: 'center', color: 'white' }}>
-        <h1 style={{fontSize: '2.5rem', marginBottom: '20px'}}>{data.title}</h1>
+        <h1 className="session-title" style={{marginBottom: '20px'}}>{data.title}</h1>
         <p style={{marginBottom: '40px'}}>{data.description}</p>
         
         <div className="mode-selection">
@@ -184,7 +184,7 @@ const FlashcardSession = ({ data, onHome }) => {
             {/* BACK OF CARD - SPEAKING FIRST */}
             <div className="flashcard-back">
               <h2 className="fc-text" style={{marginBottom: '10px'}}>{currentCard.speak}</h2>
-              <p className="fc-sub" style={{marginTop: '0', fontSize: '1.2rem'}}>{currentCard.answer}</p>
+              <p className="fc-sub" style={{marginTop: '0'}}>{currentCard.answer}</p>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ const FlashcardSession = ({ data, onHome }) => {
       </div>
 
       <div className="question-card" style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-        <h2 className="question-text" style={{fontSize: '3rem', marginBottom: '10px'}}>{currentCard.question}</h2>
+        <h2 className="question-text" style={{marginBottom: '10px'}}>{currentCard.question}</h2>
         <p style={{color: '#666', marginBottom: '30px'}}>Type the reading (Romaji)</p>
 
         {feedback === 'wrong' ? (

@@ -545,3 +545,63 @@ h1, h2, h3 {
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
+
+@media (max-width: 768px) {
+  /* Reduce Container Padding */
+  .app-container {
+    padding: 20px 10px;
+  }
+
+  /* 1. Flashcard Text Sizing */
+  .fc-text {
+    font-size: 2rem; /* Reduced from 3.5rem */
+  }
+
+  .fc-sub {
+    font-size: 1rem; /* Reduced from 1.2rem */
+  }
+
+  /* 2. Question Text (Quiz & Speaking) */
+  .question-text {
+    font-size: 1.5rem; /* Reduced from 2rem/3rem */
+    margin-bottom: 20px;
+  }
+  
+  /* 3. Speaking Input Box */
+  .speak-input {
+    font-size: 1.2rem;
+    padding: 10px;
+  }
+
+  /* 4. Quiz Options */
+  .option-btn {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
+
+  /* 5. Headers & Titles */
+  .brand-title {
+    font-size: 2rem;
+  }
+  
+  .session-title { /* The class we added in Step 1 */
+    font-size: 1.8rem;
+  }
+
+  /* 6. Layout Adjustments */
+  .flashcard-container {
+    height: 280px; /* Make card shorter on mobile */
+  }
+
+  .mode-card {
+    width: 100%; /* Full width buttons on mobile */
+  }
+
+  .fc-controls button, 
+  .action-buttons button,
+  .btn-primary, 
+  .btn-secondary {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}
