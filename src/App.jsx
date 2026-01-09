@@ -148,11 +148,11 @@ const HomeView = ({ onSelectPractice }) => {
   return (
     <div className="app-container">
       <div className="home-header">
-        <h1 className="brand-title">DASHBOARD</h1>
+        <h1 className="brand-title">Trung Tâm Cô Quốc Anh</h1>
         
         {/* --- SUBJECT FILTER --- */}
         <div className="filter-bar">
-          <div className="filter-label"><Filter size={16}/> SUBJECT:</div>
+          <div className="filter-label"><Filter size={16}/> Môn học:</div>
           <div className="filter-options">
             <button 
                 className={`filter-chip ${activeSubject === 'all' ? 'active' : ''}`}
@@ -182,8 +182,8 @@ const HomeView = ({ onSelectPractice }) => {
         <div className="split-column">
             <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                    <BookOpen size={24}/>
-                    <h2>FLASHCARDS</h2>
+                  
+                    <h2 className='toggle-btn'>Thẻ Nhớ</h2>
                 </div>
                 {/* Flashcard Mix Button */}
                 <button 
@@ -223,8 +223,7 @@ const HomeView = ({ onSelectPractice }) => {
         <div className="split-column">
             <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                    <Brain size={24}/>
-                    <h2>QUIZZES</h2>
+                    <h2 className='toggle-btn'>Trắc Nghiệm</h2>
                 </div>
                 {/* Quiz Mix Button */}
                 <button 
