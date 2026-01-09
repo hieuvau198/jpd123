@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-a1-present-continuous-2",
+  "title": "A1 Grammar - Present Continuous 2",
+  "subject": "english",
+  "tags": ["a1", "grammar"],
+  "description": "Questions, Spelling rules (-ing), and Time expressions.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "_____ you listening to me?",
+      "options": ["Is", "Are", "Do", "Does"],
+      "correctAnswer": "Are",
+      "explanation": "Question with 'You': Are you...?"
+    },
+    {
+      "id": 2,
+      "text": "What _____ he doing?",
+      "options": ["is", "are", "am", "do"],
+      "correctAnswer": "is",
+      "explanation": "Question with 'He': What is he doing?"
+    },
+    {
+      "id": 3,
+      "text": "Where _____ they going?",
+      "options": ["is", "are", "am", "do"],
+      "correctAnswer": "are",
+      "explanation": "Question with 'They': Where are they going?"
+    },
+    {
+      "id": 4,
+      "text": "_____ she sleeping?",
+      "options": ["Are", "Is", "Do", "Does"],
+      "correctAnswer": "Is",
+      "explanation": "Question with 'She': Is she...?"
+    },
+    {
+      "id": 5,
+      "text": "Why _____ you crying?",
+      "options": ["is", "are", "do", "did"],
+      "correctAnswer": "are",
+      "explanation": "Why are you...?"
+    },
+    {
+      "id": 6,
+      "text": "We are _____ (sit) on the chair.",
+      "options": ["sit", "siting", "sitting", "sites"],
+      "correctAnswer": "sitting",
+      "explanation": "Short vowel + consonant: double the consonant (sit -> sitting)."
+    },
+    {
+      "id": 7,
+      "text": "He is _____ (make) a cake.",
+      "options": ["make", "making", "makeing", "makes"],
+      "correctAnswer": "making",
+      "explanation": "Verbs ending in 'e': drop 'e' and add -ing (make -> making)."
+    },
+    {
+      "id": 8,
+      "text": "They are _____ (run) fast.",
+      "options": ["run", "runing", "running", "ran"],
+      "correctAnswer": "running",
+      "explanation": "Double the consonant: run -> running."
+    },
+    {
+      "id": 9,
+      "text": "I am _____ (write) a letter.",
+      "options": ["write", "writing", "writeing", "written"],
+      "correctAnswer": "writing",
+      "explanation": "Drop 'e' and add -ing: write -> writing."
+    },
+    {
+      "id": 10,
+      "text": "She is _____ (study) for the exam.",
+      "options": ["study", "studying", "studiing", "studies"],
+      "correctAnswer": "studying",
+      "explanation": "Keep 'y' and add -ing: study -> studying."
+    },
+    {
+      "id": 11,
+      "text": "What is happening _____?",
+      "options": ["yesterday", "now", "tomorrow", "every day"],
+      "correctAnswer": "now",
+      "explanation": "'Now' is a common signal word for Present Continuous."
+    },
+    {
+      "id": 12,
+      "text": "Look! The bird is _____.",
+      "options": ["fly", "flie", "flying", "flies"],
+      "correctAnswer": "flying",
+      "explanation": "'Look!' signals something happening right now."
+    },
+    {
+      "id": 13,
+      "text": "_____ it snowing?",
+      "options": ["Is", "Are", "Do", "Does"],
+      "correctAnswer": "Is",
+      "explanation": "Is it snowing?"
+    },
+    {
+      "id": 14,
+      "text": "The baby is _____ (cry).",
+      "options": ["cry", "crying", "cryying", "cries"],
+      "correctAnswer": "crying",
+      "explanation": "Just add -ing: cry -> crying."
+    },
+    {
+      "id": 15,
+      "text": "Who _____ talking?",
+      "options": ["is", "are", "do", "does"],
+      "correctAnswer": "is",
+      "explanation": "'Who' as a subject is usually treated as singular (Who is...?)."
+    },
+    {
+      "id": 16,
+      "text": "We are leaving _____ the moment.",
+      "options": ["in", "on", "at", "to"],
+      "correctAnswer": "at",
+      "explanation": "Expression: 'at the moment'."
+    },
+    {
+      "id": 17,
+      "text": "Are they _____ (swim)?",
+      "options": ["swim", "swiming", "swimming", "swims"],
+      "correctAnswer": "swimming",
+      "explanation": "Double 'm': swim -> swimming."
+    },
+    {
+      "id": 18,
+      "text": "She is _____ (dance).",
+      "options": ["dance", "danceing", "dancing", "dances"],
+      "correctAnswer": "dancing",
+      "explanation": "Drop 'e': dance -> dancing."
+    },
+    {
+      "id": 19,
+      "text": "Are you busy? - Yes, I _____.",
+      "options": ["am", "is", "are", "do"],
+      "correctAnswer": "am",
+      "explanation": "Short answer: Yes, I am."
+    },
+    {
+      "id": 20,
+      "text": "Is he playing? - No, he _____.",
+      "options": ["isn't", "aren't", "don't", "not"],
+      "correctAnswer": "isn't",
+      "explanation": "Short answer: No, he isn't."
+    }
+  ]
+}
