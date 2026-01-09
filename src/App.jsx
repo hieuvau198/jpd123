@@ -148,7 +148,7 @@ const HomeView = ({ onSelectPractice }) => {
   return (
     <div className="app-container">
       <div className="home-header">
-        <h1 className="brand-title">Trung Tâm Cô Quốc Anh</h1>
+        <h1 className="brand-title">Học Cùng Cô Quốc Anh &#128513;</h1>
         
         {/* --- SUBJECT FILTER --- */}
         <div className="filter-bar">
