@@ -8,121 +8,121 @@
     {
       "id": 21,
       "question": "Eat",
-      "answer": "Ăn",
+      "answer": "Ăn / Ăn uống",
       "speak": "eat"
     },
     {
       "id": 22,
       "question": "Drink",
-      "answer": "Uống",
+      "answer": "Uống / Uống nước",
       "speak": "drink"
     },
     {
       "id": 23,
       "question": "Sleep",
-      "answer": "Ngủ",
+      "answer": "Ngủ / Đi ngủ",
       "speak": "sleep"
     },
     {
       "id": 24,
       "question": "Go",
-      "answer": "Đi",
+      "answer": "Đi / Đi lại",
       "speak": "go"
     },
     {
       "id": 25,
       "question": "Come",
-      "answer": "Đến",
+      "answer": "Đến / Tới / Đi đến",
       "speak": "come"
     },
     {
       "id": 26,
       "question": "See",
-      "answer": "Nhìn / Thấy",
+      "answer": "Nhìn / Thấy / Trông thấy / Xem",
       "speak": "see"
     },
     {
       "id": 27,
       "question": "Hear",
-      "answer": "Nghe",
+      "answer": "Nghe / Nghe thấy",
       "speak": "hear"
     },
     {
       "id": 28,
       "question": "Speak",
-      "answer": "Nói",
+      "answer": "Nói / Nói chuyện",
       "speak": "speak"
     },
     {
       "id": 29,
       "question": "Read",
-      "answer": "Đọc",
+      "answer": "Đọc / Đọc sách",
       "speak": "read"
     },
     {
       "id": 30,
       "question": "Write",
-      "answer": "Viết",
+      "answer": "Viết / Ghi",
       "speak": "write"
     },
     {
       "id": 31,
       "question": "Man",
-      "answer": "Đàn ông",
+      "answer": "Đàn ông / Người đàn ông / Nam / Nam giới",
       "speak": "man"
     },
     {
       "id": 32,
       "question": "Woman",
-      "answer": "Phụ nữ",
+      "answer": "Phụ nữ / Người phụ nữ / Nữ / Nữ giới",
       "speak": "woman"
     },
     {
       "id": 33,
       "question": "Boy",
-      "answer": "Con trai / bé trai",
+      "answer": "Con trai / Bé trai / Cậu bé",
       "speak": "boy"
     },
     {
       "id": 34,
       "question": "Girl",
-      "answer": "Con gái / bé gái",
+      "answer": "Con gái / Bé gái / Cô bé / Cô gái",
       "speak": "girl"
     },
     {
       "id": 35,
       "question": "Water",
-      "answer": "Nước",
+      "answer": "Nước / Nước uống",
       "speak": "water"
     },
     {
       "id": 36,
       "question": "Food",
-      "answer": "Thức ăn / Đồ ăn",
+      "answer": "Thức ăn / Đồ ăn / Món ăn",
       "speak": "food"
     },
     {
       "id": 37,
       "question": "House",
-      "answer": "Nhà / Ngôi nhà",
+      "answer": "Nhà / Ngôi nhà / Căn nhà",
       "speak": "house"
     },
     {
       "id": 38,
       "question": "School",
-      "answer": "Trường / Trường học",
+      "answer": "Trường / Trường học / Ngôi trường",
       "speak": "school"
     },
     {
       "id": 39,
       "question": "Big",
-      "answer": "To / Lớn",
+      "answer": "To / Lớn / Bự",
       "speak": "big"
     },
     {
       "id": 40,
       "question": "Small",
-      "answer": "Nhỏ / Bé",
+      "answer": "Nhỏ / Bé / Nhỏ bé",
       "speak": "small"
     }
   ]

@@ -8,73 +8,73 @@
     {
       "id": 181,
       "question": "One",
-      "answer": "Số một",
+      "answer": "Một / Số một",
       "speak": "one"
     },
     {
       "id": 182,
       "question": "Two",
-      "answer": "Số hai",
+      "answer": "Hai / Số hai",
       "speak": "two"
     },
     {
       "id": 183,
       "question": "Three",
-      "answer": "Số ba",
+      "answer": "Ba / Số ba",
       "speak": "three"
     },
     {
       "id": 184,
       "question": "Four",
-      "answer": "Số bốn",
+      "answer": "Bốn / Số bốn",
       "speak": "four"
     },
     {
       "id": 185,
       "question": "Five",
-      "answer": "Số năm",
+      "answer": "Năm / Số năm",
       "speak": "five"
     },
     {
       "id": 186,
       "question": "Six",
-      "answer": "Số sáu",
+      "answer": "Sáu / Số sáu",
       "speak": "six"
     },
     {
       "id": 187,
       "question": "Seven",
-      "answer": "Số bảy",
+      "answer": "Bảy / Số bảy",
       "speak": "seven"
     },
     {
       "id": 188,
       "question": "Eight",
-      "answer": "Số tám",
+      "answer": "Tám / Số tám",
       "speak": "eight"
     },
     {
       "id": 189,
       "question": "Nine",
-      "answer": "Số chín",
+      "answer": "Chín / Số chín",
       "speak": "nine"
     },
     {
       "id": 190,
       "question": "Ten",
-      "answer": "Số mười",
+      "answer": "Mười / Số mười",
       "speak": "ten"
     },
     {
       "id": 191,
       "question": "Zero",
-      "answer": "Số không",
+      "answer": "Không / Số không",
       "speak": "zero"
     },
     {
       "id": 192,
       "question": "Hundred",
-      "answer": "Trăm",
+      "answer": "Trăm / Một trăm / Số một trăm",
       "speak": "hundred"
     },
     {
@@ -86,25 +86,25 @@
     {
       "id": 194,
       "question": "What",
-      "answer": "Cái gì",
+      "answer": "Cái gì / Gì",
       "speak": "what"
     },
     {
       "id": 195,
       "question": "When",
-      "answer": "Khi nào",
+      "answer": "Khi nào / Bao giờ",
       "speak": "when"
     },
     {
       "id": 196,
       "question": "Why",
-      "answer": "Tại sao",
+      "answer": "Tại sao / Vì sao",
       "speak": "why"
     },
     {
       "id": 197,
       "question": "How",
-      "answer": "Như thế nào",
+      "answer": "Như thế nào / Làm sao",
       "speak": "how"
     },
     {
@@ -122,7 +122,7 @@
     {
       "id": 200,
       "question": "Or",
-      "answer": "Hoặc",
+      "answer": "Hoặc / Hay / Hay là",
       "speak": "or"
     }
   ]

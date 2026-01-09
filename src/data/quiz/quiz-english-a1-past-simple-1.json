@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-a1-past-simple-1",
+  "title": "A1 Grammar - Past Simple 1",
+  "subject": "english",
+  "tags": ["a1", "grammar"],
+  "description": "Past Simple with 'To Be' (was/were) and Regular Verbs.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "I _____ at home yesterday.",
+      "options": ["am", "was", "were", "is"],
+      "correctAnswer": "was",
+      "explanation": "Past tense of 'am' is 'was' (I was)."
+    },
+    {
+      "id": 2,
+      "text": "They _____ happy with the movie.",
+      "options": ["was", "were", "are", "be"],
+      "correctAnswer": "were",
+      "explanation": "Past tense for 'They' is 'were'."
+    },
+    {
+      "id": 3,
+      "text": "She _____ football last week.",
+      "options": ["play", "plays", "played", "playing"],
+      "correctAnswer": "played",
+      "explanation": "Regular verbs add -ed in the past simple."
+    },
+    {
+      "id": 4,
+      "text": "We _____ TV last night.",
+      "options": ["watch", "watched", "watches", "watching"],
+      "correctAnswer": "watched",
+      "explanation": "Regular verb 'watch' becomes 'watched'."
+    },
+    {
+      "id": 5,
+      "text": "It _____ cold yesterday.",
+      "options": ["is", "was", "were", "are"],
+      "correctAnswer": "was",
+      "explanation": "Past tense for 'It' is 'was'."
+    },
+    {
+      "id": 6,
+      "text": "My parents _____ in London in 2010.",
+      "options": ["live", "lives", "lived", "living"],
+      "correctAnswer": "lived",
+      "explanation": "Regular verb 'live' becomes 'lived' (add -d)."
+    },
+    {
+      "id": 7,
+      "text": "You _____ late for class.",
+      "options": ["was", "were", "are", "is"],
+      "correctAnswer": "were",
+      "explanation": "With 'You', we use 'were' in the past."
+    },
+    {
+      "id": 8,
+      "text": "He _____ the door.",
+      "options": ["open", "opens", "opened", "opening"],
+      "correctAnswer": "opened",
+      "explanation": "Regular verb 'open' becomes 'opened'."
+    },
+    {
+      "id": 9,
+      "text": "The movie _____ very good.",
+      "options": ["wasn't", "weren't", "isn't", "aren't"],
+      "correctAnswer": "wasn't",
+      "explanation": "Negative past for singular 'movie' is 'was not' (wasn't)."
+    },
+    {
+      "id": 10,
+      "text": "We _____ our grandmother on Sunday.",
+      "options": ["visit", "visits", "visiting", "visited"],
+      "correctAnswer": "visited",
+      "explanation": "Regular verb 'visit' becomes 'visited'."
+    },
+    {
+      "id": 11,
+      "text": "_____ she at the party?",
+      "options": ["Was", "Were", "Did", "Is"],
+      "correctAnswer": "Was",
+      "explanation": "Question with 'to be' starts with Was/Were. (Was she...?)."
+    },
+    {
+      "id": 12,
+      "text": "I _____ hard for the exam.",
+      "options": ["study", "studied", "studys", "studying"],
+      "correctAnswer": "studied",
+      "explanation": "Verbs ending in -y change to -ied (study -> studied)."
+    },
+    {
+      "id": 13,
+      "text": "They _____ hungry.",
+      "options": ["wasn't", "weren't", "didn't", "don't"],
+      "correctAnswer": "weren't",
+      "explanation": "Negative past for 'They' is 'were not' (weren't)."
+    },
+    {
+      "id": 14,
+      "text": "It _____ a lot last winter.",
+      "options": ["rain", "rains", "rained", "raining"],
+      "correctAnswer": "rained",
+      "explanation": "Regular verb 'rain' becomes 'rained'."
+    },
+    {
+      "id": 15,
+      "text": "_____ you tired last night?",
+      "options": ["Was", "Were", "Did", "Do"],
+      "correctAnswer": "Were",
+      "explanation": "Question with 'You' and adjective (tired) uses 'Were'."
+    },
+    {
+      "id": 16,
+      "text": "The bus _____ at the station.",
+      "options": ["stop", "stopped", "stoped", "stopping"],
+      "correctAnswer": "stopped",
+      "explanation": "Short vowel + consonant doubles the consonant (stop -> stopped)."
+    },
+    {
+      "id": 17,
+      "text": "She _____ to call you.",
+      "options": ["try", "tries", "tryed", "tried"],
+      "correctAnswer": "tried",
+      "explanation": "Change -y to -ied (try -> tried)."
+    },
+    {
+      "id": 18,
+      "text": "Tom and Jerry _____ best friends.",
+      "options": ["was", "were", "is", "are"],
+      "correctAnswer": "were",
+      "explanation": "Plural subject (Tom and Jerry) uses 'were'."
+    },
+    {
+      "id": 19,
+      "text": "I _____ dinner for my family.",
+      "options": ["cook", "cooked", "cooks", "cooking"],
+      "correctAnswer": "cooked",
+      "explanation": "Regular verb 'cook' becomes 'cooked'."
+    },
+    {
+      "id": 20,
+      "text": "Where _____ you born?",
+      "options": ["was", "were", "did", "are"],
+      "correctAnswer": "were",
+      "explanation": "Standard phrase: 'Where were you born?'"
+    }
+  ]
+}

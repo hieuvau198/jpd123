@@ -26,13 +26,13 @@
     {
       "id": 124,
       "question": "Chicken",
-      "answer": "Thịt gà / Con gà",
+      "answer": "Gà / Thịt gà / Con gà",
       "speak": "chicken"
     },
     {
       "id": 125,
       "question": "Egg",
-      "answer": "Trứng",
+      "answer": "Trứng / Quả trứng",
       "speak": "egg"
     },
     {
@@ -56,19 +56,19 @@
     {
       "id": 129,
       "question": "Apple",
-      "answer": "Quả táo",
+      "answer": "Táo / Quả táo / Trái táo",
       "speak": "apple"
     },
     {
       "id": 130,
       "question": "Banana",
-      "answer": "Quả chuối",
+      "answer": "Chuối / Quả chuối / Trái chuối",
       "speak": "banana"
     },
     {
       "id": 131,
       "question": "Orange",
-      "answer": "Quả cam",
+      "answer": "Cam / Quả cam / Trái cam",
       "speak": "orange"
     },
     {
@@ -80,7 +80,7 @@
     {
       "id": 133,
       "question": "Vegetable",
-      "answer": "Rau",
+      "answer": "Rau / Rau củ",
       "speak": "vegetable"
     },
     {
@@ -98,31 +98,31 @@
     {
       "id": 136,
       "question": "Breakfast",
-      "answer": "Bữa sáng",
+      "answer": "Bữa sáng / Ăn sáng",
       "speak": "breakfast"
     },
     {
       "id": 137,
       "question": "Lunch",
-      "answer": "Bữa trưa",
+      "answer": "Bữa trưa / Ăn trưa",
       "speak": "lunch"
     },
     {
       "id": 138,
       "question": "Dinner",
-      "answer": "Bữa tối",
+      "answer": "Bữa tối / Ăn tối",
       "speak": "dinner"
     },
     {
       "id": 139,
       "question": "Cook",
-      "answer": "Nấu ăn",
+      "answer": "Nấu / Nấu ăn",
       "speak": "cook"
     },
     {
       "id": 140,
       "question": "Cup",
-      "answer": "Cái tách / Cái cốc",
+      "answer": "Cốc / Tách / Cái cốc / Cái tách",
       "speak": "cup"
     }
   ]

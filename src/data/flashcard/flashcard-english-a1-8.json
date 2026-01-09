@@ -14,7 +14,7 @@
     {
       "id": 142,
       "question": "Country",
-      "answer": "Đất nước / Quốc gia",
+      "answer": "Đất nước / Quốc gia / Nước",
       "speak": "country"
     },
     {
@@ -26,7 +26,7 @@
     {
       "id": 144,
       "question": "Garden",
-      "answer": "Khu vườn",
+      "answer": "Vườn / Khu vườn",
       "speak": "garden"
     },
     {
@@ -44,13 +44,13 @@
     {
       "id": 147,
       "question": "Street",
-      "answer": "Đường phố",
+      "answer": "Đường / Phố / Đường phố",
       "speak": "street"
     },
     {
       "id": 148,
       "question": "Train",
-      "answer": "Tàu hỏa",
+      "answer": "Tàu / Tàu hỏa / Xe lửa",
       "speak": "train"
     },
     {
@@ -92,7 +92,7 @@
     {
       "id": 155,
       "question": "Under",
-      "answer": "Dưới / Ở dưới",
+      "answer": "Dưới / Ở dưới / Bên dưới",
       "speak": "under"
     },
     {
@@ -110,19 +110,19 @@
     {
       "id": 158,
       "question": "Here",
-      "answer": "Ở đây",
+      "answer": "Ở đây / Tại đây / Đây",
       "speak": "here"
     },
     {
       "id": 159,
       "question": "There",
-      "answer": "Ở đó",
+      "answer": "Ở đó / Tại đó / Đó",
       "speak": "there"
     },
     {
       "id": 160,
       "question": "Where",
-      "answer": "Ở đâu",
+      "answer": "Ở đâu / Đâu / Nơi nào",
       "speak": "where"
     }
   ]

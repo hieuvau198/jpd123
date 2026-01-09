@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-a1-future-1",
+  "title": "A1 Grammar - Future (Will)",
+  "subject": "english",
+  "tags": ["a1", "grammar"],
+  "description": "Future Simple tense using 'Will' and 'Won't'.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "I _____ call you tomorrow.",
+      "options": ["will", "am", "do", "is"],
+      "correctAnswer": "will",
+      "explanation": "We use 'will' + verb to talk about the future."
+    },
+    {
+      "id": 2,
+      "text": "It _____ rain later.",
+      "options": ["will", "wills", "is", "are"],
+      "correctAnswer": "will",
+      "explanation": "Prediction: It will rain."
+    },
+    {
+      "id": 3,
+      "text": "She _____ be 20 next year.",
+      "options": ["will", "does", "has", "is"],
+      "correctAnswer": "will",
+      "explanation": "Future fact: She will be 20."
+    },
+    {
+      "id": 4,
+      "text": "_____ you help me, please?",
+      "options": ["Will", "Do", "Does", "Am"],
+      "correctAnswer": "Will",
+      "explanation": "We use 'Will' to ask for help or make requests."
+    },
+    {
+      "id": 5,
+      "text": "I think they _____ win the game.",
+      "options": ["will", "going", "are", "do"],
+      "correctAnswer": "will",
+      "explanation": "Prediction based on opinion: They will win."
+    },
+    {
+      "id": 6,
+      "text": "We _____ not go to the party.",
+      "options": ["will", "are", "do", "have"],
+      "correctAnswer": "will",
+      "explanation": "Negative future: We will not (won't) go."
+    },
+    {
+      "id": 7,
+      "text": "Don't worry, I _____ tell anyone.",
+      "options": ["won't", "don't", "not", "am not"],
+      "correctAnswer": "won't",
+      "explanation": "Promise: I won't (will not) tell."
+    },
+    {
+      "id": 8,
+      "text": "He _____ arrive soon.",
+      "options": ["will", "is", "does", "has"],
+      "correctAnswer": "will",
+      "explanation": "Prediction: He will arrive."
+    },
+    {
+      "id": 9,
+      "text": "What _____ you do tomorrow?",
+      "options": ["will", "do", "are", "have"],
+      "correctAnswer": "will",
+      "explanation": "Future question: What will you do?"
+    },
+    {
+      "id": 10,
+      "text": "I _____ have the chicken sandwich, please.",
+      "options": ["will", "am", "do", "go"],
+      "correctAnswer": "will",
+      "explanation": "Decision made at the moment (ordering food): I will have..."
+    },
+    {
+      "id": 11,
+      "text": "You _____ like this movie.",
+      "options": ["will", "are", "do", "did"],
+      "correctAnswer": "will",
+      "explanation": "Prediction: You will like it."
+    },
+    {
+      "id": 12,
+      "text": "_____ he come with us?",
+      "options": ["Will", "Does", "Is", "Has"],
+      "correctAnswer": "Will",
+      "explanation": "Future question: Will he come?"
+    },
+    {
+      "id": 13,
+      "text": "It _____ be cold tonight.",
+      "options": ["will", "is", "has", "does"],
+      "correctAnswer": "will",
+      "explanation": "Prediction about weather: It will be cold."
+    },
+    {
+      "id": 14,
+      "text": "They _____ travel to Japan.",
+      "options": ["will", "going", "are", "do"],
+      "correctAnswer": "will",
+      "explanation": "Future plan/prediction: They will travel."
+    },
+    {
+      "id": 15,
+      "text": "I _____ wait for you here.",
+      "options": ["will", "am", "do", "be"],
+      "correctAnswer": "will",
+      "explanation": "Offer/Decision: I will wait."
+    },
+    {
+      "id": 16,
+      "text": "The sun _____ rise at 6 AM.",
+      "options": ["will", "is", "does", "has"],
+      "correctAnswer": "will",
+      "explanation": "Future fact: The sun will rise."
+    },
+    {
+      "id": 17,
+      "text": "Maybe I _____ stay home.",
+      "options": ["will", "am", "do", "go"],
+      "correctAnswer": "will",
+      "explanation": "Uncertainty (Maybe): I will stay."
+    },
+    {
+      "id": 18,
+      "text": "_____ it snow tomorrow?",
+      "options": ["Will", "Does", "Is", "Do"],
+      "correctAnswer": "Will",
+      "explanation": "Question about weather: Will it snow?"
+    },
+    {
+      "id": 19,
+      "text": "We _____ see.",
+      "options": ["will", "are", "do", "have"],
+      "correctAnswer": "will",
+      "explanation": "Common phrase: 'We will see' (We'll see)."
+    },
+    {
+      "id": 20,
+      "text": "He _____ not forget your birthday.",
+      "options": ["will", "is", "does", "has"],
+      "correctAnswer": "will",
+      "explanation": "Promise/Prediction: He will not forget."
+    }
+  ]
+}

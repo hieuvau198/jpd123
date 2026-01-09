@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-a1-past-simple-2",
+  "title": "A1 Grammar - Past Simple 2",
+  "subject": "english",
+  "tags": ["a1", "grammar"],
+  "description": "Irregular Verbs, Negatives and Questions.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "I _____ to the cinema yesterday.",
+      "options": ["go", "goed", "went", "gone"],
+      "correctAnswer": "went",
+      "explanation": "The past tense of 'go' is 'went' (irregular)."
+    },
+    {
+      "id": 2,
+      "text": "She _____ a new car.",
+      "options": ["buy", "buyed", "bought", "buying"],
+      "correctAnswer": "bought",
+      "explanation": "The past tense of 'buy' is 'bought' (irregular)."
+    },
+    {
+      "id": 3,
+      "text": "We _____ pizza for lunch.",
+      "options": ["eat", "ate", "eated", "eats"],
+      "correctAnswer": "ate",
+      "explanation": "The past tense of 'eat' is 'ate' (irregular)."
+    },
+    {
+      "id": 4,
+      "text": "He _____ not go to school.",
+      "options": ["does", "did", "do", "was"],
+      "correctAnswer": "did",
+      "explanation": "Negative past uses 'did not' (didn't) + base verb."
+    },
+    {
+      "id": 5,
+      "text": "_____ you see the bird?",
+      "options": ["Do", "Did", "Were", "Was"],
+      "correctAnswer": "Did",
+      "explanation": "Questions with action verbs start with 'Did'."
+    },
+    {
+      "id": 6,
+      "text": "They _____ a great time.",
+      "options": ["have", "has", "had", "haved"],
+      "correctAnswer": "had",
+      "explanation": "The past tense of 'have' is 'had'."
+    },
+    {
+      "id": 7,
+      "text": "I _____ my homework.",
+      "options": ["do", "did", "done", "does"],
+      "correctAnswer": "did",
+      "explanation": "The past tense of 'do' is 'did'."
+    },
+    {
+      "id": 8,
+      "text": "She didn't _____ the answer.",
+      "options": ["knew", "know", "known", "knows"],
+      "correctAnswer": "know",
+      "explanation": "After 'didn't', we use the base form of the verb."
+    },
+    {
+      "id": 9,
+      "text": "We _____ a nice song.",
+      "options": ["sing", "sang", "sung", "singed"],
+      "correctAnswer": "sang",
+      "explanation": "The past tense of 'sing' is 'sang'."
+    },
+    {
+      "id": 10,
+      "text": "He _____ his keys.",
+      "options": ["lose", "losed", "lost", "loss"],
+      "correctAnswer": "lost",
+      "explanation": "The past tense of 'lose' is 'lost'."
+    },
+    {
+      "id": 11,
+      "text": "Where _____ you go?",
+      "options": ["do", "did", "were", "are"],
+      "correctAnswer": "did",
+      "explanation": "Wh-question uses 'did' + subject + base verb."
+    },
+    {
+      "id": 12,
+      "text": "I _____ very well last night.",
+      "options": ["sleep", "sleeped", "slept", "sleeping"],
+      "correctAnswer": "slept",
+      "explanation": "The past tense of 'sleep' is 'slept'."
+    },
+    {
+      "id": 13,
+      "text": "They _____ a lot of water.",
+      "options": ["drink", "drank", "drunk", "drinked"],
+      "correctAnswer": "drank",
+      "explanation": "The past tense of 'drink' is 'drank'."
+    },
+    {
+      "id": 14,
+      "text": "Did she _____ you?",
+      "options": ["call", "called", "calls", "calling"],
+      "correctAnswer": "call",
+      "explanation": "After 'Did', we use the base form (call)."
+    },
+    {
+      "id": 15,
+      "text": "I _____ him yesterday.",
+      "options": ["see", "saw", "seen", "seed"],
+      "correctAnswer": "saw",
+      "explanation": "The past tense of 'see' is 'saw'."
+    },
+    {
+      "id": 16,
+      "text": "We _____ the bus.",
+      "options": ["take", "taked", "took", "taken"],
+      "correctAnswer": "took",
+      "explanation": "The past tense of 'take' is 'took'."
+    },
+    {
+      "id": 17,
+      "text": "She _____ a letter.",
+      "options": ["write", "writed", "wrote", "written"],
+      "correctAnswer": "wrote",
+      "explanation": "The past tense of 'write' is 'wrote'."
+    },
+    {
+      "id": 18,
+      "text": "He _____ late this morning.",
+      "options": ["come", "came", "coming", "comed"],
+      "correctAnswer": "came",
+      "explanation": "The past tense of 'come' is 'came'."
+    },
+    {
+      "id": 19,
+      "text": "_____ they like the food?",
+      "options": ["Do", "Did", "Were", "Was"],
+      "correctAnswer": "Did",
+      "explanation": "Past simple question uses 'Did'."
+    },
+    {
+      "id": 20,
+      "text": "I _____ my phone on the table.",
+      "options": ["put", "putted", "puts", "putting"],
+      "correctAnswer": "put",
+      "explanation": "The past tense of 'put' is 'put' (same form)."
+    }
+  ]
+}

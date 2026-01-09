@@ -8,31 +8,31 @@
     {
       "id": 101,
       "question": "Dog",
-      "answer": "Con chó",
+      "answer": "Chó / Con chó",
       "speak": "dog"
     },
     {
       "id": 102,
       "question": "Cat",
-      "answer": "Con mèo",
+      "answer": "Mèo / Con mèo",
       "speak": "cat"
     },
     {
       "id": 103,
       "question": "Bird",
-      "answer": "Con chim",
+      "answer": "Chim / Con chim",
       "speak": "bird"
     },
     {
       "id": 104,
       "question": "Fish",
-      "answer": "Con cá",
+      "answer": "Cá / Con cá",
       "speak": "fish"
     },
     {
       "id": 105,
       "question": "Animal",
-      "answer": "Động vật",
+      "answer": "Động vật / Con vật / Thú",
       "speak": "animal"
     },
     {
@@ -62,7 +62,7 @@
     {
       "id": 110,
       "question": "Young",
-      "answer": "Trẻ",
+      "answer": "Trẻ / Trẻ tuổi",
       "speak": "young"
     },
     {
@@ -74,19 +74,19 @@
     {
       "id": 112,
       "question": "Short",
-      "answer": "Ngắn / Thấp",
+      "answer": "Ngắn / Thấp / Lùn",
       "speak": "short"
     },
     {
       "id": 113,
       "question": "Beautiful",
-      "answer": "Đẹp",
+      "answer": "Đẹp / Xinh đẹp / Xinh",
       "speak": "beautiful"
     },
     {
       "id": 114,
       "question": "Clean",
-      "answer": "Sạch sẽ",
+      "answer": "Sạch / Sạch sẽ",
       "speak": "clean"
     },
     {
@@ -98,13 +98,13 @@
     {
       "id": 116,
       "question": "Easy",
-      "answer": "Dễ",
+      "answer": "Dễ / Dễ dàng",
       "speak": "easy"
     },
     {
       "id": 117,
       "question": "Hard",
-      "answer": "Khó / Cứng",
+      "answer": "Khó / Cứng / Khó khăn",
       "speak": "hard"
     },
     {
@@ -116,13 +116,13 @@
     {
       "id": 119,
       "question": "Slow",
-      "answer": "Chậm",
+      "answer": "Chậm / Chậm chạp",
       "speak": "slow"
     },
     {
       "id": 120,
       "question": "Rich",
-      "answer": "Giàu có",
+      "answer": "Giàu / Giàu có",
       "speak": "rich"
     }
   ]

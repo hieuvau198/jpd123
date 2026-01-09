@@ -8,25 +8,25 @@
     {
       "id": 61,
       "question": "Time",
-      "answer": "Thời gian",
+      "answer": "Thời gian / Giờ",
       "speak": "time"
     },
     {
       "id": 62,
       "question": "Day",
-      "answer": "Ngày",
+      "answer": "Ngày / Ban ngày",
       "speak": "day"
     },
     {
       "id": 63,
       "question": "Night",
-      "answer": "Đêm",
+      "answer": "Đêm / Buổi đêm",
       "speak": "night"
     },
     {
       "id": 64,
       "question": "Morning",
-      "answer": "Buổi sáng",
+      "answer": "Buổi sáng / Sáng",
       "speak": "morning"
     },
     {
@@ -56,7 +56,7 @@
     {
       "id": 69,
       "question": "Tomorrow",
-      "answer": "Ngày mai",
+      "answer": "Ngày mai / Mai",
       "speak": "tomorrow"
     },
     {
@@ -68,7 +68,7 @@
     {
       "id": 71,
       "question": "Sun",
-      "answer": "Mặt trời",
+      "answer": "Mặt trời / Ông mặt trời",
       "speak": "sun"
     },
     {
@@ -80,31 +80,31 @@
     {
       "id": 73,
       "question": "Tree",
-      "answer": "Cái cây",
+      "answer": "Cây / Cái cây",
       "speak": "tree"
     },
     {
       "id": 74,
       "question": "Car",
-      "answer": "Ô tô",
+      "answer": "Ô tô / Xe hơi / Xe ô tô",
       "speak": "car"
     },
     {
       "id": 75,
       "question": "Bus",
-      "answer": "Xe buýt",
+      "answer": "Xe buýt / Xe bus",
       "speak": "bus"
     },
     {
       "id": 76,
       "question": "Road",
-      "answer": "Con đường",
+      "answer": "Đường / Con đường / Đường đi",
       "speak": "road"
     },
     {
       "id": 77,
       "question": "Shop",
-      "answer": "Cửa hàng",
+      "answer": "Cửa hàng / Quán / Tiệm",
       "speak": "shop"
     },
     {
@@ -116,7 +116,7 @@
     {
       "id": 79,
       "question": "Work",
-      "answer": "Làm việc / Công việc",
+      "answer": "Làm việc / Công việc / Việc làm",
       "speak": "work"
     },
     {

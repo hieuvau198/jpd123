@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-a1-present-simple-1",
+  "title": "A1 Grammar - Present Simple 1",
+  "subject": "english",
+  "tags": ["a1", "grammar"],
+  "description": "Basic usage of Present Simple Tense: Affirmative, Negative and 'To Be'.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "I _____ a student.",
+      "options": ["is", "am", "are", "be"],
+      "correctAnswer": "am",
+      "explanation": "With 'I', we use the verb to be 'am'."
+    },
+    {
+      "id": 2,
+      "text": "She _____ in London.",
+      "options": ["live", "lives", "living", "lived"],
+      "correctAnswer": "lives",
+      "explanation": "For he/she/it, we add 's' to the verb in Present Simple."
+    },
+    {
+      "id": 3,
+      "text": "They _____ football every Sunday.",
+      "options": ["plays", "play", "playing", "player"],
+      "correctAnswer": "play",
+      "explanation": "For they/we/you/I, we use the base form of the verb."
+    },
+    {
+      "id": 4,
+      "text": "He _____ not like coffee.",
+      "options": ["do", "does", "is", "has"],
+      "correctAnswer": "does",
+      "explanation": "In negative sentences with he/she/it, we use 'does not' (doesn't)."
+    },
+    {
+      "id": 5,
+      "text": "My brother _____ very tall.",
+      "options": ["are", "am", "is", "be"],
+      "correctAnswer": "is",
+      "explanation": "'My brother' is singular (he), so we use 'is'."
+    },
+    {
+      "id": 6,
+      "text": "We _____ to school by bus.",
+      "options": ["go", "goes", "going", "gone"],
+      "correctAnswer": "go",
+      "explanation": "With 'We', we use the base form 'go'."
+    },
+    {
+      "id": 7,
+      "text": "The sun _____ in the east.",
+      "options": ["rise", "rises", "rising", "rose"],
+      "correctAnswer": "rises",
+      "explanation": "The sun (it) is singular, so we add 's' to the verb (general truth)."
+    },
+    {
+      "id": 8,
+      "text": "_____ you speak English?",
+      "options": ["Does", "Do", "Is", "Are"],
+      "correctAnswer": "Do",
+      "explanation": "We use 'Do' to ask questions with I/you/we/they."
+    },
+    {
+      "id": 9,
+      "text": "She _____ homework every day.",
+      "options": ["do", "does", "doing", "did"],
+      "correctAnswer": "does",
+      "explanation": "She does (ending in -o adds -es)."
+    },
+    {
+      "id": 10,
+      "text": "John and Sarah _____ good friends.",
+      "options": ["is", "am", "are", "be"],
+      "correctAnswer": "are",
+      "explanation": "John and Sarah = They (plural), so we use 'are'."
+    },
+    {
+      "id": 11,
+      "text": "It _____ a lot in winter here.",
+      "options": ["rain", "rains", "raining", "rained"],
+      "correctAnswer": "rains",
+      "explanation": "It rains (3rd person singular)."
+    },
+    {
+      "id": 12,
+      "text": "I _____ breakfast at 7 AM.",
+      "options": ["has", "have", "haves", "having"],
+      "correctAnswer": "have",
+      "explanation": "With 'I', we use 'have'."
+    },
+    {
+      "id": 13,
+      "text": "_____ your mother work here?",
+      "options": ["Do", "Does", "Is", "Are"],
+      "correctAnswer": "Does",
+      "explanation": "'Your mother' is singular (she), so we start the question with 'Does'."
+    },
+    {
+      "id": 14,
+      "text": "Cats _____ milk.",
+      "options": ["like", "likes", "liking", "to like"],
+      "correctAnswer": "like",
+      "explanation": "Cats (plural/they) like."
+    },
+    {
+      "id": 15,
+      "text": "He _____ TV in the evening.",
+      "options": ["watch", "watches", "watching", "watchs"],
+      "correctAnswer": "watches",
+      "explanation": "Verbs ending in -ch add -es for he/she/it."
+    },
+    {
+      "id": 16,
+      "text": "You _____ late.",
+      "options": ["is", "am", "are", "be"],
+      "correctAnswer": "are",
+      "explanation": "With 'You', we use 'are'."
+    },
+    {
+      "id": 17,
+      "text": "They _____ want to go.",
+      "options": ["don't", "doesn't", "isn't", "aren't"],
+      "correctAnswer": "don't",
+      "explanation": "Negative for 'They' is 'do not' (don't)."
+    },
+    {
+      "id": 18,
+      "text": "_____ she happy?",
+      "options": ["Do", "Does", "Is", "Are"],
+      "correctAnswer": "Is",
+      "explanation": "With adjectives (happy), we use the verb 'to be' (Is she...?)."
+    },
+    {
+      "id": 19,
+      "text": "My father _____ a car.",
+      "options": ["drive", "drives", "driving", "driver"],
+      "correctAnswer": "drives",
+      "explanation": "My father (he) drives."
+    },
+    {
+      "id": 20,
+      "text": "I _____ not tired.",
+      "options": ["is", "am", "are", "do"],
+      "correctAnswer": "am",
+      "explanation": "Negative with 'to be': I am not."
+    }
+  ]
+}

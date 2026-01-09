@@ -8,61 +8,61 @@
     {
       "id": 81,
       "question": "Head",
-      "answer": "Đầu",
+      "answer": "Đầu / Cái đầu",
       "speak": "head"
     },
     {
       "id": 82,
       "question": "Face",
-      "answer": "Khuôn mặt",
+      "answer": "Mặt / Khuôn mặt",
       "speak": "face"
     },
     {
       "id": 83,
       "question": "Eye",
-      "answer": "Mắt",
+      "answer": "Mắt / Con mắt / Đôi mắt",
       "speak": "eye"
     },
     {
       "id": 84,
       "question": "Nose",
-      "answer": "Mũi",
+      "answer": "Mũi / Cái mũi",
       "speak": "nose"
     },
     {
       "id": 85,
       "question": "Mouth",
-      "answer": "Miệng",
+      "answer": "Miệng / Cái miệng",
       "speak": "mouth"
     },
     {
       "id": 86,
       "question": "Hand",
-      "answer": "Bàn tay",
+      "answer": "Tay / Bàn tay / Cánh tay",
       "speak": "hand"
     },
     {
       "id": 87,
       "question": "Leg",
-      "answer": "Chân",
+      "answer": "Chân / Cái chân",
       "speak": "leg"
     },
     {
       "id": 88,
       "question": "Foot",
-      "answer": "Bàn chân",
+      "answer": "Bàn chân / Chân",
       "speak": "foot"
     },
     {
       "id": 89,
       "question": "Hair",
-      "answer": "Tóc",
+      "answer": "Tóc / Mái tóc",
       "speak": "hair"
     },
     {
       "id": 90,
       "question": "Body",
-      "answer": "Cơ thể",
+      "answer": "Cơ thể / Thân thể / Người",
       "speak": "body"
     },
     {
@@ -74,55 +74,55 @@
     {
       "id": 92,
       "question": "Teacher",
-      "answer": "Giáo viên",
+      "answer": "Giáo viên / Thầy giáo / Cô giáo",
       "speak": "teacher"
     },
     {
       "id": 93,
       "question": "Student",
-      "answer": "Học sinh",
+      "answer": "Học sinh / Sinh viên",
       "speak": "student"
     },
     {
       "id": 94,
       "question": "Job",
-      "answer": "Nghề nghiệp / Công việc",
+      "answer": "Nghề nghiệp / Công việc / Nghề",
       "speak": "job"
     },
     {
       "id": 95,
       "question": "Shirt",
-      "answer": "Áo sơ mi",
+      "answer": "Áo sơ mi / Áo",
       "speak": "shirt"
     },
     {
       "id": 96,
       "question": "Shoe",
-      "answer": "Giày",
+      "answer": "Giày / Đôi giày / Chiếc giày",
       "speak": "shoe"
     },
     {
       "id": 97,
       "question": "Dress",
-      "answer": "Váy",
+      "answer": "Váy / Đầm / Chiếc váy",
       "speak": "dress"
     },
     {
       "id": 98,
       "question": "Hat",
-      "answer": "Mũ / Nón",
+      "answer": "Mũ / Nón / Cái mũ",
       "speak": "hat"
     },
     {
       "id": 99,
       "question": "Coat",
-      "answer": "Áo khoác",
+      "answer": "Áo khoác / Áo choàng",
       "speak": "coat"
     },
     {
       "id": 100,
       "question": "Wear",
-      "answer": "Mặc / Đeo",
+      "answer": "Mặc / Đeo / Đội",
       "speak": "wear"
     }
   ]

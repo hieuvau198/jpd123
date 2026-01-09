@@ -8,97 +8,97 @@
     {
       "id": 41,
       "question": "Family",
-      "answer": "Gia đình",
+      "answer": "Gia đình / Nhà",
       "speak": "family"
     },
     {
       "id": 42,
       "question": "Father",
-      "answer": "Bố / Cha",
+      "answer": "Bố / Cha / Ba",
       "speak": "father"
     },
     {
       "id": 43,
       "question": "Mother",
-      "answer": "Mẹ",
+      "answer": "Mẹ / Má",
       "speak": "mother"
     },
     {
       "id": 44,
       "question": "Brother",
-      "answer": "Anh / Em trai",
+      "answer": "Anh / Em trai / Anh trai",
       "speak": "brother"
     },
     {
       "id": 45,
       "question": "Sister",
-      "answer": "Chị / Em gái",
+      "answer": "Chị / Em gái / Chị gái",
       "speak": "sister"
     },
     {
       "id": 46,
       "question": "Red",
-      "answer": "Màu đỏ",
+      "answer": "Đỏ / Màu đỏ",
       "speak": "red"
     },
     {
       "id": 47,
       "question": "Blue",
-      "answer": "Màu xanh da trời",
+      "answer": "Xanh da trời / Màu xanh da trời / Xanh dương",
       "speak": "blue"
     },
     {
       "id": 48,
       "question": "Green",
-      "answer": "Màu xanh lá cây",
+      "answer": "Xanh lá cây / Màu xanh lá cây / Xanh lá",
       "speak": "green"
     },
     {
       "id": 49,
       "question": "Black",
-      "answer": "Màu đen",
+      "answer": "Đen / Màu đen",
       "speak": "black"
     },
     {
       "id": 50,
       "question": "White",
-      "answer": "Màu trắng",
+      "answer": "Trắng / Màu trắng",
       "speak": "white"
     },
     {
       "id": 51,
       "question": "Book",
-      "answer": "Quyển sách",
+      "answer": "Sách / Quyển sách / Cuốn sách",
       "speak": "book"
     },
     {
       "id": 52,
       "question": "Pen",
-      "answer": "Cái bút",
+      "answer": "Bút / Cái bút / Cây bút",
       "speak": "pen"
     },
     {
       "id": 53,
       "question": "Bag",
-      "answer": "Cái túi / Cặp sách",
+      "answer": "Túi / Cái túi / Cặp sách / Cặp",
       "speak": "bag"
     },
     {
       "id": 54,
       "question": "Table",
-      "answer": "Cái bàn",
+      "answer": "Bàn / Cái bàn",
       "speak": "table"
     },
     {
       "id": 55,
       "question": "Chair",
-      "answer": "Cái ghế",
+      "answer": "Ghế / Cái ghế",
       "speak": "chair"
     },
     {
       "id": 56,
       "question": "Door",
-      "answer": "Cửa ra vào",
+      "answer": "Cửa / Cửa ra vào / Cánh cửa",
       "speak": "door"
     },
     {
@@ -110,7 +110,7 @@
     {
       "id": 58,
       "question": "Room",
-      "answer": "Căn phòng",
+      "answer": "Phòng / Căn phòng",
       "speak": "room"
     },
     {
@@ -122,7 +122,7 @@
     {
       "id": 60,
       "question": "Computer",
-      "answer": "Máy tính",
+      "answer": "Máy tính / Vi tính",
       "speak": "computer"
     }
   ]

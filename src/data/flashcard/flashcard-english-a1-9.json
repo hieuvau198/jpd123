@@ -8,7 +8,7 @@
     {
       "id": 161,
       "question": "Expensive",
-      "answer": "Đắt",
+      "answer": "Đắt / Mắc",
       "speak": "expensive"
     },
     {
@@ -20,13 +20,13 @@
     {
       "id": 163,
       "question": "Right",
-      "answer": "Đúng / Bên phải",
+      "answer": "Đúng / Phải / Bên phải",
       "speak": "right"
     },
     {
       "id": 164,
       "question": "Left",
-      "answer": "Bên trái",
+      "answer": "Trái / Bên trái",
       "speak": "left"
     },
     {
@@ -38,19 +38,19 @@
     {
       "id": 166,
       "question": "Close",
-      "answer": "Đóng",
+      "answer": "Đóng / Khép",
       "speak": "close"
     },
     {
       "id": 167,
       "question": "Give",
-      "answer": "Cho / Đưa",
+      "answer": "Cho / Đưa / Tặng",
       "speak": "give"
     },
     {
       "id": 168,
       "question": "Take",
-      "answer": "Lấy / Cầm",
+      "answer": "Lấy / Cầm / Nhận",
       "speak": "take"
     },
     {
@@ -86,43 +86,43 @@
     {
       "id": 174,
       "question": "Walk",
-      "answer": "Đi bộ",
+      "answer": "Đi bộ / Đi",
       "speak": "walk"
     },
     {
       "id": 175,
       "question": "Play",
-      "answer": "Chơi",
+      "answer": "Chơi / Chơi đùa",
       "speak": "play"
     },
     {
       "id": 176,
       "question": "Watch",
-      "answer": "Xem (TV, phim)",
+      "answer": "Xem / Nhìn / Theo dõi",
       "speak": "watch"
     },
     {
       "id": 177,
       "question": "Listen",
-      "answer": "Nghe (chủ động)",
+      "answer": "Nghe / Lắng nghe",
       "speak": "listen"
     },
     {
       "id": 178,
       "question": "Talk",
-      "answer": "Nói chuyện",
+      "answer": "Nói / Nói chuyện / Trò chuyện",
       "speak": "talk"
     },
     {
       "id": 179,
       "question": "Learn",
-      "answer": "Học",
+      "answer": "Học / Học tập",
       "speak": "learn"
     },
     {
       "id": 180,
       "question": "Know",
-      "answer": "Biết",
+      "answer": "Biết / Hiểu biết",
       "speak": "know"
     }
   ]
