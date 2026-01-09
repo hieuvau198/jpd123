@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-7",
+  "title": "English A1 - Batch 7",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Đồ ăn, Thức uống & Các bữa ăn.",
+  "questions": [
+    {
+      "id": 121,
+      "question": "Bread",
+      "answer": "Bánh mì",
+      "speak": "bread"
+    },
+    {
+      "id": 122,
+      "question": "Rice",
+      "answer": "Cơm / Gạo",
+      "speak": "rice"
+    },
+    {
+      "id": 123,
+      "question": "Meat",
+      "answer": "Thịt",
+      "speak": "meat"
+    },
+    {
+      "id": 124,
+      "question": "Chicken",
+      "answer": "Thịt gà / Con gà",
+      "speak": "chicken"
+    },
+    {
+      "id": 125,
+      "question": "Egg",
+      "answer": "Trứng",
+      "speak": "egg"
+    },
+    {
+      "id": 126,
+      "question": "Milk",
+      "answer": "Sữa",
+      "speak": "milk"
+    },
+    {
+      "id": 127,
+      "question": "Coffee",
+      "answer": "Cà phê",
+      "speak": "coffee"
+    },
+    {
+      "id": 128,
+      "question": "Tea",
+      "answer": "Trà",
+      "speak": "tea"
+    },
+    {
+      "id": 129,
+      "question": "Apple",
+      "answer": "Quả táo",
+      "speak": "apple"
+    },
+    {
+      "id": 130,
+      "question": "Banana",
+      "answer": "Quả chuối",
+      "speak": "banana"
+    },
+    {
+      "id": 131,
+      "question": "Orange",
+      "answer": "Quả cam",
+      "speak": "orange"
+    },
+    {
+      "id": 132,
+      "question": "Fruit",
+      "answer": "Hoa quả / Trái cây",
+      "speak": "fruit"
+    },
+    {
+      "id": 133,
+      "question": "Vegetable",
+      "answer": "Rau",
+      "speak": "vegetable"
+    },
+    {
+      "id": 134,
+      "question": "Sugar",
+      "answer": "Đường",
+      "speak": "sugar"
+    },
+    {
+      "id": 135,
+      "question": "Salt",
+      "answer": "Muối",
+      "speak": "salt"
+    },
+    {
+      "id": 136,
+      "question": "Breakfast",
+      "answer": "Bữa sáng",
+      "speak": "breakfast"
+    },
+    {
+      "id": 137,
+      "question": "Lunch",
+      "answer": "Bữa trưa",
+      "speak": "lunch"
+    },
+    {
+      "id": 138,
+      "question": "Dinner",
+      "answer": "Bữa tối",
+      "speak": "dinner"
+    },
+    {
+      "id": 139,
+      "question": "Cook",
+      "answer": "Nấu ăn",
+      "speak": "cook"
+    },
+    {
+      "id": 140,
+      "question": "Cup",
+      "answer": "Cái tách / Cái cốc",
+      "speak": "cup"
+    }
+  ]
+}

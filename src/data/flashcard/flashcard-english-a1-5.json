@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-5",
+  "title": "English A1 - Phần 5",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Cơ thể người, Nghề nghiệp & Trang phục.",
+  "questions": [
+    {
+      "id": 81,
+      "question": "Head",
+      "answer": "Đầu",
+      "speak": "head"
+    },
+    {
+      "id": 82,
+      "question": "Face",
+      "answer": "Khuôn mặt",
+      "speak": "face"
+    },
+    {
+      "id": 83,
+      "question": "Eye",
+      "answer": "Mắt",
+      "speak": "eye"
+    },
+    {
+      "id": 84,
+      "question": "Nose",
+      "answer": "Mũi",
+      "speak": "nose"
+    },
+    {
+      "id": 85,
+      "question": "Mouth",
+      "answer": "Miệng",
+      "speak": "mouth"
+    },
+    {
+      "id": 86,
+      "question": "Hand",
+      "answer": "Bàn tay",
+      "speak": "hand"
+    },
+    {
+      "id": 87,
+      "question": "Leg",
+      "answer": "Chân",
+      "speak": "leg"
+    },
+    {
+      "id": 88,
+      "question": "Foot",
+      "answer": "Bàn chân",
+      "speak": "foot"
+    },
+    {
+      "id": 89,
+      "question": "Hair",
+      "answer": "Tóc",
+      "speak": "hair"
+    },
+    {
+      "id": 90,
+      "question": "Body",
+      "answer": "Cơ thể",
+      "speak": "body"
+    },
+    {
+      "id": 91,
+      "question": "Doctor",
+      "answer": "Bác sĩ",
+      "speak": "doctor"
+    },
+    {
+      "id": 92,
+      "question": "Teacher",
+      "answer": "Giáo viên",
+      "speak": "teacher"
+    },
+    {
+      "id": 93,
+      "question": "Student",
+      "answer": "Học sinh",
+      "speak": "student"
+    },
+    {
+      "id": 94,
+      "question": "Job",
+      "answer": "Nghề nghiệp / Công việc",
+      "speak": "job"
+    },
+    {
+      "id": 95,
+      "question": "Shirt",
+      "answer": "Áo sơ mi",
+      "speak": "shirt"
+    },
+    {
+      "id": 96,
+      "question": "Shoe",
+      "answer": "Giày",
+      "speak": "shoe"
+    },
+    {
+      "id": 97,
+      "question": "Dress",
+      "answer": "Váy",
+      "speak": "dress"
+    },
+    {
+      "id": 98,
+      "question": "Hat",
+      "answer": "Mũ / Nón",
+      "speak": "hat"
+    },
+    {
+      "id": 99,
+      "question": "Coat",
+      "answer": "Áo khoác",
+      "speak": "coat"
+    },
+    {
+      "id": 100,
+      "question": "Wear",
+      "answer": "Mặc / Đeo",
+      "speak": "wear"
+    }
+  ]
+}

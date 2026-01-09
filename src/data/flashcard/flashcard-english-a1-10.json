@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-10",
+  "title": "English A1 - Batch 10",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Số đếm & Từ để hỏi.",
+  "questions": [
+    {
+      "id": 181,
+      "question": "One",
+      "answer": "Số một",
+      "speak": "one"
+    },
+    {
+      "id": 182,
+      "question": "Two",
+      "answer": "Số hai",
+      "speak": "two"
+    },
+    {
+      "id": 183,
+      "question": "Three",
+      "answer": "Số ba",
+      "speak": "three"
+    },
+    {
+      "id": 184,
+      "question": "Four",
+      "answer": "Số bốn",
+      "speak": "four"
+    },
+    {
+      "id": 185,
+      "question": "Five",
+      "answer": "Số năm",
+      "speak": "five"
+    },
+    {
+      "id": 186,
+      "question": "Six",
+      "answer": "Số sáu",
+      "speak": "six"
+    },
+    {
+      "id": 187,
+      "question": "Seven",
+      "answer": "Số bảy",
+      "speak": "seven"
+    },
+    {
+      "id": 188,
+      "question": "Eight",
+      "answer": "Số tám",
+      "speak": "eight"
+    },
+    {
+      "id": 189,
+      "question": "Nine",
+      "answer": "Số chín",
+      "speak": "nine"
+    },
+    {
+      "id": 190,
+      "question": "Ten",
+      "answer": "Số mười",
+      "speak": "ten"
+    },
+    {
+      "id": 191,
+      "question": "Zero",
+      "answer": "Số không",
+      "speak": "zero"
+    },
+    {
+      "id": 192,
+      "question": "Hundred",
+      "answer": "Trăm",
+      "speak": "hundred"
+    },
+    {
+      "id": 193,
+      "question": "Who",
+      "answer": "Ai",
+      "speak": "who"
+    },
+    {
+      "id": 194,
+      "question": "What",
+      "answer": "Cái gì",
+      "speak": "what"
+    },
+    {
+      "id": 195,
+      "question": "When",
+      "answer": "Khi nào",
+      "speak": "when"
+    },
+    {
+      "id": 196,
+      "question": "Why",
+      "answer": "Tại sao",
+      "speak": "why"
+    },
+    {
+      "id": 197,
+      "question": "How",
+      "answer": "Như thế nào",
+      "speak": "how"
+    },
+    {
+      "id": 198,
+      "question": "And",
+      "answer": "Và",
+      "speak": "and"
+    },
+    {
+      "id": 199,
+      "question": "But",
+      "answer": "Nhưng",
+      "speak": "but"
+    },
+    {
+      "id": 200,
+      "question": "Or",
+      "answer": "Hoặc",
+      "speak": "or"
+    }
+  ]
+}

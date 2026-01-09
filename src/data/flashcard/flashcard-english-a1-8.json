@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-8",
+  "title": "English A1 - Batch 8",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Địa điểm, Phương tiện & Giới từ chỉ vị trí.",
+  "questions": [
+    {
+      "id": 141,
+      "question": "City",
+      "answer": "Thành phố",
+      "speak": "city"
+    },
+    {
+      "id": 142,
+      "question": "Country",
+      "answer": "Đất nước / Quốc gia",
+      "speak": "country"
+    },
+    {
+      "id": 143,
+      "question": "Park",
+      "answer": "Công viên",
+      "speak": "park"
+    },
+    {
+      "id": 144,
+      "question": "Garden",
+      "answer": "Khu vườn",
+      "speak": "garden"
+    },
+    {
+      "id": 145,
+      "question": "Hospital",
+      "answer": "Bệnh viện",
+      "speak": "hospital"
+    },
+    {
+      "id": 146,
+      "question": "Bank",
+      "answer": "Ngân hàng",
+      "speak": "bank"
+    },
+    {
+      "id": 147,
+      "question": "Street",
+      "answer": "Đường phố",
+      "speak": "street"
+    },
+    {
+      "id": 148,
+      "question": "Train",
+      "answer": "Tàu hỏa",
+      "speak": "train"
+    },
+    {
+      "id": 149,
+      "question": "Bike",
+      "answer": "Xe đạp",
+      "speak": "bike"
+    },
+    {
+      "id": 150,
+      "question": "Ticket",
+      "answer": "Vé",
+      "speak": "ticket"
+    },
+    {
+      "id": 151,
+      "question": "Map",
+      "answer": "Bản đồ",
+      "speak": "map"
+    },
+    {
+      "id": 152,
+      "question": "World",
+      "answer": "Thế giới",
+      "speak": "world"
+    },
+    {
+      "id": 153,
+      "question": "In",
+      "answer": "Trong / Ở trong",
+      "speak": "in"
+    },
+    {
+      "id": 154,
+      "question": "On",
+      "answer": "Trên / Ở trên",
+      "speak": "on"
+    },
+    {
+      "id": 155,
+      "question": "Under",
+      "answer": "Dưới / Ở dưới",
+      "speak": "under"
+    },
+    {
+      "id": 156,
+      "question": "To",
+      "answer": "Đến / Tới",
+      "speak": "to"
+    },
+    {
+      "id": 157,
+      "question": "From",
+      "answer": "Từ",
+      "speak": "from"
+    },
+    {
+      "id": 158,
+      "question": "Here",
+      "answer": "Ở đây",
+      "speak": "here"
+    },
+    {
+      "id": 159,
+      "question": "There",
+      "answer": "Ở đó",
+      "speak": "there"
+    },
+    {
+      "id": 160,
+      "question": "Where",
+      "answer": "Ở đâu",
+      "speak": "where"
+    }
+  ]
+}

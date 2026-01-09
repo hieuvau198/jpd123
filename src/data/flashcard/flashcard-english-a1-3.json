@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-3",
+  "title": "English A1 - Phần 3",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Gia đình, Màu sắc & Đồ vật hàng ngày.",
+  "questions": [
+    {
+      "id": 41,
+      "question": "Family",
+      "answer": "Gia đình",
+      "speak": "family"
+    },
+    {
+      "id": 42,
+      "question": "Father",
+      "answer": "Bố / Cha",
+      "speak": "father"
+    },
+    {
+      "id": 43,
+      "question": "Mother",
+      "answer": "Mẹ",
+      "speak": "mother"
+    },
+    {
+      "id": 44,
+      "question": "Brother",
+      "answer": "Anh / Em trai",
+      "speak": "brother"
+    },
+    {
+      "id": 45,
+      "question": "Sister",
+      "answer": "Chị / Em gái",
+      "speak": "sister"
+    },
+    {
+      "id": 46,
+      "question": "Red",
+      "answer": "Màu đỏ",
+      "speak": "red"
+    },
+    {
+      "id": 47,
+      "question": "Blue",
+      "answer": "Màu xanh da trời",
+      "speak": "blue"
+    },
+    {
+      "id": 48,
+      "question": "Green",
+      "answer": "Màu xanh lá cây",
+      "speak": "green"
+    },
+    {
+      "id": 49,
+      "question": "Black",
+      "answer": "Màu đen",
+      "speak": "black"
+    },
+    {
+      "id": 50,
+      "question": "White",
+      "answer": "Màu trắng",
+      "speak": "white"
+    },
+    {
+      "id": 51,
+      "question": "Book",
+      "answer": "Quyển sách",
+      "speak": "book"
+    },
+    {
+      "id": 52,
+      "question": "Pen",
+      "answer": "Cái bút",
+      "speak": "pen"
+    },
+    {
+      "id": 53,
+      "question": "Bag",
+      "answer": "Cái túi / Cặp sách",
+      "speak": "bag"
+    },
+    {
+      "id": 54,
+      "question": "Table",
+      "answer": "Cái bàn",
+      "speak": "table"
+    },
+    {
+      "id": 55,
+      "question": "Chair",
+      "answer": "Cái ghế",
+      "speak": "chair"
+    },
+    {
+      "id": 56,
+      "question": "Door",
+      "answer": "Cửa ra vào",
+      "speak": "door"
+    },
+    {
+      "id": 57,
+      "question": "Window",
+      "answer": "Cửa sổ",
+      "speak": "window"
+    },
+    {
+      "id": 58,
+      "question": "Room",
+      "answer": "Căn phòng",
+      "speak": "room"
+    },
+    {
+      "id": 59,
+      "question": "Phone",
+      "answer": "Điện thoại",
+      "speak": "phone"
+    },
+    {
+      "id": 60,
+      "question": "Computer",
+      "answer": "Máy tính",
+      "speak": "computer"
+    }
+  ]
+}

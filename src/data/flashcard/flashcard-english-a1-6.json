@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-6",
+  "title": "English A1 - Batch 6",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Động vật & Tính từ miêu tả.",
+  "questions": [
+    {
+      "id": 101,
+      "question": "Dog",
+      "answer": "Con chó",
+      "speak": "dog"
+    },
+    {
+      "id": 102,
+      "question": "Cat",
+      "answer": "Con mèo",
+      "speak": "cat"
+    },
+    {
+      "id": 103,
+      "question": "Bird",
+      "answer": "Con chim",
+      "speak": "bird"
+    },
+    {
+      "id": 104,
+      "question": "Fish",
+      "answer": "Con cá",
+      "speak": "fish"
+    },
+    {
+      "id": 105,
+      "question": "Animal",
+      "answer": "Động vật",
+      "speak": "animal"
+    },
+    {
+      "id": 106,
+      "question": "Hot",
+      "answer": "Nóng",
+      "speak": "hot"
+    },
+    {
+      "id": 107,
+      "question": "Cold",
+      "answer": "Lạnh",
+      "speak": "cold"
+    },
+    {
+      "id": 108,
+      "question": "New",
+      "answer": "Mới",
+      "speak": "new"
+    },
+    {
+      "id": 109,
+      "question": "Old",
+      "answer": "Cũ / Già",
+      "speak": "old"
+    },
+    {
+      "id": 110,
+      "question": "Young",
+      "answer": "Trẻ",
+      "speak": "young"
+    },
+    {
+      "id": 111,
+      "question": "Long",
+      "answer": "Dài",
+      "speak": "long"
+    },
+    {
+      "id": 112,
+      "question": "Short",
+      "answer": "Ngắn / Thấp",
+      "speak": "short"
+    },
+    {
+      "id": 113,
+      "question": "Beautiful",
+      "answer": "Đẹp",
+      "speak": "beautiful"
+    },
+    {
+      "id": 114,
+      "question": "Clean",
+      "answer": "Sạch sẽ",
+      "speak": "clean"
+    },
+    {
+      "id": 115,
+      "question": "Dirty",
+      "answer": "Bẩn / Dơ",
+      "speak": "dirty"
+    },
+    {
+      "id": 116,
+      "question": "Easy",
+      "answer": "Dễ",
+      "speak": "easy"
+    },
+    {
+      "id": 117,
+      "question": "Hard",
+      "answer": "Khó / Cứng",
+      "speak": "hard"
+    },
+    {
+      "id": 118,
+      "question": "Fast",
+      "answer": "Nhanh",
+      "speak": "fast"
+    },
+    {
+      "id": 119,
+      "question": "Slow",
+      "answer": "Chậm",
+      "speak": "slow"
+    },
+    {
+      "id": 120,
+      "question": "Rich",
+      "answer": "Giàu có",
+      "speak": "rich"
+    }
+  ]
+}

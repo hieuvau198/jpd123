@@ -80,13 +80,13 @@
     {
       "id": 33,
       "question": "Boy",
-      "answer": "Con trai (bé trai)",
+      "answer": "Con trai / bé trai",
       "speak": "boy"
     },
     {
       "id": 34,
       "question": "Girl",
-      "answer": "Con gái (bé gái)",
+      "answer": "Con gái / bé gái",
       "speak": "girl"
     },
     {
@@ -98,19 +98,19 @@
     {
       "id": 36,
       "question": "Food",
-      "answer": "Đồ ăn",
+      "answer": "Thức ăn / Đồ ăn",
       "speak": "food"
     },
     {
       "id": 37,
       "question": "House",
-      "answer": "Ngôi nhà",
+      "answer": "Nhà / Ngôi nhà",
       "speak": "house"
     },
     {
       "id": 38,
       "question": "School",
-      "answer": "Trường học",
+      "answer": "Trường / Trường học",
       "speak": "school"
     },
     {
