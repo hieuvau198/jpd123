@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-b2-general-2",
+  "title": "B2 Grammar - General Review 2",
+  "subject": "english",
+  "tags": ["b2", "grammar", "passive", "reported-speech", "advanced"],
+  "description": "Upper-intermediate review covering Passive Voice, Reported Speech, Causatives, and Advanced Structures.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "The criminal is believed _____ the country last week.",
+      "options": ["to leave", "to have left", "leaving", "left"],
+      "correctAnswer": "to have left",
+      "explanation": "Passive with reporting verbs: Use the perfect infinitive ('to have left') when the reported action is in the past."
+    },
+    {
+      "id": 2,
+      "text": "I need to get my car _____ before the trip.",
+      "options": ["service", "servicing", "serviced", "to service"],
+      "correctAnswer": "serviced",
+      "explanation": "Causative form (get something done): 'get' + object + past participle implies arranging for someone else to do it."
+    },
+    {
+      "id": 3,
+      "text": "She asked me where _____.",
+      "options": ["was I going", "I was going", "did I go", "I go"],
+      "correctAnswer": "I was going",
+      "explanation": "Indirect questions (Reported Speech) follow standard statement word order (Subject + Verb), not question order."
+    },
+    {
+      "id": 4,
+      "text": "_____ the rain, we enjoyed the concert.",
+      "options": ["Although", "Despite", "Even though", "However"],
+      "correctAnswer": "Despite",
+      "explanation": "'Despite' is a preposition and is followed by a noun or gerund, unlike 'Although' which needs a clause."
+    },
+    {
+      "id": 5,
+      "text": "I'd rather you _____ smoke inside the house.",
+      "options": ["don't", "won't", "didn't", "not"],
+      "correctAnswer": "didn't",
+      "explanation": "'I'd rather' + person + past tense is used to express a preference for someone's actions."
+    },
+    {
+      "id": 6,
+      "text": "Never _____ such a beautiful sunset.",
+      "options": ["I have seen", "have I seen", "I saw", "did I see"],
+      "correctAnswer": "have I seen",
+      "explanation": "Inversion is used after negative adverbs like 'Never' for emphasis."
+    },
+    {
+      "id": 7,
+      "text": "He suggested _____ to the cinema.",
+      "options": ["go", "to go", "going", "that we go"],
+      "correctAnswer": "going",
+      "explanation": "The verb 'suggest' is followed by a gerund (-ing) or a 'that' clause, never an infinitive."
+    },
+    {
+      "id": 8,
+      "text": "The man _____ car was stolen is at the police station.",
+      "options": ["who", "which", "whose", "whom"],
+      "correctAnswer": "whose",
+      "explanation": "'Whose' is the relative pronoun used to indicate possession."
+    },
+    {
+      "id": 9,
+      "text": "I can't put _____ with this noise anymore!",
+      "options": ["up", "off", "on", "out"],
+      "correctAnswer": "up",
+      "explanation": "Phrasal verb 'put up with' means to tolerate or endure."
+    },
+    {
+      "id": 10,
+      "text": "It was _____ a boring film that I fell asleep.",
+      "options": ["so", "such", "very", "too"],
+      "correctAnswer": "such",
+      "explanation": "Use 'such' before a noun phrase ('a boring film'). Use 'so' before an adjective alone ('so boring')."
+    },
+    {
+      "id": 11,
+      "text": "Unless you _____ harder, you won't pass the exam.",
+      "options": ["study", "will study", "don't study", "studied"],
+      "correctAnswer": "study",
+      "explanation": "In 'unless' clauses referring to the future, we use the Present Simple."
+    },
+    {
+      "id": 12,
+      "text": "He stopped _____ a newspaper on his way home.",
+      "options": ["buying", "to buy", "buy", "bought"],
+      "correctAnswer": "to buy",
+      "explanation": "'Stop to buy' means stopping an action in order to do something else (infinitive of purpose)."
+    },
+    {
+      "id": 13,
+      "text": "It is essential that he _____ informed immediately.",
+      "options": ["is", "be", "will be", "was"],
+      "correctAnswer": "be",
+      "explanation": "The Subjunctive mood uses the base form ('be') after adjectives of necessity like 'essential'."
+    },
+    {
+      "id": 14,
+      "text": "Had I known about the party, I _____ gone.",
+      "options": ["would have", "will have", "would", "had"],
+      "correctAnswer": "would have",
+      "explanation": "Inversion in Third Conditional: 'Had I known' is equivalent to 'If I had known'."
+    },
+    {
+      "id": 15,
+      "text": "She accused him _____ lying to her.",
+      "options": ["for", "on", "of", "about"],
+      "correctAnswer": "of",
+      "explanation": "The verb 'accuse' takes the preposition 'of' (accuse someone of doing something)."
+    },
+    {
+      "id": 16,
+      "text": "There's no point _____ to convince him.",
+      "options": ["try", "to try", "trying", "in trying"],
+      "correctAnswer": "in trying",
+      "explanation": "'There's no point in' is followed by a gerund."
+    },
+    {
+      "id": 17,
+      "text": "I'll take an umbrella in case it _____.",
+      "options": ["will rain", "rains", "rained", "raining"],
+      "correctAnswer": "rains",
+      "explanation": "'In case' is followed by the Present Simple when referring to the future."
+    },
+    {
+      "id": 18,
+      "text": "The more you practice, _____ you will become.",
+      "options": ["the good", "the better", "better", "best"],
+      "correctAnswer": "the better",
+      "explanation": "Double comparative structure: 'The more..., the better...'."
+    },
+    {
+      "id": 19,
+      "text": "She _____ have taken the keys; they aren't on the table.",
+      "options": ["must", "should", "can't", "need"],
+      "correctAnswer": "must",
+      "explanation": "Modals of deduction: 'Must have' expresses a logical conclusion about a past event."
+    },
+    {
+      "id": 20,
+      "text": "_____ being exhausted, he finished the marathon.",
+      "options": ["Despite", "Although", "However", "Whereas"],
+      "correctAnswer": "Despite",
+      "explanation": "'Despite' is followed by a gerund phrase ('being exhausted') or a noun."
+    }
+  ]
+}

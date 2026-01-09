@@ -46,27 +46,27 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
       className={`practice-card group ${isMultiSelectMode && isSelected ? 'selected' : ''}`}
     >
       <div style={{width: '100%'}}>
-        <div className="card-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {practice.type === 'flashcard' ? <BookOpen size={16} /> : <Brain size={16} />}
-            <span className="card-type-label">
-              {practice.type === 'flashcard' ? 'FLASHCARD' : 'QUIZ'}
-            </span>
-          </div>
-          {/* Subject Label */}
-          {practice.subject && (
+        {/* Compact Header: Title + Subject */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+           <h3 style={{ margin: 0 }}>{practice.title}</h3>
+           {practice.subject && (
              <span className="subject-badge">{getSubjectName(practice.subject)}</span>
-          )}
+           )}
         </div>
-
-        <h3>{practice.title}</h3>
-        <p>{practice.description}</p>
         
+        {/* Compact Meta: Icon, Count, Tags */}
         <div className="card-meta">
-            <span className="tag-count">
-                {practice.questions ? practice.questions.length : 0} ITEMS
-            </span>
-            {/* Render Tags */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                 {/* Type Icon */}
+                 {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
+                 
+                 {/* Count */}
+                 <span className="tag-count">
+                    {practice.questions ? practice.questions.length : 0}
+                 </span>
+            </div>
+
+            {/* Tags */}
             {practice.tags && practice.tags.length > 0 && (
                 <div className="tags-list">
                     {practice.tags.map(tagId => (
@@ -82,10 +82,10 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
 
       {isMultiSelectMode ? (
         <div style={{ fontSize: '1.5rem', marginLeft: '10px' }}>
-          {isSelected ? <CheckSquare /> : <Square />}
+          {isSelected ? <CheckSquare size={20} /> : <Square size={20} />}
         </div>
       ) : (
-        <ChevronRight style={{marginLeft: '10px'}} />
+        <ChevronRight size={18} style={{marginLeft: '10px', opacity: 0.5}} />
       )}
     </button>
   );

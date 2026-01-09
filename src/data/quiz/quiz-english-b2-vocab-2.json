@@ -1,0 +1,149 @@
+{
+  "id": "quiz-english-b2-vocab-2",
+  "title": "B2 Vocabulary - Emotions & Collocations",
+  "subject": "english",
+  "tags": ["b2", "vocabulary", "emotions", "personality", "collocations"],
+  "description": "Upper-intermediate vocabulary covering emotions, personality traits, and common adjective-noun or verb-noun collocations.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "She was absolutely _____ when she heard the good news.",
+      "options": ["thrilled", "happy", "pleased", "content"],
+      "correctAnswer": "thrilled",
+      "explanation": "'Thrilled' is a strong B2 adjective meaning extremely happy or excited."
+    },
+    {
+      "id": 2,
+      "text": "I was _____ with the service at the restaurant; it was terrible.",
+      "options": ["dissatisfied", "unpleased", "complaining", "annoying"],
+      "correctAnswer": "dissatisfied",
+      "explanation": "'Dissatisfied' is the specific adjective for not being happy with quality or service."
+    },
+    {
+      "id": 3,
+      "text": "He is very _____; he never changes his mind once he's decided.",
+      "options": ["stubborn", "reliable", "sensible", "assertive"],
+      "correctAnswer": "stubborn",
+      "explanation": "'Stubborn' describes someone who refuses to change their opinion or chosen course of action."
+    },
+    {
+      "id": 4,
+      "text": "Could you _____ me a favor and post this letter?",
+      "options": ["do", "make", "give", "take"],
+      "correctAnswer": "do",
+      "explanation": "Collocation: You 'do' someone a favor."
+    },
+    {
+      "id": 5,
+      "text": "I'm really _____ on learning Spanish this year.",
+      "options": ["keen", "interested", "fond", "enthusiastic"],
+      "correctAnswer": "keen",
+      "explanation": "'Keen on' is a common structure. 'Interested' takes 'in', 'fond' takes 'of'."
+    },
+    {
+      "id": 6,
+      "text": "It was a _____ risk, but it paid off in the end.",
+      "options": ["calculated", "counted", "valued", "estimated"],
+      "correctAnswer": "calculated",
+      "explanation": "A 'calculated risk' is a chance taken after careful estimation of the probable outcome."
+    },
+    {
+      "id": 7,
+      "text": "She is totally _____ to her family; she would do anything for them.",
+      "options": ["devoted", "addicted", "fond", "admiring"],
+      "correctAnswer": "devoted",
+      "explanation": "'Devoted' means very loving or loyal."
+    },
+    {
+      "id": 8,
+      "text": "I am _____ up with this rain! It's been raining for days.",
+      "options": ["fed", "full", "bored", "tired"],
+      "correctAnswer": "fed",
+      "explanation": "'Fed up with' means annoyed or bored by something that you have experienced for too long."
+    },
+    {
+      "id": 9,
+      "text": "Please _____ attention to what I am saying.",
+      "options": ["pay", "give", "make", "have"],
+      "correctAnswer": "pay",
+      "explanation": "Collocation: You 'pay attention' to something."
+    },
+    {
+      "id": 10,
+      "text": "He was _____ when he saw the spider on his bed.",
+      "options": ["terrified", "scary", "fearing", "afraid"],
+      "correctAnswer": "terrified",
+      "explanation": "'Terrified' means very scared. 'Afraid' is less strong and not usually used alone for extreme fear without modifiers."
+    },
+    {
+      "id": 11,
+      "text": "It's important to be _____ and check the facts before posting online.",
+      "options": ["responsible", "responsive", "responding", "responsibility"],
+      "correctAnswer": "responsible",
+      "explanation": "'Responsible' means behaving properly and sensibly."
+    },
+    {
+      "id": 12,
+      "text": "Don't lose your _____; stay calm!",
+      "options": ["temper", "mood", "humor", "anger"],
+      "correctAnswer": "temper",
+      "explanation": "Collocation: To 'lose your temper' means to get angry."
+    },
+    {
+      "id": 13,
+      "text": "She felt _____ when she realized she had forgotten his birthday.",
+      "options": ["guilty", "faulty", "blaming", "mistaken"],
+      "correctAnswer": "guilty",
+      "explanation": "'Guilty' describes the feeling of having done something wrong."
+    },
+    {
+      "id": 14,
+      "text": "You need to _____ a decision soon.",
+      "options": ["make", "do", "take", "get"],
+      "correctAnswer": "make",
+      "explanation": "Collocation: You 'make' a decision."
+    },
+    {
+      "id": 15,
+      "text": "He is very _____; you can always trust him to do what he says.",
+      "options": ["reliable", "relying", "reliant", "relay"],
+      "correctAnswer": "reliable",
+      "explanation": "'Reliable' means consistently good in quality or performance; able to be trusted."
+    },
+    {
+      "id": 16,
+      "text": "I'm extremely _____ about the interview tomorrow.",
+      "options": ["anxious", "painful", "frightening", "terror"],
+      "correctAnswer": "anxious",
+      "explanation": "'Anxious' means feeling worried, nervous, or uneasy."
+    },
+    {
+      "id": 17,
+      "text": "It was very _____ of you to help that old lady.",
+      "options": ["thoughtful", "thinking", "thought", "think"],
+      "correctAnswer": "thoughtful",
+      "explanation": "'Thoughtful' means showing consideration for the needs of other people."
+    },
+    {
+      "id": 18,
+      "text": "He has a tendency to _____ his promises.",
+      "options": ["break", "smash", "cut", "destroy"],
+      "correctAnswer": "break",
+      "explanation": "Collocation: You 'break a promise' (or 'keep a promise')."
+    },
+    {
+      "id": 19,
+      "text": "Be _____! We don't have all day.",
+      "options": ["reasonable", "reasoning", "reasoned", "reasons"],
+      "correctAnswer": "reasonable",
+      "explanation": "'Reasonable' means having sound judgment; fair and sensible."
+    },
+    {
+      "id": 20,
+      "text": "She is very _____ to criticism.",
+      "options": ["sensitive", "sensible", "sensing", "sensed"],
+      "correctAnswer": "sensitive",
+      "explanation": "'Sensitive' means easily upset by the things people say or do. ('Sensible' means practical)."
+    }
+  ]
+}
