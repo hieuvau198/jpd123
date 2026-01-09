@@ -93,15 +93,15 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
 
 const HomeView = ({ onSelectPractice }) => {
   const [activeSubject, setActiveSubject] = useState('all');
-  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
+  
+  // Changed from boolean to explicit type: 'flashcard' | 'quiz' | null
+  const [selectionMode, setSelectionMode] = useState(null);
   const [selectedIds, setSelectedIds] = useState(new Set());
 
   // Filter Logic
   const filteredPractices = useMemo(() => {
     if (activeSubject === 'all') return ALL_PRACTICES;
     return ALL_PRACTICES.filter(p => p.subject === activeSubject || !p.subject); 
-    // Note: "!p.subject" handles "if dont have, we default view it" if interpreted as showing them in filtered views too.
-    // If you strictly want ONLY that subject, remove "|| !p.subject".
   }, [activeSubject]);
 
   const flashcards = filteredPractices.filter(p => p.type === 'flashcard');
@@ -117,19 +117,30 @@ const HomeView = ({ onSelectPractice }) => {
     setSelectedIds(newSelected);
   };
 
+  // Handles activating the mix mode for a specific type
+  const handleMixToggle = (type) => {
+    if (selectionMode === type) {
+      // Cancel current selection
+      setSelectionMode(null);
+      setSelectedIds(new Set());
+    } else {
+      // Switch to new type and clear previous selections
+      setSelectionMode(type);
+      setSelectedIds(new Set());
+    }
+  };
+
   const startCombined = () => {
     const selectedPractices = ALL_PRACTICES.filter(p => selectedIds.has(p.id));
     if (selectedPractices.length === 0) return;
 
-    // Determine type based on selection (majority or default to mix)
-    // For simplicity, if mixing types is allowed, we might need a unified session.
-    // Assuming mostly one type for now or standard quiz engine.
     const combinedPractice = {
       id: 'combined-' + Date.now(),
       title: 'CUSTOM MIX',
       description: `Combined session of ${selectedPractices.length} topics.`,
       questions: selectedPractices.flatMap(p => p.questions),
-      type: selectedPractices[0].type // Naive type selection
+      // We can now safely assume the type based on the active mode
+      type: selectionMode
     };
     onSelectPractice(combinedPractice);
   };
@@ -161,19 +172,7 @@ const HomeView = ({ onSelectPractice }) => {
           </div>
         </div>
 
-        {/* Mix Button */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <button
-            onClick={() => {
-                setIsMultiSelectMode(!isMultiSelectMode);
-                setSelectedIds(new Set());
-            }}
-            className={`toggle-btn ${isMultiSelectMode ? 'active' : ''}`}
-            >
-            <Layers size={18} />
-            {isMultiSelectMode ? 'Cancel Mix' : 'Create Custom Mix'}
-            </button>
-        </div>
+        {/* Removed central 'Create Custom Mix' button to separate them below */}
       </div>
 
       {/* --- SPLIT VIEW --- */}
@@ -181,9 +180,25 @@ const HomeView = ({ onSelectPractice }) => {
         
         {/* Left Column: Flashcards */}
         <div className="split-column">
-            <div className="column-header">
-                <BookOpen size={24}/>
-                <h2>FLASHCARDS</h2>
+            <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <BookOpen size={24}/>
+                    <h2>FLASHCARDS</h2>
+                </div>
+                {/* Flashcard Mix Button */}
+                <button 
+                    onClick={() => handleMixToggle('flashcard')}
+                    disabled={selectionMode === 'quiz'}
+                    className={`toggle-btn ${selectionMode === 'flashcard' ? 'active' : ''}`}
+                    style={{ 
+                        fontSize: '0.8rem', 
+                        padding: '6px 12px',
+                        opacity: selectionMode === 'quiz' ? 0.3 : 1
+                    }}
+                >
+                    <Layers size={14} style={{marginRight: 6}} />
+                    {selectionMode === 'flashcard' ? 'Cancel' : 'Mix'}
+                </button>
             </div>
             <div className="practice-list">
                 {flashcards.length === 0 ? (
@@ -193,7 +208,8 @@ const HomeView = ({ onSelectPractice }) => {
                         <PracticeCard 
                             key={p.id} 
                             practice={p}
-                            isMultiSelectMode={isMultiSelectMode}
+                            // Only allow multi-select if we are in flashcard mode
+                            isMultiSelectMode={selectionMode === 'flashcard'}
                             isSelected={selectedIds.has(p.id)}
                             toggleSelection={toggleSelection}
                             onSelect={onSelectPractice}
@@ -205,9 +221,25 @@ const HomeView = ({ onSelectPractice }) => {
 
         {/* Right Column: Quizzes */}
         <div className="split-column">
-            <div className="column-header">
-                <Brain size={24}/>
-                <h2>QUIZZES</h2>
+            <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <Brain size={24}/>
+                    <h2>QUIZZES</h2>
+                </div>
+                {/* Quiz Mix Button */}
+                <button 
+                    onClick={() => handleMixToggle('quiz')}
+                    disabled={selectionMode === 'flashcard'}
+                    className={`toggle-btn ${selectionMode === 'quiz' ? 'active' : ''}`}
+                    style={{ 
+                        fontSize: '0.8rem', 
+                        padding: '6px 12px',
+                        opacity: selectionMode === 'flashcard' ? 0.3 : 1
+                    }}
+                >
+                    <Layers size={14} style={{marginRight: 6}} />
+                    {selectionMode === 'quiz' ? 'Cancel' : 'Mix'}
+                </button>
             </div>
             <div className="practice-list">
                 {quizzes.length === 0 ? (
@@ -217,7 +249,8 @@ const HomeView = ({ onSelectPractice }) => {
                         <PracticeCard 
                             key={p.id} 
                             practice={p}
-                            isMultiSelectMode={isMultiSelectMode}
+                            // Only allow multi-select if we are in quiz mode
+                            isMultiSelectMode={selectionMode === 'quiz'}
                             isSelected={selectedIds.has(p.id)}
                             toggleSelection={toggleSelection}
                             onSelect={onSelectPractice}
@@ -229,11 +262,12 @@ const HomeView = ({ onSelectPractice }) => {
 
       </div>
 
-      {isMultiSelectMode && selectedIds.size > 0 && (
+      {selectionMode && selectedIds.size > 0 && (
         <div className="fab-container">
           <button onClick={startCombined} className="fab-btn">
             <Play fill="currentColor" size={20} />
-            Start Mix ({selectedIds.size})
+            {/* Dynamic Label */}
+            Start {selectionMode === 'flashcard' ? 'Flashcard' : 'Quiz'} Mix ({selectedIds.size})
           </button>
         </div>
       )}

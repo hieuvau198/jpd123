@@ -1,0 +1,114 @@
+{
+  "id": "quiz-english-a1-vocab-1",
+  "title": "A1 Vocabulary - Review 1",
+  "subject": "english",
+  "tags": ["a1", "vocabulary", "basics"],
+  "description": "Test your knowledge of basic greetings, family members, common objects, colors, and daily verbs.",
+  "questions": [
+    {
+      "id": 1,
+      "text": "When you meet someone, you say: '_____!'",
+      "options": ["Goodbye", "Hello", "Night", "Thank you"],
+      "correctAnswer": "Hello",
+      "explanation": "'Hello' is a greeting used when meeting someone."
+    },
+    {
+      "id": 2,
+      "text": "My father's wife is my _____.",
+      "options": ["sister", "brother", "mother", "friend"],
+      "correctAnswer": "mother",
+      "explanation": "Your father's wife is your mother."
+    },
+    {
+      "id": 3,
+      "text": "I am hungry. I want to _____.",
+      "options": ["drink", "sleep", "eat", "read"],
+      "correctAnswer": "eat",
+      "explanation": "We 'eat' food when we are hungry."
+    },
+    {
+      "id": 4,
+      "text": "You use a _____ to write.",
+      "options": ["pen", "bag", "chair", "shoe"],
+      "correctAnswer": "pen",
+      "explanation": "A pen is a tool used for writing."
+    },
+    {
+      "id": 5,
+      "text": "The sky is _____.",
+      "options": ["red", "green", "blue", "yellow"],
+      "correctAnswer": "blue",
+      "explanation": "The color of the sky is typically blue."
+    },
+    {
+      "id": 6,
+      "text": "We smell with our _____.",
+      "options": ["eye", "ear", "nose", "hand"],
+      "correctAnswer": "nose",
+      "explanation": "The nose is the body part used for smelling."
+    },
+    {
+      "id": 7,
+      "text": "She works in a school. She is a _____.",
+      "options": ["doctor", "student", "teacher", "farmer"],
+      "correctAnswer": "teacher",
+      "explanation": "A teacher works in a school helping students learn."
+    },
+    {
+      "id": 8,
+      "text": "The opposite of 'Big' is _____.",
+      "options": ["Small", "Tall", "Fat", "Good"],
+      "correctAnswer": "Small",
+      "explanation": "Big and Small are opposites."
+    },
+    {
+      "id": 9,
+      "text": "I read a _____ every night.",
+      "options": ["pen", "book", "table", "door"],
+      "correctAnswer": "book",
+      "explanation": "You read a book."
+    },
+    {
+      "id": 10,
+      "text": "It is dark at _____.",
+      "options": ["morning", "afternoon", "night", "day"],
+      "correctAnswer": "night",
+      "explanation": "Night is the time when it is dark."
+    },
+    {
+      "id": 11,
+      "text": "My brother is a _____.",
+      "options": ["girl", "woman", "boy", "sister"],
+      "correctAnswer": "boy",
+      "explanation": "A brother is male, so he is a boy (or man)."
+    },
+    {
+      "id": 12,
+      "text": "Please _____ the door.",
+      "options": ["open", "drink", "eat", "happy"],
+      "correctAnswer": "open",
+      "explanation": "You can 'open' or 'close' a door."
+    },
+    {
+      "id": 13,
+      "text": "I have two _____ to see.",
+      "options": ["noses", "hands", "eyes", "mouths"],
+      "correctAnswer": "eyes",
+      "explanation": "We use our eyes to see."
+    },
+    {
+      "id": 14,
+      "text": "Water is a _____.",
+      "options": ["food", "drink", "fruit", "meat"],
+      "correctAnswer": "drink",
+      "explanation": "Water is a liquid you drink."
+    },
+    {
+      "id": 15,
+      "text": "If you are 'Happy', you are not _____.",
+      "options": ["sad", "good", "hungry", "cold"],
+      "correctAnswer": "sad",
+      "explanation": "Happy and Sad are opposite emotions."
+    }
+  ]
+}
