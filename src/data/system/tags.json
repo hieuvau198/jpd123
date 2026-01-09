@@ -1,0 +1,38 @@
+[
+  {
+    "id": "a1",
+    "name": "A1 (Beginner)"
+  },
+  {
+    "id": "a2",
+    "name": "A2 (Elementary)"
+  },
+  {
+    "id": "b1",
+    "name": "B1 (Intermediate)"
+  },
+  {
+    "id": "b2",
+    "name": "B2 (Upper Inter.)"
+  },
+  {
+    "id": "c1",
+    "name": "C1 (Advanced)"
+  },
+  {
+    "id": "vocab",
+    "name": "Vocabulary"
+  },
+  {
+    "id": "grammar",
+    "name": "Grammar"
+  },
+  {
+    "id": "math",
+    "name": "Math"
+  },
+  {
+    "id": "other",
+    "name": "Other"
+  }
+]

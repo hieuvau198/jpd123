@@ -1,0 +1,129 @@
+{
+  "id": "flashcard-english-a1-2",
+  "title": "English A1 - Phần 2",
+  "subject": "english",
+  "tags": ["a1", "vocab"],
+  "description": "Từ vựng cơ bản: Động từ hành động & Danh từ thường gặp.",
+  "questions": [
+    {
+      "id": 21,
+      "question": "Eat",
+      "answer": "Ăn",
+      "speak": "eat"
+    },
+    {
+      "id": 22,
+      "question": "Drink",
+      "answer": "Uống",
+      "speak": "drink"
+    },
+    {
+      "id": 23,
+      "question": "Sleep",
+      "answer": "Ngủ",
+      "speak": "sleep"
+    },
+    {
+      "id": 24,
+      "question": "Go",
+      "answer": "Đi",
+      "speak": "go"
+    },
+    {
+      "id": 25,
+      "question": "Come",
+      "answer": "Đến",
+      "speak": "come"
+    },
+    {
+      "id": 26,
+      "question": "See",
+      "answer": "Nhìn / Thấy",
+      "speak": "see"
+    },
+    {
+      "id": 27,
+      "question": "Hear",
+      "answer": "Nghe",
+      "speak": "hear"
+    },
+    {
+      "id": 28,
+      "question": "Speak",
+      "answer": "Nói",
+      "speak": "speak"
+    },
+    {
+      "id": 29,
+      "question": "Read",
+      "answer": "Đọc",
+      "speak": "read"
+    },
+    {
+      "id": 30,
+      "question": "Write",
+      "answer": "Viết",
+      "speak": "write"
+    },
+    {
+      "id": 31,
+      "question": "Man",
+      "answer": "Đàn ông",
+      "speak": "man"
+    },
+    {
+      "id": 32,
+      "question": "Woman",
+      "answer": "Phụ nữ",
+      "speak": "woman"
+    },
+    {
+      "id": 33,
+      "question": "Boy",
+      "answer": "Con trai (bé trai)",
+      "speak": "boy"
+    },
+    {
+      "id": 34,
+      "question": "Girl",
+      "answer": "Con gái (bé gái)",
+      "speak": "girl"
+    },
+    {
+      "id": 35,
+      "question": "Water",
+      "answer": "Nước",
+      "speak": "water"
+    },
+    {
+      "id": 36,
+      "question": "Food",
+      "answer": "Đồ ăn",
+      "speak": "food"
+    },
+    {
+      "id": 37,
+      "question": "House",
+      "answer": "Ngôi nhà",
+      "speak": "house"
+    },
+    {
+      "id": 38,
+      "question": "School",
+      "answer": "Trường học",
+      "speak": "school"
+    },
+    {
+      "id": 39,
+      "question": "Big",
+      "answer": "To / Lớn",
+      "speak": "big"
+    },
+    {
+      "id": 40,
+      "question": "Small",
+      "answer": "Nhỏ / Bé",
+      "speak": "small"
+    }
+  ]
+}

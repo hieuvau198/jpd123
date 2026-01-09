@@ -603,3 +603,164 @@ h1, h2, h3 {
     font-size: 1.2rem;
   }
 }
+
+/* --- New Filter Bar --- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(5px);
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filter-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 6px 16px;
+  font-family: 'Oswald', sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.filter-chip:hover, .filter-chip.active {
+  background: white;
+  color: black;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* --- Split View Layout --- */
+.split-view-container {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.split-column {
+  flex: 1;
+  background: rgba(255,255,255,0.05); /* Slight tint behind columns */
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.column-header h2 {
+  font-size: 1.5rem;
+}
+
+.practice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.empty-msg {
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  font-style: italic;
+}
+
+/* --- Card Updates --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.card-type-label {
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.subject-badge {
+  background: #f0f0f0;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid #ccc;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.tag-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: black;
+  color: white;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+.tags-list {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tag-pill {
+  font-size: 0.7rem;
+  background: #eee;
+  color: #555;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* --- Mobile Fix for Split View --- */
+@media (max-width: 768px) {
+  .split-view-container {
+    flex-direction: column;
+  }
+  
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-options {
+    justify-content: center;
+  }
+}

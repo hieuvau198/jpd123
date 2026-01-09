@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { Layers, ChevronRight, CheckSquare, Square, Play, BookOpen, Brain, ArrowLeft } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Layers, ChevronRight, CheckSquare, Square, Play, BookOpen, Brain, ArrowLeft, Filter, Tag } from 'lucide-react';
 import './App.css'; 
 import QuizSession from './components/QuizSession';
 import FlashcardSession from './components/FlashcardSession';
+
+// --- SYSTEM DATA IMPORTS ---
+// Ensure these files exist in your project structure
+import SUBJECTS_DATA from './data/system/subjects.json';
+import TAGS_DATA from './data/system/tags.json';
 
 // --- DATA LOADING ---
 const quizImports = import.meta.glob('./data/quiz/*.json', { eager: true, import: 'default' });
@@ -14,39 +19,93 @@ const FLASHCARD_DATA = Object.values(flashcardImports).map(d => ({ ...d, type: '
 
 const ALL_PRACTICES = [...QUIZ_DATA, ...FLASHCARD_DATA];
 
+// Helper to get tag name by ID
+const getTagName = (tagId) => {
+  const tag = TAGS_DATA.find(t => t.id === tagId);
+  return tag ? tag.name : tagId;
+};
+
+// Helper to get subject name by ID
+const getSubjectName = (subjectId) => {
+  const sub = SUBJECTS_DATA.find(s => s.id === subjectId);
+  return sub ? sub.name : subjectId;
+};
+
 // --- COMPONENTS ---
 
-const CategorySelection = ({ onSelectCategory }) => {
+const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection, onSelect }) => {
   return (
-    <div className="app-container">
-      <div className="home-header">
-        <h1 className="brand-title">CHOOSE MODE</h1>
-        <p style={{color: 'white', marginBottom: '40px'}}>Select your training method</p>
+    <button
+      onClick={() => {
+        if (isMultiSelectMode) {
+          toggleSelection(practice.id);
+        } else {
+          onSelect(practice);
+        }
+      }}
+      className={`practice-card group ${isMultiSelectMode && isSelected ? 'selected' : ''}`}
+    >
+      <div style={{width: '100%'}}>
+        <div className="card-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {practice.type === 'flashcard' ? <BookOpen size={16} /> : <Brain size={16} />}
+            <span className="card-type-label">
+              {practice.type === 'flashcard' ? 'FLASHCARD' : 'QUIZ'}
+            </span>
+          </div>
+          {/* Subject Label */}
+          {practice.subject && (
+             <span className="subject-badge">{getSubjectName(practice.subject)}</span>
+          )}
+        </div>
+
+        <h3>{practice.title}</h3>
+        <p>{practice.description}</p>
         
-        <div className="mode-selection">
-          <button onClick={() => onSelectCategory('quiz')} className="mode-card">
-            <Brain size={64} style={{marginBottom: '10px'}} />
-            <h3>QUIZ MODE</h3>
-            <p>Multiple choice questions to test your grammar and vocab.</p>
-          </button>
-          
-          <button onClick={() => onSelectCategory('flashcard')} className="mode-card">
-            <BookOpen size={64} style={{marginBottom: '10px'}} />
-            <h3>FLASHCARD</h3>
-            <p>Flip cards or take speaking tests to memorize words.</p>
-          </button>
+        <div className="card-meta">
+            <span className="tag-count">
+                {practice.questions ? practice.questions.length : 0} ITEMS
+            </span>
+            {/* Render Tags */}
+            {practice.tags && practice.tags.length > 0 && (
+                <div className="tags-list">
+                    {practice.tags.map(tagId => (
+                        <span key={tagId} className="tag-pill">
+                            <Tag size={10} style={{marginRight:3}}/>
+                            {getTagName(tagId)}
+                        </span>
+                    ))}
+                </div>
+            )}
         </div>
       </div>
-    </div>
+
+      {isMultiSelectMode ? (
+        <div style={{ fontSize: '1.5rem', marginLeft: '10px' }}>
+          {isSelected ? <CheckSquare /> : <Square />}
+        </div>
+      ) : (
+        <ChevronRight style={{marginLeft: '10px'}} />
+      )}
+    </button>
   );
 };
 
-const PracticeList = ({ practices, category, onSelect, onBack }) => {
+const HomeView = ({ onSelectPractice }) => {
+  const [activeSubject, setActiveSubject] = useState('all');
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState(new Set());
 
-  // Filter practices based on selected category
-  const filteredPractices = practices.filter(p => p.type === category);
+  // Filter Logic
+  const filteredPractices = useMemo(() => {
+    if (activeSubject === 'all') return ALL_PRACTICES;
+    return ALL_PRACTICES.filter(p => p.subject === activeSubject || !p.subject); 
+    // Note: "!p.subject" handles "if dont have, we default view it" if interpreted as showing them in filtered views too.
+    // If you strictly want ONLY that subject, remove "|| !p.subject".
+  }, [activeSubject]);
+
+  const flashcards = filteredPractices.filter(p => p.type === 'flashcard');
+  const quizzes = filteredPractices.filter(p => p.type === 'quiz');
 
   const toggleSelection = (id) => {
     const newSelected = new Set(selectedIds);
@@ -59,94 +118,115 @@ const PracticeList = ({ practices, category, onSelect, onBack }) => {
   };
 
   const startCombined = () => {
-    const selectedPractices = filteredPractices.filter(p => selectedIds.has(p.id));
+    const selectedPractices = ALL_PRACTICES.filter(p => selectedIds.has(p.id));
     if (selectedPractices.length === 0) return;
 
+    // Determine type based on selection (majority or default to mix)
+    // For simplicity, if mixing types is allowed, we might need a unified session.
+    // Assuming mostly one type for now or standard quiz engine.
     const combinedPractice = {
       id: 'combined-' + Date.now(),
       title: 'CUSTOM MIX',
       description: `Combined session of ${selectedPractices.length} topics.`,
       questions: selectedPractices.flatMap(p => p.questions),
-      type: category
+      type: selectedPractices[0].type // Naive type selection
     };
-    onSelect(combinedPractice);
+    onSelectPractice(combinedPractice);
   };
-
-  // Only allow mixing for quizzes for now, or ensure flashcards have consistent structure
-  const allowMix = category === 'quiz' || category === 'flashcard';
 
   return (
     <div className="app-container">
       <div className="home-header">
-        <button onClick={onBack} className="back-btn" style={{position: 'absolute', top: '20px', left: '20px', background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '1rem', fontFamily: 'Oswald'}}>
-             <ArrowLeft size={20} /> BACK
-        </button>
-
-        <h1 className="brand-title">{category === 'quiz' ? 'QUIZZES' : 'FLASHCARDS'}</h1>
+        <h1 className="brand-title">DASHBOARD</h1>
         
-        {allowMix && (
-          <div style={{display: 'flex', justifyContent: 'center'}}>
+        {/* --- SUBJECT FILTER --- */}
+        <div className="filter-bar">
+          <div className="filter-label"><Filter size={16}/> SUBJECT:</div>
+          <div className="filter-options">
             <button 
-              onClick={() => {
+                className={`filter-chip ${activeSubject === 'all' ? 'active' : ''}`}
+                onClick={() => setActiveSubject('all')}
+            >
+                ALL
+            </button>
+            {SUBJECTS_DATA.map(sub => (
+                <button 
+                    key={sub.id}
+                    className={`filter-chip ${activeSubject === sub.id ? 'active' : ''}`}
+                    onClick={() => setActiveSubject(sub.id)}
+                >
+                    {sub.name}
+                </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Mix Button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <button
+            onClick={() => {
                 setIsMultiSelectMode(!isMultiSelectMode);
                 setSelectedIds(new Set());
-              }}
-              className={`toggle-btn ${isMultiSelectMode ? 'active' : ''}`}
+            }}
+            className={`toggle-btn ${isMultiSelectMode ? 'active' : ''}`}
             >
-              <Layers size={18} />
-              {isMultiSelectMode ? 'Cancel Mix' : 'Create Custom Mix'}
+            <Layers size={18} />
+            {isMultiSelectMode ? 'Cancel Mix' : 'Create Custom Mix'}
             </button>
-          </div>
-        )}
+        </div>
       </div>
 
-      <div className="practice-grid">
-        {filteredPractices.length === 0 ? (
-            <div style={{gridColumn: '1/-1', textAlign: 'center', color: 'white'}}>
-                <h3>No content found for this category.</h3>
+      {/* --- SPLIT VIEW --- */}
+      <div className="split-view-container">
+        
+        {/* Left Column: Flashcards */}
+        <div className="split-column">
+            <div className="column-header">
+                <BookOpen size={24}/>
+                <h2>FLASHCARDS</h2>
             </div>
-        ) : (
-            filteredPractices.map((practice, index) => {
-            const isSelected = selectedIds.has(practice.id);
-            const canSelect = isMultiSelectMode;
-
-            return (
-                <button
-                key={practice.id || index}
-                onClick={() => {
-                    if (canSelect) {
-                    toggleSelection(practice.id);
-                    } else if (!isMultiSelectMode) {
-                    onSelect(practice);
-                    }
-                }}
-                className={`practice-card group ${canSelect && isSelected ? 'selected' : ''}`}
-                >
-                <div>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px'}}>
-                        {category === 'flashcard' ? <BookOpen size={16}/> : <Brain size={16}/>}
-                        <span style={{fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase'}}>
-                            {category === 'flashcard' ? 'FLASHCARD' : 'QUIZ'}
-                        </span>
-                    </div>
-                    <h3>{practice.title}</h3>
-                    <p>{practice.description}</p>
-                    <span className="tag">
-                    {practice.questions ? practice.questions.length : 0} ITEMS
-                    </span>
-                </div>
-                
-                {canSelect ? (
-                    <div style={{fontSize: '1.5rem'}}>
-                    {isSelected ? <CheckSquare /> : <Square />}
-                    </div>
+            <div className="practice-list">
+                {flashcards.length === 0 ? (
+                    <p className="empty-msg">No flashcards found.</p>
                 ) : (
-                    !isMultiSelectMode && <ChevronRight />
+                    flashcards.map(p => (
+                        <PracticeCard 
+                            key={p.id} 
+                            practice={p}
+                            isMultiSelectMode={isMultiSelectMode}
+                            isSelected={selectedIds.has(p.id)}
+                            toggleSelection={toggleSelection}
+                            onSelect={onSelectPractice}
+                        />
+                    ))
                 )}
-                </button>
-            );
-            })
-        )}
+            </div>
+        </div>
+
+        {/* Right Column: Quizzes */}
+        <div className="split-column">
+            <div className="column-header">
+                <Brain size={24}/>
+                <h2>QUIZZES</h2>
+            </div>
+            <div className="practice-list">
+                {quizzes.length === 0 ? (
+                    <p className="empty-msg">No quizzes found.</p>
+                ) : (
+                    quizzes.map(p => (
+                        <PracticeCard 
+                            key={p.id} 
+                            practice={p}
+                            isMultiSelectMode={isMultiSelectMode}
+                            isSelected={selectedIds.has(p.id)}
+                            toggleSelection={toggleSelection}
+                            onSelect={onSelectPractice}
+                        />
+                    ))
+                )}
+            </div>
+        </div>
+
       </div>
 
       {isMultiSelectMode && selectedIds.size > 0 && (
@@ -163,7 +243,6 @@ const PracticeList = ({ practices, category, onSelect, onBack }) => {
 
 export default function App() {
   const [activePractice, setActivePractice] = useState(null);
-  const [category, setCategory] = useState(null); // 'quiz' | 'flashcard' | null
 
   return (
     <div>
@@ -181,17 +260,7 @@ export default function App() {
             />
           )
         ) : (
-            // If no practice active, check category
-            category ? (
-                <PracticeList 
-                    practices={ALL_PRACTICES} 
-                    category={category}
-                    onSelect={setActivePractice}
-                    onBack={() => setCategory(null)}
-                />
-            ) : (
-                <CategorySelection onSelectCategory={setCategory} />
-            )
+            <HomeView onSelectPractice={setActivePractice} />
         )}
       </main>
     </div>
