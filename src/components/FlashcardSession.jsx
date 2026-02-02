@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Home, RefreshCw, ArrowRight, ArrowLeft, RotateCcw, Keyboard, Layers, ArrowRightLeft } from 'lucide-react';
+import { Card, Button, Typography, Flex, Space, Result } from 'antd';
+import { Home, Layers, Keyboard, HelpCircle, ArrowRightLeft, RotateCcw, ArrowLeft, ArrowRight } from 'lucide-react';
+import MissingLetterSession from './MissingLetterSession';
 
-// Utility to remove Vietnamese tones for flexible matching
+const { Title, Text } = Typography;
+
+// --- HELPERS ---
 const removeVietnameseTones = (str) => {
   if (!str) return "";
   str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -9,7 +13,6 @@ const removeVietnameseTones = (str) => {
   return str.toLowerCase().trim();
 };
 
-// Utility to shuffle questions
 const shuffleArray = (array) => {
   const newArr = [...array];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -20,48 +23,40 @@ const shuffleArray = (array) => {
 };
 
 const FlashcardSession = ({ data, onHome }) => {
-  // Mode: 'view' (flip cards) or 'speak' (fill in the blank)
   const [mode, setMode] = useState(null); 
-  // Direction: 'vi_en' (Viet -> Eng) or 'en_vi' (Eng -> Viet)
   const [direction, setDirection] = useState(null); 
-
+  
+  // Basic Session State
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  
-  // Speaking/Fill Mode States
   const [inputValue, setInputValue] = useState("");
-  const [feedback, setFeedback] = useState("neutral"); // neutral, correct, wrong
+  const [feedback, setFeedback] = useState("neutral");
   const [correctAnswerDisplay, setCorrectAnswerDisplay] = useState("");
   const inputRef = useRef(null);
 
-  // Initialize data with SHUFFLE
   useEffect(() => {
     if (data && data.questions) {
       setQueue(shuffleArray([...data.questions]));
     }
   }, [data]);
 
-  // Focus input in speak mode
+  // Focus for Type Mode
   useEffect(() => {
     if (mode === 'speak' && direction && feedback !== 'wrong' && inputRef.current) {
       inputRef.current.focus();
     }
   }, [currentIndex, mode, direction, feedback]);
 
-  // Keyboard navigation for View Mode
+  // Keyboard for View Mode
   useEffect(() => {
     if (mode !== 'view') return;
-
     const handleKeyDown = (e) => {
       if (e.code === 'Space') {
         e.preventDefault();
         setIsFlipped(prev => !prev);
-      } else if (e.code === 'ArrowRight') {
-        handleNext();
-      } else if (e.code === 'ArrowLeft') {
-        handlePrev();
-      }
+      } else if (e.code === 'ArrowRight') handleNext();
+      else if (e.code === 'ArrowLeft') handlePrev();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -87,32 +82,18 @@ const FlashcardSession = ({ data, onHome }) => {
 
     const currentCard = queue[currentIndex];
     const userAns = inputValue; 
-
     let isCorrect = false;
     let correctString = "";
 
-    // LOGIC BASED ON DIRECTION
     if (direction === 'vi_en') {
-      // Prompt: Vietnamese -> Expect: English
-      // Strict(ish) match for English (usually single answer)
       const target = (currentCard.speak || "").toLowerCase().trim();
       const input = userAns.toLowerCase().trim();
       isCorrect = input === target;
       correctString = currentCard.speak;
     } else {
-      // Prompt: English -> Expect: Vietnamese
-      // 1. Split by "/" to support multiple definitions (e.g. "Làm ơn / Vui lòng")
       const rawAnswers = (currentCard.answer || "").split('/');
-      
-      // 2. Normalize input
       const input = removeVietnameseTones(userAns);
-
-      // 3. Check if input matches ANY of the split segments
-      isCorrect = rawAnswers.some(ans => {
-        const target = removeVietnameseTones(ans);
-        return input === target;
-      });
-
+      isCorrect = rawAnswers.some(ans => removeVietnameseTones(ans) === input);
       correctString = currentCard.answer;
     }
 
@@ -121,22 +102,14 @@ const FlashcardSession = ({ data, onHome }) => {
       setTimeout(() => {
         setFeedback('neutral');
         setInputValue("");
-        if (currentIndex < queue.length - 1) {
-          setCurrentIndex(prev => prev + 1);
-        } else {
-          // Finished queue
-          setCurrentIndex(prev => prev + 1); 
-        }
+        if (currentIndex < queue.length - 1) setCurrentIndex(prev => prev + 1);
+        else setCurrentIndex(prev => prev + 1); 
       }, 800);
     } else {
       setFeedback('wrong');
       setCorrectAnswerDisplay(correctString);
-      
-      // Delay before moving next and requeueing
       setTimeout(() => {
-        // Add current card to end of queue (retry later)
         setQueue(prev => [...prev, currentCard]);
-        
         setFeedback('neutral');
         setCorrectAnswerDisplay("");
         setInputValue("");
@@ -147,166 +120,190 @@ const FlashcardSession = ({ data, onHome }) => {
 
   if (!data) return null;
 
-  // --- 1. MAIN SELECTION SCREEN ---
+  // --- MISSING LETTER COMPONENT ---
+  if (mode === 'missing') {
+    return <MissingLetterSession data={data} onHome={onHome} onBack={() => setMode(null)} />;
+  }
+
+  // --- MAIN MENU ---
   if (!mode) {
     return (
-      <div className="app-container" style={{ textAlign: 'center', color: 'white' }}>
-        <h1 className="session-title" style={{marginBottom: '20px'}}>{data.title}</h1>
-        <p style={{marginBottom: '40px'}}>{data.description}</p>
+      <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
+        <Title level={2}>{data.title}</Title>
+        <Text type="secondary" style={{ marginBottom: 40 }}>{data.description}</Text>
         
-        <div className="mode-selection">
-          <button onClick={() => setMode('view')} className="mode-card">
-            <Layers size={48} />
-            <h3>Flashcard</h3>
-            <p>Lật thẻ, học từ vựng.</p>
-          </button>
+        <Flex wrap gap="large" justify="center">
+          <Card 
+            hoverable 
+            onClick={() => setMode('view')}
+            style={{ width: 240, textAlign: 'center' }}
+          >
+            <Layers size={48} style={{ marginBottom: 16, color: '#1890ff' }} />
+            <Title level={4}>Flashcard</Title>
+            <Text type="secondary">Flip cards to learn.</Text>
+          </Card>
           
-          <button onClick={() => setMode('speak')} className="mode-card">
-            <Keyboard size={48} />
-            <h3>Điền Từ</h3>
-            <p>Kiểm tra trí nhớ, gõ từ.</p>
-          </button>
-        </div>
+          <Card 
+            hoverable 
+            onClick={() => setMode('speak')}
+            style={{ width: 240, textAlign: 'center' }}
+          >
+            <Keyboard size={48} style={{ marginBottom: 16, color: '#52c41a' }} />
+            <Title level={4}>Typing</Title>
+            <Text type="secondary">Type the full answer.</Text>
+          </Card>
 
-        <button onClick={onHome} className="btn-secondary" style={{margin: '40px auto'}}>
-          <Home size={18} /> Back to Home
-        </button>
-      </div>
+          <Card 
+            hoverable 
+            onClick={() => setMode('missing')}
+            style={{ width: 240, textAlign: 'center' }}
+          >
+            <HelpCircle size={48} style={{ marginBottom: 16, color: '#faad14' }} />
+            <Title level={4}>Missing Letter</Title>
+            <Text type="secondary">Fill in the blank.</Text>
+          </Card>
+        </Flex>
+
+        <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>
+          Back to Home
+        </Button>
+      </Flex>
     );
   }
 
-  // --- 2. SUB-SELECTION (DIRECTION) FOR "ĐIỀN TỪ" ---
+  // --- TYPING DIRECTION MENU ---
   if (mode === 'speak' && !direction) {
     return (
-      <div className="app-container" style={{ textAlign: 'center', color: 'white' }}>
-        <h2 className="session-title" style={{marginBottom: '30px'}}>Chọn chế độ Điền Từ</h2>
-        
-        <div className="mode-selection">
-          <button onClick={() => setDirection('vi_en')} className="mode-card">
-            <ArrowRightLeft size={48} />
-            <h3>Tiếng Việt → Tiếng Anh</h3>
-            <p>Hiện nghĩa tiếng Việt, bạn gõ từ tiếng Anh.</p>
-          </button>
-          
-          <button onClick={() => setDirection('en_vi')} className="mode-card">
-            <ArrowRightLeft size={48} />
-            <h3>Tiếng Anh → Tiếng Việt</h3>
-            <p>Hiện từ tiếng Anh, bạn gõ nghĩa tiếng Việt.</p>
-            <p style={{fontSize: '0.8em', opacity: 0.8}}>(Chấp nhận một trong các nghĩa)</p>
-          </button>
-        </div>
-
-        <button onClick={() => setMode(null)} className="btn-secondary" style={{margin: '40px auto'}}>
-           Cancel
-        </button>
-      </div>
+      <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
+        <Title level={3} style={{ marginBottom: 30 }}>Select Mode</Title>
+        <Space direction="horizontal" size="large">
+          <Card hoverable onClick={() => setDirection('vi_en')} style={{ width: 300, textAlign: 'center' }}>
+            <ArrowRightLeft size={32} style={{ marginBottom: 10 }} />
+            <Title level={5}>VN → EN</Title>
+            <Text>See Vietnamese, Type English</Text>
+          </Card>
+          <Card hoverable onClick={() => setDirection('en_vi')} style={{ width: 300, textAlign: 'center' }}>
+            <ArrowRightLeft size={32} style={{ marginBottom: 10 }} />
+            <Title level={5}>EN → VN</Title>
+            <Text>See English, Type Vietnamese</Text>
+          </Card>
+        </Space>
+        <Button onClick={() => setMode(null)} style={{ marginTop: 30 }}>Cancel</Button>
+      </Flex>
     );
   }
 
   // --- COMPLETED SCREEN ---
   if (currentIndex >= queue.length) {
     return (
-      <div className="app-container">
-        <div className="result-box">
-          <RefreshCw size={60} />
-          <h2>Hoàn thành!</h2>
-          <div className="action-buttons" style={{marginTop: '20px'}}>
-             <button onClick={onHome} className="btn-secondary">
-              <Home size={18} /> Home
-            </button>
-            <button onClick={() => {
-              // Restart with SHUFFLE
-              setQueue(shuffleArray([...data.questions]));
-              setCurrentIndex(0);
-              // Reset only logic states, keep mode/direction if desired, or reset all
-              setDirection(null); 
-              setMode(null);
-            }} className="btn-primary">
-              <RotateCcw size={18} /> Restart
-            </button>
-          </div>
-        </div>
-      </div>
+        <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
+        <Result
+          status="success"
+          title="Session Completed!"
+          extra={[
+            <Button key="home" onClick={onHome}>Home</Button>,
+            <Button key="restart" type="primary" onClick={() => {
+               setQueue(shuffleArray([...data.questions]));
+               setCurrentIndex(0);
+               setDirection(null); 
+               setMode(null);
+            }}>Restart</Button>,
+          ]}
+        />
+      </Flex>
     );
   }
 
   const currentCard = queue[currentIndex];
 
-  // --- VIEW MODE RENDER (FLASHCARD) ---
+  // --- FLASHCARD VIEW ---
   if (mode === 'view') {
     return (
-      <div className="app-container">
-        <div className="progress-header">
-          <button onClick={onHome}><Home size={18} /> EXIT</button>
-          <span style={{fontWeight: '700'}}>{currentIndex + 1} / {queue.length}</span>
-        </div>
+      <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+        <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
+          <Button icon={<Home size={16}/>} onClick={onHome}>Exit</Button>
+          <Text strong>{currentIndex + 1} / {queue.length}</Text>
+        </Flex>
 
-        <div className="flashcard-container" onClick={() => setIsFlipped(!isFlipped)}>
-          <div className={`flashcard-inner ${isFlipped ? 'flipped' : ''}`}>
-            <div className="flashcard-front">
-              {/* Standard Question Display */}
-              <h2 className="fc-text">{currentCard.question}</h2>
-              <div className="fc-hint">Click or Space to Flip</div>
-            </div>
-            <div className="flashcard-back">
-              <h2 className="fc-text" style={{marginBottom: '10px'}}>{currentCard.speak}</h2>
-              <p className="fc-sub" style={{marginTop: '0'}}>{currentCard.answer}</p>
-            </div>
+        <div onClick={() => setIsFlipped(!isFlipped)} style={{ cursor: 'pointer', perspective: '1000px', height: 300 }}>
+          <div style={{
+            position: 'relative', width: '100%', height: '100%', transition: 'transform 0.6s', transformStyle: 'preserve-3d',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          }}>
+            {/* Front */}
+            <Card style={{ 
+                position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', 
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            }}>
+              <Title level={2}>{currentCard.question}</Title>
+              <Text type="secondary">Click or Space to Flip</Text>
+            </Card>
+
+            {/* Back */}
+            <Card style={{ 
+                position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', 
+                transform: 'rotateY(180deg)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            }}>
+              <Title level={2} style={{ color: '#1890ff' }}>{currentCard.speak}</Title>
+              <Title level={4}>{currentCard.answer}</Title>
+            </Card>
           </div>
         </div>
 
-        <div className="fc-controls">
-          <button onClick={(e) => { e.stopPropagation(); handlePrev(); }} disabled={currentIndex === 0}>
-            <ArrowLeft /> Prev
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); setIsFlipped(!isFlipped); }}>
-            <RotateCcw size={18} /> Flip
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); handleNext(); }} disabled={currentIndex === queue.length - 1}>
-            Next <ArrowRight />
-          </button>
-        </div>
+        <Flex justify="center" gap="middle" style={{ marginTop: 30 }}>
+          <Button icon={<ArrowLeft size={16} />} onClick={(e) => {e.stopPropagation(); handlePrev()}} disabled={currentIndex === 0}>Prev</Button>
+          <Button icon={<RotateCcw size={16} />} onClick={(e) => {e.stopPropagation(); setIsFlipped(!isFlipped)}}>Flip</Button>
+          <Button icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}} disabled={currentIndex === queue.length - 1}>Next</Button>
+        </Flex>
       </div>
     );
   }
 
-  // --- SPEAKING / FILL MODE RENDER ---
+  // --- TYPING VIEW ---
   const displayQuestion = direction === 'vi_en' ? currentCard.answer : currentCard.speak;
-  const inputPlaceholder = direction === 'vi_en' ? "Nhập từ tiếng Anh..." : "Nhập nghĩa tiếng Việt...";
-  const subText = direction === 'vi_en' ? "Nhập từ tiếng Anh tương ứng" : "Nhập nghĩa tiếng Việt (có thể không dấu)";
-
+  const inputPlaceholder = direction === 'vi_en' ? "Type English..." : "Type Vietnamese...";
+  
   return (
-    <div className="app-container">
-       <div className="progress-header">
-          <button onClick={() => { setDirection(null); setMode(null); }}><Home size={18} /> EXIT</button>
-          <span style={{fontWeight: '700'}}>{currentIndex + 1} / {queue.length}</span>
-      </div>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
+         <Button icon={<Home size={16}/>} onClick={() => { setDirection(null); setMode(null); }}>Exit</Button>
+         <Text strong>{currentIndex + 1} / {queue.length}</Text>
+      </Flex>
 
-      <div className="question-card" style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-        <h2 className="question-text" style={{marginBottom: '10px'}}>{displayQuestion}</h2>
-        <p style={{color: '#666', marginBottom: '30px'}}>{subText}</p>
+      <Card style={{ textAlign: 'center', padding: 40, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+        <Title level={2} style={{ marginBottom: 10 }}>{displayQuestion}</Title>
+        <Text type="secondary" style={{ display: 'block', marginBottom: 30 }}>
+            {direction === 'vi_en' ? "Enter the English word" : "Enter the Vietnamese meaning"}
+        </Text>
 
         {feedback === 'wrong' ? (
-           <div className="feedback-error">
-              <p>Đáp án đúng: <strong>{correctAnswerDisplay}</strong></p>
+           <div style={{ padding: 20, background: '#fff1f0', border: '1px solid #ffa39e', borderRadius: 8, color: '#cf1322' }}>
+              <Text strong>Correct Answer: {correctAnswerDisplay}</Text>
            </div>
         ) : (
-          <form onSubmit={handleSpeakSubmit} style={{width: '100%', maxWidth: '400px'}}>
+          <form onSubmit={handleSpeakSubmit}>
             <input
               ref={inputRef}
               type="text"
-              className={`speak-input ${feedback === 'correct' ? 'input-correct' : ''}`}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={inputPlaceholder}
               disabled={feedback !== 'neutral'}
               autoComplete="off"
+              style={{
+                width: '100%', maxWidth: 400, padding: '10px 15px', fontSize: 18, 
+                borderRadius: 6, border: feedback === 'correct' ? '2px solid #52c41a' : '1px solid #d9d9d9',
+                outline: 'none'
+              }}
             />
           </form>
         )}
         
-        {feedback === 'correct' && <div style={{marginTop: '20px', color: 'green', fontWeight: 'bold'}}>CHÍNH XÁC!</div>}
-      </div>
+        {feedback === 'correct' && <Title level={4} type="success" style={{ marginTop: 20 }}>Correct!</Title>}
+      </Card>
     </div>
   );
 };

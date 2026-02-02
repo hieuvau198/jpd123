@@ -1,0 +1,141 @@
+{
+  "id": "flashcard-english-7-unit-9",
+  "title": "English 7 Unit 9",
+  "subject": "english",
+  "tags": ["english-7", "unit-9", "festival", "vocab"],
+  "description": "Từ vựng tiếng Anh lớp 7 Unit 9: Festivals around the world (Các lễ hội trên thế giới).",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Candy (n)",
+      "answer": "Kẹo",
+      "speak": "Candy"
+    },
+    {
+      "id": 2,
+      "question": "Cannes Film Festival",
+      "answer": "Liên hoan phim Cannes",
+      "speak": "Cannes Film Festival"
+    },
+    {
+      "id": 3,
+      "question": "Carve (v)",
+      "answer": "Chạm, khắc",
+      "speak": "Carve"
+    },
+    {
+      "id": 4,
+      "question": "Costume (n)",
+      "answer": "Trang phục",
+      "speak": "Costume"
+    },
+    {
+      "id": 5,
+      "question": "Decorate (v)",
+      "answer": "Trang trí",
+      "speak": "Decorate"
+    },
+    {
+      "id": 6,
+      "question": "Decoration (n)",
+      "answer": "Đồ trang trí",
+      "speak": "Decoration"
+    },
+    {
+      "id": 7,
+      "question": "Disappointing (adj)",
+      "answer": "Đáng thất vọng",
+      "speak": "Disappointing"
+    },
+    {
+      "id": 8,
+      "question": "Disappointment (n)",
+      "answer": "Sự thất vọng",
+      "speak": "Disappointment"
+    },
+    {
+      "id": 9,
+      "question": "Dutch (adj, n)",
+      "answer": "Thuộc về Hà Lan / Người Hà Lan",
+      "speak": "Dutch"
+    },
+    {
+      "id": 10,
+      "question": "Easter (n)",
+      "answer": "Lễ Phục sinh",
+      "speak": "Easter"
+    },
+    {
+      "id": 11,
+      "question": "Feast (n)",
+      "answer": "Bữa tiệc",
+      "speak": "Feast"
+    },
+    {
+      "id": 12,
+      "question": "Feature (v)",
+      "answer": "Trình diễn đặc biệt",
+      "speak": "Feature"
+    },
+    {
+      "id": 13,
+      "question": "Fireworks display",
+      "answer": "Bắn pháo hoa",
+      "speak": "Fireworks display"
+    },
+    {
+      "id": 14,
+      "question": "Float (n)",
+      "answer": "Xe diễu hành",
+      "speak": "Float"
+    },
+    {
+      "id": 15,
+      "question": "Folk dance (n)",
+      "answer": "Điệu nhảy / múa dân gian",
+      "speak": "Folk dance"
+    },
+    {
+      "id": 16,
+      "question": "Mid-Autumn Festival",
+      "answer": "Tết Trung thu",
+      "speak": "Mid-Autumn Festival"
+    },
+    {
+      "id": 17,
+      "question": "(the) Netherlands",
+      "answer": "Nước Hà Lan",
+      "speak": "Netherlands"
+    },
+    {
+      "id": 18,
+      "question": "Parade (n)",
+      "answer": "Cuộc diễu hành",
+      "speak": "Parade"
+    },
+    {
+      "id": 19,
+      "question": "Prosperity (n)",
+      "answer": "Sự thịnh vượng",
+      "speak": "Prosperity"
+    },
+    {
+      "id": 20,
+      "question": "Symbol (n)",
+      "answer": "Biểu tượng",
+      "speak": "Symbol"
+    },
+    {
+      "id": 21,
+      "question": "Take part in",
+      "answer": "Tham gia",
+      "speak": "Take part in"
+    },
+    {
+      "id": 22,
+      "question": "Thanksgiving (n)",
+      "answer": "Lễ Tạ ơn",
+      "speak": "Thanksgiving"
+    }
+  ]
+}

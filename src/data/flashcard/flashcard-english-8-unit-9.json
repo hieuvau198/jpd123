@@ -1,0 +1,165 @@
+{
+  "id": "flashcard-english-8-unit-9",
+  "title": "English 8 Unit 9",
+  "subject": "english",
+  "tags": ["english-8", "unit-9", "disaster", "vocab"],
+  "description": "Từ vựng tiếng Anh lớp 8 Unit 9: Natural Disasters (Thảm họa thiên nhiên).",
+  "questions": [
+    {
+      "id": 1,
+      "question": "authority (n)",
+      "answer": "chính quyền",
+      "speak": "authority"
+    },
+    {
+      "id": 2,
+      "question": "damage (n, v)",
+      "answer": "thiệt hại, gây tổn hại",
+      "speak": "damage"
+    },
+    {
+      "id": 3,
+      "question": "destroy (v)",
+      "answer": "phá huỷ",
+      "speak": "destroy"
+    },
+    {
+      "id": 4,
+      "question": "disaster (n)",
+      "answer": "thảm hoạ",
+      "speak": "disaster"
+    },
+    {
+      "id": 5,
+      "question": "earthquake (n)",
+      "answer": "trận động đất",
+      "speak": "earthquake"
+    },
+    {
+      "id": 6,
+      "question": "emergency kit",
+      "answer": "bộ dụng cụ dùng trong trường hợp khẩn cấp",
+      "speak": "emergency kit"
+    },
+    {
+      "id": 7,
+      "question": "erupt (v)",
+      "answer": "phun trào",
+      "speak": "erupt"
+    },
+    {
+      "id": 8,
+      "question": "Fahrenheit (n)",
+      "answer": "độ F (đo nhiệt độ)",
+      "speak": "Fahrenheit"
+    },
+    {
+      "id": 9,
+      "question": "funnel (n)",
+      "answer": "cái phễu",
+      "speak": "funnel"
+    },
+    {
+      "id": 10,
+      "question": "landslide (n)",
+      "answer": "vụ sạt lở",
+      "speak": "landslide"
+    },
+    {
+      "id": 11,
+      "question": "liquid (n)",
+      "answer": "chất lỏng",
+      "speak": "liquid"
+    },
+    {
+      "id": 12,
+      "question": "predict (v)",
+      "answer": "dự đoán",
+      "speak": "predict"
+    },
+    {
+      "id": 13,
+      "question": "pretty (adv)",
+      "answer": "khá là",
+      "speak": "pretty"
+    },
+    {
+      "id": 14,
+      "question": "property (n)",
+      "answer": "của cải, nhà cửa",
+      "speak": "property"
+    },
+    {
+      "id": 15,
+      "question": "pull up",
+      "answer": "kéo lên, nhổ lên, lôi lên",
+      "speak": "pull up"
+    },
+    {
+      "id": 16,
+      "question": "rescue worker (n)",
+      "answer": "nhân viên cứu hộ",
+      "speak": "rescue worker"
+    },
+    {
+      "id": 17,
+      "question": "Richter scale (n)",
+      "answer": "độ rích te (đo độ mạnh của động đất)",
+      "speak": "Richter scale"
+    },
+    {
+      "id": 18,
+      "question": "shake (v)",
+      "answer": "rung, lắc",
+      "speak": "shake"
+    },
+    {
+      "id": 19,
+      "question": "storm (n)",
+      "answer": "bão",
+      "speak": "storm"
+    },
+    {
+      "id": 20,
+      "question": "suddenly (adv)",
+      "answer": "đột nhiên, bỗng nhiên",
+      "speak": "suddenly"
+    },
+    {
+      "id": 21,
+      "question": "tornado (n)",
+      "answer": "lốc xoáy",
+      "speak": "tornado"
+    },
+    {
+      "id": 22,
+      "question": "tremble (v)",
+      "answer": "rung lắc",
+      "speak": "tremble"
+    },
+    {
+      "id": 23,
+      "question": "tsunami (n)",
+      "answer": "trận sóng thần",
+      "speak": "tsunami"
+    },
+    {
+      "id": 24,
+      "question": "victim (n)",
+      "answer": "nạn nhân",
+      "speak": "victim"
+    },
+    {
+      "id": 25,
+      "question": "volcanic (adj)",
+      "answer": "thuộc / gây ra bởi núi lửa",
+      "speak": "volcanic"
+    },
+    {
+      "id": 26,
+      "question": "warn (v)",
+      "answer": "cảnh báo",
+      "speak": "warn"
+    }
+  ]
+}
