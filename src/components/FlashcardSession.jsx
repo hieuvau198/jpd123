@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Space, Result } from 'antd';
-import { Home, Layers, Keyboard, HelpCircle, ArrowRightLeft, RotateCcw, ArrowLeft, ArrowRight } from 'lucide-react';
+// Added 'Grid' to imports
+import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowRightLeft, RotateCcw, ArrowLeft, ArrowRight } from 'lucide-react';
 import MissingLetterSession from './MissingLetterSession';
+import MatchingSession from './MatchingSession'; // <--- IMPORT NEW COMPONENT
 
 const { Title, Text } = Typography;
 
-// --- HELPERS ---
+// ... (Keep existing helper functions: removeVietnameseTones, shuffleArray) ...
+// ... (Make sure removeVietnameseTones and shuffleArray are still defined here) ...
 const removeVietnameseTones = (str) => {
   if (!str) return "";
   str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -41,14 +44,14 @@ const FlashcardSession = ({ data, onHome }) => {
     }
   }, [data]);
 
-  // Focus for Type Mode
+  // ... (Keep existing Focus and Keyboard effects) ...
+
   useEffect(() => {
     if (mode === 'speak' && direction && feedback !== 'wrong' && inputRef.current) {
       inputRef.current.focus();
     }
   }, [currentIndex, mode, direction, feedback]);
 
-  // Keyboard for View Mode
   useEffect(() => {
     if (mode !== 'view') return;
     const handleKeyDown = (e) => {
@@ -77,6 +80,7 @@ const FlashcardSession = ({ data, onHome }) => {
   };
 
   const handleSpeakSubmit = (e) => {
+     // ... (Keep existing logic) ...
     e.preventDefault();
     if (feedback !== 'neutral') return;
 
@@ -120,9 +124,15 @@ const FlashcardSession = ({ data, onHome }) => {
 
   if (!data) return null;
 
-  // --- MISSING LETTER COMPONENT ---
+  // --- RENDER MODES ---
+
   if (mode === 'missing') {
     return <MissingLetterSession data={data} onHome={onHome} onBack={() => setMode(null)} />;
+  }
+
+  // >>> NEW MATCHING MODE <<<
+  if (mode === 'matching') {
+    return <MatchingSession data={data} onHome={onHome} onBack={() => setMode(null)} />;
   }
 
   // --- MAIN MENU ---
@@ -162,6 +172,18 @@ const FlashcardSession = ({ data, onHome }) => {
             <Title level={4}>Missing Letter</Title>
             <Text type="secondary">Fill in the blank.</Text>
           </Card>
+
+          {/* >>> NEW MATCHING CARD <<< */}
+          <Card 
+            hoverable 
+            onClick={() => setMode('matching')}
+            style={{ width: 240, textAlign: 'center' }}
+          >
+            <Grid size={48} style={{ marginBottom: 16, color: '#722ed1' }} />
+            <Title level={4}>Matching</Title>
+            <Text type="secondary">Pair words & meanings.</Text>
+          </Card>
+
         </Flex>
 
         <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>
@@ -170,6 +192,9 @@ const FlashcardSession = ({ data, onHome }) => {
       </Flex>
     );
   }
+
+  // ... (Keep existing Direction Menu, Completed Screen, Flashcard View, Typing View) ...
+  // (Paste the rest of the file content here as it was, no changes needed below this point)
 
   // --- TYPING DIRECTION MENU ---
   if (mode === 'speak' && !direction) {
@@ -194,7 +219,8 @@ const FlashcardSession = ({ data, onHome }) => {
   }
 
   // --- COMPLETED SCREEN ---
-  if (currentIndex >= queue.length) {
+  if (currentIndex >= queue.length && mode !== 'matching' && mode !== 'missing') {
+    // Note: I added mode checks above just in case, but usually matching returns its own view
     return (
         <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
         <Result
@@ -218,6 +244,7 @@ const FlashcardSession = ({ data, onHome }) => {
 
   // --- FLASHCARD VIEW ---
   if (mode === 'view') {
+    // ... (same as original)
     return (
       <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
         <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
@@ -263,6 +290,7 @@ const FlashcardSession = ({ data, onHome }) => {
   }
 
   // --- TYPING VIEW ---
+  // ... (same as original)
   const displayQuestion = direction === 'vi_en' ? currentCard.answer : currentCard.speak;
   const inputPlaceholder = direction === 'vi_en' ? "Type English..." : "Type Vietnamese...";
   
