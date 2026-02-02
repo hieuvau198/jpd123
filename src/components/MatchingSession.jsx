@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Typography, Flex, Result, message } from 'antd';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { Card, Button, Typography, Flex, Result, message, Progress } from 'antd';
+import { ArrowLeft, CheckCircle, Trophy } from 'lucide-react';
 
 const { Title, Text } = Typography;
+
+const SECTION_SIZE = 6; // 6 words = 12 cards per screen
+
+// --- COLORS ---
+const CARD_COLORS = [
+  '#FF9AA2', // Light Red
+  '#FFB7B2', // Salmon
+  '#FFDAC1', // Peach
+  '#E2F0CB', // Lime
+  '#B5EAD7', // Mint
+  '#C7CEEA', // Periwinkle
+  '#90CCF4', // Light Blue
+  '#F3D250', // Yellow
+  '#F78888', // Coral
+  '#93B5C6', // Greyish Blue
+];
 
 // --- UTILS ---
 const shuffleArray = (array) => {
@@ -15,47 +31,72 @@ const shuffleArray = (array) => {
 };
 
 const MatchingSession = ({ data, onHome, onBack }) => {
-  const [gameItems, setGameItems] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [matchedIds, setMatchedIds] = useState(new Set());
+  // --- STATE ---
+  const [allQuestions, setAllQuestions] = useState([]); // The full queue of words
+  const [sectionIndex, setSectionIndex] = useState(0);  // Current section (0, 1, 2...)
+  
+  const [gameItems, setGameItems] = useState([]);       // The cards currently on screen
+  const [selectedIds, setSelectedIds] = useState([]);   // Cards currently selected by user
+  const [matchedIds, setMatchedIds] = useState(new Set()); // Cards matched in this section
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
-  // Initialize Game
+  // 1. Initialize & Shuffle Full Deck
   useEffect(() => {
     if (data && data.questions) {
-      // 1. Pick 5 random questions (or fewer if data has < 5)
-      const allQuestions = shuffleArray([...data.questions]);
-      const selectedQuestions = allQuestions.slice(0, 5);
-
-      // 2. Create pairs (Question Card & Answer Card)
-      const deck = [];
-      selectedQuestions.forEach(q => {
-        // Card for Question (English)
-        deck.push({
-          uid: `q-${q.id}`,
-          pairId: q.id,
-          content: q.speak || q.question, // Prefer 'speak' field if available for cleaner text
-          type: 'question'
-        });
-        
-        // Card for Answer (Vietnamese)
-        deck.push({
-          uid: `a-${q.id}`,
-          pairId: q.id,
-          content: q.answer,
-          type: 'answer'
-        });
-      });
-
-      // 3. Shuffle the deck of 10 cards
-      setGameItems(shuffleArray(deck));
-      setMatchedIds(new Set());
-      setSelectedIds([]);
+      setAllQuestions(shuffleArray([...data.questions]));
+      setSectionIndex(0);
+      setIsFinished(false);
     }
   }, [data]);
 
+  // 2. Load Section whenever index or matching resets
+  useEffect(() => {
+    if (allQuestions.length === 0) return;
+
+    const startIndex = sectionIndex * SECTION_SIZE;
+    
+    // Check if we are done
+    if (startIndex >= allQuestions.length) {
+      setIsFinished(true);
+      return;
+    }
+
+    // Slice the next batch
+    const currentBatch = allQuestions.slice(startIndex, startIndex + SECTION_SIZE);
+    
+    // Prepare Cards for this batch
+    const deck = [];
+    currentBatch.forEach(q => {
+      deck.push({
+        uid: `q-${q.id}`,
+        pairId: q.id,
+        content: q.speak || q.question,
+        type: 'question'
+      });
+      deck.push({
+        uid: `a-${q.id}`,
+        pairId: q.id,
+        content: q.answer,
+        type: 'answer'
+      });
+    });
+
+    // Assign random colors and shuffle
+    const shuffledDeck = shuffleArray(deck).map(item => ({
+        ...item,
+        bgColor: CARD_COLORS[Math.floor(Math.random() * CARD_COLORS.length)]
+    }));
+
+    setGameItems(shuffledDeck);
+    setMatchedIds(new Set());
+    setSelectedIds([]);
+    setIsProcessing(false);
+
+  }, [sectionIndex, allQuestions]);
+
+  // 3. Card Click Handler
   const handleCardClick = (uid) => {
-    // Ignore if processing, already matched, or clicked same card twice
     if (isProcessing || matchedIds.has(uid) || selectedIds.includes(uid)) return;
 
     const newSelected = [...selectedIds, uid];
@@ -69,50 +110,49 @@ const MatchingSession = ({ data, onHome, onBack }) => {
       const card2 = gameItems.find(item => item.uid === newSelected[1]);
 
       if (card1.pairId === card2.pairId) {
-        // Match found!
-        message.success("Matched!");
-        setTimeout(() => {
-            setMatchedIds(prev => new Set([...prev, card1.uid, card2.uid]));
-            setSelectedIds([]);
-            setIsProcessing(false);
-        }, 300); // Short delay to see the second selection
+        // MATCH
+        const newMatched = new Set([...matchedIds, card1.uid, card2.uid]);
+        setMatchedIds(newMatched);
+        setSelectedIds([]);
+        setIsProcessing(false);
+
+        // Check if section complete
+        if (newMatched.size === gameItems.length) {
+            handleSectionComplete();
+        }
+
       } else {
-        // No match
+        // NO MATCH
         setTimeout(() => {
             setSelectedIds([]);
             setIsProcessing(false);
-        }, 1000); // 1s delay to memorize mistake
+        }, 800);
       }
     }
   };
 
-  // --- WIN CONDITION ---
-  if (gameItems.length > 0 && matchedIds.size === gameItems.length) {
+  const handleSectionComplete = () => {
+     message.success("Section Complete! Moving to next...");
+     setTimeout(() => {
+         setSectionIndex(prev => prev + 1);
+     }, 1000);
+  };
+
+  // --- FINISHED SCREEN ---
+  if (isFinished) {
     return (
       <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
         <Result
           status="success"
-          icon={<CheckCircle size={60} color="#52c41a" />}
-          title="Great Job!"
-          subTitle="You matched all pairs correctly."
+          icon={<Trophy size={80} color="#ffec3d" style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }} />}
+          title="All Sections Completed!"
+          subTitle={`You successfully matched all ${allQuestions.length} pairs.`}
           extra={[
             <Button key="home" onClick={onHome}>Home</Button>,
             <Button key="restart" type="primary" onClick={() => {
-               // Re-trigger init by clearing then setting items (or just force remount in parent)
-               // Simple way: call onBack then user clicks matching again, or we duplicate logic.
-               // Let's reuse the shuffle logic by forcing a re-mount via key or state reset:
-               setMatchedIds(new Set());
-               setSelectedIds([]);
-               // Reshuffle logic needs to run again. 
-               // Quickest way: just call the init logic again or simple reload:
-               const allQuestions = shuffleArray([...data.questions]);
-               const selectedQuestions = allQuestions.slice(0, 5);
-               const deck = [];
-               selectedQuestions.forEach(q => {
-                 deck.push({ uid: `q-${q.id}`, pairId: q.id, content: q.speak || q.question, type: 'question' });
-                 deck.push({ uid: `a-${q.id}`, pairId: q.id, content: q.answer, type: 'answer' });
-               });
-               setGameItems(shuffleArray(deck));
+               setAllQuestions(shuffleArray([...data.questions]));
+               setSectionIndex(0);
+               setIsFinished(false);
             }}>Play Again</Button>,
           ]}
         />
@@ -120,48 +160,77 @@ const MatchingSession = ({ data, onHome, onBack }) => {
     );
   }
 
+  // Calculate Progress
+  const totalSections = Math.ceil(allQuestions.length / SECTION_SIZE);
+  const progressPercent = Math.round((sectionIndex / totalSections) * 100);
+
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20 }}>
       {/* HEADER */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>Back</Button>
-        <Text strong>Match the pairs</Text>
-        <div style={{ width: 60 }} /> {/* Spacer for centering */}
+        
+        <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
+            <Flex vertical align="center">
+                <Text strong>Section {sectionIndex + 1} / {totalSections}</Text>
+                <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
+            </Flex>
+        </div>
+
+        <Button type="text" disabled>
+            {matchedIds.size / 2} / {gameItems.length / 2} pairs
+        </Button>
       </Flex>
 
       {/* GRID */}
       <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
-          gap: 16 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', // BIGGER COLUMNS
+          gap: 20 // MORE SPACE
       }}>
         {gameItems.map((item) => {
             const isSelected = selectedIds.includes(item.uid);
             const isMatched = matchedIds.has(item.uid);
 
-            // If matched, we can hide it or show it as 'done'. 
-            // "Cards disappear" request -> opacity 0 or visibility hidden
-            const style = isMatched ? { opacity: 0, pointerEvents: 'none' } : {};
+            const style = isMatched ? { 
+                opacity: 0, 
+                pointerEvents: 'none', 
+                transform: 'scale(0.5)' 
+            } : {};
 
             return (
                 <Card 
                     key={item.uid}
                     hoverable={!isMatched}
                     onClick={() => handleCardClick(item.uid)}
+                    bordered={false}
                     style={{ 
                         ...style,
-                        height: 120, 
+                        height: 160, // BIGGER HEIGHT
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
                         textAlign: 'center',
-                        border: isSelected ? '2px solid #1890ff' : '1px solid #d9d9d9',
-                        background: isSelected ? '#e6f7ff' : '#fff',
-                        transition: 'all 0.3s',
-                        cursor: isMatched ? 'default' : 'pointer'
+                        
+                        // Dynamic Color Background
+                        background: item.bgColor,
+                        
+                        // Selection State: Thick Black Border + Scale
+                        border: isSelected ? '3px solid #000' : 'none',
+                        transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                        
+                        transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Bouncy transition
+                        cursor: isMatched ? 'default' : 'pointer',
+                        borderRadius: 16,
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                     }}
+                    bodyStyle={{ padding: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                    <Text strong style={{ fontSize: 16 }}>
+                    <Text strong style={{ 
+                        fontSize: '1.2rem', // BIGGER FONT
+                        color: '#333',
+                        lineHeight: 1.3
+                    }}>
                         {item.content}
                     </Text>
                 </Card>
