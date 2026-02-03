@@ -4,7 +4,7 @@ import { ArrowLeft, CheckCircle, Trophy } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
-const SECTION_SIZE = 6; // 6 words = 12 cards per screen
+const SECTION_SIZE = 5;
 
 // --- COLORS ---
 const CARD_COLORS = [

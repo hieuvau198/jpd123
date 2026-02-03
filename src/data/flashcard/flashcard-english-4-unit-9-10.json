@@ -1,0 +1,33 @@
+{
+  "id": "flashcard-english-grade4-unit-9-10",
+  "title": "Tiếng Anh Lớp 4 - Unit 9 & 10",
+  "subject": "english",
+  "tags": ["grade4", "unit9", "unit10", "vocab"],
+  "description": "Từ vựng Unit 9: What are they doing? & Unit 10: Where were you yesterday?",
+  "questions": [
+    { "id": 1, "question": "Dictation", "answer": "Bài chính tả", "speak": "dictation" },
+    { "id": 2, "question": "Exercise", "answer": "Bài tập", "speak": "exercise" },
+    { "id": 3, "question": "Listen", "answer": "Nghe", "speak": "listen" },
+    { "id": 4, "question": "Make", "answer": "Làm", "speak": "make" },
+    { "id": 5, "question": "Mask", "answer": "Cái mặt nạ", "speak": "mask" },
+    { "id": 6, "question": "Paint", "answer": "Tô màu", "speak": "paint" },
+    { "id": 7, "question": "Paper", "answer": "Giấy", "speak": "paper" },
+    { "id": 8, "question": "Plane", "answer": "Máy bay", "speak": "plane" },
+    { "id": 9, "question": "Puppet", "answer": "Con rối", "speak": "puppet" },
+    { "id": 10, "question": "Text", "answer": "Bài đọc", "speak": "text" },
+    { "id": 11, "question": "Video", "answer": "Băng/phim video", "speak": "video" },
+    { "id": 12, "question": "Watch", "answer": "Xem, theo dõi", "speak": "watch" },
+    { "id": 13, "question": "Write", "answer": "Viết", "speak": "write" },
+    { "id": 14, "question": "Beach", "answer": "Bãi biển", "speak": "beach" },
+    { "id": 15, "question": "Dishes", "answer": "Bát đĩa", "speak": "dishes" },
+    { "id": 16, "question": "Flower", "answer": "Hoa", "speak": "flower" },
+    { "id": 17, "question": "Home", "answer": "Nhà, chỗ ở", "speak": "home" },
+    { "id": 18, "question": "Homework", "answer": "Bài tập về nhà", "speak": "homework" },
+    { "id": 19, "question": "Library", "answer": "Thư viện", "speak": "library" },
+    { "id": 20, "question": "Radio", "answer": "Đài radio", "speak": "radio" },
+    { "id": 21, "question": "Wash", "answer": "Rửa, giặt", "speak": "wash" },
+    { "id": 22, "question": "Water", "answer": "Tưới", "speak": "water" },
+    { "id": 23, "question": "Yesterday", "answer": "Hôm qua", "speak": "yesterday" },
+    { "id": 24, "question": "Zoo", "answer": "Bách thú, sở thú", "speak": "zoo" }
+  ]
+}
