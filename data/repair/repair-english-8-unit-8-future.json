@@ -1,0 +1,68 @@
+{
+  "id": "repair-english-8-unit-8-future",
+  "title": "Unit 8 - Present Simple for Future Events",
+  "subject": "English 8",
+  "tags": ["grade8", "unit8"],
+  "questions": [
+    {
+      "id": "q1",
+      "level": "easy",
+      "question": ["starts", "The", "at", "film", "pm", "8"],
+      "answer": "The film starts at 8 pm"
+    },
+    {
+      "id": "q2",
+      "level": "easy",
+      "question": ["train", "leaves", "Our", "Hanoi", "for", "tonight"],
+      "answer": "Our train leaves for Hanoi tonight"
+    },
+    {
+      "id": "q3",
+      "level": "easy",
+      "question": ["school", "year", "starts", "The", "September", "new", "in"],
+      "answer": "The new school year starts in September"
+    },
+    {
+      "id": "q4",
+      "level": "easy",
+      "question": ["bus", "What", "does", "the", "time", "arrive", "?"],
+      "answer": "What time does the bus arrive ?"
+    },
+    {
+      "id": "q5",
+      "level": "medium",
+      "question": ["class", "My", "at", "finishes", "English", "10:30", "am"],
+      "answer": "My English class finishes at 10:30 am"
+    },
+    {
+      "id": "q6",
+      "level": "medium",
+      "question": ["opens", "library", "The", "closes", "at", "7am", "and", "at", "5pm"],
+      "answer": "The library opens at 7am and closes at 5pm"
+    },
+    {
+      "id": "q7",
+      "level": "medium",
+      "question": ["plane", "off", "takes", "The", "HCMC", "from", "30", "minutes", "in"],
+      "answer": "The plane takes off from HCMC in 30 minutes"
+    },
+    {
+      "id": "q8",
+      "level": "medium",
+      "question": ["meeting", "doesn't", "The", "until", "begin", "o'clock", "two"],
+      "answer": "The meeting doesn't begin until two o'clock"
+    },
+    {
+      "id": "q9",
+      "level": "hard",
+      "question": ["Hurry", "leave", "up", "doesn't", "bus", "wait", "the", "us", "for", "!"],
+      "answer": "Hurry up the bus doesn't wait for us !"
+    },
+    {
+      "id": "q10",
+      "level": "hard",
+      "question": ["match", "football", "The", "place", "takes", "stadium", "at", "National", "My Dinh", "tomorrow"],
+      "answer": "The football match takes place at My Dinh National stadium tomorrow"
+    }
+  ]
+}

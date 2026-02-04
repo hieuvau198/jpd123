@@ -40,9 +40,19 @@ const RepairList = () => {
             <Link to={`/repair/${set.id}`} style={{ textDecoration: 'none' }}>
               <Card hoverable style={{ height: '100%', borderRadius: 12, borderTop: '4px solid #722ed1' }}>
                 <Title level={4}>{set.title}</Title>
-                <Tag color="purple">{set.questions?.length || 0} Questions</Tag>
-                <div style={{ marginTop: 10, color: '#666' }}>
-                   {set.subject && <Tag>{set.subject}</Tag>}
+                
+                <div style={{ marginBottom: 12 }}>
+                  <Tag color="purple">{set.questions?.length || 0} Questions</Tag>
+                </div>
+
+                <div style={{ color: '#666' }}>
+                   {/* Display Subject */}
+                   {set.subject && <Tag color="blue">{set.subject}</Tag>}
+                   
+                   {/* Display Tags */}
+                   {set.tags && set.tags.map((tag, index) => (
+                     <Tag key={index} color="cyan">{tag}</Tag>
+                   ))}
                 </div>
               </Card>
             </Link>

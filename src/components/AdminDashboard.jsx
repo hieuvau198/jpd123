@@ -182,7 +182,17 @@ const AdminDashboard = () => {
                 <List.Item.Meta
                   avatar={<Wrench color="#722ed1" size={24} />}
                   title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
-                  description={<AntTag color="purple">{item.subject || 'No Subject'}</AntTag>}
+                  description={
+                    <>
+                      {/* Subject Tag */}
+                      <AntTag color="purple">{item.subject || 'No Subject'}</AntTag>
+                      
+                      {/* New Tags Loop */}
+                      {item.tags && item.tags.map((tag, i) => (
+                        <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
+                      ))}
+                    </>
+                  }
                 />
               </List.Item>
             )}
