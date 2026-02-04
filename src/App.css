@@ -1,3 +1,4 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
 
 :root {
@@ -15,12 +16,12 @@ body {
   -webkit-font-smoothing: antialiased;
   
   /* --- TET HOLIDAY THEME --- */
-  background: linear-gradient(-45deg, #d40000, #ffcc00, #ff3399, #ff0000);
+  background: linear-gradient(-45deg, #e256dd, #ffcc00, #d57e7e, #dc98dc);
   background-size: 400% 400%;
-  animation: tetHoliday 12s ease infinite;
+  animation: tetHoliday 6s ease infinite;
   
   min-height: 100vh;
-  color: white; /* Default text color for transparency */
+  /* Removed fixed white color to allow cards to handle their own text colors */
 }
 
 @keyframes tetHoliday {
@@ -28,13 +29,6 @@ body {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
-/* Helper to make Antd headings white on the colored background if needed */
-.text-white h1, .text-white h2, .text-white h3, .text-white span {
-  color: white !important;
-}
-
-/* --- ANIMATIONS (Keep these) --- */
 
 /* Flashcard Flip 3D Context */
 .perspective-container {
@@ -65,7 +59,6 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Shake Animation for Wrong Answers */
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -77,3 +70,4 @@ body {
 .animate-shake {
   animation: shake 0.5s;
 }
+

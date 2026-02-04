@@ -1,10 +1,7 @@
 import React from 'react';
 import { ChevronRight, BookOpen, Brain, Tag as TagIcon } from 'lucide-react';
-import { Card, Tag, Typography, Flex, Badge } from 'antd';
 import SUBJECTS_DATA from '../data/system/subjects.json';
 import TAGS_DATA from '../data/system/tags.json';
-
-const { Text, Title } = Typography;
 
 const getTagName = (tagId) => {
   const tag = TAGS_DATA.find(t => t.id === tagId);
@@ -18,41 +15,50 @@ const getSubjectName = (subjectId) => {
 
 const PracticeCard = ({ practice, onClick }) => {
   return (
-    <Card 
-      hoverable 
+    <div 
       onClick={() => onClick(practice)}
-      size="small"
-      style={{ width: '100%', height: '100%' }}
+      className="group relative bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-white/20 h-full flex flex-col justify-between"
     >
-      <Flex justify="space-between" align="center" style={{ marginBottom: 8 }}>
-        <Title level={5} style={{ margin: 0 }}>{practice.title}</Title>
-        {practice.subject && (
-          <Tag color="default">{getSubjectName(practice.subject)}</Tag>
-        )}
-      </Flex>
+      {/* Decorative top border for hover effect */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className="mb-4">
+        <div className="flex justify-between items-start gap-2 mb-2">
+          <h3 className="font-bold text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-red-600 transition-colors">
+            {practice.title}
+          </h3>
+          {practice.subject && (
+            <span className="shrink-0 px-2 py-1 rounded-md bg-red-50 text-red-600 text-xs font-semibold border border-red-100">
+              {getSubjectName(practice.subject)}
+            </span>
+          )}
+        </div>
+      </div>
       
-      <Flex justify="space-between" align="end">
-        <Flex vertical gap="4px">
-          <Flex align="center" gap="small">
-            {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
-            <Text type="secondary" style={{ fontSize: '12px' }}>
+      <div className="flex justify-between items-end mt-auto">
+        <div className="flex flex-col gap-3 w-full">
+          <div className="flex items-center gap-2 text-gray-500">
+            <div className={`p-1.5 rounded-full ${practice.type === 'flashcard' ? 'bg-blue-50 text-blue-500' : 'bg-purple-50 text-purple-500'}`}>
+              {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
+            </div>
+            <span className="text-xs font-medium uppercase tracking-wide">
               {practice.questions ? practice.questions.length : 0} items
-            </Text>
-          </Flex>
+            </span>
+          </div>
 
           {practice.tags && practice.tags.length > 0 && (
-            <Flex wrap="wrap" gap="4px" style={{ marginTop: 4 }}>
+            <div className="flex flex-wrap gap-1.5 border-t border-gray-100 pt-3 w-full">
               {practice.tags.map(tagId => (
-                <Tag key={tagId} icon={<TagIcon size={10} />} bordered={false} style={{ fontSize: 10, margin: 0 }}>
+                <span key={tagId} className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[10px] font-medium border border-gray-200">
+                  <TagIcon size={10} className="opacity-50" />
                   {getTagName(tagId)}
-                </Tag>
+                </span>
               ))}
-            </Flex>
+            </div>
           )}
-        </Flex>
-        <ChevronRight size={16} style={{ color: '#ccc' }} />
-      </Flex>
-    </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

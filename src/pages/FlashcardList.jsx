@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { List, Spin, Button } from 'antd';
-import { Home } from 'lucide-react';
+import { Home, Loader2, Layers } from 'lucide-react';
 import { getAllFlashcards } from '../firebase/flashcardService';
 import PracticeCard from '../components/PracticeCard';
 
@@ -20,32 +19,38 @@ const FlashcardList = () => {
   }, []);
 
   return (
-    <div className="app-container">
-      <div className="home-header">
-        <Button type="text" icon={<Home size={16}/>} onClick={() => navigate('/')}>
-           Back Home
-        </Button>
-        <h2>Flashcard Library</h2>
+    <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+          <button 
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-all mb-2 -ml-2 w-fit"
+          >
+             <Home size={18}/>
+             <span className="font-medium">Back Home</span>
+          </button>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
+            <Layers className="text-yellow-300" />
+            Flashcard Library
+          </h2>
+        </div>
       </div>
 
-      {loading ? <Spin size="large" style={{display:'block', margin:'50px auto'}} /> : (
-        <List
-          grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 3, xxl: 4 }}
-          pagination={{
-            position: 'bottom',
-            align: 'center',
-            pageSize: 9, // Items per page
-          }}
-          dataSource={data}
-          renderItem={(item) => (
-            <List.Item>
-              <PracticeCard 
-                practice={item} 
-                onClick={() => navigate(`/flashcard/${item.id}`)} 
-              />
-            </List.Item>
-          )}
-        />
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+             <Loader2 className="w-12 h-12 text-white animate-spin opacity-80" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {data.map((item) => (
+             <PracticeCard 
+               key={item.id}
+               practice={item} 
+               onClick={() => navigate(`/flashcard/${item.id}`)} 
+             />
+          ))}
+        </div>
       )}
     </div>
   );
