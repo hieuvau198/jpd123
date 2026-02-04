@@ -1,23 +1,22 @@
-import React, { useState, useMemo } from 'react';
-import { Layers, ChevronRight, CheckSquare, Square, Play, BookOpen, Brain, ArrowLeft, Filter, Tag } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Layers, ChevronRight, CheckSquare, Square, Play, BookOpen, Brain, Filter, Tag, Settings } from 'lucide-react';
 import './App.css'; 
 import QuizSession from './components/QuizSession';
 import FlashcardSession from './components/FlashcardSession';
+import AdminDashboard from './components/AdminDashboard'; // Import new component
+import { getAllFlashcards } from './firebase/flashcardService'; // Import service
 
 // --- SYSTEM DATA IMPORTS ---
-// Ensure these files exist in your project structure
 import SUBJECTS_DATA from './data/system/subjects.json';
 import TAGS_DATA from './data/system/tags.json';
 
 // --- DATA LOADING ---
+// 1. Keep Quizzes Local for now (as requested)
 const quizImports = import.meta.glob('./data/quiz/*.json', { eager: true, import: 'default' });
-const flashcardImports = import.meta.glob('./data/flashcard/*.json', { eager: true, import: 'default' });
-
-// Add type to data objects
 const QUIZ_DATA = Object.values(quizImports).map(d => ({ ...d, type: 'quiz' }));
-const FLASHCARD_DATA = Object.values(flashcardImports).map(d => ({ ...d, type: 'flashcard' }));
 
-const ALL_PRACTICES = [...QUIZ_DATA, ...FLASHCARD_DATA];
+// 2. Remove local flashcard import. We will use State instead.
+// const flashcardImports = import.meta.glob('./data/flashcard/*.json', { eager: true, import: 'default' });
 
 // Helper to get tag name by ID
 const getTagName = (tagId) => {
@@ -32,7 +31,6 @@ const getSubjectName = (subjectId) => {
 };
 
 // --- COMPONENTS ---
-
 const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection, onSelect }) => {
   return (
     <button
@@ -46,7 +44,6 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
       className={`practice-card group ${isMultiSelectMode && isSelected ? 'selected' : ''}`}
     >
       <div style={{width: '100%'}}>
-        {/* Compact Header: Title + Subject */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
            <h3 style={{ margin: 0 }}>{practice.title}</h3>
            {practice.subject && (
@@ -54,19 +51,14 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
            )}
         </div>
         
-        {/* Compact Meta: Icon, Count, Tags */}
         <div className="card-meta">
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                 {/* Type Icon */}
                  {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
-                 
-                 {/* Count */}
                  <span className="tag-count">
                     {practice.questions ? practice.questions.length : 0}
                  </span>
             </div>
 
-            {/* Tags */}
             {practice.tags && practice.tags.length > 0 && (
                 <div className="tags-list">
                     {practice.tags.map(tagId => (
@@ -91,18 +83,21 @@ const PracticeCard = ({ practice, isSelected, isMultiSelectMode, toggleSelection
   );
 };
 
-const HomeView = ({ onSelectPractice }) => {
+const HomeView = ({ onSelectPractice, onGoAdmin, firebaseFlashcards }) => {
   const [activeSubject, setActiveSubject] = useState('all');
-  
-  // Changed from boolean to explicit type: 'flashcard' | 'quiz' | null
   const [selectionMode, setSelectionMode] = useState(null);
   const [selectedIds, setSelectedIds] = useState(new Set());
 
+  // Combine Local Quizzes + Firebase Flashcards
+  const allPractices = useMemo(() => {
+    return [...QUIZ_DATA, ...firebaseFlashcards];
+  }, [firebaseFlashcards]);
+
   // Filter Logic
   const filteredPractices = useMemo(() => {
-    if (activeSubject === 'all') return ALL_PRACTICES;
-    return ALL_PRACTICES.filter(p => p.subject === activeSubject || !p.subject); 
-  }, [activeSubject]);
+    if (activeSubject === 'all') return allPractices;
+    return allPractices.filter(p => p.subject === activeSubject || !p.subject); 
+  }, [activeSubject, allPractices]);
 
   const flashcards = filteredPractices.filter(p => p.type === 'flashcard');
   const quizzes = filteredPractices.filter(p => p.type === 'quiz');
@@ -117,21 +112,18 @@ const HomeView = ({ onSelectPractice }) => {
     setSelectedIds(newSelected);
   };
 
-  // Handles activating the mix mode for a specific type
   const handleMixToggle = (type) => {
     if (selectionMode === type) {
-      // Cancel current selection
       setSelectionMode(null);
       setSelectedIds(new Set());
     } else {
-      // Switch to new type and clear previous selections
       setSelectionMode(type);
       setSelectedIds(new Set());
     }
   };
 
   const startCombined = () => {
-    const selectedPractices = ALL_PRACTICES.filter(p => selectedIds.has(p.id));
+    const selectedPractices = allPractices.filter(p => selectedIds.has(p.id));
     if (selectedPractices.length === 0) return;
 
     const combinedPractice = {
@@ -139,7 +131,6 @@ const HomeView = ({ onSelectPractice }) => {
       title: 'CUSTOM MIX',
       description: `Combined session of ${selectedPractices.length} topics.`,
       questions: selectedPractices.flatMap(p => p.questions),
-      // We can now safely assume the type based on the active mode
       type: selectionMode
     };
     onSelectPractice(combinedPractice);
@@ -148,9 +139,14 @@ const HomeView = ({ onSelectPractice }) => {
   return (
     <div className="app-container">
       <div className="home-header">
-        <h1 className="brand-title">Học Cùng Cô Quốc Anh &#128513;</h1>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <h1 className="brand-title">Học Cùng Cô Quốc Anh &#128513;</h1>
+            {/* Admin Button */}
+            <button onClick={onGoAdmin} className="icon-btn" title="Manage Content">
+                <Settings size={20} />
+            </button>
+        </div>
         
-        {/* --- SUBJECT FILTER --- */}
         <div className="filter-bar">
           <div className="filter-label"><Filter size={16}/> Môn học:</div>
           <div className="filter-options">
@@ -171,21 +167,16 @@ const HomeView = ({ onSelectPractice }) => {
             ))}
           </div>
         </div>
-
-        {/* Removed central 'Create Custom Mix' button to separate them below */}
       </div>
 
-      {/* --- SPLIT VIEW --- */}
       <div className="split-view-container">
         
-        {/* Left Column: Flashcards */}
+        {/* Left Column: Flashcards (Now from Firebase) */}
         <div className="split-column">
             <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                  
                     <h2 className='toggle-btn'>Thẻ Nhớ</h2>
                 </div>
-                {/* Flashcard Mix Button */}
                 <button 
                     onClick={() => handleMixToggle('flashcard')}
                     disabled={selectionMode === 'quiz'}
@@ -202,13 +193,12 @@ const HomeView = ({ onSelectPractice }) => {
             </div>
             <div className="practice-list">
                 {flashcards.length === 0 ? (
-                    <p className="empty-msg">No flashcards found.</p>
+                    <p className="empty-msg">No flashcards found. (Check Admin)</p>
                 ) : (
                     flashcards.map(p => (
                         <PracticeCard 
                             key={p.id} 
                             practice={p}
-                            // Only allow multi-select if we are in flashcard mode
                             isMultiSelectMode={selectionMode === 'flashcard'}
                             isSelected={selectedIds.has(p.id)}
                             toggleSelection={toggleSelection}
@@ -219,13 +209,12 @@ const HomeView = ({ onSelectPractice }) => {
             </div>
         </div>
 
-        {/* Right Column: Quizzes */}
+        {/* Right Column: Quizzes (Still Local) */}
         <div className="split-column">
             <div className="column-header" style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                 <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
                     <h2 className='toggle-btn'>Trắc Nghiệm</h2>
                 </div>
-                {/* Quiz Mix Button */}
                 <button 
                     onClick={() => handleMixToggle('quiz')}
                     disabled={selectionMode === 'flashcard'}
@@ -248,7 +237,6 @@ const HomeView = ({ onSelectPractice }) => {
                         <PracticeCard 
                             key={p.id} 
                             practice={p}
-                            // Only allow multi-select if we are in quiz mode
                             isMultiSelectMode={selectionMode === 'quiz'}
                             isSelected={selectedIds.has(p.id)}
                             toggleSelection={toggleSelection}
@@ -265,7 +253,6 @@ const HomeView = ({ onSelectPractice }) => {
         <div className="fab-container">
           <button onClick={startCombined} className="fab-btn">
             <Play fill="currentColor" size={20} />
-            {/* Dynamic Label */}
             Start {selectionMode === 'flashcard' ? 'Flashcard' : 'Quiz'} Mix ({selectedIds.size})
           </button>
         </div>
@@ -276,26 +263,45 @@ const HomeView = ({ onSelectPractice }) => {
 
 export default function App() {
   const [activePractice, setActivePractice] = useState(null);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [firebaseFlashcards, setFirebaseFlashcards] = useState([]);
+
+  // Fetch Flashcards from Firebase on Mount
+  useEffect(() => {
+    const loadFlashcards = async () => {
+      const data = await getAllFlashcards();
+      setFirebaseFlashcards(data);
+    };
+    loadFlashcards();
+  }, [showAdmin]); // Reload when exiting admin in case data changed
+
+  // --- RENDER ---
+
+  if (showAdmin) {
+    return <AdminDashboard onBack={() => setShowAdmin(false)} />;
+  }
+
+  if (activePractice) {
+    return activePractice.type === 'flashcard' ? (
+      <FlashcardSession 
+        data={activePractice}
+        onHome={() => setActivePractice(null)}
+      />
+    ) : (
+      <QuizSession 
+        data={activePractice} 
+        onHome={() => setActivePractice(null)} 
+      />
+    );
+  }
 
   return (
-    <div>
-      <main>
-        {activePractice ? (
-          activePractice.type === 'flashcard' ? (
-            <FlashcardSession 
-                data={activePractice}
-                onHome={() => setActivePractice(null)}
-            />
-          ) : (
-            <QuizSession 
-                data={activePractice} 
-                onHome={() => setActivePractice(null)} 
-            />
-          )
-        ) : (
-            <HomeView onSelectPractice={setActivePractice} />
-        )}
-      </main>
-    </div>
+    <main>
+      <HomeView 
+        onSelectPractice={setActivePractice} 
+        onGoAdmin={() => setShowAdmin(true)}
+        firebaseFlashcards={firebaseFlashcards}
+      />
+    </main>
   );
 }
