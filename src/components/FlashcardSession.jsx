@@ -244,46 +244,44 @@ const FlashcardSession = ({ data, onHome }) => {
 
   // --- FLASHCARD VIEW ---
   if (mode === 'view') {
-    // ... (same as original)
     return (
-      <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', padding: '40px 20px' }}>
         <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-          <Button icon={<Home size={16}/>} onClick={onHome}>Exit</Button>
-          <Text strong>{currentIndex + 1} / {queue.length}</Text>
+          <Button ghost icon={<Home size={16}/>} onClick={onHome} style={{ color: 'white' }}>Exit</Button>
+          <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
         </Flex>
 
-        <div onClick={() => setIsFlipped(!isFlipped)} style={{ cursor: 'pointer', perspective: '1000px', height: 300 }}>
-          <div style={{
-            position: 'relative', width: '100%', height: '100%', transition: 'transform 0.6s', transformStyle: 'preserve-3d',
-            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-          }}>
-            {/* Front */}
-            <Card style={{ 
-                position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', 
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}>
-              <Title level={2}>{currentCard.question}</Title>
-              <Text type="secondary">Click or Space to Flip</Text>
+        {/* 3D Flip Container using classes from simplified App.css */}
+        <div 
+           className="perspective-container" 
+           onClick={() => setIsFlipped(!isFlipped)} 
+           style={{ height: 350, cursor: 'pointer', marginBottom: 30 }}
+        >
+          <div className={`card-inner ${isFlipped ? 'flipped' : ''}`}>
+            
+            {/* FRONT */}
+            <Card className="card-front" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Flex vertical align="center" gap="small">
+                 <Title level={2}>{currentCard.question}</Title>
+                 <Text type="secondary">Click or Space to Flip</Text>
+              </Flex>
             </Card>
 
-            {/* Back */}
-            <Card style={{ 
-                position: 'absolute', width: '100%', height: '100%', backfaceVisibility: 'hidden', 
-                transform: 'rotateY(180deg)',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}>
-              <Title level={2} style={{ color: '#1890ff' }}>{currentCard.speak}</Title>
-              <Title level={4}>{currentCard.answer}</Title>
+            {/* BACK */}
+            <Card className="card-back" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid black' }}>
+               <Flex vertical align="center" gap="small">
+                  <Title level={2} style={{ color: '#1890ff' }}>{currentCard.speak}</Title>
+                  <Title level={4}>{currentCard.answer}</Title>
+               </Flex>
             </Card>
+
           </div>
         </div>
 
-        <Flex justify="center" gap="middle" style={{ marginTop: 30 }}>
-          <Button icon={<ArrowLeft size={16} />} onClick={(e) => {e.stopPropagation(); handlePrev()}} disabled={currentIndex === 0}>Prev</Button>
-          <Button icon={<RotateCcw size={16} />} onClick={(e) => {e.stopPropagation(); setIsFlipped(!isFlipped)}}>Flip</Button>
-          <Button icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}} disabled={currentIndex === queue.length - 1}>Next</Button>
+        <Flex justify="center" gap="middle">
+          <Button size="large" icon={<ArrowLeft size={16} />} onClick={(e) => {e.stopPropagation(); handlePrev()}} disabled={currentIndex === 0}>Prev</Button>
+          <Button size="large" icon={<RotateCcw size={16} />} onClick={(e) => {e.stopPropagation(); setIsFlipped(!isFlipped)}}>Flip</Button>
+          <Button size="large" icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}} disabled={currentIndex === queue.length - 1}>Next</Button>
         </Flex>
       </div>
     );

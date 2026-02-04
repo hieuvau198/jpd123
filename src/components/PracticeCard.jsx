@@ -1,7 +1,10 @@
 import React from 'react';
-import { ChevronRight, BookOpen, Brain, Tag } from 'lucide-react';
+import { ChevronRight, BookOpen, Brain, Tag as TagIcon } from 'lucide-react';
+import { Card, Tag, Typography, Flex, Badge } from 'antd';
 import SUBJECTS_DATA from '../data/system/subjects.json';
 import TAGS_DATA from '../data/system/tags.json';
+
+const { Text, Title } = Typography;
 
 const getTagName = (tagId) => {
   const tag = TAGS_DATA.find(t => t.id === tagId);
@@ -15,41 +18,41 @@ const getSubjectName = (subjectId) => {
 
 const PracticeCard = ({ practice, onClick }) => {
   return (
-    <button
+    <Card 
+      hoverable 
       onClick={() => onClick(practice)}
-      className="practice-card group"
-      style={{ width: '100%', textAlign: 'left', cursor: 'pointer' }}
+      size="small"
+      style={{ width: '100%', height: '100%' }}
     >
-      <div style={{width: '100%'}}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-           <h3 style={{ margin: 0 }}>{practice.title}</h3>
-           {practice.subject && (
-             <span className="subject-badge">{getSubjectName(practice.subject)}</span>
-           )}
-        </div>
-        
-        <div className="card-meta">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                 {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
-                 <span className="tag-count">
-                    {practice.questions ? practice.questions.length : 0}
-                 </span>
-            </div>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 8 }}>
+        <Title level={5} style={{ margin: 0 }}>{practice.title}</Title>
+        {practice.subject && (
+          <Tag color="default">{getSubjectName(practice.subject)}</Tag>
+        )}
+      </Flex>
+      
+      <Flex justify="space-between" align="end">
+        <Flex vertical gap="4px">
+          <Flex align="center" gap="small">
+            {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
+            <Text type="secondary" style={{ fontSize: '12px' }}>
+              {practice.questions ? practice.questions.length : 0} items
+            </Text>
+          </Flex>
 
-            {practice.tags && practice.tags.length > 0 && (
-                <div className="tags-list">
-                    {practice.tags.map(tagId => (
-                        <span key={tagId} className="tag-pill">
-                            <Tag size={10} style={{marginRight:3}}/>
-                            {getTagName(tagId)}
-                        </span>
-                    ))}
-                </div>
-            )}
-        </div>
-      </div>
-      <ChevronRight size={18} style={{marginLeft: '10px', opacity: 0.5}} />
-    </button>
+          {practice.tags && practice.tags.length > 0 && (
+            <Flex wrap="wrap" gap="4px" style={{ marginTop: 4 }}>
+              {practice.tags.map(tagId => (
+                <Tag key={tagId} icon={<TagIcon size={10} />} bordered={false} style={{ fontSize: 10, margin: 0 }}>
+                  {getTagName(tagId)}
+                </Tag>
+              ))}
+            </Flex>
+          )}
+        </Flex>
+        <ChevronRight size={16} style={{ color: '#ccc' }} />
+      </Flex>
+    </Card>
   );
 };
 
