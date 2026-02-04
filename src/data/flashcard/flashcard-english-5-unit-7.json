@@ -1,0 +1,127 @@
+{
+  "id": "flashcard-english-5-unit-7",
+  "title": "Tiếng Anh Lớp 5 - Unit 7",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit7",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 7: Our favourite school activities",
+  "questions": [
+    {
+      "id": 1,
+      "question": "activity",
+      "answer": "hoạt động",
+      "speak": "activity"
+    },
+    {
+      "id": 2,
+      "question": "solve",
+      "answer": "giải quyết",
+      "speak": "solve"
+    },
+    {
+      "id": 3,
+      "question": "math",
+      "answer": "toán học",
+      "speak": "math"
+    },
+    {
+      "id": 4,
+      "question": "problem",
+      "answer": "vấn đề",
+      "speak": "problem"
+    },
+    {
+      "id": 5,
+      "question": "project",
+      "answer": "dự án",
+      "speak": "project"
+    },
+    {
+      "id": 6,
+      "question": "game",
+      "answer": "trò chơi",
+      "speak": "game"
+    },
+    {
+      "id": 7,
+      "question": "guitar",
+      "answer": "đàn guitar",
+      "speak": "guitar"
+    },
+    {
+      "id": 8,
+      "question": "group work",
+      "answer": "làm việc nhóm",
+      "speak": "group work"
+    },
+    {
+      "id": 9,
+      "question": "fun",
+      "answer": "vui vẻ",
+      "speak": "fun"
+    },
+    {
+      "id": 10,
+      "question": "interesting",
+      "answer": "thú vị",
+      "speak": "interesting"
+    },
+    {
+      "id": 11,
+      "question": "useful",
+      "answer": "hữu ích",
+      "speak": "useful"
+    },
+    {
+      "id": 12,
+      "question": "enjoy",
+      "answer": "tận hưởng",
+      "speak": "enjoy"
+    },
+    {
+      "id": 13,
+      "question": "draw",
+      "answer": "vẽ",
+      "speak": "draw"
+    },
+    {
+      "id": 14,
+      "question": "paint",
+      "answer": "tô màu, vẽ tranh",
+      "speak": "paint"
+    },
+    {
+      "id": 15,
+      "question": "dance",
+      "answer": "nhảy múa",
+      "speak": "dance"
+    },
+    {
+      "id": 16,
+      "question": "sing",
+      "answer": "hát",
+      "speak": "sing"
+    },
+    {
+      "id": 17,
+      "question": "scientist",
+      "answer": "nhà khoa học",
+      "speak": "scientist"
+    },
+    {
+      "id": 18,
+      "question": "chess",
+      "answer": "cờ vua",
+      "speak": "chess"
+    },
+    {
+      "id": 19,
+      "question": "champion",
+      "answer": "nhà vô địch",
+      "speak": "champion"
+    }
+  ]
+}

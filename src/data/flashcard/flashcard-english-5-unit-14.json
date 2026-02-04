@@ -1,0 +1,85 @@
+{
+  "id": "flashcard-english-5-unit-14",
+  "title": "Tiếng Anh Lớp 5 - Unit 14",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit14",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 14: Staying healthy",
+  "questions": [
+    {
+      "id": 1,
+      "question": "healthy",
+      "answer": "khỏe mạnh",
+      "speak": "healthy"
+    },
+    {
+      "id": 2,
+      "question": "morning exercise",
+      "answer": "tập thể dục buổi sáng",
+      "speak": "morning exercise"
+    },
+    {
+      "id": 3,
+      "question": "regularly",
+      "answer": "thường xuyên",
+      "speak": "regularly"
+    },
+    {
+      "id": 4,
+      "question": "daily",
+      "answer": "hàng ngày",
+      "speak": "daily"
+    },
+    {
+      "id": 5,
+      "question": "fresh",
+      "answer": "tươi mới",
+      "speak": "fresh"
+    },
+    {
+      "id": 6,
+      "question": "strong",
+      "answer": "mạnh mẽ",
+      "speak": "strong"
+    },
+    {
+      "id": 7,
+      "question": "yoga",
+      "answer": "yoga",
+      "speak": "yoga"
+    },
+    {
+      "id": 8,
+      "question": "aerobics",
+      "answer": "thể dục nhịp điệu",
+      "speak": "aerobics"
+    },
+    {
+      "id": 9,
+      "question": "once",
+      "answer": "một lần",
+      "speak": "once"
+    },
+    {
+      "id": 10,
+      "question": "twice",
+      "answer": "hai lần",
+      "speak": "twice"
+    },
+    {
+      "id": 11,
+      "question": "judo",
+      "answer": "môn võ judo",
+      "speak": "judo"
+    },
+    {
+      "id": 12,
+      "question": "example",
+      "answer": "ví dụ",
+      "speak": "example"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "flashcard-english-5-unit-8",
+  "title": "Tiếng Anh Lớp 5 - Unit 8",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit8",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 8: In our classroom",
+  "questions": [
+    {
+      "id": 1,
+      "question": "map",
+      "answer": "bản đồ",
+      "speak": "map"
+    },
+    {
+      "id": 2,
+      "question": "board",
+      "answer": "bảng",
+      "speak": "board"
+    },
+    {
+      "id": 3,
+      "question": "pencil",
+      "answer": "bút chì",
+      "speak": "pencil"
+    },
+    {
+      "id": 4,
+      "question": "book",
+      "answer": "sách",
+      "speak": "book"
+    },
+    {
+      "id": 5,
+      "question": "eraser",
+      "answer": "cục tẩy",
+      "speak": "eraser"
+    },
+    {
+      "id": 6,
+      "question": "desk",
+      "answer": "bàn làm việc",
+      "speak": "desk"
+    },
+    {
+      "id": 7,
+      "question": "picture",
+      "answer": "bức tranh",
+      "speak": "picture"
+    },
+    {
+      "id": 8,
+      "question": "window",
+      "answer": "cửa sổ",
+      "speak": "window"
+    },
+    {
+      "id": 9,
+      "question": "pen",
+      "answer": "bút mực",
+      "speak": "pen"
+    },
+    {
+      "id": 10,
+      "question": "clock",
+      "answer": "đồng hồ",
+      "speak": "clock"
+    },
+    {
+      "id": 11,
+      "question": "notebook",
+      "answer": "sổ tay, vở ghi chép",
+      "speak": "notebook"
+    },
+    {
+      "id": 12,
+      "question": "pencil sharpener",
+      "answer": "đồ gọt bút chì",
+      "speak": "pencil sharpener"
+    },
+    {
+      "id": 13,
+      "question": "bookcase",
+      "answer": "giá sách",
+      "speak": "bookcase"
+    },
+    {
+      "id": 14,
+      "question": "chair",
+      "answer": "ghế",
+      "speak": "chair"
+    },
+    {
+      "id": 15,
+      "question": "crayon",
+      "answer": "bút sáp màu",
+      "speak": "crayon"
+    },
+    {
+      "id": 16,
+      "question": "glue stick",
+      "answer": "keo dán dạng thỏi",
+      "speak": "glue stick"
+    },
+    {
+      "id": 17,
+      "question": "set square",
+      "answer": "thước ê ke",
+      "speak": "set square"
+    },
+    {
+      "id": 18,
+      "question": "school bag",
+      "answer": "cặp sách",
+      "speak": "school bag"
+    },
+    {
+      "id": 19,
+      "question": "story book",
+      "answer": "sách truyện",
+      "speak": "story book"
+    },
+    {
+      "id": 20,
+      "question": "tidy",
+      "answer": "gọn gàng",
+      "speak": "tidy"
+    },
+    {
+      "id": 21,
+      "question": "beside",
+      "answer": "bên cạnh",
+      "speak": "beside"
+    },
+    {
+      "id": 22,
+      "question": "under",
+      "answer": "dưới",
+      "speak": "under"
+    },
+    {
+      "id": 23,
+      "question": "above",
+      "answer": "phía trên",
+      "speak": "above"
+    },
+    {
+      "id": 24,
+      "question": "in front of",
+      "answer": "phía trước",
+      "speak": "in front of"
+    }
+  ]
+}

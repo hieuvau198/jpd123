@@ -1,0 +1,91 @@
+{
+  "id": "flashcard-english-4-unit-17",
+  "title": "Tiếng Anh Lớp 4 - Unit 17",
+  "subject": "english",
+  "tags": [
+    "grade4",
+    "unit17",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 17: HOW MUCH IS THE T-SHIRT?",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Blouse",
+      "answer": "Áo cánh",
+      "speak": "blouse"
+    },
+    {
+      "id": 2,
+      "question": "Dong",
+      "answer": "Đồng (đơn vị tiền Việt)",
+      "speak": "dong"
+    },
+    {
+      "id": 3,
+      "question": "How much",
+      "answer": "Bao nhiêu",
+      "speak": "how much"
+    },
+    {
+      "id": 4,
+      "question": "Jacket",
+      "answer": "Áo khoác",
+      "speak": "jacket"
+    },
+    {
+      "id": 5,
+      "question": "Jeans",
+      "answer": "Quần jean, quần bò",
+      "speak": "jeans"
+    },
+    {
+      "id": 6,
+      "question": "Jumper",
+      "answer": "Áo len chui đầu",
+      "speak": "jumper"
+    },
+    {
+      "id": 7,
+      "question": "Sandals",
+      "answer": "Dép, xăng đan",
+      "speak": "sandals"
+    },
+    {
+      "id": 8,
+      "question": "Scarf",
+      "answer": "Khăn quàng cổ",
+      "speak": "scarf"
+    },
+    {
+      "id": 9,
+      "question": "Shoes",
+      "answer": "Giày",
+      "speak": "shoes"
+    },
+    {
+      "id": 10,
+      "question": "Skirt",
+      "answer": "Cái váy",
+      "speak": "skirt"
+    },
+    {
+      "id": 11,
+      "question": "Shirt",
+      "answer": "Áo sơ mi",
+      "speak": "shirt"
+    },
+    {
+      "id": 12,
+      "question": "T-shirt",
+      "answer": "Áo thun, áo phông",
+      "speak": "t-shirt"
+    },
+    {
+      "id": 13,
+      "question": "Trousers",
+      "answer": "Quần tây, quần dài",
+      "speak": "trousers"
+    }
+  ]
+}

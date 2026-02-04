@@ -1,0 +1,109 @@
+{
+  "id": "flashcard-english-5-unit-6",
+  "title": "Tiếng Anh Lớp 5 - Unit 6",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit6",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 6: Our schoolrooms",
+  "questions": [
+    {
+      "id": 1,
+      "question": "around",
+      "answer": "xung quanh",
+      "speak": "around"
+    },
+    {
+      "id": 2,
+      "question": "library",
+      "answer": "thư viện",
+      "speak": "library"
+    },
+    {
+      "id": 3,
+      "question": "ground/first/second/… floor",
+      "answer": "tầng trệt/tầng 1/tầng 2/...",
+      "speak": "ground/first/second/… floor"
+    },
+    {
+      "id": 4,
+      "question": "art",
+      "answer": "nghệ thuật",
+      "speak": "art"
+    },
+    {
+      "id": 5,
+      "question": "music",
+      "answer": "âm nhạc",
+      "speak": "music"
+    },
+    {
+      "id": 6,
+      "question": "computer",
+      "answer": "máy tính",
+      "speak": "computer"
+    },
+    {
+      "id": 7,
+      "question": "way",
+      "answer": "con đường, cách",
+      "speak": "way"
+    },
+    {
+      "id": 8,
+      "question": "upstairs",
+      "answer": "trên lầu",
+      "speak": "upstairs"
+    },
+    {
+      "id": 9,
+      "question": "downstairs",
+      "answer": "dưới lầu",
+      "speak": "downstairs"
+    },
+    {
+      "id": 10,
+      "question": "along",
+      "answer": "dọc theo",
+      "speak": "along"
+    },
+    {
+      "id": 11,
+      "question": "past",
+      "answer": "ngang qua",
+      "speak": "past"
+    },
+    {
+      "id": 12,
+      "question": "corridor",
+      "answer": "hành lang",
+      "speak": "corridor"
+    },
+    {
+      "id": 13,
+      "question": "turn",
+      "answer": "rẽ, quay",
+      "speak": "turn"
+    },
+    {
+      "id": 14,
+      "question": "break time",
+      "answer": "giờ giải lao",
+      "speak": "break time"
+    },
+    {
+      "id": 15,
+      "question": "left",
+      "answer": "bên trái",
+      "speak": "left"
+    },
+    {
+      "id": 16,
+      "question": "right",
+      "answer": "bên phải",
+      "speak": "right"
+    }
+  ]
+}

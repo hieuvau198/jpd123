@@ -1,0 +1,109 @@
+{
+  "id": "flashcard-english-4-unit-19",
+  "title": "Tiếng Anh Lớp 4 - Unit 19",
+  "subject": "english",
+  "tags": [
+    "grade4",
+    "unit19",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 19: WHAT ANIMAL DO YOU WANT TO SEE?",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Animal",
+      "answer": "Loài vật, động vật",
+      "speak": "animal"
+    },
+    {
+      "id": 2,
+      "question": "Bear",
+      "answer": "Gấu",
+      "speak": "bear"
+    },
+    {
+      "id": 3,
+      "question": "Beautiful",
+      "answer": "Đẹp, dễ thương",
+      "speak": "beautiful"
+    },
+    {
+      "id": 4,
+      "question": "Crocodile",
+      "answer": "Con cá sấu",
+      "speak": "crocodile"
+    },
+    {
+      "id": 5,
+      "question": "Dangerous",
+      "answer": "Nguy hiểm",
+      "speak": "dangerous"
+    },
+    {
+      "id": 6,
+      "question": "Elephant",
+      "answer": "Con voi",
+      "speak": "elephant"
+    },
+    {
+      "id": 7,
+      "question": "Enormous",
+      "answer": "To lớn",
+      "speak": "enormous"
+    },
+    {
+      "id": 8,
+      "question": "Fast",
+      "answer": "Nhanh",
+      "speak": "fast"
+    },
+    {
+      "id": 9,
+      "question": "Kangaroo",
+      "answer": "Con chuột túi",
+      "speak": "kangaroo"
+    },
+    {
+      "id": 10,
+      "question": "Monkey",
+      "answer": "Con khỉ",
+      "speak": "monkey"
+    },
+    {
+      "id": 11,
+      "question": "Scary",
+      "answer": "Làm sợ hãi, rùng rợn",
+      "speak": "scary"
+    },
+    {
+      "id": 12,
+      "question": "Tiger",
+      "answer": "Con hổ, con cọp",
+      "speak": "tiger"
+    },
+    {
+      "id": 13,
+      "question": "Want",
+      "answer": "Muốn",
+      "speak": "want"
+    },
+    {
+      "id": 14,
+      "question": "Wonderful",
+      "answer": "Tuyệt vời",
+      "speak": "wonderful"
+    },
+    {
+      "id": 15,
+      "question": "Zebra",
+      "answer": "Ngựa vằn",
+      "speak": "zebra"
+    },
+    {
+      "id": 16,
+      "question": "Zoo",
+      "answer": "Sở thú",
+      "speak": "zoo"
+    }
+  ]
+}

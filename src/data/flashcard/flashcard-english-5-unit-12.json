@@ -1,0 +1,103 @@
+{
+  "id": "flashcard-english-5-unit-12",
+  "title": "Tiếng Anh Lớp 5 - Unit 12",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit12",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 12: Our Tet holiday",
+  "questions": [
+    {
+      "id": 1,
+      "question": "pretty",
+      "answer": "xinh đẹp",
+      "speak": "pretty"
+    },
+    {
+      "id": 2,
+      "question": "peach",
+      "answer": "quả đào",
+      "speak": "peach"
+    },
+    {
+      "id": 3,
+      "question": "blossom",
+      "answer": "hoa",
+      "speak": "blossom"
+    },
+    {
+      "id": 4,
+      "question": "branch",
+      "answer": "cành cây",
+      "speak": "branch"
+    },
+    {
+      "id": 5,
+      "question": "luck",
+      "answer": "may mắn",
+      "speak": "luck"
+    },
+    {
+      "id": 6,
+      "question": "decorate",
+      "answer": "trang trí",
+      "speak": "decorate"
+    },
+    {
+      "id": 7,
+      "question": "spring roll",
+      "answer": "chả giò, nem rán",
+      "speak": "spring roll"
+    },
+    {
+      "id": 8,
+      "question": "rose",
+      "answer": "hoa hồng",
+      "speak": "rose"
+    },
+    {
+      "id": 9,
+      "question": "grandparents",
+      "answer": "ông bà",
+      "speak": "grandparents"
+    },
+    {
+      "id": 10,
+      "question": "firework",
+      "answer": "pháo hoa",
+      "speak": "firework"
+    },
+    {
+      "id": 11,
+      "question": "festival",
+      "answer": "lễ hội",
+      "speak": "festival"
+    },
+    {
+      "id": 12,
+      "question": "wear",
+      "answer": "mặc, đeo",
+      "speak": "wear"
+    },
+    {
+      "id": 13,
+      "question": "clothes",
+      "answer": "quần áo",
+      "speak": "clothes"
+    },
+    {
+      "id": 14,
+      "question": "clean",
+      "answer": "sạch sẽ",
+      "speak": "clean"
+    },
+    {
+      "id": 15,
+      "question": "excited",
+      "answer": "phấn khích, hào hứng",
+      "speak": "excited"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "flashcard-english-5-unit-13",
+  "title": "Tiếng Anh Lớp 5 - Unit 13",
+  "subject": "english",
+  "tags": [
+    "grade5",
+    "unit13",
+    "vocab"
+  ],
+  "description": "Từ vựng Unit 13: Our special days",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Children’s Day",
+      "answer": "Ngày Quốc tế Thiếu nhi",
+      "speak": "children’s day"
+    },
+    {
+      "id": 2,
+      "question": "Teacher’s Day",
+      "answer": "Ngày Nhà giáo",
+      "speak": "teacher’s day"
+    },
+    {
+      "id": 3,
+      "question": "Sports Day",
+      "answer": "Ngày Thể thao",
+      "speak": "sports day"
+    },
+    {
+      "id": 4,
+      "question": "Mid-Autumn Festival",
+      "answer": "Tết Trung Thu",
+      "speak": "mid-autumn festival"
+    },
+    {
+      "id": 5,
+      "question": "birthday party",
+      "answer": "tiệc sinh nhật",
+      "speak": "birthday party"
+    },
+    {
+      "id": 6,
+      "question": "fruit juice",
+      "answer": "nước ép trái cây",
+      "speak": "fruit juice"
+    },
+    {
+      "id": 7,
+      "question": "milk tea",
+      "answer": "trà sữa",
+      "speak": "milk tea"
+    },
+    {
+      "id": 8,
+      "question": "pizza",
+      "answer": "bánh pizza",
+      "speak": "pizza"
+    },
+    {
+      "id": 9,
+      "question": "burgers",
+      "answer": "bánh mì kẹp thịt",
+      "speak": "burgers"
+    },
+    {
+      "id": 10,
+      "question": "lemonade",
+      "answer": "nước chanh",
+      "speak": "lemonade"
+    },
+    {
+      "id": 11,
+      "question": "cake",
+      "answer": "bánh ngọt",
+      "speak": "cake"
+    },
+    {
+      "id": 12,
+      "question": "sweet",
+      "answer": "kẹo",
+      "speak": "sweet"
+    },
+    {
+      "id": 13,
+      "question": "bingo",
+      "answer": "trò chơi Bingo",
+      "speak": "bingo"
+    },
+    {
+      "id": 14,
+      "question": "tic-tac-toe",
+      "answer": "trò chơi caro",
+      "speak": "tic-tac-toe"
+    },
+    {
+      "id": 15,
+      "question": "charade",
+      "answer": "trò chơi đố chữ",
+      "speak": "charade"
+    }
+  ]
+}
