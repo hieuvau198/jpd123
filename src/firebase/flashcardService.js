@@ -1,5 +1,5 @@
 import { db } from './firebase-config';
-import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 
 const COLLECTION_NAME = 'flashcards';
 
@@ -22,19 +22,27 @@ export const getAllFlashcards = async () => {
 };
 
 /**
- * Saves or Updates a flashcard set. 
- * Uses the 'id' field from the JSON as the document ID to prevent duplicates.
+ * Saves a flashcard set.
+ * Checks if the ID already exists. If so, it SKIPS the save (does not overwrite).
+ * Returns { success: boolean, message: string }
  */
 export const saveFlashcardSet = async (data) => {
   try {
     if (!data.id) throw new Error("Flashcard data must have an 'id' field.");
     
     const docRef = doc(db, COLLECTION_NAME, data.id);
+    
+    // Check if it exists
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { success: false, message: 'ID already exists' };
+    }
+
     // Ensure the data saved has the type 'flashcard'
     const payload = { ...data, type: 'flashcard' };
     
     await setDoc(docRef, payload);
-    return true;
+    return { success: true, message: 'Saved successfully' };
   } catch (error) {
     console.error("Error saving flashcard:", error);
     throw error;

@@ -1,0 +1,62 @@
+import { db } from './firebase-config';
+import { collection, getDocs, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+
+const COLLECTION_NAME = 'quizzes';
+
+/**
+ * Fetches all quiz sets from Firestore.
+ */
+export const getAllQuizzes = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+    const quizzes = [];
+    querySnapshot.forEach((doc) => {
+      quizzes.push({ ...doc.data(), id: doc.id, type: 'quiz' });
+    });
+    return quizzes;
+  } catch (error) {
+    console.error("Error fetching quizzes:", error);
+    return [];
+  }
+};
+
+/**
+ * Saves a quiz set.
+ * Checks if the ID already exists. If so, it SKIPS the save.
+ * Returns { success: boolean, message: string }
+ */
+export const saveQuizSet = async (data) => {
+  try {
+    if (!data.id) throw new Error("Quiz data must have an 'id' field.");
+    
+    const docRef = doc(db, COLLECTION_NAME, data.id);
+    
+    // Check if it exists
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { success: false, message: 'ID already exists' };
+    }
+
+    // Ensure the data saved has the type 'quiz'
+    const payload = { ...data, type: 'quiz' };
+    
+    await setDoc(docRef, payload);
+    return { success: true, message: 'Saved successfully' };
+  } catch (error) {
+    console.error("Error saving quiz:", error);
+    throw error;
+  }
+};
+
+/**
+ * Deletes a quiz set by ID.
+ */
+export const deleteQuizSet = async (id) => {
+  try {
+    await deleteDoc(doc(db, COLLECTION_NAME, id));
+    return true;
+  } catch (error) {
+    console.error("Error deleting quiz:", error);
+    throw error;
+  }
+};
