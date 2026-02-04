@@ -1,0 +1,128 @@
+{
+  "id": "quiz-english-8-unit-9-1",
+  "title": "English 8 Unit 9 - Past Continuous (Set 1)",
+  "subject": "English 8",
+  "tags": ["english-8", "Past Continuous", "unit9"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ dinner at 7 p.m. yesterday.",
+      "options": [
+        "was having",
+        "were having",
+        "am having",
+        "had"
+      ],
+      "answer": "was having",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "What ______ you doing when I called?",
+      "options": [
+        "was",
+        "were",
+        "are",
+        "did"
+      ],
+      "answer": "were",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "They ______ playing football in the park at 5 o'clock yesterday afternoon.",
+      "options": [
+        "was",
+        "were",
+        "is",
+        "are"
+      ],
+      "answer": "were",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "She ______ reading a book; she was watching TV.",
+      "options": [
+        "wasn't",
+        "weren't",
+        "didn't",
+        "isn't"
+      ],
+      "answer": "wasn't",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "The students ______ a test at this time last Monday.",
+      "options": [
+        "was taking",
+        "were taking",
+        "took",
+        "are taking"
+      ],
+      "answer": "were taking",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "When the teacher came in, the students ______ noise.",
+      "options": [
+        "made",
+        "were making",
+        "was making",
+        "are making"
+      ],
+      "answer": "were making",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "I ______ along the street when I suddenly saw an old friend.",
+      "options": [
+        "walked",
+        "was walking",
+        "am walking",
+        "walk"
+      ],
+      "answer": "was walking",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "While my mother ______ cooking, my father was reading the newspaper.",
+      "options": [
+        "was",
+        "were",
+        "is",
+        "did"
+      ],
+      "answer": "was",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Which sentence is CORRECT?",
+      "options": [
+        "I was doing my homework when the lights went out.",
+        "I did my homework when the lights were going out.",
+        "I was doing my homework while the lights went out.",
+        "I do my homework when the lights went out."
+      ],
+      "answer": "I was doing my homework when the lights went out.",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "What ______ she ______ when the earthquake happened?",
+      "options": [
+        "was / doing",
+        "were / doing",
+        "did / do",
+        "was / do"
+      ],
+      "answer": "was / doing",
+      "level": "hard"
+    }
+  ]
+}

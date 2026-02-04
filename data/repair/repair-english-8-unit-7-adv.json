@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-8-unit-7-adv",
+  "title": "English 8 Unit 7 - Repair (Advanced Position)",
+  "subject": "English 8",
+  "tags": ["english-8", "Sentence Building", "unit7"],
+  "questions": [
+    {
+      "id": "q1",
+      "question": ["you", "Before", "leave", ",", "door", "the", "close"], 
+      "answer": "Before you leave, close the door"
+    },
+    {
+      "id": "q2",
+      "question": ["bell", "When", "rings", "the", ",", "can", "you", "go"], 
+      "answer": "When the bell rings, you can go"
+    },
+    {
+      "id": "q3",
+      "question": ["he", "arrives", "As soon as", ",", "will", "start", "we"], 
+      "answer": "As soon as he arrives, we will start"
+    },
+    {
+      "id": "q4",
+      "question": ["cooking", "was", "While", "I", ",", "phone", "rang", "the"], 
+      "answer": "While I was cooking, the phone rang"
+    },
+    {
+      "id": "q5",
+      "question": ["homework", "After", "finished", "he", ",", "went", "he", "bed", "to"], 
+      "answer": "After he finished homework, he went to bed"
+    },
+    {
+      "id": "q6",
+      "question": ["bus", "the", "saw", "When", "she", ",", "ran", "she", "it", "to"], 
+      "answer": "When she saw the bus, she ran to it"
+    },
+    {
+      "id": "q7",
+      "question": ["stops", "rain", "the", "Until", ",", "cannot", "go", "we", "out"], 
+      "answer": "Until the rain stops, we cannot go out"
+    },
+    {
+      "id": "q8",
+      "question": ["Hanoi", "in", "While", "staying", "were", "they", ",", "visited", "they", "museums", "many"], 
+      "answer": "While they were staying in Hanoi, they visited many museums"
+    },
+    {
+      "id": "q9",
+      "question": ["dark", "gets", "it", "Before", ",", "should", "we", "home", "go"], 
+      "answer": "Before it gets dark, we should go home"
+    },
+    {
+      "id": "q10",
+      "question": ["exams", "my", "finish", "I", "As soon as", ",", "will", "travel", "I", "Japan", "to"], 
+      "answer": "As soon as I finish my exams, I will travel to Japan"
+    }
+  ]
+}

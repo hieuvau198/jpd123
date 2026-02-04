@@ -1,8 +1,8 @@
 {
-  "id": "flashcard-english-grade4-unit-13-14",
+  "id": "flashcard-english-english-4-unit-13-14",
   "title": "Tiếng Anh Lớp 4 - Unit 13 & 14",
   "subject": "english",
-  "tags": ["grade4", "unit13", "unit14", "vocab"],
+  "tags": ["english-4", "unit13", "unit14", "vocab"],
   "description": "Từ vựng Unit 13: Would you like some milk? & Unit 14: What does he look like?",
   "questions": [
     { "id": 1, "question": "Beef", "answer": "Thịt bò", "speak": "beef" },

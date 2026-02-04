@@ -1,0 +1,128 @@
+{
+  "id": "quiz-english-8-unit-8-2",
+  "title": "English 8 Unit 8 - Present Simple for Future",
+  "subject": "English 8",
+  "tags": ["english-8", "Present Simple", "Future Meaning", "unit8"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "The train ______ at 4:30 p.m.",
+      "options": [
+        "leaves",
+        "leave",
+        "leaving",
+        "will leave"
+      ],
+      "answer": "leaves",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "My art lesson ______ at one o'clock.",
+      "options": [
+        "start",
+        "starts",
+        "starting",
+        "is start"
+      ],
+      "answer": "starts",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "What time ______ the bus arrive?",
+      "options": [
+        "do",
+        "does",
+        "is",
+        "will"
+      ],
+      "answer": "does",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "We ______ a meeting tomorrow morning at 8.",
+      "options": [
+        "have",
+        "has",
+        "having",
+        "are have"
+      ],
+      "answer": "have",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "Hurry up! The show ______ in 10 minutes.",
+      "options": [
+        "ends",
+        "begins",
+        "leaves",
+        "stays"
+      ],
+      "answer": "begins",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "The plane takes off at 10 a.m. This sentence expresses:",
+      "options": [
+        "A habit",
+        "A fixed schedule in the future",
+        "A past action",
+        "A feeling"
+      ],
+      "answer": "A fixed schedule in the future",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "I usually ______ up early, but tomorrow I ______ the train at 7 a.m.",
+      "options": [
+        "get / catch",
+        "gets / catches",
+        "get / catching",
+        "getting / catch"
+      ],
+      "answer": "get / catch",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "She will ______ remember this day.",
+      "options": [
+        "always",
+        "often",
+        "rarely",
+        "never"
+      ],
+      "answer": "always",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Choose the INCORRECT sentence.",
+      "options": [
+        "The train leaves at 5 p.m. tomorrow.",
+        "I am always busy on Mondays.",
+        "When does the concert start?",
+        "Look at the clouds! It rains soon."
+      ],
+      "answer": "Look at the clouds! It rains soon.",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "Reorder the sentence: 'beach / go / the / to / Sometimes, / we / weekend / the / on'.",
+      "options": [
+        "Sometimes, we go to the beach on the weekend.",
+        "We sometimes go to the beach on the weekend.",
+        "We go to the beach on the weekend sometimes.",
+        "Sometimes, we to the beach go on the weekend."
+      ],
+      "answer": "Sometimes, we go to the beach on the weekend.",
+      "level": "hard"
+    }
+  ]
+}

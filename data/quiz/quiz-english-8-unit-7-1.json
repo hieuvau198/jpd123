@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-8-unit-7-1",
+  "title": "English 8 Unit 7 - Adverb Clauses of Time (Set 1)",
+  "subject": "English 8",
+  "tags": ["english-8", "Complex Sentences", "Adverb Clauses", "unit7"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Please turn off the lights ______ you leave the room.",
+      "options": ["before", "after", "while", "until"],
+      "answer": "before",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "I will call you ______ I arrive at the airport.",
+      "options": ["as soon as", "until", "while", "before"],
+      "answer": "as soon as",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "We usually watch TV ______ we have dinner.",
+      "options": ["after", "until", "while", "since"],
+      "answer": "after",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "The children played in the garden ______ it started to rain.",
+      "options": ["until", "while", "as soon as", "before"],
+      "answer": "until",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "______ I was walking to school, I saw an accident.",
+      "options": ["While", "Before", "After", "Until"],
+      "answer": "While",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "______ the movie ended, we went home immediately.",
+      "options": ["As soon as", "While", "Until", "Before"],
+      "answer": "As soon as",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "Don't forget to brush your teeth ______ going to bed.",
+      "options": ["before", "after", "while", "until"],
+      "answer": "before",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "You should wait here ______ the rain stops.",
+      "options": ["until", "as soon as", "when", "while"],
+      "answer": "until",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Which sentence is CORRECT?",
+      "options": [
+        "Before I go to school, I have breakfast.",
+        "Before I go to school I have breakfast.",
+        "I have breakfast, before I go to school.",
+        "Before I have breakfast I go to school."
+      ],
+      "answer": "Before I go to school, I have breakfast.",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "Choose the best combination: 'The thief saw the police. He ran away.'",
+      "options": [
+        "As soon as the thief saw the police, he ran away.",
+        "While the thief saw the police, he ran away.",
+        "The thief ran away before he saw the police.",
+        "Until the thief saw the police, he ran away."
+      ],
+      "answer": "As soon as the thief saw the police, he ran away.",
+      "level": "hard"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "quiz-english-8-unit-9-2",
+  "title": "English 8 Unit 9 - Past Continuous (Set 2)",
+  "subject": "English 8",
+  "tags": ["english-8", "Past Continuous", "When/While", "unit9"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "We ______ sleeping when the alarm rang.",
+      "options": [
+        "was",
+        "were",
+        "are",
+        "did"
+      ],
+      "answer": "were",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "He ______ working on his computer at 9 a.m. yesterday.",
+      "options": [
+        "was",
+        "were",
+        "is",
+        "did"
+      ],
+      "answer": "was",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "______ it raining when you left the house?",
+      "options": [
+        "Was",
+        "Were",
+        "Did",
+        "Is"
+      ],
+      "answer": "Was",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "My brother ______ playing video games, he was doing his homework.",
+      "options": [
+        "was not",
+        "were not",
+        "did not",
+        "is not"
+      ],
+      "answer": "was not",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "You ______ listening to music when I arrived.",
+      "options": [
+        "was",
+        "were",
+        "did",
+        "are"
+      ],
+      "answer": "were",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "My sister was practicing the piano ______ I was drawing a picture.",
+      "options": [
+        "when",
+        "while",
+        "so",
+        "because"
+      ],
+      "answer": "while",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "They were having lunch when the phone ______.",
+      "options": [
+        "ring",
+        "rang",
+        "was ringing",
+        "rings"
+      ],
+      "answer": "rang",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "He fell down while he ______ up the tree.",
+      "options": [
+        "climbed",
+        "was climbing",
+        "is climbing",
+        "climbs"
+      ],
+      "answer": "was climbing",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Choose the best completion: 'While Lan was knitting a scarf, ______.'",
+      "options": [
+        "her sister was reading a comic book.",
+        "her sister read a comic book.",
+        "her sister is reading a comic book.",
+        "her sister reads a comic book."
+      ],
+      "answer": "her sister was reading a comic book.",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "At this time last year, we ______ English in London.",
+      "options": [
+        "studied",
+        "were studying",
+        "are studying",
+        "have studied"
+      ],
+      "answer": "were studying",
+      "level": "hard"
+    }
+  ]
+}

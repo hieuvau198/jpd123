@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-8-unit-9-basic",
+  "title": "English 8 Unit 9 - Past Continuous Structure",
+  "subject": "English 8",
+  "tags": ["english-8", "Past Continuous", "unit9"],
+  "questions": [
+    {
+      "id": "q1",
+      "question": ["reading", "was", "book", "a", "I"], 
+      "answer": "I was reading a book"
+    },
+    {
+      "id": "q2",
+      "question": ["sleeping", "They", "were", "peacefully"], 
+      "answer": "They were sleeping peacefully"
+    },
+    {
+      "id": "q3",
+      "question": ["not", "She", "was", "cooking"], 
+      "answer": "She was not cooking"
+    },
+    {
+      "id": "q4",
+      "question": ["It", "raining", "was", "yesterday"], 
+      "answer": "It was raining yesterday"
+    },
+    {
+      "id": "q5",
+      "question": ["you", "Were", "TV", "watching", "?"], 
+      "answer": "Were you watching TV ?"
+    },
+    {
+      "id": "q6",
+      "question": ["dinner", "having", "We", "were", "at", "7 p.m."], 
+      "answer": "We were having dinner at 7 p.m."
+    },
+    {
+      "id": "q7",
+      "question": ["doing", "What", "were", "you", "at", "8 o'clock", "?"], 
+      "answer": "What were you doing at 8 o'clock ?"
+    },
+    {
+      "id": "q8",
+      "question": ["studying", "They", "all", "day", "were", "Sunday", "last"], 
+      "answer": "They were studying all day last Sunday"
+    },
+    {
+      "id": "q9",
+      "question": ["time", "at", "this", "I", "traveling", "was", "to", "London"], 
+      "answer": "I was traveling to London at this time"
+    },
+    {
+      "id": "q10",
+      "question": ["garden", "the", "in", "working", "parents", "My", "morning", "were", "yesterday"], 
+      "answer": "My parents were working in the garden yesterday morning"
+    }
+  ]
+}

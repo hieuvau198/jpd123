@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Input } from 'antd';
-import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench } from 'lucide-react'; // Added Wrench icon
+import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Input, Tabs } from 'antd';
+import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench } from 'lucide-react';
 import { getAllFlashcards, saveFlashcardSet, deleteFlashcardSet } from '../firebase/flashcardService';
 import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../firebase/quizService';
-import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../firebase/repairService'; // Import new service
+import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../firebase/repairService';
 
 const { Title, Text } = Typography;
 
@@ -15,18 +15,30 @@ const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
 
+  // --- UI STATE ---
+  const [activeTab, setActiveTab] = useState('flashcard'); // Default tab
+
   // --- DATA STATE ---
   const [loading, setLoading] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
-  const [repairs, setRepairs] = useState([]); // New state
+  const [repairs, setRepairs] = useState([]);
+  
+  // To track if data has been loaded at least once to avoid re-fetching on every tab switch (optional)
+  const [dataLoaded, setDataLoaded] = useState({
+    flashcard: false,
+    quiz: false,
+    repair: false
+  });
+
   const processingFiles = useRef(0);
 
+  // --- EFFECT: Fetch data when Tab Changes ---
   useEffect(() => {
     if (isAuthenticated) {
-      fetchAllData();
+      loadDataForTab(activeTab);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, activeTab]);
 
   const handleLogin = () => {
     if (passcode === '2000') {
@@ -37,16 +49,21 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchAllData = () => {
-    fetchFlashcards();
-    fetchQuizzes();
-    fetchRepairs();
+  const loadDataForTab = (tabKey, forceRefresh = false) => {
+    // Only fetch if forced OR if we haven't loaded this tab's data yet
+    if (forceRefresh || !dataLoaded[tabKey]) {
+      if (tabKey === 'flashcard') fetchFlashcards();
+      if (tabKey === 'quiz') fetchQuizzes();
+      if (tabKey === 'repair') fetchRepairs();
+    }
   };
 
+  // --- FETCH FUNCTIONS ---
   const fetchFlashcards = async () => {
     setLoading(true);
     const data = await getAllFlashcards();
     setFlashcards(data);
+    setDataLoaded(prev => ({ ...prev, flashcard: true }));
     setLoading(false);
   };
 
@@ -54,6 +71,7 @@ const AdminDashboard = () => {
     setLoading(true);
     const data = await getAllQuizzes();
     setQuizzes(data);
+    setDataLoaded(prev => ({ ...prev, quiz: true }));
     setLoading(false);
   };
 
@@ -61,10 +79,12 @@ const AdminDashboard = () => {
     setLoading(true);
     const data = await getAllRepairs();
     setRepairs(data);
+    setDataLoaded(prev => ({ ...prev, repair: true }));
     setLoading(false);
   };
 
-  // Generic File Upload Handler
+  // --- CRUD ACTIONS ---
+
   const handleImport = (file, type) => {
     processingFiles.current += 1;
     setLoading(true);
@@ -74,25 +94,28 @@ const AdminDashboard = () => {
       try {
         const json = JSON.parse(e.target.result);
         
-        if (!json.id || !json.questions) {
-          message.error(`File ${file.name}: Invalid JSON. Must contain 'id' and 'questions'.`);
-        } else {
-          let result;
-          if (type === 'flashcard') result = await saveFlashcardSet(json);
-          else if (type === 'quiz') result = await saveQuizSet(json);
-          else if (type === 'repair') result = await saveRepairSet(json); // Handle new type
+        if (!json.id || !json.questions) { // Note: 'questions' might not exist on all types, adjust validation as needed
+          // Relaxed validation or specific validation per type could go here
+           if (!json.id) throw new Error("Missing ID");
+        } 
+        
+        let result;
+        if (type === 'flashcard') result = await saveFlashcardSet(json);
+        else if (type === 'quiz') result = await saveQuizSet(json);
+        else if (type === 'repair') result = await saveRepairSet(json);
 
-          if (result.success) {
-            message.success(`Imported: ${json.title || file.name}`);
-          } else {
-            message.warning(`Skipped ${file.name}: ${result.message}`);
-          }
+        if (result.success) {
+          message.success(`Imported: ${json.title || file.name}`);
+        } else {
+          message.warning(`Skipped ${file.name}: ${result.message}`);
         }
+        
       } catch (err) {
         message.error(`Error processing ${file.name}: ` + err.message);
       } finally {
         processingFiles.current -= 1;
         if (processingFiles.current === 0) {
+          // Refresh only the current list
           if (type === 'flashcard') fetchFlashcards();
           else if (type === 'quiz') fetchQuizzes();
           else if (type === 'repair') fetchRepairs();
@@ -100,7 +123,7 @@ const AdminDashboard = () => {
       }
     };
     reader.readAsText(file);
-    return false;
+    return false; // Prevent default upload behavior
   };
 
   const handleDelete = async (id, type) => {
@@ -124,6 +147,54 @@ const AdminDashboard = () => {
     }
   };
 
+  // --- RENDER HELPERS ---
+
+  const renderUploadArea = (type, color, text) => (
+    <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
+      <Upload.Dragger 
+        accept=".json" 
+        multiple={true}
+        showUploadList={false} 
+        beforeUpload={(file) => handleImport(file, type)}
+      >
+        <p className="ant-upload-drag-icon"><UploadCloud size={32} color={color} /></p>
+        <p className="ant-upload-text">{text}</p>
+        <p className="ant-upload-hint">Ignores if ID already exists.</p>
+      </Upload.Dragger>
+    </div>
+  );
+
+  const renderList = (data, type, icon, color) => (
+    <List
+      loading={loading && activeTab === type}
+      dataSource={data}
+      pagination={{ pageSize: 5 }}
+      renderItem={(item) => (
+        <List.Item
+          actions={[
+            <Popconfirm title="Delete?" onConfirm={() => handleDelete(item.id, type)} okText="Yes" cancelText="No">
+              <Button danger type="text" icon={<Trash2 size={16} />} />
+            </Popconfirm>
+          ]}
+        >
+          <List.Item.Meta
+            avatar={icon}
+            title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
+            description={
+              <>
+                <AntTag color={color}>{item.subject || 'No Subject'}</AntTag>
+                {item.tags && item.tags.map((tag, i) => (
+                  <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
+                ))}
+              </>
+            }
+          />
+        </List.Item>
+      )}
+    />
+  );
+
+  // --- LOGIN VIEW ---
   if (!isAuthenticated) {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f2f5' }}>
@@ -147,6 +218,49 @@ const AdminDashboard = () => {
     );
   }
 
+  // --- MAIN VIEW ---
+  const tabItems = [
+    {
+      key: 'flashcard',
+      label: 'Flashcards',
+      children: (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('flashcard', true)} loading={loading}>Refresh</Button>
+          </div>
+          {renderUploadArea('flashcard', '#1890ff', 'Import Flashcards (JSON)')}
+          {renderList(flashcards, 'flashcard', <FileJson color="#faad14" size={24} />, 'blue')}
+        </div>
+      )
+    },
+    {
+      key: 'quiz',
+      label: 'Quizzes',
+      children: (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('quiz', true)} loading={loading}>Refresh</Button>
+          </div>
+          {renderUploadArea('quiz', '#52c41a', 'Import Quizzes (JSON)')}
+          {renderList(quizzes, 'quiz', <FileQuestion color="#52c41a" size={24} />, 'green')}
+        </div>
+      )
+    },
+    {
+      key: 'repair',
+      label: 'Repair (Sentence)',
+      children: (
+        <div>
+           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('repair', true)} loading={loading}>Refresh</Button>
+          </div>
+          {renderUploadArea('repair', '#722ed1', 'Import Repair Sets (JSON)')}
+          {renderList(repairs, 'repair', <Wrench color="#722ed1" size={24} />, 'purple')}
+        </div>
+      )
+    }
+  ];
+
   return (
     <div style={{ maxWidth: 900, margin: '40px auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
@@ -154,126 +268,14 @@ const AdminDashboard = () => {
         <Button icon={<Home size={16} />} onClick={() => navigate('/')}>Back to Home</Button>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
-        
-        {/* REPAIR SECTION (New) */}
-        <Card title="Repair (Sentence Building)" extra={<Button icon={<RefreshCw size={16}/>} onClick={fetchRepairs} loading={loading}>Refresh</Button>}>
-          <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
-             <Upload.Dragger 
-              accept=".json" 
-              multiple={true}
-              showUploadList={false} 
-              beforeUpload={(file) => handleImport(file, 'repair')}
-            >
-              <p className="ant-upload-drag-icon"><UploadCloud size={32} color="#722ed1" /></p>
-              <p className="ant-upload-text">Import Repair Sets (JSON)</p>
-            </Upload.Dragger>
-          </div>
-          <List
-            loading={loading}
-            dataSource={repairs}
-            pagination={{ pageSize: 5 }}
-            renderItem={(item) => (
-              <List.Item actions={[
-                  <Popconfirm title="Delete?" onConfirm={() => handleDelete(item.id, 'repair')} okText="Yes" cancelText="No">
-                    <Button danger type="text" icon={<Trash2 size={16} />} />
-                  </Popconfirm>
-                ]}>
-                <List.Item.Meta
-                  avatar={<Wrench color="#722ed1" size={24} />}
-                  title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
-                  description={
-                    <>
-                      {/* Subject Tag */}
-                      <AntTag color="purple">{item.subject || 'No Subject'}</AntTag>
-                      
-                      {/* New Tags Loop */}
-                      {item.tags && item.tags.map((tag, i) => (
-                        <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
-                      ))}
-                    </>
-                  }
-                />
-              </List.Item>
-            )}
-          />
-        </Card>
-        
-        {/* FLASHCARD SECTION */}
-        <Card title="Flashcards" extra={<Button icon={<RefreshCw size={16}/>} onClick={fetchFlashcards} loading={loading}>Refresh</Button>}>
-          <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
-             <Upload.Dragger 
-              accept=".json" 
-              multiple={true}
-              showUploadList={false} 
-              beforeUpload={(file) => handleImport(file, 'flashcard')}
-            >
-              <p className="ant-upload-drag-icon"><UploadCloud size={32} color="#1890ff" /></p>
-              <p className="ant-upload-text">Import Flashcards (JSON)</p>
-              <p className="ant-upload-hint">Ignores if ID already exists.</p>
-            </Upload.Dragger>
-          </div>
-
-          <List
-            loading={loading}
-            dataSource={flashcards}
-            pagination={{ pageSize: 5 }}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Popconfirm title="Delete?" onConfirm={() => handleDeleteFlashcard(item.id)} okText="Yes" cancelText="No">
-                    <Button danger type="text" icon={<Trash2 size={16} />} />
-                  </Popconfirm>
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={<FileJson color="#faad14" size={24} />}
-                  title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
-                  description={<AntTag color="blue">{item.subject || 'No Subject'}</AntTag>}
-                />
-              </List.Item>
-            )}
-          />
-        </Card>
-
-        {/* QUIZ SECTION */}
-        <Card title="Quizzes" extra={<Button icon={<RefreshCw size={16}/>} onClick={fetchQuizzes} loading={loading}>Refresh</Button>}>
-          <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
-             <Upload.Dragger 
-              accept=".json" 
-              multiple={true}
-              showUploadList={false} 
-              beforeUpload={(file) => handleImport(file, 'quiz')}
-            >
-              <p className="ant-upload-drag-icon"><UploadCloud size={32} color="#52c41a" /></p>
-              <p className="ant-upload-text">Import Quizzes (JSON)</p>
-              <p className="ant-upload-hint">Ignores if ID already exists.</p>
-            </Upload.Dragger>
-          </div>
-
-          <List
-            loading={loading}
-            dataSource={quizzes}
-            pagination={{ pageSize: 5 }}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Popconfirm title="Delete?" onConfirm={() => handleDeleteQuiz(item.id)} okText="Yes" cancelText="No">
-                    <Button danger type="text" icon={<Trash2 size={16} />} />
-                  </Popconfirm>
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={<FileQuestion color="#52c41a" size={24} />}
-                  title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
-                  description={<AntTag color="green">{item.subject || 'No Subject'}</AntTag>}
-                />
-              </List.Item>
-            )}
-          />
-        </Card>
-
-      </div>
+      <Card>
+        <Tabs 
+          activeKey={activeTab} 
+          onChange={setActiveTab} 
+          items={tabItems}
+          type="card"
+        />
+      </Card>
     </div>
   );
 };

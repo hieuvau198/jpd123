@@ -1,0 +1,152 @@
+{
+  "id": "flashcard-english-7-unit-7",
+  "title": "English 7 Unit 7 - Traffic",
+  "subject": "English 7",
+  "tags": [
+    "Vocabulary",
+    "unit7",
+    "english-7"
+  ],
+  "flashcards": [
+    {
+      "id": 1,
+      "word": "bumpy",
+      "pronunciation": "/ˈbʌmpi/",
+      "meaning": "lồi lõm, nhiều ổ gà",
+      "example": "The bus drove slowly over the bumpy road."
+    },
+    {
+      "id": 2,
+      "word": "distance",
+      "pronunciation": "/ˈdɪstəns/",
+      "meaning": "khoảng cách",
+      "example": "The distance from my house to school is 2 kilometers."
+    },
+    {
+      "id": 3,
+      "word": "fine",
+      "pronunciation": "/faɪn/",
+      "meaning": "phạt",
+      "example": "He had to pay a fine for parking in the wrong place."
+    },
+    {
+      "id": 4,
+      "word": "fly",
+      "pronunciation": "/flaɪ/",
+      "meaning": "bay, lái máy bay, đi trên máy bay",
+      "example": "We will fly to Da Nang next summer."
+    },
+    {
+      "id": 5,
+      "word": "handlebars",
+      "pronunciation": "/ˈhændlbɑː(r)z/",
+      "meaning": "tay lái, ghi đông",
+      "example": "Hold the handlebars firmly with both hands."
+    },
+    {
+      "id": 6,
+      "word": "lane",
+      "pronunciation": "/leɪn/",
+      "meaning": "làn đường",
+      "example": "You should stay in your lane when driving."
+    },
+    {
+      "id": 7,
+      "word": "obey traffic rules",
+      "pronunciation": "/əˈbeɪ ˈtræfɪk ruːlz/",
+      "meaning": "tuân theo luật giao thông",
+      "example": "All drivers must obey traffic rules to stay safe."
+    },
+    {
+      "id": 8,
+      "word": "passenger",
+      "pronunciation": "/ˈpæsɪndʒə(r)/",
+      "meaning": "hành khách",
+      "example": "The passengers are boarding the train."
+    },
+    {
+      "id": 9,
+      "word": "pavement",
+      "pronunciation": "/ˈpeɪvmənt/",
+      "meaning": "vỉa hè (cho người đi bộ)",
+      "example": "Pedestrians must walk on the pavement."
+    },
+    {
+      "id": 10,
+      "word": "pedestrian",
+      "pronunciation": "/pəˈdestriən/",
+      "meaning": "người đi bộ",
+      "example": "Drivers must give way to pedestrians."
+    },
+    {
+      "id": 11,
+      "word": "plane",
+      "pronunciation": "/pleɪn/",
+      "meaning": "máy bay",
+      "example": "The plane took off at 9 a.m."
+    },
+    {
+      "id": 12,
+      "word": "road sign",
+      "pronunciation": "/ˈrəʊd saɪn/",
+      "meaning": "biển báo giao thông",
+      "example": "Pay attention to the road sign ahead."
+    },
+    {
+      "id": 13,
+      "word": "roof",
+      "pronunciation": "/ruːf/",
+      "meaning": "nóc xe, mái nhà",
+      "example": "Put the luggage on the roof of the car."
+    },
+    {
+      "id": 14,
+      "word": "safety",
+      "pronunciation": "/ˈseɪfti/",
+      "meaning": "sự an toàn",
+      "example": "Road safety is very important for everyone."
+    },
+    {
+      "id": 15,
+      "word": "seat belt",
+      "pronunciation": "/ˈsiːt belt/",
+      "meaning": "đai an toàn",
+      "example": "Always fasten your seat belt when you are in a car."
+    },
+    {
+      "id": 16,
+      "word": "signal",
+      "pronunciation": "/ˈsɪɡnəl/",
+      "meaning": "tín hiệu, dấu hiệu",
+      "example": "The traffic signal turned red."
+    },
+    {
+      "id": 17,
+      "word": "traffic jam",
+      "pronunciation": "/ˈtræfɪk dʒæm/",
+      "meaning": "tắc đường",
+      "example": "We were stuck in a traffic jam for an hour."
+    },
+    {
+      "id": 18,
+      "word": "traffic rule",
+      "pronunciation": "/ˈtræfɪk ruːl/",
+      "meaning": "luật giao thông",
+      "example": "Breaking a traffic rule can be dangerous."
+    },
+    {
+      "id": 19,
+      "word": "vehicle",
+      "pronunciation": "/ˈviːəkl/",
+      "meaning": "xe cộ, phương tiện giao thông",
+      "example": "Motorbikes are a common vehicle in Vietnam."
+    },
+    {
+      "id": 20,
+      "word": "zebra crossing",
+      "pronunciation": "/ˌzebrə ˈkrɒsɪŋ/",
+      "meaning": "vạch kẻ cho người đi bộ sang đường",
+      "example": "Cross the street at the zebra crossing."
+    }
+  ]
+}

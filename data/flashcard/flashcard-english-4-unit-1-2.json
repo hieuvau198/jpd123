@@ -1,8 +1,8 @@
 {
-  "id": "flashcard-english-grade4-unit-1-2",
+  "id": "flashcard-english-english-4-unit-1-2",
   "title": "Tiếng Anh Lớp 4 - Unit 1 & 2",
   "subject": "english",
-  "tags": ["grade4", "unit1", "unit2", "vocab"],
+  "tags": ["english-4", "unit1", "unit2", "vocab"],
   "description": "Từ vựng Unit 1: Nice to see you again & Unit 2: I'm from Japan.",
   "questions": [
     { "id": 1, "question": "Afternoon", "answer": "Buổi chiều", "speak": "afternoon" },

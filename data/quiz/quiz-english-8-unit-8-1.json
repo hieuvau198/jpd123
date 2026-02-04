@@ -1,0 +1,128 @@
+{
+  "id": "quiz-english-8-unit-8-1",
+  "title": "English 8 Unit 8 - Adverbs of Frequency",
+  "subject": "English 8",
+  "tags": ["english-8", "Adverbs of Frequency", "unit8"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "My sister ______ writes to me.",
+      "options": [
+        "usually",
+        "usual",
+        "is usually",
+        "usually is"
+      ],
+      "answer": "usually",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "She ______ late for class.",
+      "options": [
+        "never is",
+        "is never",
+        "never",
+        "be never"
+      ],
+      "answer": "is never",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "We ______ go to the cinema on Sundays.",
+      "options": [
+        "often",
+        "are often",
+        "often are",
+        "have often"
+      ],
+      "answer": "often",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "They ______ friendly to visitors.",
+      "options": [
+        "always are",
+        "are always",
+        "always",
+        "have always"
+      ],
+      "answer": "are always",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "He ______ eats fast food because it is not healthy.",
+      "options": [
+        "always",
+        "rarely",
+        "often",
+        "usually"
+      ],
+      "answer": "rarely",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "Choose the correct sentence structure:",
+      "options": [
+        "He doesn't often go out at night.",
+        "He often doesn't go out at night.",
+        "He doesn't go often out at night.",
+        "He often goes not out at night."
+      ],
+      "answer": "He doesn't often go out at night.",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "I ______ been abroad.",
+      "options": [
+        "never have",
+        "have never",
+        "am never",
+        "never am"
+      ],
+      "answer": "have never",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "______ you ______ eat vegetables?",
+      "options": [
+        "Do / often",
+        "Are / often",
+        "Do / never",
+        "Are / never"
+      ],
+      "answer": "Do / often",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Which adverb CANNOT usually stand at the end of a sentence?",
+      "options": [
+        "Sometimes",
+        "Usually",
+        "Often",
+        "Always"
+      ],
+      "answer": "Always",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "Identify the mistake: 'My brother is usually doing his homework in the evening.' (referring to a habit)",
+      "options": [
+        "is usually doing",
+        "his homework",
+        "in",
+        "the evening"
+      ],
+      "answer": "is usually doing",
+      "level": "hard"
+    }
+  ]
+}

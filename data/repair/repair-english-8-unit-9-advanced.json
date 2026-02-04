@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-8-unit-9-advanced",
+  "title": "English 8 Unit 9 - When & While",
+  "subject": "English 8",
+  "tags": ["english-8", "Past Continuous", "When/While", "unit9"],
+  "questions": [
+    {
+      "id": "q1",
+      "question": ["called", "you", "when", "sleeping", "was", "I"], 
+      "answer": "I was sleeping when you called"
+    },
+    {
+      "id": "q2",
+      "question": ["fell", "He", "while", "running", "was", "he"], 
+      "answer": "He fell while he was running"
+    },
+    {
+      "id": "q3",
+      "question": ["cooking", "were", "They", "I", "arrived", "when"], 
+      "answer": "They were cooking when I arrived"
+    },
+    {
+      "id": "q4",
+      "question": ["rang", "phone", "The", "we", "eating", "were", "while"], 
+      "answer": "The phone rang while we were eating"
+    },
+    {
+      "id": "q5",
+      "question": ["watching", "were", "We", "TV", "power", "lost", "the", "when"], 
+      "answer": "We were watching TV when the power lost"
+    },
+    {
+      "id": "q6",
+      "question": ["walking", "was", "I", "home", "started", "rain", "to", "it", "while"], 
+      "answer": "While I was walking home it started to rain"
+    },
+    {
+      "id": "q7",
+      "question": ["teacher", "the", "came", "When", "students", "talking", "were", "the"], 
+      "answer": "When the teacher came the students were talking"
+    },
+    {
+      "id": "q8",
+      "question": ["saw", "she", "When", "him", "crying", "was", "she"], 
+      "answer": "When she saw him she was crying"
+    },
+    {
+      "id": "q9",
+      "question": ["mother", "My", "cooking", "was", "father", "my", "while", "reading", "was"], 
+      "answer": "My mother was cooking while my father was reading"
+    },
+    {
+      "id": "q10",
+      "question": ["earthquake", "the", "happened", "doing", "you", "What", "were", "when", "?"], 
+      "answer": "What were you doing when the earthquake happened ?"
+    }
+  ]
+}

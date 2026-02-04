@@ -1,23 +1,27 @@
 [
   {
-    "id": "a1",
-    "name": "A1 (Beginner)"
+    "id": "english-4",
+    "name": "English 4"
   },
   {
-    "id": "a2",
-    "name": "A2 (Elementary)"
+    "id": "english-5",
+    "name": "English 5"
   },
   {
-    "id": "b1",
-    "name": "B1 (Intermediate)"
+    "id": "english-6",
+    "name": "English 6"
   },
   {
-    "id": "b2",
-    "name": "B2 (Upper Inter.)"
+    "id": "english-7",
+    "name": "English 7"
   },
   {
-    "id": "c1",
-    "name": "C1 (Advanced)"
+    "id": "english-8",
+    "name": "English 8"
+  },
+  {
+    "id": "english-9",
+    "name": "English 9"
   },
   {
     "id": "vocab",

@@ -1,0 +1,93 @@
+{
+  "id": "quiz-english-8-unit-7-2",
+  "title": "English 8 Unit 7 - Tense & Structure (Set 2)",
+  "subject": "English 8",
+  "tags": ["english-8", "Tenses", "Adverb Clauses", "unit7"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I will wait here until she ______ back.",
+      "options": ["comes", "will come", "came", "coming"],
+      "answer": "comes",
+      "level": "easy"
+    },
+    {
+      "id": 2,
+      "question": "When he ______, we will start the meeting.",
+      "options": ["arrives", "will arrive", "arrived", "is arriving"],
+      "answer": "arrives",
+      "level": "easy"
+    },
+    {
+      "id": 3,
+      "question": "We were having dinner when the phone ______.",
+      "options": ["rang", "rings", "was ringing", "will ring"],
+      "answer": "rang",
+      "level": "easy"
+    },
+    {
+      "id": 4,
+      "question": "She ______ her homework before she watched TV yesterday.",
+      "options": ["did", "does", "will do", "doing"],
+      "answer": "did",
+      "level": "easy"
+    },
+    {
+      "id": 5,
+      "question": "As soon as I ______ the news, I will tell you.",
+      "options": ["hear", "will hear", "heard", "am hearing"],
+      "answer": "hear",
+      "level": "easy"
+    },
+    {
+      "id": 6,
+      "question": "My mother was cooking while my father ______ the newspaper.",
+      "options": ["was reading", "read", "reads", "is reading"],
+      "answer": "was reading",
+      "level": "medium"
+    },
+    {
+      "id": 7,
+      "question": "Identify the mistake: 'When I will grow up, I will be a doctor.'",
+      "options": ["will grow", "When", "will be", "a doctor"],
+      "answer": "will grow",
+      "level": "medium"
+    },
+    {
+      "id": 8,
+      "question": "Identify the dependent clause: 'They will go out after they finish their work.'",
+      "options": [
+        "after they finish their work",
+        "They will go out",
+        "finish their work",
+        "They will go"
+      ],
+      "answer": "after they finish their work",
+      "level": "medium"
+    },
+    {
+      "id": 9,
+      "question": "Which sentence has the correct punctuation?",
+      "options": [
+        "As soon as we get there, we will call you.",
+        "As soon as we get there we will call you.",
+        "We will call you, as soon as we get there.",
+        "We, will call you as soon as we get there."
+      ],
+      "answer": "As soon as we get there, we will call you.",
+      "level": "hard"
+    },
+    {
+      "id": 10,
+      "question": "Choose the correct sentence regarding tense usage:",
+      "options": [
+        "I will buy a car when I have enough money.",
+        "I will buy a car when I will have enough money.",
+        "I buy a car when I will have enough money.",
+        "I bought a car when I have enough money."
+      ],
+      "answer": "I will buy a car when I have enough money.",
+      "level": "hard"
+    }
+  ]
+}
