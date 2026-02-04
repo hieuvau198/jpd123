@@ -1,21 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Tabs } from 'antd';
-import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Input } from 'antd';
+import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock } from 'lucide-react';
 import { getAllFlashcards, saveFlashcardSet, deleteFlashcardSet } from '../firebase/flashcardService';
 import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../firebase/quizService';
 
 const { Title, Text } = Typography;
 
-const AdminDashboard = ({ onBack }) => {
+const AdminDashboard = () => {
+  const navigate = useNavigate();
+  
+  // --- AUTH STATE ---
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passcode, setPasscode] = useState('');
+
+  // --- DATA STATE ---
   const [loading, setLoading] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const processingFiles = useRef(0);
 
-  // Fetch data on mount
+  // Fetch data only if authenticated
   useEffect(() => {
-    fetchAllData();
-  }, []);
+    if (isAuthenticated) {
+      fetchAllData();
+    }
+  }, [isAuthenticated]);
+
+  const handleLogin = () => {
+    if (passcode === '2000') {
+      setIsAuthenticated(true);
+      message.success("Access Granted");
+    } else {
+      message.error("Incorrect Passcode");
+    }
+  };
 
   const fetchAllData = () => {
     fetchFlashcards();
@@ -77,7 +96,6 @@ const AdminDashboard = ({ onBack }) => {
     return false; // Prevent default upload
   };
 
-  // Delete Handlers
   const handleDeleteFlashcard = async (id) => {
     try {
       setLoading(true);
@@ -104,11 +122,40 @@ const AdminDashboard = ({ onBack }) => {
     }
   };
 
+  // --- LOGIN SCREEN ---
+  if (!isAuthenticated) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f2f5' }}>
+        <Card style={{ width: 350, textAlign: 'center' }}>
+          <div style={{ marginBottom: 20 }}>
+            <Lock size={40} color="#1890ff" />
+            <Title level={3} style={{ marginTop: 10 }}>Admin Access</Title>
+          </div>
+          <Input.Password 
+            placeholder="Enter Passcode" 
+            size="large"
+            style={{ marginBottom: 20 }}
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value)}
+            onPressEnter={handleLogin}
+          />
+          <Button type="primary" block size="large" onClick={handleLogin}>
+            Unlock
+          </Button>
+          <Button type="link" onClick={() => navigate('/')} style={{ marginTop: 10 }}>
+            Back to Home
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
+  // --- MAIN DASHBOARD ---
   return (
     <div style={{ maxWidth: 900, margin: '40px auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
         <Title level={2} style={{ margin: 0 }}>Content Management</Title>
-        <Button icon={<Home size={16} />} onClick={onBack}>Back to Home</Button>
+        <Button icon={<Home size={16} />} onClick={() => navigate('/')}>Back to Home</Button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>

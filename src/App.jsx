@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.css'; 
 
 // Components
@@ -10,39 +10,26 @@ import FlashcardDetail from './pages/FlashcardDetail';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
 
-// --- DATA LOADING ---
-// Load Quizzes globally (since they are local files)
-const quizImports = import.meta.glob('./data/quiz/*.json', { eager: true, import: 'default' });
-const QUIZ_DATA = Object.values(quizImports).map(d => ({ ...d, type: 'quiz' }));
-
 export default function App() {
-  const [showAdmin, setShowAdmin] = useState(false);
-  const navigate = useNavigate();
-
-  // If Admin is active, render it overlaying everything (or simpler: conditional return)
-  if (showAdmin) {
-    return <AdminDashboard onBack={() => setShowAdmin(false)} />;
-  }
-
   return (
     <main>
       <Routes>
         {/* Home Page */}
-        <Route 
-            path="/" 
-            element={<Home onGoAdmin={() => setShowAdmin(true)} />} 
-        />
+        <Route path="/" element={<Home />} />
+        
+        {/* Admin Route - Password Protected */}
+        <Route path="/admin" element={<AdminDashboard />} />
         
         {/* Flashcard Routes */}
         <Route path="/flashcards" element={<FlashcardList />} />
         <Route path="/flashcard/:id" element={<FlashcardDetail />} />
 
         {/* Quiz Routes */}
-        <Route path="/quizzes" element={<QuizList quizData={QUIZ_DATA} />} />
-        <Route path="/quiz/:id" element={<QuizDetail quizData={QUIZ_DATA} />} />
+        <Route path="/quizzes" element={<QuizList />} />
+        <Route path="/quiz/:id" element={<QuizDetail />} />
         
         {/* Fallback */}
-        <Route path="*" element={<Home onGoAdmin={() => setShowAdmin(true)} />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </main>
   );

@@ -22,8 +22,6 @@ export const getAllQuizzes = async () => {
 
 /**
  * Saves a quiz set.
- * Checks if the ID already exists. If so, it SKIPS the save.
- * Returns { success: boolean, message: string }
  */
 export const saveQuizSet = async (data) => {
   try {
@@ -58,5 +56,22 @@ export const deleteQuizSet = async (id) => {
   } catch (error) {
     console.error("Error deleting quiz:", error);
     throw error;
+  }
+};
+
+/**
+ * Fetches a single quiz by ID.
+ */
+export const getQuizById = async (id) => {
+  try {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { ...docSnap.data(), id: docSnap.id, type: 'quiz' };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting quiz:", error);
+    return null;
   }
 };

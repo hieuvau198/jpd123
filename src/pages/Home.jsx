@@ -2,14 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layers, Brain, Settings } from 'lucide-react';
 
-const Home = ({ onGoAdmin }) => {
+const Home = () => {
   const navigate = useNavigate();
 
   return (
     <div className="app-container" style={{ textAlign: 'center', paddingTop: '50px' }}>
       <div style={{display:'flex', justifyContent:'center', alignItems:'center', position: 'relative', marginBottom: 40}}>
         <h1 className="brand-title">Học Cùng Cô Quốc Anh &#128513;</h1>
-        <button onClick={onGoAdmin} className="icon-btn" style={{ position: 'absolute', right: 0 }}>
+        <button 
+          onClick={() => navigate('/admin')} 
+          className="icon-btn" 
+          style={{ position: 'absolute', right: 0 }}
+          title="Admin Dashboard"
+        >
             <Settings size={20} />
         </button>
       </div>
