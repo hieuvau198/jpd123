@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Input } from 'antd';
-import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock } from 'lucide-react';
+import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench } from 'lucide-react'; // Added Wrench icon
 import { getAllFlashcards, saveFlashcardSet, deleteFlashcardSet } from '../firebase/flashcardService';
 import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../firebase/quizService';
+import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../firebase/repairService'; // Import new service
 
 const { Title, Text } = Typography;
 
@@ -18,9 +19,9 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
+  const [repairs, setRepairs] = useState([]); // New state
   const processingFiles = useRef(0);
 
-  // Fetch data only if authenticated
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllData();
@@ -39,6 +40,7 @@ const AdminDashboard = () => {
   const fetchAllData = () => {
     fetchFlashcards();
     fetchQuizzes();
+    fetchRepairs();
   };
 
   const fetchFlashcards = async () => {
@@ -55,6 +57,13 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  const fetchRepairs = async () => {
+    setLoading(true);
+    const data = await getAllRepairs();
+    setRepairs(data);
+    setLoading(false);
+  };
+
   // Generic File Upload Handler
   const handleImport = (file, type) => {
     processingFiles.current += 1;
@@ -65,16 +74,13 @@ const AdminDashboard = () => {
       try {
         const json = JSON.parse(e.target.result);
         
-        // Validation
         if (!json.id || !json.questions) {
           message.error(`File ${file.name}: Invalid JSON. Must contain 'id' and 'questions'.`);
         } else {
           let result;
-          if (type === 'flashcard') {
-            result = await saveFlashcardSet(json);
-          } else {
-            result = await saveQuizSet(json);
-          }
+          if (type === 'flashcard') result = await saveFlashcardSet(json);
+          else if (type === 'quiz') result = await saveQuizSet(json);
+          else if (type === 'repair') result = await saveRepairSet(json); // Handle new type
 
           if (result.success) {
             message.success(`Imported: ${json.title || file.name}`);
@@ -88,20 +94,29 @@ const AdminDashboard = () => {
         processingFiles.current -= 1;
         if (processingFiles.current === 0) {
           if (type === 'flashcard') fetchFlashcards();
-          else fetchQuizzes();
+          else if (type === 'quiz') fetchQuizzes();
+          else if (type === 'repair') fetchRepairs();
         }
       }
     };
     reader.readAsText(file);
-    return false; // Prevent default upload
+    return false;
   };
 
-  const handleDeleteFlashcard = async (id) => {
+  const handleDelete = async (id, type) => {
     try {
       setLoading(true);
-      await deleteFlashcardSet(id);
-      message.success("Flashcard set deleted");
-      fetchFlashcards();
+      if (type === 'flashcard') {
+        await deleteFlashcardSet(id);
+        fetchFlashcards();
+      } else if (type === 'quiz') {
+        await deleteQuizSet(id);
+        fetchQuizzes();
+      } else if (type === 'repair') {
+        await deleteRepairSet(id);
+        fetchRepairs();
+      }
+      message.success("Item deleted");
     } catch (err) {
       message.error("Failed to delete");
     } finally {
@@ -109,20 +124,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteQuiz = async (id) => {
-    try {
-      setLoading(true);
-      await deleteQuizSet(id);
-      message.success("Quiz set deleted");
-      fetchQuizzes();
-    } catch (err) {
-      message.error("Failed to delete");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // --- LOGIN SCREEN ---
   if (!isAuthenticated) {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f2f5' }}>
@@ -139,18 +140,13 @@ const AdminDashboard = () => {
             onChange={(e) => setPasscode(e.target.value)}
             onPressEnter={handleLogin}
           />
-          <Button type="primary" block size="large" onClick={handleLogin}>
-            Unlock
-          </Button>
-          <Button type="link" onClick={() => navigate('/')} style={{ marginTop: 10 }}>
-            Back to Home
-          </Button>
+          <Button type="primary" block size="large" onClick={handleLogin}>Unlock</Button>
+          <Button type="link" onClick={() => navigate('/')} style={{ marginTop: 10 }}>Back to Home</Button>
         </Card>
       </div>
     );
   }
 
-  // --- MAIN DASHBOARD ---
   return (
     <div style={{ maxWidth: 900, margin: '40px auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
@@ -159,6 +155,39 @@ const AdminDashboard = () => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
+        
+        {/* REPAIR SECTION (New) */}
+        <Card title="Repair (Sentence Building)" extra={<Button icon={<RefreshCw size={16}/>} onClick={fetchRepairs} loading={loading}>Refresh</Button>}>
+          <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
+             <Upload.Dragger 
+              accept=".json" 
+              multiple={true}
+              showUploadList={false} 
+              beforeUpload={(file) => handleImport(file, 'repair')}
+            >
+              <p className="ant-upload-drag-icon"><UploadCloud size={32} color="#722ed1" /></p>
+              <p className="ant-upload-text">Import Repair Sets (JSON)</p>
+            </Upload.Dragger>
+          </div>
+          <List
+            loading={loading}
+            dataSource={repairs}
+            pagination={{ pageSize: 5 }}
+            renderItem={(item) => (
+              <List.Item actions={[
+                  <Popconfirm title="Delete?" onConfirm={() => handleDelete(item.id, 'repair')} okText="Yes" cancelText="No">
+                    <Button danger type="text" icon={<Trash2 size={16} />} />
+                  </Popconfirm>
+                ]}>
+                <List.Item.Meta
+                  avatar={<Wrench color="#722ed1" size={24} />}
+                  title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
+                  description={<AntTag color="purple">{item.subject || 'No Subject'}</AntTag>}
+                />
+              </List.Item>
+            )}
+          />
+        </Card>
         
         {/* FLASHCARD SECTION */}
         <Card title="Flashcards" extra={<Button icon={<RefreshCw size={16}/>} onClick={fetchFlashcards} loading={loading}>Refresh</Button>}>

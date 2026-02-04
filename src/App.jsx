@@ -9,6 +9,9 @@ import FlashcardList from './pages/FlashcardList';
 import FlashcardDetail from './pages/FlashcardDetail';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
+// Import New Repair Components
+import RepairList from './pages/RepairList';
+import RepairDetail from './pages/RepairDetail';
 
 export default function App() {
   return (
@@ -17,7 +20,7 @@ export default function App() {
         {/* Home Page */}
         <Route path="/" element={<Home />} />
         
-        {/* Admin Route - Password Protected */}
+        {/* Admin Route */}
         <Route path="/admin" element={<AdminDashboard />} />
         
         {/* Flashcard Routes */}
@@ -27,6 +30,10 @@ export default function App() {
         {/* Quiz Routes */}
         <Route path="/quizzes" element={<QuizList />} />
         <Route path="/quiz/:id" element={<QuizDetail />} />
+
+        {/* Repair Routes (New) */}
+        <Route path="/repairs" element={<RepairList />} />
+        <Route path="/repair/:id" element={<RepairDetail />} />
         
         {/* Fallback */}
         <Route path="*" element={<Home />} />

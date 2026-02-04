@@ -1,7 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Layers, Brain, Settings } from 'lucide-react';
-import { Button, Card, Typography, Flex } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Card, Typography, Row, Col, Button } from 'antd';
+import { BookOpen, FileQuestion, Wrench, Settings } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -9,50 +9,65 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ padding: '50px 20px', maxWidth: 900, margin: '0 auto' }}>
-      <Flex justify="center" align="center" style={{ position: 'relative', marginBottom: 40 }}>
-        <Title level={1} style={{ color: 'white', fontFamily: 'Oswald', textTransform: 'uppercase', margin: 0, textShadow: '2px 2px 0 rgba(0,0,0,0.2)' }}>
-          Học Cùng Cô Quốc Anh &#128513;
-        </Title>
+    <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: 50 }}>
+        <Title level={1}>English Practice Hub</Title>
+        <Text type="secondary" style={{ fontSize: '1.2rem' }}>Select a mode to start learning</Text>
+      </div>
+
+      <Row gutter={[24, 24]} justify="center">
+        {/* Flashcards */}
+        <Col xs={24} sm={8}>
+          <Link to="/flashcards" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <BookOpen size={48} color="#1890ff" />
+              </div>
+              <Title level={3} style={{ color: '#1890ff' }}>Flashcards</Title>
+              <Text type="secondary">Memorize vocabulary with flip cards.</Text>
+            </Card>
+          </Link>
+        </Col>
+
+        {/* Quizzes */}
+        <Col xs={24} sm={8}>
+          <Link to="/quizzes" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <FileQuestion size={48} color="#52c41a" />
+              </div>
+              <Title level={3} style={{ color: '#52c41a' }}>Quizzes</Title>
+              <Text type="secondary">Test your knowledge with multiple choice.</Text>
+            </Card>
+          </Link>
+        </Col>
+
+        {/* Repairs (New Feature) */}
+        <Col xs={24} sm={8}>
+          <Link to="/repairs" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, border: '1px solid #f0f0f0' }}>
+              <div style={{ marginBottom: 20 }}>
+                <Wrench size={48} color="#722ed1" />
+              </div>
+              <Title level={3} style={{ color: '#722ed1' }}>Repair</Title>
+              <Text type="secondary">Fix sentence order and grammar.</Text>
+            </Card>
+          </Link>
+        </Col>
+      </Row>
+
+      {/* Admin Link */}
+      <div style={{ textAlign: 'center', marginTop: 60 }}>
         <Button 
           type="text" 
-          icon={<Settings size={20} color="white" />} 
-          onClick={() => navigate('/admin')} 
-          style={{ position: 'absolute', right: 0 }}
-        />
-      </Flex>
-
-      <Flex gap="large" justify="center" wrap="wrap">
-        {/* Flashcard Option */}
-        <Card 
-          hoverable
-          onClick={() => navigate('/flashcards')}
-          style={{ width: 280, textAlign: 'center', border: 'none' }}
+          icon={<Settings size={14} />} 
+          onClick={() => navigate('/admin')}
+          style={{ color: '#999' }}
         >
-          <Flex vertical align="center" gap="middle">
-            <Layers size={60} color="#1890ff" />
-            <div>
-              <Title level={3} style={{ margin: 0, fontFamily: 'Oswald' }}>FLASHCARDS</Title>
-              <Text type="secondary">Review vocabulary</Text>
-            </div>
-          </Flex>
-        </Card>
-
-        {/* Quiz Option */}
-        <Card 
-          hoverable
-          onClick={() => navigate('/quizzes')}
-          style={{ width: 280, textAlign: 'center', border: 'none' }}
-        >
-          <Flex vertical align="center" gap="middle">
-            <Brain size={60} color="#52c41a" />
-            <div>
-              <Title level={3} style={{ margin: 0, fontFamily: 'Oswald' }}>QUIZZES</Title>
-              <Text type="secondary">Test your knowledge</Text>
-            </div>
-          </Flex>
-        </Card>
-      </Flex>
+          Admin Dashboard
+        </Button>
+      </div>
     </div>
   );
 };
