@@ -1,0 +1,28 @@
+{
+  "id": "quiz-english-6-unit-8-full",
+  "title": "English 6 Unit 8 - Ultimate Review",
+  "subject": "English 6",
+  "tags": ["english-6", "unit8", "Past Simple", "Imperatives"],
+  "questions": [
+    { "id": 1, "question": "I ______ at the gym yesterday morning.", "options": ["was", "were", "am", "be"], "answer": "was", "level": "easy" },
+    { "id": 2, "question": "They ______ in the marathon last Sunday.", "options": ["run", "ran", "running", "runs"], "answer": "ran", "level": "medium" },
+    { "id": 3, "question": "______ forget to bring your racket!", "options": ["Not", "Doesn't", "Don't", "No"], "answer": "Don't", "level": "easy" },
+    { "id": 4, "question": "The football match ______ place in the national stadium yesterday.", "options": ["take", "took", "takes", "taking"], "answer": "took", "level": "medium" },
+    { "id": 5, "question": "We need a ______ to play badminton.", "options": ["goggles", "racket", "boat", "car"], "answer": "racket", "level": "easy" },
+    { "id": 6, "question": "______ you see the competition last night?", "options": ["Do", "Does", "Did", "Were"], "answer": "Did", "level": "easy" },
+    { "id": 7, "question": "She ______ win the karate tournament last year.", "options": ["doesn't", "didn't", "not", "wasn't"], "answer": "didn't", "level": "medium" },
+    { "id": 8, "question": "Please ______ quiet in the library.", "options": ["be", "is", "are", "was"], "answer": "be", "level": "easy" },
+    { "id": 9, "question": "He ______ a goal for his team 5 minutes ago.", "options": ["scores", "score", "scored", "scoring"], "answer": "scored", "level": "medium" },
+    { "id": 10, "question": "The marathon ______ for 3 hours yesterday.", "options": ["last", "lasts", "lasted", "lasting"], "answer": "lasted", "level": "medium" },
+    { "id": 11, "question": "Were they happy with the result? - Yes, they ______.", "options": ["did", "were", "was", "are"], "answer": "were", "level": "easy" },
+    { "id": 12, "question": "My father is very ______. He plays sports every day.", "options": ["sporty", "fantastic", "career", "fit"], "answer": "sporty", "level": "easy" },
+    { "id": 13, "question": "______ try your best to win the game!", "options": ["Does", "Do", "Doing", "Did"], "answer": "Do", "level": "medium" },
+    { "id": 14, "question": "Where ______ you yesterday afternoon?", "options": ["was", "did", "were", "are"], "answer": "were", "level": "easy" },
+    { "id": 15, "question": "You should wear ______ when you go swimming.", "options": ["shoes", "goggles", "hat", "racket"], "answer": "goggles", "level": "easy" },
+    { "id": 16, "question": "My brother ______ to do aerobics when he was young.", "options": ["likes", "liked", "liking", "was like"], "answer": "liked", "level": "medium" },
+    { "id": 17, "question": "______ me the ball, please!", "options": ["Throw", "Throws", "Threw", "Throwing"], "answer": "Throw", "level": "easy" },
+    { "id": 18, "question": "Pelé ______ many goals in his career.", "options": ["shoots", "shooting", "shot", "shoot"], "answer": "shot", "level": "hard" },
+    { "id": 19, "question": "The equipment in this gym ______ very modern.", "options": ["was", "were", "did", "were not"], "answer": "was", "level": "medium" },
+    { "id": 20, "question": "______! You won the first prize!", "options": ["Congratulation", "Sorry", "Thanks", "Please"], "answer": "Congratulation", "level": "easy" }
+  ]
+}

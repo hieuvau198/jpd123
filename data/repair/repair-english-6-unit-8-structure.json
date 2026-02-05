@@ -1,0 +1,33 @@
+{
+  "id": "repair-english-6-unit-8-structure",
+  "title": "English 6 Unit 8 - Sentence Building",
+  "subject": "English 6",
+  "tags": ["english-6", "unit8", "grammar"],
+  "questions": [
+    {
+      "id": "r1",
+      "question": ["your", "Put", "goggles", "on", ",", "please"], 
+      "answer": "Please put your goggles on"
+    },
+    {
+      "id": "r2",
+      "question": ["didn't", "We", "play", "last", "marathon", "the"], 
+      "answer": "We didn't play the last marathon"
+    },
+    {
+      "id": "r3",
+      "question": ["you", "Did", "the", "karate", "at", "gym", "do", "?"], 
+      "answer": "Did you do karate at the gym?"
+    },
+    {
+      "id": "r4",
+      "question": ["Don't", "your", "racket", "at", "forget", "home"], 
+      "answer": "Don't forget your racket at home"
+    },
+    {
+      "id": "r5",
+      "question": ["last", "was", "The", "fantastic", "tournament"], 
+      "answer": "The last tournament was fantastic"
+    }
+  ]
+}
