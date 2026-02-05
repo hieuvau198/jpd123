@@ -134,8 +134,7 @@ const QuizSession = ({ data, onHome }) => {
 
         {/* Question Area */}
         <div style={{ padding: 40 }}>
-          <Title level={2} style={{ marginTop: 0 }}>{currentQuestion.text}</Title>
-
+<Title level={2} style={{ marginTop: 0 }}>{currentQuestion.question}</Title>
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
             {currentQuestion.options.map((option, idx) => {
               const isSelected = selectedOption === option;
