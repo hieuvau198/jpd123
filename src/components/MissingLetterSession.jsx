@@ -24,7 +24,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
   const [missingCount, setMissingCount] = useState(0); // How many letters are missing total
   
   // User Input is a simple string. 
-  // If missingCount is 2, user types "ab", "a" goes to first blank, "b" to second.
   const [inputValue, setInputValue] = useState("");
   
   const [status, setStatus] = useState(""); // "", "error", "success"
@@ -95,17 +94,14 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     if (status !== "" || inputValue.length < missingCount) return;
 
     // Construct the user's attempted word to verify
-    // We do this by mapping the missing indices to the user's input
     let constructedWord = "";
     let inputIndex = 0;
 
     for (let i = 0; i < fullWord.length; i++) {
         if (hiddenIndices.has(i)) {
-            // Use the letter the user typed
             constructedWord += inputValue[inputIndex] || "";
             inputIndex++;
         } else {
-            // Use the original letter
             constructedWord += fullWord[i];
         }
     }
@@ -114,40 +110,42 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     if (constructedWord.toLowerCase() === fullWord.toLowerCase()) {
         setStatus("success");
         message.success("Correct!");
+        // Success can still auto-advance, or you can remove this too if preferred.
+        // Keeping it for flow as usually requested, unless explicitly asked to stop.
         setTimeout(() => handleNext(), 800);
     } else {
         setStatus("error");
         message.error("Incorrect, try again!");
-        
-        setTimeout(() => {
-            // Logic: Retry later? Or clear and retry now?
-            // "reset the missing letter of that word again" -> Means we push to back and generate NEW mask
-            const currentCard = queue[currentIndex];
-            setQueue(prev => [...prev, currentCard]);
-            handleNext();
-        }, 1500);
+        // REMOVED: setTimeout and automatic handleNext
+        // REMOVED: Immediate queue update (updating queue here would trigger useEffect and reset the view)
     }
   };
 
   const handleNext = () => {
+    // If we are moving on from an error, retry this card later (append to queue)
+    if (status === 'error') {
+        const currentCard = queue[currentIndex];
+        setQueue(prev => [...prev, currentCard]);
+    }
     setCurrentIndex(prev => prev + 1);
   };
 
   // Handle Input Change
   const handleChange = (e) => {
     const val = e.target.value;
-    // Allow only letters, and max length = missingCount
     if (val.length <= missingCount && /^[a-zA-Z]*$/.test(val)) {
         setInputValue(val);
-        // Optional: Auto-submit when full?
-        // Let's require Enter to confirm, or auto-submit if you prefer fast paced.
-        // For now, let's keep it manual or Enter key to prevent accidental typos triggering errors.
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-        handleCheck();
+        // If in error state, Enter acts as "Next"
+        if (status === 'error') {
+            handleNext();
+        } else {
+            handleCheck();
+        }
     }
   };
 
@@ -182,26 +180,21 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     return (
       <Flex wrap justify="center" gap={8} style={{ marginBottom: 30 }}>
         {chars.map((char, index) => {
-          // Check if this character is hidden
           const isHidden = hiddenIndices.has(index);
           
           if (!isHidden) {
-            // Normal Letter
             return (
               <Text key={index} style={{ fontSize: 36, fontFamily: 'monospace' }}>
                 {char}
               </Text>
             );
           } else {
-            // Missing Letter Slot
             const userChar = inputValue[inputIndex] || "";
-            // Increment input index so next missing slot gets next char
             inputIndex++;
             
-            // Determine Color
-            let color = '#1890ff'; // Blue for active typing
-            if (status === 'success') color = '#52c41a'; // Green
-            if (status === 'error') color = '#ff4d4f';   // Red
+            let color = '#1890ff'; 
+            if (status === 'success') color = '#52c41a'; 
+            if (status === 'error') color = '#ff4d4f'; 
 
             return (
               <div key={index} style={{ 
@@ -218,7 +211,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
                 }}>
                     {status === 'error' ? char : (userChar || "_")}
                 </Text>
-                {/* Underline effect */}
                 <div style={{ 
                     width: '100%', 
                     height: 3, 
@@ -270,7 +262,7 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
             boxShadow: '0 4px 12px rgba(0,0,0,0.1)', 
             textAlign: 'center',
             padding: '20px 0',
-            cursor: 'text' // Show text cursor so user knows they can type
+            cursor: 'text' 
         }}
       >
         <Text type="secondary" style={{ textTransform: 'uppercase', fontSize: 12, letterSpacing: 1 }}>
@@ -299,11 +291,17 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         <Button 
             type="primary" 
             size="large" 
-            onClick={(e) => { e.stopPropagation(); handleCheck(); }}
-            disabled={inputValue.length < missingCount || status !== ""}
+            onClick={(e) => { 
+                e.stopPropagation(); 
+                if (status === 'error') handleNext(); // Manual Next on error
+                else handleCheck(); 
+            }}
+            // Disable if incomplete (unless error/success state)
+            // But if error, we want it ENABLED so they can click Next
+            disabled={status === 'success' || (status === "" && inputValue.length < missingCount)}
             style={{ marginTop: 30, width: 200 }}
         >
-            Check
+            {status === 'error' ? "Next" : "Check"}
         </Button>
       </Card>
     </div>
