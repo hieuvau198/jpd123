@@ -24,8 +24,8 @@ const Home = () => {
               <div style={{ marginBottom: 20 }}>
                 <BookOpen size={48} color="#1890ff" />
               </div>
-              <Title level={3} style={{ color: '#1890ff' }}>Flashcards</Title>
-              <Text type="secondary">Memorize vocabulary with flip cards.</Text>
+              <Title level={3} style={{ color: '#1890ff' }}>Words</Title>
+              <Text type="secondary">Memorize vocabulary with action.</Text>
             </Card>
           </Link>
         </Col>
@@ -37,8 +37,8 @@ const Home = () => {
               <div style={{ marginBottom: 20 }}>
                 <FileQuestion size={48} color="#52c41a" />
               </div>
-              <Title level={3} style={{ color: '#52c41a' }}>Quizzes</Title>
-              <Text type="secondary">Test your knowledge with multiple choice.</Text>
+              <Title level={3} style={{ color: '#52c41a' }}>Grammar</Title>
+              <Text type="secondary">Test your knowledge.</Text>
             </Card>
           </Link>
         </Col>
@@ -51,7 +51,7 @@ const Home = () => {
                 <Wrench size={48} color="#722ed1" />
               </div>
               <Title level={3} style={{ color: '#722ed1' }}>Repair</Title>
-              <Text type="secondary">Fix sentence order and grammar.</Text>
+              <Text type="secondary">Fix sentence order.</Text>
             </Card>
           </Link>
         </Col>

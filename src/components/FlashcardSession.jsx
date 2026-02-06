@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Space, Result } from 'antd';
-// Added 'Grid' to imports
-import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowRightLeft, RotateCcw, ArrowLeft, ArrowRight } from 'lucide-react';
+// Added 'Volume2' to imports for the speak button
+import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowRightLeft, RotateCcw, ArrowLeft, ArrowRight, Volume2 } from 'lucide-react';
 import MissingLetterSession from './MissingLetterSession';
-import MatchingSession from './MatchingSession'; // <--- IMPORT NEW COMPONENT
+import MatchingSession from './MatchingSession'; 
 
 const { Title, Text } = Typography;
 
-// ... (Keep existing helper functions: removeVietnameseTones, shuffleArray) ...
-// ... (Make sure removeVietnameseTones and shuffleArray are still defined here) ...
 const removeVietnameseTones = (str) => {
   if (!str) return "";
   str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -44,8 +42,6 @@ const FlashcardSession = ({ data, onHome }) => {
     }
   }, [data]);
 
-  // ... (Keep existing Focus and Keyboard effects) ...
-
   useEffect(() => {
     if (mode === 'speak' && direction && feedback !== 'wrong' && inputRef.current) {
       inputRef.current.focus();
@@ -65,6 +61,29 @@ const FlashcardSession = ({ data, onHome }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mode, currentIndex]);
 
+  // --- NEW: Handle Text-to-Speech ---
+  const handleSpeech = (text) => {
+    if (!text) return;
+    
+    // Check if browser supports speech synthesis
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      
+      // Cancel any ongoing speech to prevent overlap
+      if (synth.speaking) {
+        synth.cancel();
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US'; // Default to English US
+      utterance.rate = 0.9; // Slightly slower for better clarity
+      
+      synth.speak(utterance);
+    } else {
+      console.warn("Text-to-Speech not supported in this browser.");
+    }
+  };
+
   const handleNext = () => {
     if (currentIndex < queue.length - 1) {
       setCurrentIndex(prev => prev + 1);
@@ -80,7 +99,6 @@ const FlashcardSession = ({ data, onHome }) => {
   };
 
   const handleSpeakSubmit = (e) => {
-     // ... (Keep existing logic) ...
     e.preventDefault();
     if (feedback !== 'neutral') return;
 
@@ -130,7 +148,6 @@ const FlashcardSession = ({ data, onHome }) => {
     return <MissingLetterSession data={data} onHome={onHome} onBack={() => setMode(null)} />;
   }
 
-  // >>> NEW MATCHING MODE <<<
   if (mode === 'matching') {
     return <MatchingSession data={data} onHome={onHome} onBack={() => setMode(null)} />;
   }
@@ -173,7 +190,6 @@ const FlashcardSession = ({ data, onHome }) => {
             <Text type="secondary">Fill in the blank.</Text>
           </Card>
 
-          {/* >>> NEW MATCHING CARD <<< */}
           <Card 
             hoverable 
             onClick={() => setMode('matching')}
@@ -192,9 +208,6 @@ const FlashcardSession = ({ data, onHome }) => {
       </Flex>
     );
   }
-
-  // ... (Keep existing Direction Menu, Completed Screen, Flashcard View, Typing View) ...
-  // (Paste the rest of the file content here as it was, no changes needed below this point)
 
   // --- TYPING DIRECTION MENU ---
   if (mode === 'speak' && !direction) {
@@ -220,7 +233,6 @@ const FlashcardSession = ({ data, onHome }) => {
 
   // --- COMPLETED SCREEN ---
   if (currentIndex >= queue.length && mode !== 'matching' && mode !== 'missing') {
-    // Note: I added mode checks above just in case, but usually matching returns its own view
     return (
         <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
         <Result
@@ -251,7 +263,7 @@ const FlashcardSession = ({ data, onHome }) => {
           <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
         </Flex>
 
-        {/* 3D Flip Container using classes from simplified App.css */}
+        {/* 3D Flip Container */}
         <div 
            className="perspective-container" 
            onClick={() => setIsFlipped(!isFlipped)} 
@@ -270,7 +282,20 @@ const FlashcardSession = ({ data, onHome }) => {
             {/* BACK */}
             <Card className="card-back" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid black' }}>
                <Flex vertical align="center" gap="small">
-                  <Title level={2} style={{ color: '#1890ff' }}>{currentCard.speak}</Title>
+                  {/* Word + Speak Button */}
+                  <Flex align="center" gap="small">
+                    <Title level={2} style={{ color: '#1890ff', margin: 0 }}>{currentCard.speak}</Title>
+                    <Button 
+                      type="text" 
+                      shape="circle"
+                      icon={<Volume2 size={24} />} 
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card flip
+                        handleSpeech(currentCard.speak);
+                      }}
+                      title="Listen"
+                    />
+                  </Flex>
                   <Title level={4}>{currentCard.answer}</Title>
                </Flex>
             </Card>
@@ -288,7 +313,6 @@ const FlashcardSession = ({ data, onHome }) => {
   }
 
   // --- TYPING VIEW ---
-  // ... (same as original)
   const displayQuestion = direction === 'vi_en' ? currentCard.answer : currentCard.speak;
   const inputPlaceholder = direction === 'vi_en' ? "Type English..." : "Type Vietnamese...";
   
