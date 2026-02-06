@@ -7,98 +7,66 @@
     {
       "id": 1,
       "question": "I ______ dinner at 7 p.m. yesterday.",
-      "options": [
-        "was having",
-        "were having",
-        "am having",
-        "had"
-      ],
-      "answer": "was having",
-      "level": "easy"
+      "options": ["was having", "were having", "am having", "had"],
+      "correctAnswer": "was having",
+      "level": "easy",
+      "explanation": "Câu có mốc thời gian cụ thể trong quá khứ 'at 7 p.m. yesterday' (lúc 7 giờ tối qua), nên ta dùng thì Quá khứ tiếp diễn để diễn tả hành động đang xảy ra tại thời điểm đó. Công thức: S + was/were + V-ing. Chủ ngữ 'I' đi với 'was'. Vậy đáp án là 'was having'."
     },
     {
       "id": 2,
       "question": "What ______ you doing when I called?",
-      "options": [
-        "was",
-        "were",
-        "are",
-        "did"
-      ],
-      "answer": "were",
-      "level": "easy"
+      "options": ["was", "were", "are", "did"],
+      "correctAnswer": "were",
+      "level": "easy",
+      "explanation": "Câu hỏi thì Quá khứ tiếp diễn (hành động đang làm thì có hành động khác xen vào). Chủ ngữ là 'you' nên trợ động từ to be quá khứ phải là 'were'. Cấu trúc: What + were + S + V-ing...? 'Was' dùng cho số ít, 'Are' là hiện tại, 'Did' là quá khứ đơn (không đi với doing)."
     },
     {
       "id": 3,
       "question": "They ______ playing football in the park at 5 o'clock yesterday afternoon.",
-      "options": [
-        "was",
-        "were",
-        "is",
-        "are"
-      ],
-      "answer": "were",
-      "level": "easy"
+      "options": ["was", "were", "is", "are"],
+      "correctAnswer": "were",
+      "level": "easy",
+      "explanation": "Có thời gian cụ thể 'at 5 o'clock yesterday afternoon' -> dùng Quá khứ tiếp diễn. Chủ ngữ 'They' (họ - số nhiều) nên đi với trợ động từ 'were'. Cấu trúc: They were playing... Đáp án 'was' sai ngôi, 'is/are' sai thì."
     },
     {
       "id": 4,
       "question": "She ______ reading a book; she was watching TV.",
-      "options": [
-        "wasn't",
-        "weren't",
-        "didn't",
-        "isn't"
-      ],
-      "answer": "wasn't",
-      "level": "easy"
+      "options": ["wasn't", "weren't", "didn't", "isn't"],
+      "correctAnswer": "wasn't",
+      "level": "easy",
+      "explanation": "Câu diễn tả hành động đang KHÔNG xảy ra tại một thời điểm trong quá khứ (để đối lập với hành động đang xảy ra là xem TV). Thì Quá khứ tiếp diễn phủ định: S + was/were + not + V-ing. Chủ ngữ 'She' số ít nên dùng 'was not' viết tắt là 'wasn't'."
     },
     {
       "id": 5,
       "question": "The students ______ a test at this time last Monday.",
-      "options": [
-        "was taking",
-        "were taking",
-        "took",
-        "are taking"
-      ],
-      "answer": "were taking",
-      "level": "easy"
+      "options": ["was taking", "were taking", "took", "are taking"],
+      "correctAnswer": "were taking",
+      "level": "easy",
+      "explanation": "Cụm từ 'at this time last Monday' (vào giờ này thứ Hai trước) chỉ một thời điểm xác định trong quá khứ -> dùng Quá khứ tiếp diễn. Chủ ngữ 'The students' (số nhiều) -> dùng 'were taking'. 'Took' là quá khứ đơn (chỉ hành động đã xong), không nhấn mạnh tiến trình đang diễn ra."
     },
     {
       "id": 6,
       "question": "When the teacher came in, the students ______ noise.",
-      "options": [
-        "made",
-        "were making",
-        "was making",
-        "are making"
-      ],
-      "answer": "were making",
-      "level": "medium"
+      "options": ["made", "were making", "was making", "are making"],
+      "correctAnswer": "were making",
+      "level": "medium",
+      "explanation": "Cấu trúc kết hợp: Một hành động đang xảy ra (học sinh đang làm ồn) thì hành động khác xen vào (giáo viên bước vào). Hành động đang xảy ra chia Quá khứ tiếp diễn. Chủ ngữ 'the students' số nhiều -> 'were making'."
     },
     {
       "id": 7,
       "question": "I ______ along the street when I suddenly saw an old friend.",
-      "options": [
-        "walked",
-        "was walking",
-        "am walking",
-        "walk"
-      ],
-      "answer": "was walking",
-      "level": "medium"
+      "options": ["walked", "was walking", "am walking", "walk"],
+      "correctAnswer": "was walking",
+      "level": "medium",
+      "explanation": "Hành động 'đi bộ' là bối cảnh (kéo dài) cho hành động 'nhìn thấy' (ngắn, bất chợt) xen vào. Do đó, hành động đi bộ chia Quá khứ tiếp diễn. Chủ ngữ 'I' đi với 'was walking'. Cấu trúc: I was walking... when I saw..."
     },
     {
       "id": 8,
       "question": "While my mother ______ cooking, my father was reading the newspaper.",
-      "options": [
-        "was",
-        "were",
-        "is",
-        "did"
-      ],
-      "answer": "was",
-      "level": "medium"
+      "options": ["was", "were", "is", "did"],
+      "correctAnswer": "was",
+      "level": "medium",
+      "explanation": "Liên từ 'While' nối hai hành động xảy ra song song trong quá khứ. Cả hai vế đều chia Quá khứ tiếp diễn. Vế sau 'was reading', vế trước chủ ngữ 'my mother' (số ít) nên trợ động từ cũng là 'was'. Câu đầy đủ: While my mother was cooking..."
     },
     {
       "id": 9,
@@ -109,20 +77,17 @@
         "I was doing my homework while the lights went out.",
         "I do my homework when the lights went out."
       ],
-      "answer": "I was doing my homework when the lights went out.",
-      "level": "hard"
+      "correctAnswer": "I was doing my homework when the lights went out.",
+      "level": "hard",
+      "explanation": "Cấu trúc đúng cho hành động bị gián đoạn: S + was/were + V-ing (đang làm gì) + WHEN + S + V2/ed (thì cái gì xảy ra). 'I was doing my homework' (đang làm) khi 'the lights went out' (đèn tắt - hành động tức thời). Các câu còn lại sai thì hoặc sai cách dùng when/while."
     },
     {
       "id": 10,
       "question": "What ______ she ______ when the earthquake happened?",
-      "options": [
-        "was / doing",
-        "were / doing",
-        "did / do",
-        "was / do"
-      ],
-      "answer": "was / doing",
-      "level": "hard"
+      "options": ["was / doing", "were / doing", "did / do", "was / do"],
+      "correctAnswer": "was / doing",
+      "level": "hard",
+      "explanation": "Câu hỏi về hành động đang diễn ra tại thời điểm cụ thể (khi động đất xảy ra). Dùng thì Quá khứ tiếp diễn. Chủ ngữ 'she' số ít -> trợ động từ 'was'. Động từ chính thêm đuôi -ing -> 'doing'. Đáp án: 'was / doing'."
     }
   ]
 }

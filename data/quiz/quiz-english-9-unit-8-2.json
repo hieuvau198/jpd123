@@ -4,15 +4,85 @@
   "subject": "English 9",
   "tags": ["english-9", "unit8", "grammar", "relative-pronouns"],
   "questions": [
-    { "id": 1, "question": "The souvenir ______ I bought is broken.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
-    { "id": 2, "question": "Do you know the person ______ is sitting next to Tom?", "options": ["which", "who", "whose", "where"], "answer": "who", "level": "easy" },
-    { "id": 3, "question": "I like hotels ______ have a swimming pool.", "options": ["who", "whose", "whom", "which"], "answer": "which", "level": "easy" },
-    { "id": 4, "question": "The holidaymakers ______ we met were friendly.", "options": ["which", "who", "whose", "what"], "answer": "who", "level": "easy" },
-    { "id": 5, "question": "Pass me the map ______ is on the table.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
-    { "id": 6, "question": "That is the teacher ______ son is my classmate.", "options": ["who", "which", "whose", "whom"], "answer": "whose", "level": "medium" },
-    { "id": 7, "question": "The woman ______ luggage was lost is complaining at the desk.", "options": ["who", "whose", "which", "that"], "answer": "whose", "level": "medium" },
-    { "id": 8, "question": "This is the exact spot ______ the accident happened.", "options": ["which", "who", "whose", "where"], "answer": "where", "level": "medium" },
-    { "id": 9, "question": "The writer, ______ books are bestsellers, is visiting our school.", "options": ["who", "which", "whose", "that"], "answer": "whose", "level": "hard" },
-    { "id": 10, "question": "They stayed at a hotel ______ rooms were very small.", "options": ["which", "that", "whose", "who"], "answer": "whose", "level": "hard" }
+    {
+      "id": 1,
+      "question": "The souvenir ______ I bought is broken.",
+      "options": ["who", "whose", "which", "whom"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'The souvenir' (món quà lưu niệm) là vật -> dùng 'which'. Ở đây 'which' đóng vai trò tân ngữ cho động từ 'bought' (tôi đã mua cái gì? - mua cái đó). Đáp án: 'which'."
+    },
+    {
+      "id": 2,
+      "question": "Do you know the person ______ is sitting next to Tom?",
+      "options": ["which", "who", "whose", "where"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "'The person' (người) -> dùng 'who'. Sau chỗ trống là động từ 'is sitting', nên 'who' đóng vai trò chủ ngữ. Đáp án: 'who'."
+    },
+    {
+      "id": 3,
+      "question": "I like hotels ______ have a swimming pool.",
+      "options": ["who", "whose", "whom", "which"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'Hotels' (khách sạn) là danh từ chỉ vật/nơi chốn. Tuy nhiên, theo sau là động từ 'have' (có), nên ta cần một đại từ làm chủ ngữ. Do đó phải dùng 'which'. Nếu dùng 'where' thì theo sau phải là mệnh đề (S + V). Đáp án: 'which'."
+    },
+    {
+      "id": 4,
+      "question": "The holidaymakers ______ we met were friendly.",
+      "options": ["which", "who", "whose", "what"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "'The holidaymakers' (những người đi nghỉ mát) là chỉ người -> dùng 'who' (hoặc whom vì đóng vai trò tân ngữ của 'met'). Trong các đáp án chỉ có 'who' là phù hợp. Đáp án: 'who'."
+    },
+    {
+      "id": 5,
+      "question": "Pass me the map ______ is on the table.",
+      "options": ["who", "whose", "which", "whom"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'The map' (tấm bản đồ) là vật -> dùng 'which' làm chủ ngữ cho động từ 'is'. Đáp án: 'which'."
+    },
+    {
+      "id": 6,
+      "question": "That is the teacher ______ son is my classmate.",
+      "options": ["who", "which", "whose", "whom"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Mối quan hệ sở hữu: con trai (son) của giáo viên (teacher). Dùng 'whose'. Nghĩa: 'Đó là giáo viên mà con trai của cô ấy là bạn cùng lớp tôi.'"
+    },
+    {
+      "id": 7,
+      "question": "The woman ______ luggage was lost is complaining at the desk.",
+      "options": ["who", "whose", "which", "that"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Hành lý (luggage) của người phụ nữ (The woman). Dùng 'whose' để chỉ sở hữu. 'The woman whose luggage...' (Người phụ nữ mà hành lý của bà ấy...)."
+    },
+    {
+      "id": 8,
+      "question": "This is the exact spot ______ the accident happened.",
+      "options": ["which", "who", "whose", "where"],
+      "correctAnswer": "where",
+      "level": "medium",
+      "explanation": "'The exact spot' (chính xác nơi) chỉ địa điểm. Theo sau là một mệnh đề trọn vẹn 'the accident happened' (tai nạn đã xảy ra). Ta dùng trạng từ quan hệ 'where' (= at which). Nếu dùng 'which' thì phải có giới từ (at which)."
+    },
+    {
+      "id": 9,
+      "question": "The writer, ______ books are bestsellers, is visiting our school.",
+      "options": ["who", "which", "whose", "that"],
+      "correctAnswer": "whose",
+      "level": "hard",
+      "explanation": "Sách (books) của nhà văn (The writer). Dùng 'whose' chỉ sở hữu. Vì có dấu phẩy nên đây là mệnh đề không xác định, nhưng 'whose' vẫn dùng bình thường. 'That' không dùng sau dấu phẩy."
+    },
+    {
+      "id": 10,
+      "question": "They stayed at a hotel ______ rooms were very small.",
+      "options": ["which", "that", "whose", "who"],
+      "correctAnswer": "whose",
+      "level": "hard",
+      "explanation": "Phòng (rooms) của khách sạn (a hotel). Mối quan hệ sở hữu của vật. Ta dùng 'whose'. Nghĩa: 'Họ ở tại một khách sạn mà các phòng của nó rất nhỏ.'"
+    }
   ]
 }

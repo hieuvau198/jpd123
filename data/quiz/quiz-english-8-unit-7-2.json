@@ -2,56 +2,68 @@
   "id": "quiz-english-8-unit-7-2",
   "title": "English 8 Unit 7 - Tense & Structure (Set 2)",
   "subject": "English 8",
-  "tags": ["english-8", "Tenses", "Adverb Clauses", "unit7"],
+  "tags": [
+    "english-8",
+    "Tenses",
+    "Adverb Clauses",
+    "unit7"
+  ],
   "questions": [
     {
       "id": 1,
       "question": "I will wait here until she ______ back.",
       "options": ["comes", "will come", "came", "coming"],
-      "answer": "comes",
-      "level": "easy"
+      "correctAnswer": "comes",
+      "level": "easy",
+      "explanation": "Quy tắc quan trọng của mệnh đề trạng ngữ chỉ thời gian (bắt đầu bằng until, when, before...): Khi mệnh đề chính ở thì Tương lai đơn (will wait), mệnh đề trạng ngữ phải dùng thì Hiện tại đơn (Present Simple) để chỉ tương lai, KHÔNG dùng 'will'. Chủ ngữ 'she' là ngôi thứ 3 số ít nên động từ 'come' thêm 's' thành 'comes'."
     },
     {
       "id": 2,
       "question": "When he ______, we will start the meeting.",
       "options": ["arrives", "will arrive", "arrived", "is arriving"],
-      "answer": "arrives",
-      "level": "easy"
+      "correctAnswer": "arrives",
+      "level": "easy",
+      "explanation": "Tương tự như câu trên, mệnh đề chính 'we will start...' ở thì Tương lai đơn, nên mệnh đề thời gian bắt đầu bằng 'When' phải chia ở thì Hiện tại đơn. Chủ ngữ 'he' là số ít nên động từ 'arrive' thêm 's' thành 'arrives'. Không dùng 'will arrive' trong mệnh đề 'When'."
     },
     {
       "id": 3,
       "question": "We were having dinner when the phone ______.",
       "options": ["rang", "rings", "was ringing", "will ring"],
-      "answer": "rang",
-      "level": "easy"
+      "correctAnswer": "rang",
+      "level": "easy",
+      "explanation": "Đây là cấu trúc kết hợp giữa Quá khứ tiếp diễn và Quá khứ đơn: Một hành động đang xảy ra (were having dinner) thì một hành động khác xen vào (điện thoại reo). Hành động xen vào chia ở Quá khứ đơn. Động từ 'ring' là bất quy tắc, quá khứ là 'rang'. Cấu trúc: S + were/was + V-ing + WHEN + S + V2/ed."
     },
     {
       "id": 4,
       "question": "She ______ her homework before she watched TV yesterday.",
       "options": ["did", "does", "will do", "doing"],
-      "answer": "did",
-      "level": "easy"
+      "correctAnswer": "did",
+      "level": "easy",
+      "explanation": "Câu có trạng từ 'yesterday' (hôm qua) nên toàn bộ bối cảnh là quá khứ. Hành động 'làm bài tập' xảy ra trước hành động 'xem TV'. Tuy nhiên, ở trình độ cơ bản lớp 8, khi dùng 'before' nối hai hành động trong quá khứ, ta có thể dùng Quá khứ đơn cho cả hai vế nếu trình tự đã rõ ràng (hoặc vế trước dùng Quá khứ hoàn thành). Trong các đáp án, chỉ có 'did' (quá khứ đơn) là phù hợp. 'Does' là hiện tại, 'will do' là tương lai."
     },
     {
       "id": 5,
       "question": "As soon as I ______ the news, I will tell you.",
       "options": ["hear", "will hear", "heard", "am hearing"],
-      "answer": "hear",
-      "level": "easy"
+      "correctAnswer": "hear",
+      "level": "easy",
+      "explanation": "Mệnh đề chính 'I will tell you' ở thì Tương lai đơn. Theo quy tắc hòa hợp thì, mệnh đề trạng ngữ chỉ thời gian (bắt đầu bằng As soon as) phải chia ở Hiện tại đơn. Chủ ngữ 'I' đi với động từ nguyên thể 'hear'. Không được dùng 'will hear' trong mệnh đề thời gian."
     },
     {
       "id": 6,
       "question": "My mother was cooking while my father ______ the newspaper.",
       "options": ["was reading", "read", "reads", "is reading"],
-      "answer": "was reading",
-      "level": "medium"
+      "correctAnswer": "was reading",
+      "level": "medium",
+      "explanation": "Liên từ 'while' (trong khi) dùng để nối hai hành động xảy ra song song cùng một lúc trong quá khứ. Cả hai vế đều dùng thì Quá khứ tiếp diễn. Vế trước 'was cooking', vế sau chủ ngữ 'my father' (số ít) nên cũng dùng 'was reading'. Nghĩa câu: 'Mẹ tôi đang nấu ăn trong khi bố tôi đang đọc báo' (hai việc xảy ra đồng thời)."
     },
     {
       "id": 7,
       "question": "Identify the mistake: 'When I will grow up, I will be a doctor.'",
       "options": ["will grow", "When", "will be", "a doctor"],
-      "answer": "will grow",
-      "level": "medium"
+      "correctAnswer": "will grow",
+      "level": "medium",
+      "explanation": "Lỗi sai nằm ở cụm 'will grow'. Quy tắc: Trong mệnh đề trạng ngữ chỉ thời gian (bắt đầu bằng When, While, Before, After, Until...), không bao giờ dùng thì Tương lai đơn (will + V). Ta phải dùng thì Hiện tại đơn để chỉ ý tương lai. Sửa lại: 'When I grow up...'."
     },
     {
       "id": 8,
@@ -62,8 +74,9 @@
         "finish their work",
         "They will go"
       ],
-      "answer": "after they finish their work",
-      "level": "medium"
+      "correctAnswer": "after they finish their work",
+      "level": "medium",
+      "explanation": "Câu phức gồm một mệnh đề độc lập (chính) và một mệnh đề phụ thuộc (phụ). Mệnh đề độc lập là 'They will go out' (có thể đứng một mình). Mệnh đề phụ thuộc là mệnh đề bắt đầu bằng liên từ phụ thuộc (ở đây là 'after'). Vậy mệnh đề phụ thuộc là 'after they finish their work' (sau khi họ làm xong việc - cụm này không thể đứng một mình làm câu hoàn chỉnh)."
     },
     {
       "id": 9,
@@ -74,8 +87,9 @@
         "We will call you, as soon as we get there.",
         "We, will call you as soon as we get there."
       ],
-      "answer": "As soon as we get there, we will call you.",
-      "level": "hard"
+      "correctAnswer": "As soon as we get there, we will call you.",
+      "level": "hard",
+      "explanation": "Quy tắc dấu phẩy trong câu phức: Nếu mệnh đề trạng ngữ (bắt đầu bằng As soon as) đứng đầu câu, phải có dấu phẩy ngăn cách với mệnh đề chính. Nếu mệnh đề chính đứng đầu câu, thường không cần dấu phẩy. Đáp án đúng là: 'As soon as we get there, we will call you.' (Đúng vì có dấu phẩy sau mệnh đề trạng ngữ)."
     },
     {
       "id": 10,
@@ -86,8 +100,9 @@
         "I buy a car when I will have enough money.",
         "I bought a car when I have enough money."
       ],
-      "answer": "I will buy a car when I have enough money.",
-      "level": "hard"
+      "correctAnswer": "I will buy a car when I have enough money.",
+      "level": "hard",
+      "explanation": "Đây là câu điều kiện loại 1 hoặc câu phức chỉ tương lai. Mệnh đề chính dùng Tương lai đơn (I will buy...), mệnh đề thời gian 'when' dùng Hiện tại đơn (I have...). Câu 'I will buy a car when I will have...' sai vì dùng 'will' trong mệnh đề 'when'. Các câu còn lại sai sự phối hợp thì (tense sequence)."
     }
   ]
 }

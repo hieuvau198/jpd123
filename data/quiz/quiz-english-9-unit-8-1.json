@@ -4,15 +4,85 @@
   "subject": "English 9",
   "tags": ["english-9", "unit8", "grammar", "relative-pronouns"],
   "questions": [
-    { "id": 1, "question": "I met a woman ______ works as a tour guide.", "options": ["who", "which", "whose", "where"], "answer": "who", "level": "easy" },
-    { "id": 2, "question": "This is the brochure ______ has information about the trip.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
-    { "id": 3, "question": "The tourist ______ asked me the way was very polite.", "options": ["which", "who", "whose", "where"], "answer": "who", "level": "easy" },
-    { "id": 4, "question": "The bus ______ goes to the airport is late.", "options": ["who", "whose", "whom", "which"], "answer": "which", "level": "easy" },
-    { "id": 5, "question": "He is the man ______ wrote this travel book.", "options": ["who", "which", "whose", "where"], "answer": "who", "level": "easy" },
-    { "id": 6, "question": "That is the girl ______ father is a famous pilot.", "options": ["who", "which", "whose", "that"], "answer": "whose", "level": "medium" },
-    { "id": 7, "question": "I bought a suitcase ______ was made in Italy.", "options": ["who", "whose", "where", "which"], "answer": "which", "level": "medium" },
-    { "id": 8, "question": "The boy ______ bike was stolen is crying.", "options": ["who", "which", "whose", "whom"], "answer": "whose", "level": "medium" },
-    { "id": 9, "question": "We visited a city ______ houses are painted blue.", "options": ["which", "that", "whose", "where"], "answer": "whose", "level": "hard" },
-    { "id": 10, "question": "The package holiday, ______ includes flights and hotels, is very cheap.", "options": ["who", "whose", "where", "which"], "answer": "which", "level": "hard" }
+    {
+      "id": 1,
+      "question": "I met a woman ______ works as a tour guide.",
+      "options": ["who", "which", "whose", "where"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "Danh từ đứng trước chỗ trống là 'a woman' (người phụ nữ) - chỉ người. Sau chỗ trống là động từ 'works'. Ta cần một đại từ quan hệ chỉ người làm chủ ngữ. Đáp án 'who' là chính xác. 'Which' chỉ vật, 'whose' chỉ sở hữu, 'where' chỉ nơi chốn."
+    },
+    {
+      "id": 2,
+      "question": "This is the brochure ______ has information about the trip.",
+      "options": ["who", "whose", "which", "whom"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "Danh từ đứng trước là 'the brochure' (tờ quảng cáo) - chỉ vật. Ta dùng đại từ quan hệ 'which' (hoặc that) để thay thế cho danh từ chỉ vật. Đáp án: 'which'."
+    },
+    {
+      "id": 3,
+      "question": "The tourist ______ asked me the way was very polite.",
+      "options": ["which", "who", "whose", "where"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "'The tourist' (khách du lịch) là danh từ chỉ người. Đại từ quan hệ cần điền làm chủ ngữ cho động từ 'asked'. Vậy dùng 'who'."
+    },
+    {
+      "id": 4,
+      "question": "The bus ______ goes to the airport is late.",
+      "options": ["who", "whose", "whom", "which"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'The bus' (xe buýt) là danh từ chỉ vật. Ta dùng 'which' làm chủ ngữ cho mệnh đề quan hệ. Đáp án: 'which'."
+    },
+    {
+      "id": 5,
+      "question": "He is the man ______ wrote this travel book.",
+      "options": ["who", "which", "whose", "where"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "'The man' (người đàn ông) là danh từ chỉ người -> dùng 'who'. Câu nghĩa: 'Ông ấy là người đàn ông (người mà) đã viết cuốn sách du lịch này.'"
+    },
+    {
+      "id": 6,
+      "question": "That is the girl ______ father is a famous pilot.",
+      "options": ["who", "which", "whose", "that"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Ta thấy mối quan hệ sở hữu giữa 'the girl' (cô gái) và 'father' (bố). Bố của cô gái. Khi muốn chỉ sự sở hữu trong mệnh đề quan hệ, ta dùng 'whose' + danh từ. Nghĩa: 'Kia là cô gái mà bố của cô ấy là phi công nổi tiếng.'"
+    },
+    {
+      "id": 7,
+      "question": "I bought a suitcase ______ was made in Italy.",
+      "options": ["who", "whose", "where", "which"],
+      "correctAnswer": "which",
+      "level": "medium",
+      "explanation": "'A suitcase' (cái vali) là vật -> dùng 'which'. 'Where' chỉ dùng khi thay thế cho cụm từ chỉ nơi chốn (at which/in which) và theo sau phải là một mệnh đề S+V, nhưng ở đây theo sau là động từ 'was made' nên cần chủ ngữ 'which'."
+    },
+    {
+      "id": 8,
+      "question": "The boy ______ bike was stolen is crying.",
+      "options": ["who", "which", "whose", "whom"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Mối quan hệ giữa 'The boy' và 'bike': xe đạp của cậu bé. Chỉ sở hữu -> dùng 'whose'. Cấu trúc: N(người) + whose + N(vật bị sở hữu) + V..."
+    },
+    {
+      "id": 9,
+      "question": "We visited a city ______ houses are painted blue.",
+      "options": ["which", "that", "whose", "where"],
+      "correctAnswer": "whose",
+      "level": "hard",
+      "explanation": "Đây là trường hợp sở hữu của vật (thành phố). 'houses' thuộc về 'a city' (những ngôi nhà của thành phố đó). 'Whose' có thể dùng cho cả người và vật để chỉ sở hữu. Nghĩa: 'Chúng tôi thăm một thành phố nơi mà những ngôi nhà (của nó) được sơn màu xanh.' Lưu ý: không dùng 'where' vì 'houses' là chủ ngữ của mệnh đề sau, 'where' không làm chủ ngữ."
+    },
+    {
+      "id": 10,
+      "question": "The package holiday, ______ includes flights and hotels, is very cheap.",
+      "options": ["who", "whose", "where", "which"],
+      "correctAnswer": "which",
+      "level": "hard",
+      "explanation": "Đây là mệnh đề quan hệ không xác định (có dấu phẩy), bổ sung thông tin cho 'The package holiday' (kỳ nghỉ trọn gói - vật). Ta dùng 'which'. Lưu ý: 'That' không bao giờ dùng trong mệnh đề có dấu phẩy. Đáp án: 'which'."
+    }
   ]
 }

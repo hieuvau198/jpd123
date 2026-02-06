@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-9-unit-9-1",
+  "title": "English 9 Unit 9 - Sentence Building (Relative Clauses 1)",
+  "subject": "English 9",
+  "tags": ["english-9", "unit9", "sentence-building", "relative-clauses"],
+  "questions": [
+    {
+      "id": "r1",
+      "question": ["teacher", "The", "taught", "who", "me", "Mr Vinh", "is"],
+      "answer": "The teacher who taught me is Mr Vinh"
+    },
+    {
+      "id": "r2",
+      "question": ["dictionary", "The", "gave", "which", "me", "you", "good", "is"],
+      "answer": "The dictionary which you gave me is good"
+    },
+    {
+      "id": "r3",
+      "question": ["talking", "man", "The", "who", "is", "father", "my", "is"],
+      "answer": "The man who is talking is my father"
+    },
+    {
+      "id": "r4",
+      "question": ["playing", "boys", "The", "who", "are", "football", "students", "are"],
+      "answer": "The boys who are playing football are students"
+    },
+    {
+      "id": "r5",
+      "question": ["table", "book", "The", "which", "on", "is", "the", "mine", "is"],
+      "answer": "The book which is on the table is mine"
+    },
+    {
+      "id": "r6",
+      "question": ["sits", "girl", "The", "who", "next", "to", "me", "Lan", "is"],
+      "answer": "The girl who sits next to me is Lan"
+    },
+    {
+      "id": "r7",
+      "question": ["saw", "movie", "The", "which", "we", "boring", "was"],
+      "answer": "The movie which we saw was boring"
+    },
+    {
+      "id": "r8",
+      "question": ["lost", "pen", "The", "which", "I", "new", "was"],
+      "answer": "The pen which I lost was new"
+    },
+    {
+      "id": "r9",
+      "question": ["live", "people", "The", "who", "here", "friendly", "are"],
+      "answer": "The people who live here are friendly"
+    },
+    {
+      "id": "r10",
+      "question": ["bought", "car", "The", "which", "he", "expensive", "is"],
+      "answer": "The car which he bought is expensive"
+    }
+  ]
+}

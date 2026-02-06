@@ -4,15 +4,85 @@
   "subject": "English 9",
   "tags": ["english-9", "unit7", "grammar", "reported-speech"],
   "questions": [
-    { "id": 1, "question": "\"Do you like this place?\" - He asked me ______ I liked that place.", "options": ["if", "what", "where", "that"], "answer": "if", "level": "easy" },
-    { "id": 2, "question": "\"Is it raining?\" - She asked if it ______ raining.", "options": ["is", "was", "were", "has been"], "answer": "was", "level": "easy" },
-    { "id": 3, "question": "\"Can you swim?\" - He asked me if I ______ swim.", "options": ["can", "could", "will", "may"], "answer": "could", "level": "easy" },
-    { "id": 4, "question": "\"Are they students?\" - The teacher wanted to know ______ they were students.", "options": ["weather", "whether", "what", "which"], "answer": "whether", "level": "easy" },
-    { "id": 5, "question": "\"Does she live here?\" - Tom asked if she ______ there.", "options": ["lives", "lived", "living", "live"], "answer": "lived", "level": "easy" },
-    { "id": 6, "question": "\"Will you visit Son Doong Cave?\" - Lan asked if we ______ visit Son Doong Cave.", "options": ["will", "would", "can", "did"], "answer": "would", "level": "medium" },
-    { "id": 7, "question": "\"Are you watching TV?\" - Mom asked if I ______ TV then.", "options": ["am watching", "was watching", "watched", "have watched"], "answer": "was watching", "level": "medium" },
-    { "id": 8, "question": "\"Do you want to go out?\" - He asked me if I ______ to go out.", "options": ["want", "wanted", "wanting", "wants"], "answer": "wanted", "level": "medium" },
-    { "id": 9, "question": "\"Did you see the majestic view yesterday?\" - He asked if I ______ the majestic view the day before.", "options": ["saw", "have seen", "had seen", "see"], "answer": "had seen", "level": "hard" },
-    { "id": 10, "question": "\"Have you been to Phong Nha?\" - She asked if we ______ to Phong Nha.", "options": ["have been", "were", "had been", "was"], "answer": "had been", "level": "hard" }
+    {
+      "id": 1,
+      "question": "\"Do you like this place?\" - He asked me ______ I liked that place.",
+      "options": ["if", "what", "where", "that"],
+      "correctAnswer": "if",
+      "level": "easy",
+      "explanation": "Đây là câu tường thuật dạng câu hỏi Yes/No. Quy tắc: Dùng liên từ 'if' hoặc 'whether' để nối mệnh đề. Câu trực tiếp bắt đầu bằng trợ động từ 'Do', khi chuyển sang gián tiếp ta bỏ 'Do' và thêm 'if'. Nghĩa: Anh ấy hỏi tôi 'liệu' tôi có thích nơi đó không."
+    },
+    {
+      "id": 2,
+      "question": "\"Is it raining?\" - She asked if it ______ raining.",
+      "options": ["is", "was", "were", "has been"],
+      "correctAnswer": "was",
+      "level": "easy",
+      "explanation": "Quy tắc lùi thì trong câu tường thuật: Hiện tại tiếp diễn (Is raining) lùi về Quá khứ tiếp diễn (Was/Were raining). Chủ ngữ 'it' số ít nên đi với 'was'. Vậy đáp án là 'was'. Câu hoàn chỉnh: She asked if it was raining."
+    },
+    {
+      "id": 3,
+      "question": "\"Can you swim?\" - He asked me if I ______ swim.",
+      "options": ["can", "could", "will", "may"],
+      "correctAnswer": "could",
+      "level": "easy",
+      "explanation": "Động từ khuyết thiếu 'Can' trong câu trực tiếp phải lùi thành 'Could' trong câu gián tiếp. Cấu trúc: S + asked + if + S + could + V. Đáp án đúng là 'could'."
+    },
+    {
+      "id": 4,
+      "question": "\"Are they students?\" - The teacher wanted to know ______ they were students.",
+      "options": ["weather", "whether", "what", "which"],
+      "correctAnswer": "whether",
+      "level": "easy",
+      "explanation": "Câu hỏi Yes/No tường thuật có thể dùng 'if' hoặc 'whether'. Ở đây không có 'if' trong đáp án, nên ta chọn 'whether'. Lưu ý phân biệt chính tả với 'weather' (thời tiết). Nghĩa: Giáo viên muốn biết 'liệu' họ có phải là học sinh không."
+    },
+    {
+      "id": 5,
+      "question": "\"Does she live here?\" - Tom asked if she ______ there.",
+      "options": ["lives", "lived", "living", "live"],
+      "correctAnswer": "lived",
+      "level": "easy",
+      "explanation": "Lùi thì: Hiện tại đơn (Does... live) -> Quá khứ đơn (lived). Trong câu tường thuật, ta bỏ trợ động từ 'Does' và chia động từ chính ở quá khứ. Động từ 'live' có quy tắc -> 'lived'."
+    },
+    {
+      "id": 6,
+      "question": "\"Will you visit Son Doong Cave?\" - Lan asked if we ______ visit Son Doong Cave.",
+      "options": ["will", "would", "can", "did"],
+      "correctAnswer": "would",
+      "level": "medium",
+      "explanation": "Lùi thì: Tương lai đơn 'Will' chuyển thành 'Would' trong câu gián tiếp. Cấu trúc: S + asked + if + S + would + V. Các đáp án khác chưa lùi thì đúng."
+    },
+    {
+      "id": 7,
+      "question": "\"Are you watching TV?\" - Mom asked if I ______ TV then.",
+      "options": ["am watching", "was watching", "watched", "have watched"],
+      "correctAnswer": "was watching",
+      "level": "medium",
+      "explanation": "Câu trực tiếp ở Hiện tại tiếp diễn (Are watching) -> lùi về Quá khứ tiếp diễn (Was/Were watching). Chủ ngữ 'I' đi với 'was'. Trạng từ 'now' (trong ngữ cảnh ẩn) chuyển thành 'then'. Đáp án: 'was watching'."
+    },
+    {
+      "id": 8,
+      "question": "\"Do you want to go out?\" - He asked me if I ______ to go out.",
+      "options": ["want", "wanted", "wanting", "wants"],
+      "correctAnswer": "wanted",
+      "level": "medium",
+      "explanation": "Lùi thì: Động từ 'want' (Hiện tại đơn) chuyển thành 'wanted' (Quá khứ đơn). Bỏ trợ động từ 'Do'. Câu tường thuật: He asked me if I wanted to go out."
+    },
+    {
+      "id": 9,
+      "question": "\"Did you see the majestic view yesterday?\" - He asked if I ______ the majestic view the day before.",
+      "options": ["saw", "have seen", "had seen", "see"],
+      "correctAnswer": "had seen",
+      "level": "hard",
+      "explanation": "Câu trực tiếp dùng Quá khứ đơn (Did see). Khi tường thuật, Quá khứ đơn lùi về Quá khứ hoàn thành (Had + V3/ed). Động từ 'see' -> 'seen'. Vậy đáp án là 'had seen'. Thời gian 'yesterday' chuyển thành 'the day before'."
+    },
+    {
+      "id": 10,
+      "question": "\"Have you been to Phong Nha?\" - She asked if we ______ to Phong Nha.",
+      "options": ["have been", "were", "had been", "was"],
+      "correctAnswer": "had been",
+      "level": "hard",
+      "explanation": "Câu trực tiếp dùng Hiện tại hoàn thành (Have been). Lùi thì về Quá khứ hoàn thành (Had been). Công thức: Have/Has + V3 -> Had + V3. Đáp án đúng là 'had been'."
+    }
   ]
 }

@@ -4,7 +4,6 @@ import { Card, Button, Typography, Progress, Result, Alert, Flex, Space } from '
 
 const { Title, Text } = Typography;
 
-// ... (keep helper functions: shuffleArray, prepareSessionData) ...
 const shuffleArray = (array) => {
   const newArr = [...array];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -22,6 +21,8 @@ const prepareSessionData = (originalData) => {
   const shuffledQuestions = shuffleArray(rawQuestions);
   return shuffledQuestions.map(q => ({
     ...q,
+    // Fix: Map 'answer' from JSON to 'correctAnswer' for the component logic
+    correctAnswer: q.correctAnswer || q.answer, 
     _tempId: Math.random().toString(36).substr(2, 9), 
     options: shuffleArray(q.options)
   }));
@@ -47,9 +48,8 @@ const QuizSession = ({ data, onHome }) => {
     if (isWrong) return; 
     setSelectedOption(option);
 
-    // Add .trim() to ensure "answer " matches "answer"
-    // Use optional chaining (?.) just in case correctAnswer is missing
     const cleanOption = String(option).trim();
+    // Logic relies on currentQuestion.correctAnswer (mapped in prepareSessionData)
     const cleanAnswer = String(currentQuestion.correctAnswer).trim();
 
     if (cleanOption === cleanAnswer) {
@@ -85,7 +85,6 @@ const QuizSession = ({ data, onHome }) => {
     setHasFailedCurrent(false);
   };
 
-  // Keyboard listener logic (Keep existing)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (isFinished || isWrong || (selectedOption && selectedOption === currentQuestion.correctAnswer)) return;
@@ -148,10 +147,9 @@ const QuizSession = ({ data, onHome }) => {
               const isCorrect = option === currentQuestion.correctAnswer;
               
               let status = 'default';
-              if (isSelected && isCorrect) status = 'primary'; // Antd button type logic
+              if (isSelected && isCorrect) status = 'primary';
               if (isSelected && !isCorrect) status = 'danger';
               
-              // Custom styles for success/error states to override default Antd ghost behavior if needed
               const customStyle = {};
               if (isSelected && isCorrect) { customStyle.backgroundColor = 'black'; customStyle.color = 'white'; customStyle.borderColor = 'black'; }
               if (isSelected && !isCorrect) { customStyle.color = '#ff4d4f'; customStyle.borderColor = '#ff4d4f'; }

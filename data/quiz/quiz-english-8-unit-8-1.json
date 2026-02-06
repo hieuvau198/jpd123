@@ -2,7 +2,11 @@
   "id": "quiz-english-8-unit-8-1",
   "title": "English 8 Unit 8 - Adverbs of Frequency",
   "subject": "English 8",
-  "tags": ["english-8", "Adverbs of Frequency", "unit8"],
+  "tags": [
+    "english-8",
+    "Adverbs of Frequency",
+    "unit8"
+  ],
   "questions": [
     {
       "id": 1,
@@ -13,8 +17,9 @@
         "is usually",
         "usually is"
       ],
-      "answer": "usually",
-      "level": "easy"
+      "correctAnswer": "usually",
+      "level": "easy",
+      "explanation": "Câu này kiểm tra vị trí của trạng từ chỉ tần suất. Quy tắc: Trạng từ chỉ tần suất (always, usually, often...) đứng *trước* động từ thường. Ở đây động từ chính là 'writes', nên 'usually' phải đứng trước nó. 'Usual' là tính từ nên sai. 'Is usually' sai vì câu này không dùng động từ to be."
     },
     {
       "id": 2,
@@ -25,8 +30,9 @@
         "never",
         "be never"
       ],
-      "answer": "is never",
-      "level": "easy"
+      "correctAnswer": "is never",
+      "level": "easy",
+      "explanation": "Quy tắc vị trí trạng từ tần suất đối với động từ TO BE: Trạng từ phải đứng *sau* động từ to be (am/is/are). Cấu trúc: S + to be + adv + adj. Đáp án đúng là 'is never'. 'Never is' là sai trật tự từ."
     },
     {
       "id": 3,
@@ -37,8 +43,9 @@
         "often are",
         "have often"
       ],
-      "answer": "often",
-      "level": "easy"
+      "correctAnswer": "often",
+      "level": "easy",
+      "explanation": "Động từ chính trong câu là 'go' (động từ thường). Trạng từ chỉ tần suất 'often' phải đứng *trước* động từ thường. Vậy đáp án là 'often' (We often go...). Không cần trợ động từ 'are' hay 'have' trong câu khẳng định thì hiện tại đơn này."
     },
     {
       "id": 4,
@@ -49,8 +56,9 @@
         "always",
         "have always"
       ],
-      "answer": "are always",
-      "level": "easy"
+      "correctAnswer": "are always",
+      "level": "easy",
+      "explanation": "Tính từ 'friendly' (thân thiện) cần đi kèm với động từ to be. Trạng từ 'always' đứng *sau* động từ to be. Chủ ngữ 'They' số nhiều đi với 'are'. Vậy thứ tự đúng là 'are always' (They are always friendly...). 'Always are' sai thứ tự."
     },
     {
       "id": 5,
@@ -61,8 +69,9 @@
         "often",
         "usually"
       ],
-      "answer": "rarely",
-      "level": "easy"
+      "correctAnswer": "rarely",
+      "level": "easy",
+      "explanation": "Câu này cần chọn trạng từ dựa trên ngữ nghĩa logic. Vế sau giải thích 'because it is not healthy' (vì nó không tốt cho sức khỏe), nên hành động ăn đồ ăn nhanh phải diễn ra ít hoặc hiếm khi. 'Rarely' (hiếm khi) là phù hợp nhất. 'Always' (luôn luôn), 'often' (thường), 'usually' (thường xuyên) đều mâu thuẫn với lý do sức khỏe."
     },
     {
       "id": 6,
@@ -73,8 +82,9 @@
         "He doesn't go often out at night.",
         "He often goes not out at night."
       ],
-      "answer": "He doesn't often go out at night.",
-      "level": "medium"
+      "correctAnswer": "He doesn't often go out at night.",
+      "level": "medium",
+      "explanation": "Trong câu phủ định với động từ thường, trạng từ chỉ tần suất thường đứng giữa trợ động từ phủ định (don't/doesn't) và động từ chính. Cấu trúc: S + don't/doesn't + adv + V. Vậy 'He doesn't often go out' là tự nhiên và chính xác nhất. (Lưu ý: 'Often' đôi khi có thể đứng đầu hoặc cuối câu, nhưng trong cấu trúc giữa câu thì phải đứng sau 'not')."
     },
     {
       "id": 7,
@@ -85,8 +95,9 @@
         "am never",
         "never am"
       ],
-      "answer": "have never",
-      "level": "medium"
+      "correctAnswer": "have never",
+      "level": "medium",
+      "explanation": "Đây là thì Hiện tại hoàn thành (Present Perfect). Cấu trúc: S + have/has + V3/ed. Trạng từ 'never' đứng *giữa* trợ động từ 'have/has' và phân từ hai (V3). Vậy đáp án đúng là 'have never' (I have never been abroad - Tôi chưa bao giờ ra nước ngoài)."
     },
     {
       "id": 8,
@@ -97,8 +108,9 @@
         "Do / never",
         "Are / never"
       ],
-      "answer": "Do / often",
-      "level": "medium"
+      "correctAnswer": "Do / often",
+      "level": "medium",
+      "explanation": "Đây là câu hỏi Yes/No thì hiện tại đơn với động từ thường 'eat'. Cấu trúc: Do/Does + S + adv + V? Chủ ngữ 'you' dùng trợ động từ 'Do'. Trạng từ 'often' đứng trước động từ 'eat'. Đáp án 'Do / often' là chính xác. 'Never' ít dùng trong câu hỏi Yes/No kiểu này (thường dùng 'ever' hơn), và cấu trúc 'Are' là sai."
     },
     {
       "id": 9,
@@ -109,8 +121,9 @@
         "Often",
         "Always"
       ],
-      "answer": "Always",
-      "level": "hard"
+      "correctAnswer": "Always",
+      "level": "hard",
+      "explanation": "Về vị trí của trạng từ: 'Sometimes', 'Usually', 'Often' có thể linh hoạt đứng đầu hoặc cuối câu để nhấn mạnh. Tuy nhiên, 'Always' (luôn luôn) hầu như *không bao giờ* đứng ở cuối câu hoặc đầu câu trong câu trần thuật thông thường. Nó gắn chặt với vị trí trước động từ thường hoặc sau to be. Ví dụ: Ta nói 'I always love you', không nói 'I love you always' (trừ văn thơ cổ)."
     },
     {
       "id": 10,
@@ -121,8 +134,9 @@
         "in",
         "the evening"
       ],
-      "answer": "is usually doing",
-      "level": "hard"
+      "correctAnswer": "is usually doing",
+      "level": "hard",
+      "explanation": "Để diễn tả một thói quen (habit) xảy ra thường xuyên ở hiện tại, ta phải dùng thì Hiện tại đơn (Present Simple), không dùng thì Hiện tại tiếp diễn (Present Continuous). Sai ở cụm 'is usually doing'. Phải sửa thành 'usually does'. (Lưu ý: 'is always/usually V-ing' chỉ dùng để diễn tả sự phàn nàn về hành động lặp lại gây khó chịu, nhưng ngữ cảnh 'làm bài tập' thường là thói quen tốt hoặc trung tính)."
     }
   ]
 }
