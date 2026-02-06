@@ -7,146 +7,127 @@
     "unit7",
     "english-7"
   ],
-  "flashcards": [
+  "description": "Từ vựng tiếng Anh lớp 7 Unit 7: Traffic.",
+  "questions": [
     {
       "id": 1,
-      "word": "bumpy",
-      "pronunciation": "/ˈbʌmpi/",
-      "meaning": "lồi lõm, nhiều ổ gà",
-      "example": "The bus drove slowly over the bumpy road."
+      "question": "bumpy",
+      "answer": "lồi lõm, nhiều ổ gà",
+      "speak": "bumpy"
     },
     {
       "id": 2,
-      "word": "distance",
-      "pronunciation": "/ˈdɪstəns/",
-      "meaning": "khoảng cách",
-      "example": "The distance from my house to school is 2 kilometers."
+      "question": "distance",
+      "answer": "khoảng cách",
+      "speak": "distance"
     },
     {
       "id": 3,
-      "word": "fine",
-      "pronunciation": "/faɪn/",
-      "meaning": "phạt",
-      "example": "He had to pay a fine for parking in the wrong place."
+      "question": "fine",
+      "answer": "phạt",
+      "speak": "fine"
     },
     {
       "id": 4,
-      "word": "fly",
-      "pronunciation": "/flaɪ/",
-      "meaning": "bay, lái máy bay, đi trên máy bay",
-      "example": "We will fly to Da Nang next summer."
+      "question": "fly",
+      "answer": "bay, lái máy bay, đi trên máy bay",
+      "speak": "fly"
     },
     {
       "id": 5,
-      "word": "handlebars",
-      "pronunciation": "/ˈhændlbɑː(r)z/",
-      "meaning": "tay lái, ghi đông",
-      "example": "Hold the handlebars firmly with both hands."
+      "question": "handlebars",
+      "answer": "tay lái, ghi đông",
+      "speak": "handlebars"
     },
     {
       "id": 6,
-      "word": "lane",
-      "pronunciation": "/leɪn/",
-      "meaning": "làn đường",
-      "example": "You should stay in your lane when driving."
+      "question": "lane",
+      "answer": "làn đường",
+      "speak": "lane"
     },
     {
       "id": 7,
-      "word": "obey traffic rules",
-      "pronunciation": "/əˈbeɪ ˈtræfɪk ruːlz/",
-      "meaning": "tuân theo luật giao thông",
-      "example": "All drivers must obey traffic rules to stay safe."
+      "question": "obey traffic rules",
+      "answer": "tuân theo luật giao thông",
+      "speak": "obey traffic rules"
     },
     {
       "id": 8,
-      "word": "passenger",
-      "pronunciation": "/ˈpæsɪndʒə(r)/",
-      "meaning": "hành khách",
-      "example": "The passengers are boarding the train."
+      "question": "passenger",
+      "answer": "hành khách",
+      "speak": "passenger"
     },
     {
       "id": 9,
-      "word": "pavement",
-      "pronunciation": "/ˈpeɪvmənt/",
-      "meaning": "vỉa hè (cho người đi bộ)",
-      "example": "Pedestrians must walk on the pavement."
+      "question": "pavement",
+      "answer": "vỉa hè (cho người đi bộ)",
+      "speak": "pavement"
     },
     {
       "id": 10,
-      "word": "pedestrian",
-      "pronunciation": "/pəˈdestriən/",
-      "meaning": "người đi bộ",
-      "example": "Drivers must give way to pedestrians."
+      "question": "pedestrian",
+      "answer": "người đi bộ",
+      "speak": "pedestrian"
     },
     {
       "id": 11,
-      "word": "plane",
-      "pronunciation": "/pleɪn/",
-      "meaning": "máy bay",
-      "example": "The plane took off at 9 a.m."
+      "question": "plane",
+      "answer": "máy bay",
+      "speak": "plane"
     },
     {
       "id": 12,
-      "word": "road sign",
-      "pronunciation": "/ˈrəʊd saɪn/",
-      "meaning": "biển báo giao thông",
-      "example": "Pay attention to the road sign ahead."
+      "question": "road sign",
+      "answer": "biển báo giao thông",
+      "speak": "road sign"
     },
     {
       "id": 13,
-      "word": "roof",
-      "pronunciation": "/ruːf/",
-      "meaning": "nóc xe, mái nhà",
-      "example": "Put the luggage on the roof of the car."
+      "question": "roof",
+      "answer": "nóc xe, mái nhà",
+      "speak": "roof"
     },
     {
       "id": 14,
-      "word": "safety",
-      "pronunciation": "/ˈseɪfti/",
-      "meaning": "sự an toàn",
-      "example": "Road safety is very important for everyone."
+      "question": "safety",
+      "answer": "sự an toàn",
+      "speak": "safety"
     },
     {
       "id": 15,
-      "word": "seat belt",
-      "pronunciation": "/ˈsiːt belt/",
-      "meaning": "đai an toàn",
-      "example": "Always fasten your seat belt when you are in a car."
+      "question": "seat belt",
+      "answer": "đai an toàn",
+      "speak": "seat belt"
     },
     {
       "id": 16,
-      "word": "signal",
-      "pronunciation": "/ˈsɪɡnəl/",
-      "meaning": "tín hiệu, dấu hiệu",
-      "example": "The traffic signal turned red."
+      "question": "signal",
+      "answer": "tín hiệu, dấu hiệu",
+      "speak": "signal"
     },
     {
       "id": 17,
-      "word": "traffic jam",
-      "pronunciation": "/ˈtræfɪk dʒæm/",
-      "meaning": "tắc đường",
-      "example": "We were stuck in a traffic jam for an hour."
+      "question": "traffic jam",
+      "answer": "tắc đường",
+      "speak": "traffic jam"
     },
     {
       "id": 18,
-      "word": "traffic rule",
-      "pronunciation": "/ˈtræfɪk ruːl/",
-      "meaning": "luật giao thông",
-      "example": "Breaking a traffic rule can be dangerous."
+      "question": "traffic rule",
+      "answer": "luật giao thông",
+      "speak": "traffic rule"
     },
     {
       "id": 19,
-      "word": "vehicle",
-      "pronunciation": "/ˈviːəkl/",
-      "meaning": "xe cộ, phương tiện giao thông",
-      "example": "Motorbikes are a common vehicle in Vietnam."
+      "question": "vehicle",
+      "answer": "xe cộ, phương tiện giao thông",
+      "speak": "vehicle"
     },
     {
       "id": 20,
-      "word": "zebra crossing",
-      "pronunciation": "/ˌzebrə ˈkrɒsɪŋ/",
-      "meaning": "vạch kẻ cho người đi bộ sang đường",
-      "example": "Cross the street at the zebra crossing."
+      "question": "zebra crossing",
+      "answer": "vạch kẻ cho người đi bộ sang đường",
+      "speak": "zebra crossing"
     }
   ]
 }

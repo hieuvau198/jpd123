@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-7-mixed-tenses",
+  "title": "English 7 - Mixed Present and Past Tenses",
+  "subject": "English 7",
+  "tags": ["english-7", "mixed-tenses", "present-simple", "past-simple", "present-continuous"],
+  "questions": [
+    { "id": 1, "question": "I usually ______ to school by bus.", "options": ["go", "goes", "went", "going"], "answer": "go", "level": "easy" },
+    { "id": 2, "question": "She ______ a new school bag yesterday.", "options": ["buy", "buys", "bought", "buying"], "answer": "bought", "level": "easy" },
+    { "id": 3, "question": "Look! The boys ______ football in the playground.", "options": ["play", "played", "are playing", "plays"], "answer": "are playing", "level": "easy" },
+    { "id": 4, "question": "We ______ at home last Sunday.", "options": ["are", "were", "was", "did"], "answer": "were", "level": "easy" },
+    { "id": 5, "question": "He ______ like coffee. He prefers tea.", "options": ["don't", "doesn't", "didn't", "isn't"], "answer": "doesn't", "level": "easy" },
+    { "id": 6, "question": "Where ______ you go for your summer holiday last year?", "options": ["do", "did", "are", "were"], "answer": "did", "level": "medium" },
+    { "id": 7, "question": "Be quiet! The baby ______ in the next room.", "options": ["sleeps", "slept", "is sleeping", "was sleeping"], "answer": "is sleeping", "level": "medium" },
+    { "id": 8, "question": "They ______ their grandparents two days ago.", "options": ["visit", "visited", "visiting", "are visiting"], "answer": "visited", "level": "medium" },
+    { "id": 9, "question": "My father usually ______ coffee in the morning, but yesterday he ______ tea.", "options": ["drinks / drank", "drank / drinks", "drink / drink", "drinking / drank"], "answer": "drinks / drank", "level": "hard" },
+    { "id": 10, "question": "At the moment, Lan ______ for her exam, so she can't watch TV.", "options": ["studies", "studied", "is studying", "study"], "answer": "is studying", "level": "hard" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-7-unit-9",
+  "title": "English 7 Unit 9 - Yes/No Questions",
+  "subject": "English 7",
+  "tags": ["english-7", "unit9", "grammar", "yes-no-questions"],
+  "questions": [
+    { "id": 1, "question": "______ you tired after the trip?", "options": ["Do", "Are", "Did", "Have"], "answer": "Are", "level": "easy" },
+    { "id": 2, "question": "______ she like eating moon cakes?", "options": ["Is", "Do", "Does", "Are"], "answer": "Does", "level": "easy" },
+    { "id": 3, "question": "______ they go to the Tulip festival last year?", "options": ["Did", "Do", "Were", "Are"], "answer": "Did", "level": "easy" },
+    { "id": 4, "question": "______ that your new costume?", "options": ["Does", "Are", "Is", "Do"], "answer": "Is", "level": "easy" },
+    { "id": 5, "question": "______ we have enough candy for the children?", "options": ["Do", "Are", "Is", "Does"], "answer": "Do", "level": "easy" },
+    { "id": 6, "question": "______ I open the present now?", "options": ["Am", "Do", "Can", "Is"], "answer": "Can", "level": "easy" },
+    { "id": 7, "question": "______ your parents watching the fireworks display right now?", "options": ["Do", "Did", "Are", "Have"], "answer": "Are", "level": "medium" },
+    { "id": 8, "question": "______ Nam and Ba perform traditional dances at the school festival yesterday?", "options": ["Do", "Did", "Were", "Are"], "answer": "Did", "level": "medium" },
+    { "id": 9, "question": "______ the teacher give you any homework for the holiday?", "options": ["Is", "Are", "Did", "Were"], "answer": "Did", "level": "medium" },
+    { "id": 10, "question": "______ the Lim Festival take place in Bac Ninh province every year?", "options": ["Is", "Does", "Do", "Are"], "answer": "Does", "level": "hard" }
+  ]
+}
