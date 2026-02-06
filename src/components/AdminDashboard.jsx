@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Button, List, Typography, Card, message, Popconfirm, Tag as AntTag, Input, Tabs } from 'antd';
+import { Upload, Button, Typography, Card, message, Popconfirm, Tag as AntTag, Input, Tabs, Table } from 'antd';
 import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench } from 'lucide-react';
 import { getAllFlashcards, saveFlashcardSet, deleteFlashcardSet } from '../firebase/flashcardService';
 import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../firebase/quizService';
@@ -17,6 +17,7 @@ const AdminDashboard = () => {
 
   // --- UI STATE ---
   const [activeTab, setActiveTab] = useState('flashcard'); // Default tab
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // For bulk selection
 
   // --- DATA STATE ---
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,6 @@ const AdminDashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [repairs, setRepairs] = useState([]);
   
-  // To track if data has been loaded at least once to avoid re-fetching on every tab switch (optional)
   const [dataLoaded, setDataLoaded] = useState({
     flashcard: false,
     quiz: false,
@@ -33,9 +33,10 @@ const AdminDashboard = () => {
 
   const processingFiles = useRef(0);
 
-  // --- EFFECT: Fetch data when Tab Changes ---
+  // --- EFFECT: Fetch data when Tab Changes & Clear Selection ---
   useEffect(() => {
     if (isAuthenticated) {
+      setSelectedRowKeys([]); // Clear selection when switching tabs
       loadDataForTab(activeTab);
     }
   }, [isAuthenticated, activeTab]);
@@ -50,7 +51,6 @@ const AdminDashboard = () => {
   };
 
   const loadDataForTab = (tabKey, forceRefresh = false) => {
-    // Only fetch if forced OR if we haven't loaded this tab's data yet
     if (forceRefresh || !dataLoaded[tabKey]) {
       if (tabKey === 'flashcard') fetchFlashcards();
       if (tabKey === 'quiz') fetchQuizzes();
@@ -83,8 +83,7 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
-  // --- CRUD ACTIONS ---
-
+  // --- IMPORT ACTIONS ---
   const handleImport = (file, type) => {
     processingFiles.current += 1;
     setLoading(true);
@@ -93,11 +92,7 @@ const AdminDashboard = () => {
     reader.onload = async (e) => {
       try {
         const json = JSON.parse(e.target.result);
-        
-        if (!json.id || !json.questions) { // Note: 'questions' might not exist on all types, adjust validation as needed
-          // Relaxed validation or specific validation per type could go here
-           if (!json.id) throw new Error("Missing ID");
-        } 
+        if (!json.id) throw new Error("Missing ID");
         
         let result;
         if (type === 'flashcard') result = await saveFlashcardSet(json);
@@ -116,32 +111,51 @@ const AdminDashboard = () => {
         processingFiles.current -= 1;
         if (processingFiles.current === 0) {
           // Refresh only the current list
-          if (type === 'flashcard') fetchFlashcards();
-          else if (type === 'quiz') fetchQuizzes();
-          else if (type === 'repair') fetchRepairs();
+          loadDataForTab(type, true);
         }
       }
     };
     reader.readAsText(file);
-    return false; // Prevent default upload behavior
+    return false; 
   };
 
+  // --- DELETE ACTIONS ---
   const handleDelete = async (id, type) => {
     try {
       setLoading(true);
-      if (type === 'flashcard') {
-        await deleteFlashcardSet(id);
-        fetchFlashcards();
-      } else if (type === 'quiz') {
-        await deleteQuizSet(id);
-        fetchQuizzes();
-      } else if (type === 'repair') {
-        await deleteRepairSet(id);
-        fetchRepairs();
-      }
+      if (type === 'flashcard') await deleteFlashcardSet(id);
+      else if (type === 'quiz') await deleteQuizSet(id);
+      else if (type === 'repair') await deleteRepairSet(id);
+      
       message.success("Item deleted");
+      loadDataForTab(type, true); // Refresh
     } catch (err) {
       message.error("Failed to delete");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedRowKeys.length === 0) return;
+
+    setLoading(true);
+    try {
+      const deletePromises = selectedRowKeys.map(id => {
+        if (activeTab === 'flashcard') return deleteFlashcardSet(id);
+        if (activeTab === 'quiz') return deleteQuizSet(id);
+        if (activeTab === 'repair') return deleteRepairSet(id);
+        return Promise.resolve();
+      });
+
+      await Promise.all(deletePromises);
+      message.success(`Deleted ${selectedRowKeys.length} items`);
+      setSelectedRowKeys([]);
+      loadDataForTab(activeTab, true);
+
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to delete some items");
     } finally {
       setLoading(false);
     }
@@ -164,34 +178,81 @@ const AdminDashboard = () => {
     </div>
   );
 
-  const renderList = (data, type, icon, color) => (
-    <List
-      loading={loading && activeTab === type}
-      dataSource={data}
-      pagination={{ pageSize: 5 }}
-      renderItem={(item) => (
-        <List.Item
-          actions={[
-            <Popconfirm title="Delete?" onConfirm={() => handleDelete(item.id, type)} okText="Yes" cancelText="No">
-              <Button danger type="text" icon={<Trash2 size={16} />} />
-            </Popconfirm>
-          ]}
-        >
-          <List.Item.Meta
-            avatar={icon}
-            title={<span>{item.title} <Text type="secondary" style={{fontSize:'0.8em'}}>({item.id})</Text></span>}
-            description={
-              <>
-                <AntTag color={color}>{item.subject || 'No Subject'}</AntTag>
-                {item.tags && item.tags.map((tag, i) => (
-                  <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
-                ))}
-              </>
-            }
-          />
-        </List.Item>
-      )}
-    />
+  const renderTable = (data, type, icon, color) => {
+    const columns = [
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        render: (text, record) => (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ marginRight: 12 }}>{icon}</span>
+            <div>
+              <div style={{ fontWeight: 500 }}>{text}</div>
+              <Text type="secondary" style={{fontSize:'0.8em'}}>{record.id}</Text>
+            </div>
+          </div>
+        ),
+      },
+      {
+        title: 'Info',
+        key: 'info',
+        render: (_, record) => (
+          <>
+            <AntTag color={color}>{record.subject || 'No Subject'}</AntTag>
+            {record.tags && record.tags.map((tag, i) => (
+              <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
+            ))}
+          </>
+        ),
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        width: 80,
+        render: (_, record) => (
+          <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id, type)} okText="Yes" cancelText="No">
+            <Button danger type="text" icon={<Trash2 size={16} />} />
+          </Popconfirm>
+        ),
+      },
+    ];
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: (keys) => setSelectedRowKeys(keys),
+    };
+
+    return (
+      <Table 
+        rowSelection={rowSelection}
+        columns={columns} 
+        dataSource={data} 
+        rowKey="id"
+        loading={loading && activeTab === type}
+        pagination={{ pageSize: 10 }}
+        size="small"
+      />
+    );
+  };
+
+  const renderTabContent = (data, type, icon, color, uploadText, uploadColor) => (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+        {selectedRowKeys.length > 0 && (
+          <Popconfirm title={`Delete ${selectedRowKeys.length} items?`} onConfirm={handleBulkDelete} okText="Yes" cancelText="No">
+             <Button danger type="primary" icon={<Trash2 size={16}/>}>
+               Delete Selected ({selectedRowKeys.length})
+             </Button>
+          </Popconfirm>
+        )}
+        <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab(type, true)} loading={loading}>
+          Refresh
+        </Button>
+      </div>
+      {renderUploadArea(type, uploadColor, uploadText)}
+      {renderTable(data, type, icon, color)}
+    </div>
   );
 
   // --- LOGIN VIEW ---
@@ -223,46 +284,43 @@ const AdminDashboard = () => {
     {
       key: 'flashcard',
       label: 'Flashcards',
-      children: (
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('flashcard', true)} loading={loading}>Refresh</Button>
-          </div>
-          {renderUploadArea('flashcard', '#1890ff', 'Import Flashcards (JSON)')}
-          {renderList(flashcards, 'flashcard', <FileJson color="#faad14" size={24} />, 'blue')}
-        </div>
+      children: renderTabContent(
+        flashcards, 
+        'flashcard', 
+        <FileJson color="#faad14" size={24} />, 
+        'blue', 
+        'Import Flashcards (JSON)', 
+        '#1890ff'
       )
     },
     {
       key: 'quiz',
       label: 'Quizzes',
-      children: (
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('quiz', true)} loading={loading}>Refresh</Button>
-          </div>
-          {renderUploadArea('quiz', '#52c41a', 'Import Quizzes (JSON)')}
-          {renderList(quizzes, 'quiz', <FileQuestion color="#52c41a" size={24} />, 'green')}
-        </div>
+      children: renderTabContent(
+        quizzes, 
+        'quiz', 
+        <FileQuestion color="#52c41a" size={24} />, 
+        'green', 
+        'Import Quizzes (JSON)', 
+        '#52c41a'
       )
     },
     {
       key: 'repair',
       label: 'Repair (Sentence)',
-      children: (
-        <div>
-           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-            <Button icon={<RefreshCw size={16}/>} onClick={() => loadDataForTab('repair', true)} loading={loading}>Refresh</Button>
-          </div>
-          {renderUploadArea('repair', '#722ed1', 'Import Repair Sets (JSON)')}
-          {renderList(repairs, 'repair', <Wrench color="#722ed1" size={24} />, 'purple')}
-        </div>
+      children: renderTabContent(
+        repairs, 
+        'repair', 
+        <Wrench color="#722ed1" size={24} />, 
+        'purple', 
+        'Import Repair Sets (JSON)', 
+        '#722ed1'
       )
     }
   ];
 
   return (
-    <div style={{ maxWidth: 900, margin: '40px auto', padding: 20 }}>
+    <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
         <Title level={2} style={{ margin: 0 }}>Content Management</Title>
         <Button icon={<Home size={16} />} onClick={() => navigate('/')}>Back to Home</Button>

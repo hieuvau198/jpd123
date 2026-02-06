@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-mixed-tenses-4",
+  "title": "English 7 - Mixed Tenses Practice 4",
+  "subject": "English 7",
+  "tags": ["english-7", "grammar", "mixed-tenses", "present-simple", "past-simple", "future-simple", "present-continuous"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "She ______ like playing football.",
+      "options": ["don't", "doesn't", "isn't", "won't"],
+      "correctAnswer": "doesn't",
+      "level": "easy",
+      "explanation": "Thì hiện tại đơn diễn tả sở thích. Chủ ngữ 'She' -> Trợ động từ phủ định 'doesn't'."
+    },
+    {
+      "id": 2,
+      "question": "We ______ a great party last night.",
+      "options": ["have", "has", "had", "having"],
+      "correctAnswer": "had",
+      "level": "easy",
+      "explanation": "'Last night' -> Quá khứ đơn. Quá khứ của 'have' là 'had'."
+    },
+    {
+      "id": 3,
+      "question": "I ______ my grandparents tomorrow.",
+      "options": ["visit", "visited", "will visit", "am visiting"],
+      "correctAnswer": "will visit",
+      "level": "easy",
+      "explanation": "'Tomorrow' -> Tương lai đơn. 'will visit'."
+    },
+    {
+      "id": 4,
+      "question": "Where is Tom? - He ______ in the garden.",
+      "options": ["play", "plays", "is playing", "played"],
+      "correctAnswer": "is playing",
+      "level": "easy",
+      "explanation": "Hỏi 'Where is Tom?' ngụ ý hỏi lúc này -> Câu trả lời dùng Hiện tại tiếp diễn -> 'is playing'."
+    },
+    {
+      "id": 5,
+      "question": "______ you go to school yesterday? - No, I ______.",
+      "options": ["Do / don't", "Did / didn't", "Will / won't", "Are / am not"],
+      "correctAnswer": "Did / didn't",
+      "level": "medium",
+      "explanation": "'Yesterday' -> Quá khứ đơn. Câu hỏi Yes/No: Did... ? Trả lời: No, I didn't."
+    },
+    {
+      "id": 6,
+      "question": "My father ______ smoking two years ago.",
+      "options": ["stop", "stops", "stopped", "stopping"],
+      "correctAnswer": "stopped",
+      "level": "medium",
+      "explanation": "'Two years ago' -> Quá khứ đơn. 'Stop' gấp đôi phụ âm 'p' rồi thêm 'ed' -> 'stopped'."
+    },
+    {
+      "id": 7,
+      "question": "Look! The bird ______.",
+      "options": ["fly", "flies", "is flying", "flew"],
+      "correctAnswer": "is flying",
+      "level": "medium",
+      "explanation": "'Look!' -> Hiện tại tiếp diễn -> 'is flying'."
+    },
+    {
+      "id": 8,
+      "question": "If you study hard, you ______ the exam.",
+      "options": ["pass", "passed", "will pass", "are passing"],
+      "correctAnswer": "will pass",
+      "level": "medium",
+      "explanation": "Câu điều kiện loại 1 (có thể xảy ra ở tương lai). Mệnh đề If dùng Hiện tại đơn, mệnh đề chính dùng Tương lai đơn -> 'will pass'."
+    },
+    {
+      "id": 9,
+      "question": "Yesterday I ______ up at 6, ______ breakfast and ______ to school.",
+      "options": ["get / have / go", "got / had / went", "got / had / go", "got / have / went"],
+      "correctAnswer": "got / had / went",
+      "level": "hard",
+      "explanation": "Chuỗi hành động liên tiếp trong quá khứ ('Yesterday'). Tất cả động từ đều phải chia ở Quá khứ đơn: got, had, went."
+    },
+    {
+      "id": 10,
+      "question": "Keep silent! The baby ______ and the father ______ a book.",
+      "options": ["sleeps / reads", "is sleeping / is reading", "slept / read", "is sleeping / reads"],
+      "correctAnswer": "is sleeping / is reading",
+      "level": "hard",
+      "explanation": "'Keep silent!' -> Cả hai hành động đều đang diễn ra song song lúc nói -> Cả hai dùng Hiện tại tiếp diễn: 'is sleeping / is reading'."
+    }
+  ]
+}

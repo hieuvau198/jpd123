@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-mixed-tenses-5",
+  "title": "English 9 - Mixed Tenses Practice 5",
+  "subject": "English 9",
+  "tags": ["english-9", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "My father ______ smoking two years ago.",
+      "options": ["stops", "stopped", "has stopped", "had stopped"],
+      "correctAnswer": "stopped",
+      "level": "easy",
+      "explanation": "'Two years ago' -> Quá khứ đơn."
+    },
+    {
+      "id": 2,
+      "question": "I ______ waiting for you for two hours!",
+      "options": ["am", "was", "have been", "will be"],
+      "correctAnswer": "have been",
+      "level": "medium",
+      "explanation": "'For two hours' (và vẫn đang đợi hoặc vừa mới dứt) -> Hiện tại hoàn thành (hoặc HTHT Tiếp diễn, nhưng ở đây dùng 'have been' nhấn mạnh thời gian)."
+    },
+    {
+      "id": 3,
+      "question": "As soon as I ______ home, I will call you.",
+      "options": ["get", "will get", "got", "have got"],
+      "correctAnswer": "get",
+      "level": "medium",
+      "explanation": "Mệnh đề trạng ngữ chỉ thời gian trong tương lai (sau 'as soon as') dùng Hiện tại đơn."
+    },
+    {
+      "id": 4,
+      "question": "He ______ the keys before he left the house.",
+      "options": ["lost", "has lost", "had lost", "loses"],
+      "correctAnswer": "had lost",
+      "level": "hard",
+      "explanation": "Mất chìa khóa (trước) -> rời nhà (sau, quá khứ). -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 5,
+      "question": "Listen! Someone ______ the piano.",
+      "options": ["plays", "is playing", "played", "has played"],
+      "correctAnswer": "is playing",
+      "level": "easy",
+      "explanation": "'Listen!' -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 6,
+      "question": "They ______ a new house next year.",
+      "options": ["buy", "bought", "are going to buy", "have bought"],
+      "correctAnswer": "are going to buy",
+      "level": "medium",
+      "explanation": "Kế hoạch lớn (mua nhà) -> Tương lai gần (are going to)."
+    },
+    {
+      "id": 7,
+      "question": "When we got to the stadium, the match ______.",
+      "options": ["started", "has started", "had started", "starts"],
+      "correctAnswer": "had started",
+      "level": "medium",
+      "explanation": "Trận đấu bắt đầu trước khi chúng tôi đến (quá khứ) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 8,
+      "question": "I ______ usually ______ out on Mondays.",
+      "options": ["don't / go", "didn't / go", "won't / go", "haven't / gone"],
+      "correctAnswer": "don't / go",
+      "level": "easy",
+      "explanation": "Thói quen hiện tại -> Hiện tại đơn."
+    },
+    {
+      "id": 9,
+      "question": "If it rains, we ______ at home.",
+      "options": ["stay", "will stay", "stayed", "would stay"],
+      "correctAnswer": "will stay",
+      "level": "easy",
+      "explanation": "Câu điều kiện loại 1 -> Mệnh đề chính dùng Tương lai đơn."
+    },
+    {
+      "id": 10,
+      "question": "What ______ you ______ when the accident happened?",
+      "options": ["did / do", "were / doing", "have / done", "do / do"],
+      "correctAnswer": "were / doing",
+      "level": "medium",
+      "explanation": "Hành động đang diễn ra tại thời điểm xảy ra tai nạn -> Quá khứ tiếp diễn."
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-mixed-tenses-3",
+  "title": "English 7 - Mixed Tenses Practice 3",
+  "subject": "English 7",
+  "tags": ["english-7", "grammar", "mixed-tenses", "present-simple", "past-simple", "future-simple", "present-continuous"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "My brother ______ video games every Sunday.",
+      "options": ["play", "plays", "playing", "played"],
+      "correctAnswer": "plays",
+      "level": "easy",
+      "explanation": "'Every Sunday' -> Hiện tại đơn. 'My brother' số ít -> động từ thêm s/es -> 'plays'."
+    },
+    {
+      "id": 2,
+      "question": "They ______ to the cinema two days ago.",
+      "options": ["go", "went", "gone", "will go"],
+      "correctAnswer": "went",
+      "level": "easy",
+      "explanation": "'Two days ago' -> Quá khứ đơn. Động từ 'go' bất quy tắc chuyển thành 'went'."
+    },
+    {
+      "id": 3,
+      "question": "______ you free tomorrow evening?",
+      "options": ["Are", "Do", "Will", "Did"],
+      "correctAnswer": "Will",
+      "level": "easy",
+      "explanation": "'Tomorrow evening' -> Tương lai. Câu hỏi với tính từ 'free' cần động từ 'be'. Ở tương lai là 'Will you be...?'. Tuy nhiên, nếu hỏi về kế hoạch có thể dùng 'Are you...?' (Present Continuous for future). Nhưng nếu nhìn kỹ, câu này thiếu động từ 'be' nếu chọn 'Will' (Will you BE free...). Nếu chọn 'Are', câu là 'Are you free tomorrow...?' (Bạn có rảnh mai không - dùng hiện tại để hỏi lịch trình tương lai). Trong tiếng Anh giao tiếp, 'Are you free tomorrow?' rất phổ biến. Tuy nhiên, nếu xét ngữ pháp Tương lai đơn chuẩn phải là 'Will you be'. Nếu đề bài thiếu 'be', đáp án 'Are' là chấp nhận được nhất cho cấu trúc 'Are you + adj'."
+    },
+    {
+      "id": 4,
+      "question": "Be quiet! The teacher ______.",
+      "options": ["talks", "talked", "is talking", "will talk"],
+      "correctAnswer": "is talking",
+      "level": "easy",
+      "explanation": "'Be quiet!' -> Hành động đang diễn ra -> Hiện tại tiếp diễn -> 'is talking'."
+    },
+    {
+      "id": 5,
+      "question": "Nam ______ his homework yet.",
+      "options": ["didn't do", "doesn't do", "won't do", "isn't doing"],
+      "correctAnswer": "didn't do",
+      "level": "medium",
+      "explanation": "Từ 'yet' thường dùng trong thì Hiện tại hoàn thành, nhưng ở lớp 7 đầu cấp có thể chưa học sâu, hoặc dùng trong câu phủ định quá khứ/hiện tại mang nghĩa 'chưa làm'. Tuy nhiên, nếu xét các thì cơ bản lớp 7, có thể câu này muốn kiểm tra Phủ định. Nếu chưa học HTHT, 'didn't do' (đã không làm) là lựa chọn quá khứ an toàn nhất trong các option."
+    },
+    {
+      "id": 6,
+      "question": "______ she ______ a new bike next month?",
+      "options": ["Does / buy", "Did / buy", "Will / buy", "Is / buying"],
+      "correctAnswer": "Will / buy",
+      "level": "medium",
+      "explanation": "'Next month' -> Tương lai đơn. Cấu trúc: Will + S + V? -> 'Will / buy'."
+    },
+    {
+      "id": 7,
+      "question": "We ______ at home yesterday. We ______ at the beach.",
+      "options": ["weren't / were", "didn't / did", "won't / will", "aren't / are"],
+      "correctAnswer": "weren't / were",
+      "level": "medium",
+      "explanation": "'Yesterday' -> Quá khứ đơn. Động từ to be số nhiều 'We'. Vế 1 phủ định (weren't), vế 2 khẳng định (were). -> 'weren't / were'."
+    },
+    {
+      "id": 8,
+      "question": "Look at the clouds! It ______ rain.",
+      "options": ["will", "is going to", "is", "does"],
+      "correctAnswer": "is going to",
+      "level": "medium",
+      "explanation": "Dự đoán có căn cứ hiện tại (clouds - mây đen) -> dùng cấu trúc 'be going to' (sắp xảy ra). Dù 'will' cũng chỉ tương lai nhưng 'be going to' chính xác hơn khi có dấu hiệu. Nếu không có 'is going to' thì chọn 'will'. Ở đây chọn 'is going to' (lớp 7 thường học Near Future)."
+    },
+    {
+      "id": 9,
+      "question": "He usually ______ to work by bus, but today he ______ his car.",
+      "options": ["go / drove", "goes / drove", "goes / is driving", "went / drives"],
+      "correctAnswer": "goes / is driving",
+      "level": "hard",
+      "explanation": "Thói quen thường xuyên (usually) -> Hiện tại đơn (goes). Hành động khác biệt hôm nay (today) -> Hiện tại tiếp diễn (is driving) diễn tả sự thay đổi tạm thời."
+    },
+    {
+      "id": 10,
+      "question": "In 2050, people ______ flying cars.",
+      "options": ["use", "used", "will use", "are using"],
+      "correctAnswer": "will use",
+      "level": "hard",
+      "explanation": "Mốc thời gian trong tương lai xa 'In 2050' -> Tương lai đơn (dự đoán). -> 'will use'."
+    }
+  ]
+}

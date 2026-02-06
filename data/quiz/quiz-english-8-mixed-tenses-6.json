@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-8-mixed-tenses-6",
+  "title": "English 8 - Mixed Tenses Practice 6",
+  "subject": "English 8",
+  "tags": ["english-8", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "How long ______ you ______ here?",
+      "options": ["do / live", "did / live", "have / lived", "are / living"],
+      "correctAnswer": "have / lived",
+      "level": "medium",
+      "explanation": "Câu hỏi 'How long' (bao lâu rồi) đối với hành động bắt đầu trong quá khứ kéo dài đến hiện tại dùng Hiện tại hoàn thành."
+    },
+    {
+      "id": 2,
+      "question": "When I entered the room, everyone ______.",
+      "options": ["danced", "was dancing", "is dancing", "has danced"],
+      "correctAnswer": "was dancing",
+      "level": "medium",
+      "explanation": "Khi tôi vào (hành động ngắn), mọi người đang nhảy (hành động dài đang diễn ra). Dùng Quá khứ tiếp diễn."
+    },
+    {
+      "id": 3,
+      "question": "I ______ a letter when the lights went out.",
+      "options": ["wrote", "was writing", "have written", "had written"],
+      "correctAnswer": "was writing",
+      "level": "medium",
+      "explanation": "Đang viết thư (QKTD) thì đèn tắt (QKĐ)."
+    },
+    {
+      "id": 4,
+      "question": "He ______ to New York three times this year.",
+      "options": ["has been", "was", "is", "goes"],
+      "correctAnswer": "has been",
+      "level": "medium",
+      "explanation": "Hành động lặp lại trong khoảng thời gian chưa kết thúc (this year) dùng Hiện tại hoàn thành."
+    },
+    {
+      "id": 5,
+      "question": "The meeting ______ at 9:00 am.",
+      "options": ["is starting", "starts", "will start", "start"],
+      "correctAnswer": "starts",
+      "level": "easy",
+      "explanation": "Lịch trình sự kiện (meeting) dùng Hiện tại đơn."
+    },
+    {
+      "id": 6,
+      "question": "Before 2010, she ______ in Hanoi.",
+      "options": ["lived", "has lived", "had lived", "lives"],
+      "correctAnswer": "had lived",
+      "level": "hard",
+      "explanation": "Trước một mốc thời gian trong quá khứ (Before 2010) dùng Quá khứ hoàn thành."
+    },
+    {
+      "id": 7,
+      "question": "Are you busy? - Yes, I ______ my homework.",
+      "options": ["do", "am doing", "did", "have done"],
+      "correctAnswer": "am doing",
+      "level": "easy",
+      "explanation": "Hỏi 'Are you busy?' (bây giờ) -> Trả lời dùng Hiện tại tiếp diễn (đang làm bài)."
+    },
+    {
+      "id": 8,
+      "question": "They ______ a new house next year.",
+      "options": ["buy", "bought", "are going to buy", "have bought"],
+      "correctAnswer": "are going to buy",
+      "level": "medium",
+      "explanation": "Kế hoạch lớn trong tương lai (mua nhà) thường dùng Tương lai gần (are going to)."
+    },
+    {
+      "id": 9,
+      "question": "We ______ friends for a long time.",
+      "options": ["are", "were", "have been", "had been"],
+      "correctAnswer": "have been",
+      "level": "medium",
+      "explanation": "'For a long time' (đã lâu) dùng Hiện tại hoàn thành."
+    },
+    {
+      "id": 10,
+      "question": "Who ______ the car yesterday?",
+      "options": ["drives", "drove", "driven", "has driven"],
+      "correctAnswer": "drove",
+      "level": "easy",
+      "explanation": "Câu hỏi chủ ngữ với 'Yesterday' dùng Quá khứ đơn."
+    }
+  ]
+}

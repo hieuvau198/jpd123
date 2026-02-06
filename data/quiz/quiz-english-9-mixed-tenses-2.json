@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-mixed-tenses-2",
+  "title": "English 9 - Mixed Tenses Practice 2",
+  "subject": "English 9",
+  "tags": ["english-9", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "When I arrived at the party, Tom ______ home already.",
+      "options": ["went", "has gone", "had gone", "was going"],
+      "correctAnswer": "had gone",
+      "level": "hard",
+      "explanation": "Tom đã về TRƯỚC khi tôi đến bữa tiệc (quá khứ). Dùng Quá khứ hoàn thành."
+    },
+    {
+      "id": 2,
+      "question": "They ______ married for 20 years.",
+      "options": ["are", "were", "have been", "had been"],
+      "correctAnswer": "have been",
+      "level": "medium",
+      "explanation": "Hành động bắt đầu trong quá khứ và kéo dài đến hiện tại (for 20 years) -> Hiện tại hoàn thành."
+    },
+    {
+      "id": 3,
+      "question": "At this time tomorrow, we ______ over the Atlantic.",
+      "options": ["fly", "will fly", "are flying", "will be flying"],
+      "correctAnswer": "will be flying",
+      "level": "hard",
+      "explanation": "Thời điểm cụ thể trong tương lai (At this time tomorrow). Nếu chỉ dùng 8 thì cơ bản thì chọn 'are flying' (kế hoạch) hoặc 'will fly'. Tuy nhiên, đáp án chính xác nhất là Tương lai tiếp diễn (will be flying). Nếu buộc chọn trong 8 thì cơ bản, 'are flying' là chấp nhận được cho kế hoạch."
+    },
+    {
+      "id": 4,
+      "question": "She ______ talking on the phone when I came in.",
+      "options": ["is", "was", "were", "has been"],
+      "correctAnswer": "was",
+      "level": "easy",
+      "explanation": "Hành động đang diễn ra trong quá khứ (was talking) khi có hành động khác xen vào."
+    },
+    {
+      "id": 5,
+      "question": "I promise I ______ help you with your project.",
+      "options": ["do", "did", "will", "am going to"],
+      "correctAnswer": "will",
+      "level": "easy",
+      "explanation": "Lời hứa (promise) -> Tương lai đơn (will)."
+    },
+    {
+      "id": 6,
+      "question": "We ______ never ______ such a beautiful sunset.",
+      "options": ["did / see", "have / seen", "had / seen", "do / see"],
+      "correctAnswer": "have / seen",
+      "level": "medium",
+      "explanation": "Trải nghiệm 'chưa bao giờ thấy' tính đến hiện tại -> Hiện tại hoàn thành."
+    },
+    {
+      "id": 7,
+      "question": "Look! The bus ______.",
+      "options": ["come", "comes", "is coming", "came"],
+      "correctAnswer": "is coming",
+      "level": "easy",
+      "explanation": "Dấu hiệu 'Look!' -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 8,
+      "question": "He said he ______ the money the day before.",
+      "options": ["stole", "has stolen", "had stolen", "steals"],
+      "correctAnswer": "had stolen",
+      "level": "hard",
+      "explanation": "Câu tường thuật gián tiếp. Quá khứ đơn (stole) hoặc HTHT (has stolen) lùi về Quá khứ hoàn thành (had stolen)."
+    },
+    {
+      "id": 9,
+      "question": "Next year, my sister ______ 18 years old.",
+      "options": ["is", "is being", "will be", "has been"],
+      "correctAnswer": "will be",
+      "level": "easy",
+      "explanation": "Sự thật trong tương lai (tuổi tác) -> Tương lai đơn (will be)."
+    },
+    {
+      "id": 10,
+      "question": "What ______ you ______ yesterday morning?",
+      "options": ["do / do", "did / do", "were / doing", "have / done"],
+      "correctAnswer": "did / do",
+      "level": "medium",
+      "explanation": "Hỏi về hành động đã xảy ra và kết thúc trong quá khứ (yesterday morning) -> Quá khứ đơn. Nếu muốn nhấn mạnh quá trình lúc đó mới dùng QKTD (What were you doing AT 9am yesterday?), còn hỏi chung chung thì dùng QKĐ."
+    }
+  ]
+}

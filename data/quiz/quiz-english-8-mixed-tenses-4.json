@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-8-mixed-tenses-4",
+  "title": "English 8 - Mixed Tenses Practice 4",
+  "subject": "English 8",
+  "tags": ["english-8", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "My dad ______ usually ______ to work by bus.",
+      "options": ["don't / go", "doesn't / go", "isn't / going", "didn't / go"],
+      "correctAnswer": "doesn't / go",
+      "level": "easy",
+      "explanation": "Thói quen hiện tại (usually) + phủ định ngôi thứ 3 số ít -> doesn't go."
+    },
+    {
+      "id": 2,
+      "question": "They ______ the project by last Friday.",
+      "options": ["finished", "have finished", "had finished", "finish"],
+      "correctAnswer": "had finished",
+      "level": "hard",
+      "explanation": "'By' + mốc thời gian quá khứ (last Friday) là dấu hiệu của Quá khứ hoàn thành (hoàn tất trước mốc đó)."
+    },
+    {
+      "id": 3,
+      "question": "Wait! I ______ you with the bags.",
+      "options": ["help", "am going to help", "will help", "helped"],
+      "correctAnswer": "will help",
+      "level": "medium",
+      "explanation": "Quyết định tức thì ngay lúc nói (Wait! - Đợi đã, để tôi giúp) dùng Tương lai đơn."
+    },
+    {
+      "id": 4,
+      "question": "What ______ you ______ at 7 p.m. last night?",
+      "options": ["did / do", "were / doing", "are / doing", "do / do"],
+      "correctAnswer": "were / doing",
+      "level": "medium",
+      "explanation": "Hỏi về hành động đang diễn ra tại thời điểm cụ thể quá khứ -> Quá khứ tiếp diễn."
+    },
+    {
+      "id": 5,
+      "question": "I ______ to Paris yet.",
+      "options": ["didn't go", "haven't been", "don't go", "hadn't been"],
+      "correctAnswer": "haven't been",
+      "level": "medium",
+      "explanation": "'Have been to' (đã từng đến/chưa từng đến) trong HTHT diễn tả trải nghiệm. 'Yet' dùng trong phủ định HTHT."
+    },
+    {
+      "id": 6,
+      "question": "While I ______ down the street, I saw an accident.",
+      "options": ["walked", "was walking", "am walking", "have walked"],
+      "correctAnswer": "was walking",
+      "level": "medium",
+      "explanation": "Hành động đang diễn ra (đi bộ) thì hành động khác cắt ngang (thấy tai nạn). Dùng QKTD."
+    },
+    {
+      "id": 7,
+      "question": "The sky is very dark. It ______ storm.",
+      "options": ["will", "is going to", "storms", "is storming"],
+      "correctAnswer": "is going to",
+      "level": "easy",
+      "explanation": "Dự đoán có căn cứ (sky is dark) -> Tương lai gần."
+    },
+    {
+      "id": 8,
+      "question": "He ______ his homework before he went out.",
+      "options": ["did", "has done", "had done", "was doing"],
+      "correctAnswer": "had done",
+      "level": "hard",
+      "explanation": "Làm bài tập (trước) -> đi chơi (sau, quá khứ). Trước quá khứ dùng Quá khứ hoàn thành."
+    },
+    {
+      "id": 9,
+      "question": "Where ______ you ______ your summer holiday last year?",
+      "options": ["did / spend", "do / spend", "have / spent", "were / spending"],
+      "correctAnswer": "did / spend",
+      "level": "easy",
+      "explanation": "Câu hỏi với mốc thời gian 'last year' dùng Quá khứ đơn."
+    },
+    {
+      "id": 10,
+      "question": "She ______ playing the piano everyday.",
+      "options": ["practiced", "practices", "is practicing", "has practiced"],
+      "correctAnswer": "practices",
+      "level": "easy",
+      "explanation": "Thói quen hàng ngày (everyday) dùng Hiện tại đơn."
+    }
+  ]
+}

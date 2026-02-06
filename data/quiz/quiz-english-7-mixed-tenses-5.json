@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-mixed-tenses-5",
+  "title": "English 7 - Mixed Tenses Practice 5",
+  "subject": "English 7",
+  "tags": ["english-7", "grammar", "mixed-tenses", "present-simple", "past-simple", "future-simple", "present-continuous"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "The sun ______ in the East.",
+      "options": ["rise", "rises", "rising", "rose"],
+      "correctAnswer": "rises",
+      "level": "easy",
+      "explanation": "Sự thật hiển nhiên -> Hiện tại đơn. 'The sun' số ít -> 'rises'."
+    },
+    {
+      "id": 2,
+      "question": "They ______ busy yesterday.",
+      "options": ["are", "were", "was", "will be"],
+      "correctAnswer": "were",
+      "level": "easy",
+      "explanation": "'Yesterday' -> Quá khứ đơn. 'They' đi với to be 'were'."
+    },
+    {
+      "id": 3,
+      "question": "I ______ 14 years old next year.",
+      "options": ["am", "was", "will be", "be"],
+      "correctAnswer": "will be",
+      "level": "easy",
+      "explanation": "'Next year' -> Tương lai đơn. 'will be'."
+    },
+    {
+      "id": 4,
+      "question": "What ______ you ______ now?",
+      "options": ["do / do", "are / doing", "did / do", "will / do"],
+      "correctAnswer": "are / doing",
+      "level": "easy",
+      "explanation": "'Now' -> Hiện tại tiếp diễn. 'What are you doing?'."
+    },
+    {
+      "id": 5,
+      "question": "He ______ his keys yesterday.",
+      "options": ["lose", "loses", "lost", "losing"],
+      "correctAnswer": "lost",
+      "level": "medium",
+      "explanation": "'Yesterday' -> Quá khứ đơn. 'Lose' là động từ bất quy tắc -> 'lost'."
+    },
+    {
+      "id": 6,
+      "question": "______ you ______ this film before?",
+      "options": ["Do / see", "Did / see", "Will / see", "Are / seeing"],
+      "correctAnswer": "Did / see",
+      "level": "medium",
+      "explanation": "Nếu dùng 'before' với nghĩa 'trước đây' trong quá khứ đơn (hỏi về trải nghiệm trong ngữ cảnh đã kết thúc hoặc đơn giản hóa). Tuy nhiên, đúng nhất là HTHT 'Have you seen'. Nhưng trong phạm vi 4 thì này, nếu hỏi 'Bạn đã xem chưa' như một sự kiện quá khứ, ta dùng 'Did you see'."
+    },
+    {
+      "id": 7,
+      "question": "We ______ camping next weekend if the weather is good.",
+      "options": ["go", "went", "will go", "are going"],
+      "correctAnswer": "will go",
+      "level": "medium",
+      "explanation": "Câu điều kiện loại 1, vế chính dùng Tương lai đơn -> 'will go'."
+    },
+    {
+      "id": 8,
+      "question": "My sister usually ______ cook dinner, but tonight she ______ out.",
+      "options": ["cooks / eats", "cooks / is eating", "cooked / ate", "cooking / eating"],
+      "correctAnswer": "cooks / is eating",
+      "level": "medium",
+      "explanation": "'Usually' -> Hiện tại đơn (cooks). 'Tonight' (kế hoạch/hành động tạm thời) -> Hiện tại tiếp diễn (is eating)."
+    },
+    {
+      "id": 9,
+      "question": "Last year, I ______ to Ha Long Bay, but I ______ take many photos.",
+      "options": ["go / didn't", "went / didn't", "went / don't", "gone / didn't"],
+      "correctAnswer": "went / didn't",
+      "level": "hard",
+      "explanation": "'Last year' -> Quá khứ đơn cho cả 2 vế. Vế 1 khẳng định: went. Vế 2 phủ định: didn't (take)."
+    },
+    {
+      "id": 10,
+      "question": "At present, Nam ______ for his exam. He ______ to pass it.",
+      "options": ["studies / wants", "is studying / wants", "studied / wanted", "is studying / is wanting"],
+      "correctAnswer": "is studying / wants",
+      "level": "hard",
+      "explanation": "'At present' -> Hiện tại tiếp diễn (is studying). Động từ 'want' (muốn) là động từ chỉ trạng thái/cảm xúc, KHÔNG dùng ở thì tiếp diễn, phải dùng Hiện tại đơn (wants). Cặp đúng: 'is studying / wants'."
+    }
+  ]
+}

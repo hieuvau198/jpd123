@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-unit-7-1",
+  "title": "English 7 Unit 7 - Indication of Distance",
+  "subject": "English 7",
+  "tags": ["english-7", "unit7", "grammar", "it-distance"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "______ is about 2 kilometers from my house to the school.",
+      "options": ["It", "This", "That", "There"],
+      "correctAnswer": "It",
+      "level": "easy",
+      "explanation": "Để chỉ khoảng cách, chúng ta dùng chủ ngữ giả 'It'. Cấu trúc: It is + (about) + khoảng cách + from... to... (Nó thì khoảng... từ... đến...). Các từ 'This', 'That', 'There' không dùng trong cấu trúc chỉ khoảng cách này."
+    },
+    {
+      "id": 2,
+      "question": "It is not very far ______ here to the station.",
+      "options": ["to", "at", "from", "in"],
+      "correctAnswer": "from",
+      "level": "easy",
+      "explanation": "Cấu trúc chỉ khoảng cách: 'from... to...' (từ... đến...). Trong câu đã có 'to the station', nên chỗ trống cần điền là 'from'. Nghĩa: Nó không xa lắm từ đây đến nhà ga."
+    },
+    {
+      "id": 3,
+      "question": "How ______ is it from Hanoi to Ho Chi Minh City?",
+      "options": ["long", "far", "much", "often"],
+      "correctAnswer": "far",
+      "level": "easy",
+      "explanation": "Để hỏi về khoảng cách, ta dùng câu hỏi 'How far...?'. 'How long' hỏi về thời gian/chiều dài, 'How much' hỏi giá tiền/số lượng không đếm được, 'How often' hỏi tần suất."
+    },
+    {
+      "id": 4,
+      "question": "It ______ about 500 meters to the nearest bus stop.",
+      "options": ["are", "is", "be", "were"],
+      "correctAnswer": "is",
+      "level": "easy",
+      "explanation": "Chủ ngữ 'It' luôn đi với động từ to be số ít là 'is' trong thì hiện tại đơn. Cấu trúc: It is + khoảng cách."
+    },
+    {
+      "id": 5,
+      "question": "It is about 30 minutes from here to the airport ______ car.",
+      "options": ["in", "on", "by", "at"],
+      "correctAnswer": "by",
+      "level": "medium",
+      "explanation": "Để chỉ phương tiện đi lại, ta dùng giới từ 'by' + phương tiện (by car, by bus, by train). Nếu đi bộ thì dùng 'on foot'. Ở đây là 'car' nên dùng 'by'."
+    },
+    {
+      "id": 6,
+      "question": "______ is the distance between your house and your school?",
+      "options": ["What", "How", "Which", "Where"],
+      "correctAnswer": "What",
+      "level": "medium",
+      "explanation": "Có hai cách hỏi khoảng cách: 'How far is it...?' hoặc 'What is the distance...?'. Vì câu dùng danh từ 'the distance' nên từ để hỏi phải là 'What'."
+    },
+    {
+      "id": 7,
+      "question": "It is about 100 km from here ______ the beach.",
+      "options": ["at", "to", "in", "on"],
+      "correctAnswer": "to",
+      "level": "easy",
+      "explanation": "Cấu trúc 'from... to...' (từ... đến...). Đã có 'from here' thì vế sau phải là 'to the beach'."
+    },
+    {
+      "id": 8,
+      "question": "Is it far from your school to the library? - No, it ______.",
+      "options": ["is", "isn't", "doesn't", "aren't"],
+      "correctAnswer": "isn't",
+      "level": "medium",
+      "explanation": "Câu hỏi bắt đầu bằng 'Is it...?' (Có phải... không?) thì câu trả lời ngắn là 'Yes, it is' hoặc 'No, it isn't'. Vì câu trả lời là 'No' nên ta chọn 'isn't'."
+    },
+    {
+      "id": 9,
+      "question": "It is not too far, so we can go ______ foot.",
+      "options": ["by", "in", "on", "to"],
+      "correctAnswer": "on",
+      "level": "medium",
+      "explanation": "Cụm từ cố định 'on foot' nghĩa là đi bộ. Không dùng 'by foot'."
+    },
+    {
+      "id": 10,
+      "question": "______ is it from your village to the town? - About 5 km.",
+      "options": ["How often", "How long", "How far", "How high"],
+      "correctAnswer": "How far",
+      "level": "easy",
+      "explanation": "Câu trả lời là một khoảng cách 'About 5 km', nên câu hỏi phải là 'How far' (Bao xa)."
+    }
+  ]
+}

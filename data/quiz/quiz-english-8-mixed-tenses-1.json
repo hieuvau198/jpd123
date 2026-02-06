@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-8-mixed-tenses-1",
+  "title": "English 8 - Mixed Tenses Practice 1",
+  "subject": "English 8",
+  "tags": ["english-8", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ my homework yet.",
+      "options": ["didn't finish", "haven't finished", "don't finish", "won't finish"],
+      "correctAnswer": "haven't finished",
+      "level": "easy",
+      "explanation": "Từ 'yet' (chưa) trong câu phủ định là dấu hiệu nhận biết đặc trưng của thì Hiện tại hoàn thành. Cấu trúc: S + have/has + not + V3/ed."
+    },
+    {
+      "id": 2,
+      "question": "Look at those black clouds! It ______.",
+      "options": ["will rain", "is raining", "is going to rain", "rains"],
+      "correctAnswer": "is going to rain",
+      "level": "easy",
+      "explanation": "Dự đoán dựa trên bằng chứng hiện có (black clouds - mây đen) sử dụng thì Tương lai gần (Be going to). 'Will' dùng cho dự đoán không căn cứ hoặc quyết định tức thì."
+    },
+    {
+      "id": 3,
+      "question": "When I arrived, they ______ dinner.",
+      "options": ["have", "had", "were having", "are having"],
+      "correctAnswer": "were having",
+      "level": "medium",
+      "explanation": "Hành động đang diễn ra trong quá khứ (ăn tối) thì có hành động khác xen vào (tôi đến). Hành động đang diễn ra chia Quá khứ tiếp diễn (were having)."
+    },
+    {
+      "id": 4,
+      "question": "We ______ to Da Nang three times.",
+      "options": ["have been", "were", "went", "had been"],
+      "correctAnswer": "have been",
+      "level": "medium",
+      "explanation": "Diễn tả trải nghiệm lặp lại nhiều lần trong quá khứ không rõ thời gian (three times) dùng thì Hiện tại hoàn thành."
+    },
+    {
+      "id": 5,
+      "question": "She ______ the house before her guests arrived.",
+      "options": ["cleans", "cleaned", "has cleaned", "had cleaned"],
+      "correctAnswer": "had cleaned",
+      "level": "hard",
+      "explanation": "Hành động xảy ra và hoàn tất TRƯỚC một hành động khác trong quá khứ. 'Dọn nhà' xảy ra trước khi 'khách đến' (quá khứ đơn), nên dùng Quá khứ hoàn thành (had cleaned)."
+    },
+    {
+      "id": 6,
+      "question": "I ______ you as soon as I get home.",
+      "options": ["will call", "call", "called", "am calling"],
+      "correctAnswer": "will call",
+      "level": "medium",
+      "explanation": "Mệnh đề chính của câu điều kiện loại 1 hoặc câu chỉ tương lai. 'Sẽ gọi' (tương lai đơn) ngay khi về nhà."
+    },
+    {
+      "id": 7,
+      "question": "While my mother ______ cooking, my father was reading the newspaper.",
+      "options": ["is", "was", "were", "has been"],
+      "correctAnswer": "was",
+      "level": "medium",
+      "explanation": "Hai hành động song song trong quá khứ nối với nhau bằng 'While'. Cả hai đều chia Quá khứ tiếp diễn. Mother (số ít) dùng 'was'."
+    },
+    {
+      "id": 8,
+      "question": "He ______ usually ______ coffee, but today he drank tea.",
+      "options": ["don't / drink", "doesn't / drink", "didn't / drink", "won't / drink"],
+      "correctAnswer": "doesn't / drink",
+      "level": "medium",
+      "explanation": "Thói quen ở hiện tại (usually) dùng Hiện tại đơn. Ngôi 'He' phủ định dùng 'doesn't'."
+    },
+    {
+      "id": 9,
+      "question": "By the time he was 25, he ______ two books.",
+      "options": ["wrote", "has written", "had written", "was writing"],
+      "correctAnswer": "had written",
+      "level": "hard",
+      "explanation": "Cấu trúc 'By the time' + mốc quá khứ (lúc 25 tuổi) -> Hành động xảy ra trước mốc đó dùng Quá khứ hoàn thành."
+    },
+    {
+      "id": 10,
+      "question": "Water ______ at 100 degrees Celsius.",
+      "options": ["boil", "boils", "is boiling", "boiled"],
+      "correctAnswer": "boils",
+      "level": "easy",
+      "explanation": "Sự thật hiển nhiên về vật lý dùng thì Hiện tại đơn."
+    }
+  ]
+}

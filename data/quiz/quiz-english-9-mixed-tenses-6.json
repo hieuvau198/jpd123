@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-mixed-tenses-6",
+  "title": "English 9 - Mixed Tenses Practice 6",
+  "subject": "English 9",
+  "tags": ["english-9", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ not ______ him since last month.",
+      "options": ["did / see", "have / seen", "do / see", "had / seen"],
+      "correctAnswer": "have / seen",
+      "level": "easy",
+      "explanation": "'Since last month' -> Hiện tại hoàn thành phủ định (haven't seen)."
+    },
+    {
+      "id": 2,
+      "question": "She ______ to work by bus yesterday.",
+      "options": ["goes", "went", "has gone", "was going"],
+      "correctAnswer": "went",
+      "level": "easy",
+      "explanation": "'Yesterday' -> Quá khứ đơn."
+    },
+    {
+      "id": 3,
+      "question": "I ______ you as soon as I arrive.",
+      "options": ["call", "called", "will call", "have called"],
+      "correctAnswer": "will call",
+      "level": "medium",
+      "explanation": "Mệnh đề chính dùng Tương lai đơn cho hành động sẽ xảy ra sau khi hành động khác kết thúc."
+    },
+    {
+      "id": 4,
+      "question": "While my mom ______ cooking, my dad was reading newspapers.",
+      "options": ["is", "was", "has been", "had been"],
+      "correctAnswer": "was",
+      "level": "medium",
+      "explanation": "Hai hành động song song trong quá khứ -> Cả hai dùng Quá khứ tiếp diễn."
+    },
+    {
+      "id": 5,
+      "question": "By 2050, scientists ______ a cure for cancer.",
+      "options": ["find", "will find", "will have found", "found"],
+      "correctAnswer": "will have found",
+      "level": "hard",
+      "explanation": "'By' + mốc thời gian tương lai -> Tương lai hoàn thành (will have found). Nếu chưa học TLHT, học sinh có thể chọn 'will find' (Tương lai đơn), nhưng 'will have found' là đáp án chính xác nhất cho ngữ cảnh 'hoàn tất trước mốc tương lai'."
+    },
+    {
+      "id": 6,
+      "question": "He ______ his homework before he went to the cinema.",
+      "options": ["did", "has done", "had done", "does"],
+      "correctAnswer": "had done",
+      "level": "medium",
+      "explanation": "Hoàn thành bài tập (trước) -> đi xem phim (sau, quá khứ). -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 7,
+      "question": "Look! The baby ______.",
+      "options": ["cry", "cries", "is crying", "cried"],
+      "correctAnswer": "is crying",
+      "level": "easy",
+      "explanation": "'Look!' -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 8,
+      "question": "We ______ usually ______ TV in the morning.",
+      "options": ["don't / watch", "didn't / watch", "won't / watch", "haven't / watched"],
+      "correctAnswer": "don't / watch",
+      "level": "easy",
+      "explanation": "Thói quen -> Hiện tại đơn."
+    },
+    {
+      "id": 9,
+      "question": "I'm hungry. I ______ make a sandwich.",
+      "options": ["will", "am going to", "am", "do"],
+      "correctAnswer": "will",
+      "level": "medium",
+      "explanation": "Quyết định tức thì lúc nói (vì đói) -> Tương lai đơn (will)."
+    },
+    {
+      "id": 10,
+      "question": "They ______ in this house for 10 years before they moved.",
+      "options": ["lived", "have lived", "had lived", "live"],
+      "correctAnswer": "had lived",
+      "level": "hard",
+      "explanation": "Sống ở đó 10 năm (kéo dài) TRƯỚC KHI chuyển đi (quá khứ). Hành động xảy ra và kéo dài trước một mốc quá khứ -> Quá khứ hoàn thành (hoặc QKHT tiếp diễn). Ở đây 'had lived' là đáp án đúng."
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-mixed-tenses-2",
+  "title": "English 7 - Mixed Tenses Practice 2",
+  "subject": "English 7",
+  "tags": ["english-7", "grammar", "mixed-tenses", "present-simple", "past-simple", "future-simple", "present-continuous"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "We ______ English lessons on Tuesdays and Fridays.",
+      "options": ["have", "has", "having", "had"],
+      "correctAnswer": "have",
+      "level": "easy",
+      "explanation": "Lịch học cố định hàng tuần (on Tuesdays and Fridays) dùng thì Hiện tại đơn. Chủ ngữ 'We' -> dùng 'have'."
+    },
+    {
+      "id": 2,
+      "question": "She ______ very happy yesterday.",
+      "options": ["is", "are", "were", "was"],
+      "correctAnswer": "was",
+      "level": "easy",
+      "explanation": "'Yesterday' -> Quá khứ đơn. Động từ to be đi với chủ ngữ 'She' (số ít) là 'was'."
+    },
+    {
+      "id": 3,
+      "question": "They ______ video games right now.",
+      "options": ["play", "played", "are playing", "will play"],
+      "correctAnswer": "are playing",
+      "level": "easy",
+      "explanation": "'Right now' -> Hiện tại tiếp diễn. Chủ ngữ 'They' -> 'are playing'."
+    },
+    {
+      "id": 4,
+      "question": "I promise I ______ you with your homework.",
+      "options": ["help", "helped", "will help", "helping"],
+      "correctAnswer": "will help",
+      "level": "easy",
+      "explanation": "Động từ 'promise' (hứa) thường đi kèm với thì Tương lai đơn để diễn tả lời hứa. -> 'will help'."
+    },
+    {
+      "id": 5,
+      "question": "Where ______ you ______ for your summer holiday last year?",
+      "options": ["do / go", "did / go", "will / go", "are / going"],
+      "correctAnswer": "did / go",
+      "level": "medium",
+      "explanation": "'Last year' -> Quá khứ đơn. Câu hỏi với động từ thường: Wh + did + S + V? -> 'Where did you go?'."
+    },
+    {
+      "id": 6,
+      "question": "Listen! Someone ______ the piano.",
+      "options": ["plays", "played", "is playing", "will play"],
+      "correctAnswer": "is playing",
+      "level": "medium",
+      "explanation": "'Listen!' (Nghe kìa!) -> Hành động đang diễn ra -> Hiện tại tiếp diễn -> 'is playing'."
+    },
+    {
+      "id": 7,
+      "question": "My mom ______ buy a new car next week.",
+      "options": ["don't", "doesn't", "won't", "didn't"],
+      "correctAnswer": "won't",
+      "level": "medium",
+      "explanation": "'Next week' -> Tương lai đơn. Câu phủ định tương lai đơn dùng 'won't' (will not). 'Don't/Doesn't' là hiện tại, 'Didn't' là quá khứ."
+    },
+    {
+      "id": 8,
+      "question": "______ Lan often ______ to the library?",
+      "options": ["Do / go", "Does / go", "Is / going", "Will / go"],
+      "correctAnswer": "Does / go",
+      "level": "medium",
+      "explanation": "'Often' -> Hiện tại đơn. Lan là ngôi thứ 3 số ít -> Trợ động từ 'Does'. Động từ chính 'go' giữ nguyên. -> 'Does / go'."
+    },
+    {
+      "id": 9,
+      "question": "At this time yesterday, we ______ football, but today we ______ TV.",
+      "options": ["played / watched", "were playing / are watching", "play / watch", "played / are watching"],
+      "correctAnswer": "played / are watching",
+      "level": "hard",
+      "explanation": "Vế 1: 'yesterday' -> Quá khứ đơn (played) (Lưu ý: nếu học sinh lớp 7 chưa học Quá khứ tiếp diễn thì dùng Quá khứ đơn là chấp nhận được cho hành động đã qua). Vế 2: 'today' (ngữ cảnh so sánh hành động đang làm hôm nay) -> Hiện tại tiếp diễn (are watching). Đáp án phù hợp nhất trong các lựa chọn là 'played / are watching'."
+    },
+    {
+      "id": 10,
+      "question": "I ______ hungry now. I ______ a sandwich.",
+      "options": ["am / eat", "was / ate", "am / will eat", "will be / eat"],
+      "correctAnswer": "am / will eat",
+      "level": "hard",
+      "explanation": "Câu 1: 'now' -> Hiện tại đơn với to be (cảm giác/trạng thái) -> 'I am'. Câu 2: Quyết định tức thì ngay lúc nói (vì đói nên sẽ ăn) -> Tương lai đơn -> 'will eat'. Cặp đúng: 'am / will eat'."
+    }
+  ]
+}

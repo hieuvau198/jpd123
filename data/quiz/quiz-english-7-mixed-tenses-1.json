@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-mixed-tenses-1",
+  "title": "English 7 - Mixed Tenses Practice 1",
+  "subject": "English 7",
+  "tags": ["english-7", "grammar", "mixed-tenses", "present-simple", "past-simple", "future-simple", "present-continuous"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ to school every day by bicycle.",
+      "options": ["go", "goes", "going", "went"],
+      "correctAnswer": "go",
+      "level": "easy",
+      "explanation": "Có 'every day' (mỗi ngày) là dấu hiệu của thì Hiện tại đơn. Chủ ngữ 'I' đi với động từ nguyên thể 'go'. 'Goes' dùng cho ngôi thứ 3 số ít, 'going' thiếu to be, 'went' là quá khứ."
+    },
+    {
+      "id": 2,
+      "question": "Look! The bus ______.",
+      "options": ["come", "comes", "is coming", "came"],
+      "correctAnswer": "is coming",
+      "level": "easy",
+      "explanation": "Dấu hiệu 'Look!' (Nhìn kìa!) yêu cầu dùng thì Hiện tại tiếp diễn để diễn tả hành động đang xảy ra lúc nói. Cấu trúc: S + is/am/are + V-ing. 'The bus' số ít nên dùng 'is coming'."
+    },
+    {
+      "id": 3,
+      "question": "We ______ our grandparents last weekend.",
+      "options": ["visit", "visiting", "will visit", "visited"],
+      "correctAnswer": "visited",
+      "level": "easy",
+      "explanation": "Có 'last weekend' (cuối tuần trước) là dấu hiệu của thì Quá khứ đơn. Động từ 'visit' thêm đuôi -ed thành 'visited'."
+    },
+    {
+      "id": 4,
+      "question": "I think it ______ rain tomorrow.",
+      "options": ["is", "will", "was", "did"],
+      "correctAnswer": "will",
+      "level": "easy",
+      "explanation": "Có 'tomorrow' (ngày mai) và cụm 'I think' (tôi nghĩ) diễn tả dự đoán trong tương lai. Ta dùng thì Tương lai đơn: S + will + V. Đáp án 'will'."
+    },
+    {
+      "id": 5,
+      "question": "______ you watch the football match yesterday?",
+      "options": ["Do", "Did", "Will", "Are"],
+      "correctAnswer": "Did",
+      "level": "medium",
+      "explanation": "Câu hỏi có 'yesterday' (hôm qua) -> Quá khứ đơn. Với động từ thường 'watch', ta mượn trợ động từ 'Did' đảo lên đầu câu."
+    },
+    {
+      "id": 6,
+      "question": "He usually ______ up early, but today he ______ up late.",
+      "options": ["gets / gets", "get / is getting", "gets / is getting", "got / got"],
+      "correctAnswer": "gets / is getting",
+      "level": "medium",
+      "explanation": "Vế đầu có 'usually' -> Hiện tại đơn (gets). Vế sau diễn tả sự việc 'today' (hôm nay) khác với thường lệ hoặc đang diễn ra -> có thể dùng Hiện tại tiếp diễn (is getting) để nhấn mạnh tính tạm thời. Hoặc dùng hiện tại đơn cũng được nhưng trong các đáp án, cặp 'gets / is getting' là hợp lý nhất để phân biệt thói quen và hành động bất thường."
+    },
+    {
+      "id": 7,
+      "question": "My father ______ coffee at the moment.",
+      "options": ["drink", "drinks", "is drinking", "drank"],
+      "correctAnswer": "is drinking",
+      "level": "medium",
+      "explanation": "'At the moment' (ngay lúc này) là dấu hiệu của thì Hiện tại tiếp diễn. Chủ ngữ 'My father' số ít -> dùng 'is drinking'."
+    },
+    {
+      "id": 8,
+      "question": "What ______ you ______ next Sunday?",
+      "options": ["do / do", "did / do", "will / do", "are / doing"],
+      "correctAnswer": "will / do",
+      "level": "medium",
+      "explanation": "Có 'next Sunday' (chủ nhật tới) -> Tương lai đơn. Cấu trúc câu hỏi: Wh + will + S + V? -> 'What will you do?'."
+    },
+    {
+      "id": 9,
+      "question": "When I was a child, I ______ to be a pilot.",
+      "options": ["want", "wanted", "will want", "am wanting"],
+      "correctAnswer": "wanted",
+      "level": "hard",
+      "explanation": "Mệnh đề 'When I was a child' (khi tôi còn nhỏ) xác định thời gian trong quá khứ. Do đó động từ chính 'want' cũng phải chia ở Quá khứ đơn -> 'wanted'."
+    },
+    {
+      "id": 10,
+      "question": "Don't make noise! The baby ______ and she ______ up easily.",
+      "options": ["sleeps / wakes", "is sleeping / wakes", "slept / woke", "is sleeping / is waking"],
+      "correctAnswer": "is sleeping / wakes",
+      "level": "hard",
+      "explanation": "Vế 1: 'Don't make noise!' -> hành động đang diễn ra -> Hiện tại tiếp diễn (is sleeping). Vế 2: Sự thật hiển nhiên về thói quen/đặc điểm của em bé -> Hiện tại đơn (wakes). Cặp đúng: 'is sleeping / wakes'."
+    }
+  ]
+}

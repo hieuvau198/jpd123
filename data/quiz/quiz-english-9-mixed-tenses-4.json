@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-mixed-tenses-4",
+  "title": "English 9 - Mixed Tenses Practice 4",
+  "subject": "English 9",
+  "tags": ["english-9", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ English for 5 years.",
+      "options": ["learn", "learned", "have learned", "had learned"],
+      "correctAnswer": "have learned",
+      "level": "easy",
+      "explanation": "'For 5 years' -> Hiện tại hoàn thành (hành động bắt đầu trong quá khứ và kéo dài đến hiện tại)."
+    },
+    {
+      "id": 2,
+      "question": "Yesterday, I ______ to the cinema.",
+      "options": ["go", "went", "have gone", "was going"],
+      "correctAnswer": "went",
+      "level": "easy",
+      "explanation": "'Yesterday' -> Quá khứ đơn."
+    },
+    {
+      "id": 3,
+      "question": "This time next week, I ______ on the beach.",
+      "options": ["am lying", "will lie", "will be lying", "have lain"],
+      "correctAnswer": "will be lying",
+      "level": "hard",
+      "explanation": "Thời điểm cụ thể trong tương lai (This time next week) -> Tương lai tiếp diễn (will be lying)."
+    },
+    {
+      "id": 4,
+      "question": "Before we came, the film ______.",
+      "options": ["started", "has started", "had started", "starts"],
+      "correctAnswer": "had started",
+      "level": "medium",
+      "explanation": "Phim bắt đầu TRƯỚC khi chúng tôi đến (quá khứ) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 5,
+      "question": "Look at the dark clouds! It ______ rain.",
+      "options": ["will", "is going to", "is", "does"],
+      "correctAnswer": "is going to",
+      "level": "easy",
+      "explanation": "Dự đoán có căn cứ -> Tương lai gần."
+    },
+    {
+      "id": 6,
+      "question": "While he ______ a shower, the phone rang.",
+      "options": ["took", "was taking", "has taken", "is taking"],
+      "correctAnswer": "was taking",
+      "level": "medium",
+      "explanation": "Đang tắm (QKTD) thì điện thoại reo (QKĐ)."
+    },
+    {
+      "id": 7,
+      "question": "We ______ our grandparents next weekend.",
+      "options": ["visit", "will visit", "are visiting", "visited"],
+      "correctAnswer": "are visiting",
+      "level": "medium",
+      "explanation": "Kế hoạch cho cuối tuần sau -> Hiện tại tiếp diễn mang nghĩa tương lai (hoặc Tương lai gần, Tương lai đơn). 'Are visiting' diễn tả kế hoạch rõ ràng nhất."
+    },
+    {
+      "id": 8,
+      "question": "I ______ never ______ sushi before.",
+      "options": ["did / eat", "have / eaten", "had / eaten", "do / eat"],
+      "correctAnswer": "have / eaten",
+      "level": "medium",
+      "explanation": "'Never... before' -> Hiện tại hoàn thành."
+    },
+    {
+      "id": 9,
+      "question": "The sun ______ in the East.",
+      "options": ["rise", "rises", "is rising", "rose"],
+      "correctAnswer": "rises",
+      "level": "easy",
+      "explanation": "Sự thật hiển nhiên -> Hiện tại đơn."
+    },
+    {
+      "id": 10,
+      "question": "When I saw him, he ______ a blue shirt.",
+      "options": ["wore", "was wearing", "has worn", "wears"],
+      "correctAnswer": "was wearing",
+      "level": "medium",
+      "explanation": "Mô tả trang phục ai đó đang mặc tại một thời điểm trong quá khứ -> Quá khứ tiếp diễn."
+    }
+  ]
+}
