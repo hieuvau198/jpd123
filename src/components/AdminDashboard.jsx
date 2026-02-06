@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Button, Typography, Card, message, Popconfirm, Tag as AntTag, Input, Tabs, Table } from 'antd';
-import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench } from 'lucide-react';
+// Added Mic icon for the Speak tab
+import { UploadCloud, Trash2, FileJson, RefreshCw, Home, FileQuestion, Lock, Wrench, Mic } from 'lucide-react';
 import { getAllFlashcards, saveFlashcardSet, deleteFlashcardSet } from '../firebase/flashcardService';
 import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../firebase/quizService';
 import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../firebase/repairService';
+// Import the new service
+import { getAllSpeaks, saveSpeakSet, deleteSpeakSet } from '../firebase/speakService';
 
 const { Title, Text } = Typography;
 
@@ -16,19 +19,21 @@ const AdminDashboard = () => {
   const [passcode, setPasscode] = useState('');
 
   // --- UI STATE ---
-  const [activeTab, setActiveTab] = useState('flashcard'); // Default tab
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // For bulk selection
+  const [activeTab, setActiveTab] = useState('flashcard');
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   // --- DATA STATE ---
   const [loading, setLoading] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [repairs, setRepairs] = useState([]);
+  const [speaks, setSpeaks] = useState([]); // New State for Speaks
   
   const [dataLoaded, setDataLoaded] = useState({
     flashcard: false,
     quiz: false,
-    repair: false
+    repair: false,
+    speak: false // Track speak data load
   });
 
   const processingFiles = useRef(0);
@@ -36,7 +41,7 @@ const AdminDashboard = () => {
   // --- EFFECT: Fetch data when Tab Changes & Clear Selection ---
   useEffect(() => {
     if (isAuthenticated) {
-      setSelectedRowKeys([]); // Clear selection when switching tabs
+      setSelectedRowKeys([]);
       loadDataForTab(activeTab);
     }
   }, [isAuthenticated, activeTab]);
@@ -55,6 +60,7 @@ const AdminDashboard = () => {
       if (tabKey === 'flashcard') fetchFlashcards();
       if (tabKey === 'quiz') fetchQuizzes();
       if (tabKey === 'repair') fetchRepairs();
+      if (tabKey === 'speak') fetchSpeaks(); // Handle speak load
     }
   };
 
@@ -83,6 +89,15 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  // New fetch function for Speaks
+  const fetchSpeaks = async () => {
+    setLoading(true);
+    const data = await getAllSpeaks();
+    setSpeaks(data);
+    setDataLoaded(prev => ({ ...prev, speak: true }));
+    setLoading(false);
+  };
+
   // --- IMPORT ACTIONS ---
   const handleImport = (file, type) => {
     processingFiles.current += 1;
@@ -98,6 +113,7 @@ const AdminDashboard = () => {
         if (type === 'flashcard') result = await saveFlashcardSet(json);
         else if (type === 'quiz') result = await saveQuizSet(json);
         else if (type === 'repair') result = await saveRepairSet(json);
+        else if (type === 'speak') result = await saveSpeakSet(json); // Handle speak import
 
         if (result.success) {
           message.success(`Imported: ${json.title || file.name}`);
@@ -110,7 +126,6 @@ const AdminDashboard = () => {
       } finally {
         processingFiles.current -= 1;
         if (processingFiles.current === 0) {
-          // Refresh only the current list
           loadDataForTab(type, true);
         }
       }
@@ -126,9 +141,10 @@ const AdminDashboard = () => {
       if (type === 'flashcard') await deleteFlashcardSet(id);
       else if (type === 'quiz') await deleteQuizSet(id);
       else if (type === 'repair') await deleteRepairSet(id);
+      else if (type === 'speak') await deleteSpeakSet(id); // Handle speak delete
       
       message.success("Item deleted");
-      loadDataForTab(type, true); // Refresh
+      loadDataForTab(type, true);
     } catch (err) {
       message.error("Failed to delete");
     } finally {
@@ -145,6 +161,7 @@ const AdminDashboard = () => {
         if (activeTab === 'flashcard') return deleteFlashcardSet(id);
         if (activeTab === 'quiz') return deleteQuizSet(id);
         if (activeTab === 'repair') return deleteRepairSet(id);
+        if (activeTab === 'speak') return deleteSpeakSet(id); // Handle speak bulk delete
         return Promise.resolve();
       });
 
@@ -162,6 +179,7 @@ const AdminDashboard = () => {
   };
 
   // --- RENDER HELPERS ---
+  // (No changes needed for renderUploadArea or renderTable, they are generic)
 
   const renderUploadArea = (type, color, text) => (
     <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
@@ -315,6 +333,19 @@ const AdminDashboard = () => {
         'purple', 
         'Import Repair Sets (JSON)', 
         '#722ed1'
+      )
+    },
+    // New Tab for Speak
+    {
+      key: 'speak',
+      label: 'Speak',
+      children: renderTabContent(
+        speaks, 
+        'speak', 
+        <Mic color="#eb2f96" size={24} />, 
+        'magenta', 
+        'Import Speak Sets (JSON)', 
+        '#eb2f96'
       )
     }
   ];

@@ -9,9 +9,11 @@ import FlashcardList from './pages/FlashcardList';
 import FlashcardDetail from './pages/FlashcardDetail';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
-// Import New Repair Components
 import RepairList from './pages/RepairList';
 import RepairDetail from './pages/RepairDetail';
+// Import New Speak Components
+import SpeakList from './pages/SpeakList';
+import SpeakDetail from './pages/SpeakDetail';
 
 export default function App() {
   return (
@@ -31,9 +33,13 @@ export default function App() {
         <Route path="/quizzes" element={<QuizList />} />
         <Route path="/quiz/:id" element={<QuizDetail />} />
 
-        {/* Repair Routes (New) */}
+        {/* Repair Routes */}
         <Route path="/repairs" element={<RepairList />} />
         <Route path="/repair/:id" element={<RepairDetail />} />
+
+        {/* Speak Routes (New) */}
+        <Route path="/speaks" element={<SpeakList />} />
+        <Route path="/speak/:id" element={<SpeakDetail />} />
         
         {/* Fallback */}
         <Route path="*" element={<Home />} />

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-import { BookOpen, FileQuestion, Wrench, Settings } from 'lucide-react';
+// Added Mic icon
+import { BookOpen, FileQuestion, Wrench, Settings, Mic } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -18,20 +19,20 @@ const Home = () => {
 
       <Row gutter={[24, 24]} justify="center">
         {/* Flashcards */}
-        <Col xs={24} sm={8}>
+        <Col xs={24} sm={6}>
           <Link to="/flashcards" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
                 <BookOpen size={48} color="#1890ff" />
               </div>
               <Title level={3} style={{ color: '#1890ff' }}>Words</Title>
-              <Text type="secondary">Memorize vocabulary with action.</Text>
+              <Text type="secondary">Memorize vocabulary.</Text>
             </Card>
           </Link>
         </Col>
 
         {/* Quizzes */}
-        <Col xs={24} sm={8}>
+        <Col xs={24} sm={6}>
           <Link to="/quizzes" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
@@ -43,15 +44,28 @@ const Home = () => {
           </Link>
         </Col>
 
-        {/* Repairs (New Feature) */}
-        <Col xs={24} sm={8}>
+        {/* Repairs */}
+        <Col xs={24} sm={6}>
           <Link to="/repairs" style={{ textDecoration: 'none' }}>
-            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, border: '1px solid #f0f0f0' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
                 <Wrench size={48} color="#722ed1" />
               </div>
               <Title level={3} style={{ color: '#722ed1' }}>Repair</Title>
               <Text type="secondary">Fix sentence order.</Text>
+            </Card>
+          </Link>
+        </Col>
+
+        {/* Speak (New Feature) */}
+        <Col xs={24} sm={6}>
+          <Link to="/speaks" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <Mic size={48} color="#eb2f96" />
+              </div>
+              <Title level={3} style={{ color: '#eb2f96' }}>Speak</Title>
+              <Text type="secondary">Listen & Distinguish.</Text>
             </Card>
           </Link>
         </Col>
