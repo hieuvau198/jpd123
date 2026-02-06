@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-8-2",
+  "title": "English 9 Unit 8 - Relative Pronouns 2",
+  "subject": "English 9",
+  "tags": ["english-9", "unit8", "grammar", "relative-pronouns"],
+  "questions": [
+    { "id": 1, "question": "The souvenir ______ I bought is broken.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
+    { "id": 2, "question": "Do you know the person ______ is sitting next to Tom?", "options": ["which", "who", "whose", "where"], "answer": "who", "level": "easy" },
+    { "id": 3, "question": "I like hotels ______ have a swimming pool.", "options": ["who", "whose", "whom", "which"], "answer": "which", "level": "easy" },
+    { "id": 4, "question": "The holidaymakers ______ we met were friendly.", "options": ["which", "who", "whose", "what"], "answer": "who", "level": "easy" },
+    { "id": 5, "question": "Pass me the map ______ is on the table.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
+    { "id": 6, "question": "That is the teacher ______ son is my classmate.", "options": ["who", "which", "whose", "whom"], "answer": "whose", "level": "medium" },
+    { "id": 7, "question": "The woman ______ luggage was lost is complaining at the desk.", "options": ["who", "whose", "which", "that"], "answer": "whose", "level": "medium" },
+    { "id": 8, "question": "This is the exact spot ______ the accident happened.", "options": ["which", "who", "whose", "where"], "answer": "where", "level": "medium" },
+    { "id": 9, "question": "The writer, ______ books are bestsellers, is visiting our school.", "options": ["who", "which", "whose", "that"], "answer": "whose", "level": "hard" },
+    { "id": 10, "question": "They stayed at a hotel ______ rooms were very small.", "options": ["which", "that", "whose", "who"], "answer": "whose", "level": "hard" }
+  ]
+}

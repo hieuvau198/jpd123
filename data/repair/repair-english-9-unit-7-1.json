@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-9-unit-7-1",
+  "title": "English 9 Unit 7 - Sentence Building (Reported Speech 1)",
+  "subject": "English 9",
+  "tags": ["english-9", "unit7", "sentence-building", "reported-speech"],
+  "questions": [
+    {
+      "id": "r1",
+      "question": ["me", "asked", "He", "if", "tennis", "I", "played"],
+      "answer": "He asked me if I played tennis"
+    },
+    {
+      "id": "r2",
+      "question": ["asked", "She", "was", "watching", "if", "I", "TV"],
+      "answer": "She asked if I was watching TV"
+    },
+    {
+      "id": "r3",
+      "question": ["wanted", "know", "They", "to", "swim", "could", "we", "if"],
+      "answer": "They wanted to know if we could swim"
+    },
+    {
+      "id": "r4",
+      "question": ["teacher", "The", "had", "asked", "work", "finished", "if", "I", "the"],
+      "answer": "The teacher asked if I had finished the work"
+    },
+    {
+      "id": "r5",
+      "question": ["come", "party", "Tom", "asked", "would", "she", "to", "if", "the"],
+      "answer": "Tom asked if she would come to the party"
+    },
+    {
+      "id": "r6",
+      "question": ["mom", "asked", "My", "whether", "hungry", "was", "I"],
+      "answer": "My mom asked whether I was hungry"
+    },
+    {
+      "id": "r7",
+      "question": ["if", "He", "pop", "asked", "liked", "music", "I"],
+      "answer": "He asked if I liked pop music"
+    },
+    {
+      "id": "r8",
+      "question": ["wanted", "know", "She", "to", "film", "seen", "if", "I", "had", "the"],
+      "answer": "She wanted to know if I had seen the film"
+    },
+    {
+      "id": "r9",
+      "question": ["outside", "asked", "They", "raining", "was", "it", "if"],
+      "answer": "They asked if it was raining outside"
+    },
+    {
+      "id": "r10",
+      "question": ["asked", "Lan", "go", "planned", "to", "out", "if", "I"],
+      "answer": "Lan asked if I planned to go out"
+    }
+  ]
+}

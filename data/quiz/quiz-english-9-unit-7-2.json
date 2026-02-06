@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-7-2",
+  "title": "English 9 Unit 7 - Reported Speech (Yes/No) 2",
+  "subject": "English 9",
+  "tags": ["english-9", "unit7", "grammar", "reported-speech"],
+  "questions": [
+    { "id": 1, "question": "\"Are you tired?\" - He asked me if I ______ tired.", "options": ["am", "was", "were", "be"], "answer": "was", "level": "easy" },
+    { "id": 2, "question": "\"Do you speak English?\" - The tourist asked if I ______ English.", "options": ["spoke", "speak", "spoken", "speaking"], "answer": "spoke", "level": "easy" },
+    { "id": 3, "question": "\"Is this your bag?\" - She asked if ______ was my bag.", "options": ["this", "that", "these", "those"], "answer": "that", "level": "easy" },
+    { "id": 4, "question": "\"May I sit here?\" - He asked if he ______ sit there.", "options": ["may", "might", "can", "will"], "answer": "might", "level": "easy" },
+    { "id": 5, "question": "\"Are the boys playing football?\" - He asked ______ the boys were playing football.", "options": ["if", "that", "did", "do"], "answer": "if", "level": "easy" },
+    { "id": 6, "question": "\"Must we leave now?\" - They asked if they ______ leave then.", "options": ["must", "had to", "have to", "has to"], "answer": "had to", "level": "medium" },
+    { "id": 7, "question": "\"Are you going to the citadel tomorrow?\" - She asked if I was going to the citadel ______.", "options": ["tomorrow", "the next day", "yesterday", "last day"], "answer": "the next day", "level": "medium" },
+    { "id": 8, "question": "She wanted to know ______ I enjoyed the local food.", "options": ["did", "do", "whether", "what"], "answer": "whether", "level": "medium" },
+    { "id": 9, "question": "\"Did you finish your homework last night?\" - Mom asked if I had finished my homework ______.", "options": ["last night", "the night before", "tomorrow night", "tonight"], "answer": "the night before", "level": "hard" },
+    { "id": 10, "question": "Choose the correct sentence: \"Do you plan to climb any mountains?\"", "options": ["She asked me if I plan to climb any mountains.", "She asked me do I plan to climb any mountains.", "She asked me if I planned to climb any mountains.", "She asked me did I planned to climb any mountains."], "answer": "She asked me if I planned to climb any mountains.", "level": "hard" }
+  ]
+}

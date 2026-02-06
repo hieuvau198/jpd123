@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-9-2",
+  "title": "English 9 Unit 9 - Relative Clauses 2",
+  "subject": "English 9",
+  "tags": ["english-9", "unit9", "grammar", "relative-clauses"],
+  "questions": [
+    { "id": 1, "question": "The laptop ______ is on the table is mine.", "options": ["who", "which", "where", "whose"], "answer": "which", "level": "easy" },
+    { "id": 2, "question": "Do you know the girl ______ is standing there?", "options": ["which", "what", "who", "where"], "answer": "who", "level": "easy" },
+    { "id": 3, "question": "The police are looking for the thieves ______ broke into the museum.", "options": ["who", "which", "where", "whom"], "answer": "who", "level": "easy" },
+    { "id": 4, "question": "I lost the pen ______ you gave me.", "options": ["who", "where", "which", "what"], "answer": "which", "level": "easy" },
+    { "id": 5, "question": "The people ______ live in this city are friendly.", "options": ["which", "who", "where", "when"], "answer": "who", "level": "easy" },
+    { "id": 6, "question": "In which sentence can we OMIT the relative pronoun?", "options": ["The man who is talking is my uncle.", "The book which is on the shelf is old.", "The girl who I met is nice.", "The dog which bit me is fierce."], "answer": "The girl who I met is nice.", "level": "medium" },
+    { "id": 7, "question": "The person ______ I admire most is my grandfather.", "options": ["which", "where", "who", "whose"], "answer": "who", "level": "medium" },
+    { "id": 8, "question": "He works for a company ______ makes shoes.", "options": ["who", "which", "where", "what"], "answer": "which", "level": "medium" },
+    { "id": 9, "question": "Choose the correct sentence:", "options": ["The woman who she called me is busy.", "The woman who called me is busy.", "The woman which called me is busy.", "The woman where called me is busy."], "answer": "The woman who called me is busy.", "level": "hard" },
+    { "id": 10, "question": "\"The dress ______ she is wearing is beautiful.\" (Select the option where the pronoun can be omitted)", "options": ["who", "which", "where", "whose"], "answer": "which", "level": "hard" }
+  ]
+}

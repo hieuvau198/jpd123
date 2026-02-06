@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-9-1",
+  "title": "English 9 Unit 9 - Relative Clauses 1",
+  "subject": "English 9",
+  "tags": ["english-9", "unit9", "grammar", "relative-clauses"],
+  "questions": [
+    { "id": 1, "question": "The man ______ is talking to the teacher is my father.", "options": ["who", "which", "where", "when"], "answer": "who", "level": "easy" },
+    { "id": 2, "question": "This is the book ______ I bought yesterday.", "options": ["who", "which", "where", "what"], "answer": "which", "level": "easy" },
+    { "id": 3, "question": "I like the boy ______ sits next to me.", "options": ["which", "who", "where", "whose"], "answer": "who", "level": "easy" },
+    { "id": 4, "question": "The car ______ he drives is very expensive.", "options": ["who", "whom", "which", "where"], "answer": "which", "level": "easy" },
+    { "id": 5, "question": "A dictionary is a book ______ gives you the meaning of words.", "options": ["who", "which", "where", "when"], "answer": "which", "level": "easy" },
+    { "id": 6, "question": "The student ______ wins the competition will get a prize.", "options": ["which", "who", "where", "whom"], "answer": "who", "level": "medium" },
+    { "id": 7, "question": "The cake ______ my mother made was delicious.", "options": ["who", "where", "which", "when"], "answer": "which", "level": "medium" },
+    { "id": 8, "question": "We visited the school ______ my father used to teach.", "options": ["which", "that", "where", "who"], "answer": "where", "level": "medium" },
+    { "id": 9, "question": "The woman ______ you met yesterday is a famous singer.", "options": ["which", "where", "who", "whose"], "answer": "who", "level": "hard" },
+    { "id": 10, "question": "Combine: \"The movie was boring. We saw it last night.\"", "options": ["The movie who we saw last night was boring.", "The movie which we saw last night was boring.", "The movie where we saw last night was boring.", "The movie when we saw last night was boring."], "answer": "The movie which we saw last night was boring.", "level": "hard" }
+  ]
+}

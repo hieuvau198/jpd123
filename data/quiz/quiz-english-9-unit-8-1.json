@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-8-1",
+  "title": "English 9 Unit 8 - Relative Pronouns 1",
+  "subject": "English 9",
+  "tags": ["english-9", "unit8", "grammar", "relative-pronouns"],
+  "questions": [
+    { "id": 1, "question": "I met a woman ______ works as a tour guide.", "options": ["who", "which", "whose", "where"], "answer": "who", "level": "easy" },
+    { "id": 2, "question": "This is the brochure ______ has information about the trip.", "options": ["who", "whose", "which", "whom"], "answer": "which", "level": "easy" },
+    { "id": 3, "question": "The tourist ______ asked me the way was very polite.", "options": ["which", "who", "whose", "where"], "answer": "who", "level": "easy" },
+    { "id": 4, "question": "The bus ______ goes to the airport is late.", "options": ["who", "whose", "whom", "which"], "answer": "which", "level": "easy" },
+    { "id": 5, "question": "He is the man ______ wrote this travel book.", "options": ["who", "which", "whose", "where"], "answer": "who", "level": "easy" },
+    { "id": 6, "question": "That is the girl ______ father is a famous pilot.", "options": ["who", "which", "whose", "that"], "answer": "whose", "level": "medium" },
+    { "id": 7, "question": "I bought a suitcase ______ was made in Italy.", "options": ["who", "whose", "where", "which"], "answer": "which", "level": "medium" },
+    { "id": 8, "question": "The boy ______ bike was stolen is crying.", "options": ["who", "which", "whose", "whom"], "answer": "whose", "level": "medium" },
+    { "id": 9, "question": "We visited a city ______ houses are painted blue.", "options": ["which", "that", "whose", "where"], "answer": "whose", "level": "hard" },
+    { "id": 10, "question": "The package holiday, ______ includes flights and hotels, is very cheap.", "options": ["who", "whose", "where", "which"], "answer": "which", "level": "hard" }
+  ]
+}

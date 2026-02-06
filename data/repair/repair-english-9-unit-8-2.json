@@ -1,0 +1,58 @@
+{
+  "id": "repair-english-9-unit-8-2",
+  "title": "English 9 Unit 8 - Sentence Building (Relative Clauses 2)",
+  "subject": "English 9",
+  "tags": ["english-9", "unit8", "sentence-building", "relative-clauses"],
+  "questions": [
+    {
+      "id": "r1",
+      "question": ["person", "The", "me", "helped", "who", "kind", "was"],
+      "answer": "The person who helped me was kind"
+    },
+    {
+      "id": "r2",
+      "question": ["laptop", "bought", "I", "a", "fast", "which", "is", "very"],
+      "answer": "I bought a laptop which is very fast"
+    },
+    {
+      "id": "r3",
+      "question": ["writer", "is", "He", "the", "books", "whose", "famous", "are"],
+      "answer": "He is the writer whose books are famous"
+    },
+    {
+      "id": "r4",
+      "question": ["river", "The", "flows", "city", "which", "through", "the", "is", "dirty"],
+      "answer": "The river which flows through the city is dirty"
+    },
+    {
+      "id": "r5",
+      "question": ["treated", "doctor", "The", "me", "who", "young", "was"],
+      "answer": "The doctor who treated me was young"
+    },
+    {
+      "id": "r6",
+      "question": ["girl", "That", "is", "the", "whose", "pilot", "brother", "is", "a"],
+      "answer": "That is the girl whose brother is a pilot"
+    },
+    {
+      "id": "r7",
+      "question": ["movie", "The", "saw", "we", "which", "night", "last", "was", "boring"],
+      "answer": "The movie which we saw last night was boring"
+    },
+    {
+      "id": "r8",
+      "question": ["exercise", "People", "daily", "who", "healthy", "are", "usually"],
+      "answer": "People who exercise daily are usually healthy"
+    },
+    {
+      "id": "r9",
+      "question": ["village", "This", "is", "the", "scenery", "whose", "beautiful", "is"],
+      "answer": "This is the village whose scenery is beautiful"
+    },
+    {
+      "id": "r10",
+      "question": ["shoes", "The", "wear", "I", "which", "comfortable", "are"],
+      "answer": "The shoes which I wear are comfortable"
+    }
+  ]
+}

@@ -47,7 +47,12 @@ const QuizSession = ({ data, onHome }) => {
     if (isWrong) return; 
     setSelectedOption(option);
 
-    if (option === currentQuestion.correctAnswer) {
+    // Add .trim() to ensure "answer " matches "answer"
+    // Use optional chaining (?.) just in case correctAnswer is missing
+    const cleanOption = String(option).trim();
+    const cleanAnswer = String(currentQuestion.correctAnswer).trim();
+
+    if (cleanOption === cleanAnswer) {
       if (!hasFailedCurrent) setScore((prev) => prev + 1);
       setTimeout(() => handleNext(), 500); 
     } else {
@@ -134,7 +139,9 @@ const QuizSession = ({ data, onHome }) => {
 
         {/* Question Area */}
         <div style={{ padding: 40 }}>
-<Title level={2} style={{ marginTop: 0 }}>{currentQuestion.question}</Title>  
+        <Title level={2} style={{ marginTop: 0 }}>
+  {currentQuestion.text || currentQuestion.question}
+</Title>
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
             {currentQuestion.options.map((option, idx) => {
               const isSelected = selectedOption === option;

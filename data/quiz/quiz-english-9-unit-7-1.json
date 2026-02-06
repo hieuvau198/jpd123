@@ -1,0 +1,18 @@
+{
+  "id": "quiz-english-9-unit-7-1",
+  "title": "English 9 Unit 7 - Reported Speech (Yes/No) 1",
+  "subject": "English 9",
+  "tags": ["english-9", "unit7", "grammar", "reported-speech"],
+  "questions": [
+    { "id": 1, "question": "\"Do you like this place?\" - He asked me ______ I liked that place.", "options": ["if", "what", "where", "that"], "answer": "if", "level": "easy" },
+    { "id": 2, "question": "\"Is it raining?\" - She asked if it ______ raining.", "options": ["is", "was", "were", "has been"], "answer": "was", "level": "easy" },
+    { "id": 3, "question": "\"Can you swim?\" - He asked me if I ______ swim.", "options": ["can", "could", "will", "may"], "answer": "could", "level": "easy" },
+    { "id": 4, "question": "\"Are they students?\" - The teacher wanted to know ______ they were students.", "options": ["weather", "whether", "what", "which"], "answer": "whether", "level": "easy" },
+    { "id": 5, "question": "\"Does she live here?\" - Tom asked if she ______ there.", "options": ["lives", "lived", "living", "live"], "answer": "lived", "level": "easy" },
+    { "id": 6, "question": "\"Will you visit Son Doong Cave?\" - Lan asked if we ______ visit Son Doong Cave.", "options": ["will", "would", "can", "did"], "answer": "would", "level": "medium" },
+    { "id": 7, "question": "\"Are you watching TV?\" - Mom asked if I ______ TV then.", "options": ["am watching", "was watching", "watched", "have watched"], "answer": "was watching", "level": "medium" },
+    { "id": 8, "question": "\"Do you want to go out?\" - He asked me if I ______ to go out.", "options": ["want", "wanted", "wanting", "wants"], "answer": "wanted", "level": "medium" },
+    { "id": 9, "question": "\"Did you see the majestic view yesterday?\" - He asked if I ______ the majestic view the day before.", "options": ["saw", "have seen", "had seen", "see"], "answer": "had seen", "level": "hard" },
+    { "id": 10, "question": "\"Have you been to Phong Nha?\" - She asked if we ______ to Phong Nha.", "options": ["have been", "were", "had been", "was"], "answer": "had been", "level": "hard" }
+  ]
+}
