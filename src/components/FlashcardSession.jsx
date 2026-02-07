@@ -53,13 +53,16 @@ const FlashcardSession = ({ data, onHome }) => {
     const handleKeyDown = (e) => {
       if (e.code === 'Space') {
         e.preventDefault();
-        setIsFlipped(prev => !prev);
+        // CHANGED: Space triggers speech instead of flip
+        if (queue[currentIndex]) {
+          handleSpeech(queue[currentIndex].speak);
+        }
       } else if (e.code === 'ArrowRight') handleNext();
       else if (e.code === 'ArrowLeft') handlePrev();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mode, currentIndex]);
+  }, [mode, currentIndex, queue]); // Added queue to dependencies
 
   // --- NEW: Handle Text-to-Speech ---
   const handleSpeech = (text) => {
@@ -167,7 +170,7 @@ const FlashcardSession = ({ data, onHome }) => {
           >
             <Layers size={48} style={{ marginBottom: 16, color: '#1890ff' }} />
             <Title level={4}>Flashcard</Title>
-            <Text type="secondary">Flip cards to learn.</Text>
+            <Text type="secondary">View and Listen.</Text>
           </Card>
           
           <Card 
@@ -263,49 +266,53 @@ const FlashcardSession = ({ data, onHome }) => {
           <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
         </Flex>
 
-        {/* 3D Flip Container */}
-        <div 
-           className="perspective-container" 
-           onClick={() => setIsFlipped(!isFlipped)} 
-           style={{ height: 350, cursor: 'pointer', marginBottom: 30 }}
+        {/* Single Static Card (No Flip) */}
+        <Card 
+          hoverable
+          onClick={() => handleSpeech(currentCard.speak)}
+          style={{ 
+            minHeight: 350, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            marginBottom: 30,
+            cursor: 'pointer',
+            textAlign: 'center'
+          }}
         >
-          <div className={`card-inner ${isFlipped ? 'flipped' : ''}`}>
-            
-            {/* FRONT */}
-            <Card className="card-front" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Flex vertical align="center" gap="small">
-                 <Title level={2}>{currentCard.question}</Title>
-                 <Text type="secondary">Click or Space to Flip</Text>
+            <Flex vertical align="center" gap="large">
+              <Flex align="center" gap="small">
+                <Title level={2} style={{ color: '#1890ff', margin: 0 }}>
+                  {currentCard.question}
+                </Title>
+                <Volume2 size={24} style={{ color: '#1890ff' }} />
               </Flex>
-            </Card>
-
-            {/* BACK */}
-            <Card className="card-back" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid black' }}>
-               <Flex vertical align="center" gap="small">
-                  {/* Word + Speak Button */}
-                  <Flex align="center" gap="small">
-                    <Title level={2} style={{ color: '#1890ff', margin: 0 }}>{currentCard.speak}</Title>
-                    <Button 
-                      type="text" 
-                      shape="circle"
-                      icon={<Volume2 size={24} />} 
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent card flip
-                        handleSpeech(currentCard.speak);
-                      }}
-                      title="Listen"
-                    />
-                  </Flex>
-                  <Title level={4}>{currentCard.answer}</Title>
-               </Flex>
-            </Card>
-
-          </div>
-        </div>
+              
+              <Title level={4} type="secondary">
+                {currentCard.answer}
+              </Title>
+              
+              <Text type="secondary" style={{ marginTop: 20, fontSize: 12 }}>
+                Click or Space to Listen
+              </Text>
+            </Flex>
+        </Card>
 
         <Flex justify="center" gap="middle">
           <Button size="large" icon={<ArrowLeft size={16} />} onClick={(e) => {e.stopPropagation(); handlePrev()}} disabled={currentIndex === 0}>Prev</Button>
-          <Button size="large" icon={<RotateCcw size={16} />} onClick={(e) => {e.stopPropagation(); setIsFlipped(!isFlipped)}}>Flip</Button>
+          
+          {/* Changed Flip to Listen */}
+          <Button 
+            size="large" 
+            icon={<Volume2 size={16} />} 
+            onClick={(e) => {
+              e.stopPropagation(); 
+              handleSpeech(currentCard.speak);
+            }}
+          >
+            Listen
+          </Button>
+
           <Button size="large" icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}} disabled={currentIndex === queue.length - 1}>Next</Button>
         </Flex>
       </div>

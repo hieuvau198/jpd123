@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Home, RefreshCw, Brain, ArrowRight, Volume2 } from 'lucide-react';
-import { Card, Button, Typography, Progress, Result, Alert, Flex, Space } from 'antd';
+import { Card, Button, Typography, Progress, Result, Alert, Flex, Space, Grid } from 'antd';
 
 const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
 
 const shuffleArray = (array) => {
   const newArr = [...array];
@@ -27,7 +28,7 @@ const prepareSessionData = (originalData) => {
   }));
 };
 
-const SpeakSession = ({ data, onHome }) => {
+const SpeakSession = ({ data, mode = 'listen', onHome }) => {
   const [questions, setQuestions] = useState(() => prepareSessionData(data));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0); 
@@ -35,6 +36,7 @@ const SpeakSession = ({ data, onHome }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isWrong, setIsWrong] = useState(false);
   const [hasFailedCurrent, setHasFailedCurrent] = useState(false);
+  const screens = useBreakpoint();
 
   // --- TEXT TO SPEECH LOGIC ---
   const handleSpeech = (text) => {
@@ -52,14 +54,14 @@ const SpeakSession = ({ data, onHome }) => {
     }
   };
 
-  // Automatically speak when question loads
+  // Automatically speak when question loads ONLY in listen mode
   useEffect(() => {
-    if (!isFinished && questions[currentIndex]) {
+    if (!isFinished && questions[currentIndex] && mode === 'listen') {
       const textToSpeak = questions[currentIndex].text || questions[currentIndex].question;
       // Slight delay to allow transition to finish
       setTimeout(() => handleSpeech(textToSpeak), 500);
     }
-  }, [currentIndex, isFinished, questions]);
+  }, [currentIndex, isFinished, questions, mode]);
 
   if (!questions || questions.length === 0) {
     return <div style={{ padding: 40, color: 'white' }}><h2>Error: No questions found.</h2></div>;
@@ -67,6 +69,7 @@ const SpeakSession = ({ data, onHome }) => {
 
   const currentQuestion = questions[currentIndex];
   const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
+  const questionText = currentQuestion.text || currentQuestion.question;
 
   const handleOptionClick = (option) => {
     if (isWrong) return; 
@@ -115,8 +118,8 @@ const SpeakSession = ({ data, onHome }) => {
           <Result
             icon={<CheckCircle size={60} color="#eb2f96" />}
             status="success"
-            title="SPEAKING PRACTICE COMPLETE"
-            subTitle="You have completed this listening set."
+            title="PRACTICE COMPLETE"
+            subTitle={`You have completed this ${mode} set.`}
             extra={[
                <div key="score" style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 20 }}>
                  Score: {score}
@@ -130,8 +133,6 @@ const SpeakSession = ({ data, onHome }) => {
     );
   }
 
-  const questionText = currentQuestion.text || currentQuestion.question;
-
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 20px' }}>
       <Card bordered={false} bodyStyle={{ padding: 0 }}>
@@ -140,6 +141,8 @@ const SpeakSession = ({ data, onHome }) => {
           <Button type="text" icon={<Home size={16} />} onClick={onHome}>EXIT</Button>
           <Space>
              {hasFailedCurrent && <Text type="danger" strong>RETRY MODE</Text>}
+             <Text strong>{mode.toUpperCase()} MODE</Text>
+             <Text type="secondary">|</Text>
              <Text strong>{currentIndex + 1} / {questions.length}</Text>
           </Space>
         </Flex>
@@ -150,17 +153,38 @@ const SpeakSession = ({ data, onHome }) => {
         {/* Question Area */}
         <div style={{ padding: 40 }}>
           
-          <Flex align="center" gap="middle" style={{ marginBottom: 30 }}>
-            <Button 
-                type="primary" 
-                shape="circle" 
-                size="large"
-                icon={<Volume2 size={32} />} 
-                onClick={() => handleSpeech(questionText)}
-                style={{ width: 60, height: 60, flexShrink: 0, backgroundColor: '#eb2f96', borderColor: '#eb2f96' }}
-            />
-            <Title level={2} style={{ margin: 0 }}>
-            </Title>
+          <Flex 
+            align="center" 
+            justify="center" 
+            gap="large" 
+            wrap="wrap"
+            style={{ marginBottom: 30, minHeight: 100 }}
+          >
+            {mode === 'listen' ? (
+              // Standard Listen Mode: Single big button
+              <Button 
+                  type="primary" 
+                  shape="circle" 
+                  size="large"
+                  icon={<Volume2 size={32} />} 
+                  onClick={() => handleSpeech(questionText)}
+                  style={{ width: 80, height: 80, backgroundColor: '#eb2f96', borderColor: '#eb2f96', boxShadow: '0 4px 12px rgba(235, 47, 150, 0.3)' }}
+              />
+            ) : (
+              // Stress Mode: Multiple buttons for each option
+              currentQuestion.options.map((opt, i) => (
+                 <Button
+                    key={i}
+                    icon={<Volume2 size={20} />}
+                    onClick={() => handleSpeech(opt)}
+                    size="large"
+                    shape="round"
+                    style={{ minWidth: 120 }}
+                 >
+                    Option {i + 1}
+                 </Button>
+              ))
+            )}
           </Flex>
 
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
