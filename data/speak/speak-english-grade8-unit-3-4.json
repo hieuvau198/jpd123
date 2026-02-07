@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade8-unit-3-4",
+  "title": "Speak Practice - Grade 8 Unit 3 & 4",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-8", "teenagers", "ethnic-groups"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which word means 'to use force or threats to intimidate someone'?",
+      "options": ["Bully", "Browse", "Connect", "Upload"],
+      "correctAnswer": "Bully",
+      "level": "easy",
+      "explanation": "'Bully' means to harm or intimidate those perceived as vulnerable."
+    },
+    {
+      "id": 2,
+      "question": "A meeting or period of time devoted to a particular activity is a...",
+      "options": ["Session", "Forum", "Club", "Pressure"],
+      "correctAnswer": "Session",
+      "level": "medium",
+      "explanation": "A 'Session' is a period devoted to a particular activity, like a study session."
+    },
+    {
+      "id": 3,
+      "question": "Which word describes a feeling of worry or tension?",
+      "options": ["Pressure", "Enjoyable", "Focused", "Curious"],
+      "correctAnswer": "Pressure",
+      "level": "medium",
+      "explanation": "'Pressure' (or stress) is the burden of physical or mental distress."
+    },
+    {
+      "id": 4,
+      "question": "People who are the same age or have the same social status are called...",
+      "options": ["Peers", "Adults", "Bullies", "Forum"],
+      "correctAnswer": "Peers",
+      "level": "medium",
+      "explanation": "A 'Peer' is a person of the same age, status, or ability as another specified person."
+    },
+    {
+      "id": 5,
+      "question": "To 'browse' a website means to...",
+      "options": ["Look through it casually", "Delete it", "Create it", "Block it"],
+      "correctAnswer": "Look through it casually",
+      "level": "easy",
+      "explanation": "'Browse' means to scan through a text or website casually."
+    },
+    {
+      "id": 6,
+      "question": "Which word relates to a group of people with a common national or cultural tradition?",
+      "options": ["Ethnic", "Major", "Native", "Local"],
+      "correctAnswer": "Ethnic",
+      "level": "hard",
+      "explanation": "'Ethnic' relates to a population subgroup with a common national or cultural tradition."
+    },
+    {
+      "id": 7,
+      "question": "A house built on raised piles/posts is a...",
+      "options": ["Stilt house", "Terraced house", "Cottage", "Mansion"],
+      "correctAnswer": "Stilt house",
+      "level": "easy",
+      "explanation": "A 'Stilt house' is raised on piles (stilts) over the surface of the soil or a body of water."
+    },
+    {
+      "id": 8,
+      "question": "What is a 'Communal house' used for in ethnic villages?",
+      "options": ["Community gatherings", "Cooking only", "Storing rice", "Sleeping for guests"],
+      "correctAnswer": "Community gatherings",
+      "level": "medium",
+      "explanation": "A 'Communal house' (like the Rong house) is the center of village life and events."
+    },
+    {
+      "id": 9,
+      "question": "Farm animals regarded as an asset are called...",
+      "options": ["Livestock", "Pets", "Wild animals", "Insects"],
+      "correctAnswer": "Livestock",
+      "level": "hard",
+      "explanation": "'Livestock' refers to farm animals such as cattle, sheep, and pigs."
+    },
+    {
+      "id": 10,
+      "question": "Which musical instrument is a metal disk that makes a loud sound when hit?",
+      "options": ["Gong", "Flute", "Drum", "Guitar"],
+      "correctAnswer": "Gong",
+      "level": "medium",
+      "explanation": "A 'Gong' is a metal disk with a turned rim, giving a resonant note when struck."
+    },
+    {
+      "id": 11,
+      "question": "Fields cut into a series of receding platforms on a slope are...",
+      "options": ["Terraced fields", "Paddy fields", "Flat fields", "Pastures"],
+      "correctAnswer": "Terraced fields",
+      "level": "medium",
+      "explanation": "'Terraced' fields look like steps cut into the side of a mountain."
+    },
+    {
+      "id": 12,
+      "question": "A 'Minority' group is...",
+      "options": ["The smaller part of a population", "The largest group", "Only young people", "People who live in cities"],
+      "correctAnswer": "The smaller part of a population",
+      "level": "hard",
+      "explanation": "A 'Minority' is the smaller number or part, especially a number that is less than half the whole number."
+    },
+    {
+      "id": 13,
+      "question": "If you act 'mature', you behave like...",
+      "options": ["An adult", "A child", "A bully", "A stranger"],
+      "correctAnswer": "An adult",
+      "level": "medium",
+      "explanation": "'Mature' means fully developed physically or mentally; acting like a grown-up."
+    },
+    {
+      "id": 14,
+      "question": "Which word refers to 'clothing worn by people of a particular culture'?",
+      "options": ["Costume", "Uniform", "Outfit", "Cloth"],
+      "correctAnswer": "Costume",
+      "level": "easy",
+      "explanation": "'Costume' refers to a set of clothes in a style typical of a particular country or period."
+    },
+    {
+      "id": 15,
+      "question": "To 'concentrate' means to...",
+      "options": ["Focus attention", "Look around", "Sleep", "Ignore"],
+      "correctAnswer": "Focus attention",
+      "level": "easy",
+      "explanation": "'Concentrate' means to focus all one's attention on a particular object or activity."
+    }
+  ]
+}

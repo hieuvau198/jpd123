@@ -20,12 +20,22 @@ const prepareSessionData = (originalData) => {
     : (originalData.questions || []);
   if (rawQuestions.length === 0) return [];
   const shuffledQuestions = shuffleArray(rawQuestions);
-  return shuffledQuestions.map(q => ({
-    ...q,
-    correctAnswer: q.correctAnswer || q.answer, 
-    _tempId: Math.random().toString(36).substr(2, 9), 
-    options: shuffleArray(q.options)
-  }));
+  
+  return shuffledQuestions.map(q => {
+    // Randomize options first
+    const shuffledOptions = shuffleArray(q.options);
+    // Randomly select one option to be the "Target" spoken by the audio
+    const randomTarget = shuffledOptions[Math.floor(Math.random() * shuffledOptions.length)];
+    
+    return {
+      ...q,
+      originalCorrectAnswer: q.correctAnswer || q.answer, // Keep original for reference
+      correctAnswer: q.correctAnswer || q.answer,
+      _tempId: Math.random().toString(36).substr(2, 9), 
+      options: shuffledOptions,
+      speakTarget: randomTarget // The option that will be spoken and must be selected
+    };
+  });
 };
 
 const SpeakSession = ({ data, mode = 'listen', onHome }) => {
@@ -57,7 +67,8 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
   // Automatically speak when question loads ONLY in listen mode
   useEffect(() => {
     if (!isFinished && questions[currentIndex] && mode === 'listen') {
-      const textToSpeak = questions[currentIndex].text || questions[currentIndex].question;
+      // Speak the randomly selected target option
+      const textToSpeak = questions[currentIndex].speakTarget;
       // Slight delay to allow transition to finish
       setTimeout(() => handleSpeech(textToSpeak), 500);
     }
@@ -69,14 +80,17 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
 
   const currentQuestion = questions[currentIndex];
   const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
-  const questionText = currentQuestion.text || currentQuestion.question;
+  
+  // The text to speak is the randomly assigned target
+  const textToSpeak = currentQuestion.speakTarget;
 
   const handleOptionClick = (option) => {
     if (isWrong) return; 
     setSelectedOption(option);
 
     const cleanOption = String(option).trim();
-    const cleanAnswer = String(currentQuestion.correctAnswer).trim();
+    // Compare against the spoken target, NOT the original correct answer
+    const cleanAnswer = String(currentQuestion.speakTarget).trim();
 
     if (cleanOption === cleanAnswer) {
       if (!hasFailedCurrent) setScore((prev) => prev + 1);
@@ -85,7 +99,14 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
       setIsWrong(true);
       if (!hasFailedCurrent) {
         setHasFailedCurrent(true);
-        setQuestions(prev => [...prev, { ...currentQuestion, _retry: true }]);
+        
+        // When adding a retry, we re-roll the speakTarget
+        // This ensures the retry might ask for a different option from the same question
+        const retryQuestion = { ...currentQuestion, _retry: true };
+        const newTarget = retryQuestion.options[Math.floor(Math.random() * retryQuestion.options.length)];
+        retryQuestion.speakTarget = newTarget;
+        
+        setQuestions(prev => [...prev, retryQuestion]);
       }
     }
   };
@@ -167,11 +188,11 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
                   shape="circle" 
                   size="large"
                   icon={<Volume2 size={32} />} 
-                  onClick={() => handleSpeech(questionText)}
+                  onClick={() => handleSpeech(textToSpeak)}
                   style={{ width: 80, height: 80, backgroundColor: '#eb2f96', borderColor: '#eb2f96', boxShadow: '0 4px 12px rgba(235, 47, 150, 0.3)' }}
               />
             ) : (
-              // Stress Mode: Multiple buttons for each option
+              // Stress Mode: Multiple buttons for each option (Keep original behavior or adapt if needed)
               currentQuestion.options.map((opt, i) => (
                  <Button
                     key={i}
@@ -190,7 +211,8 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
             {currentQuestion.options.map((option, idx) => {
               const isSelected = selectedOption === option;
-              const isCorrect = option === currentQuestion.correctAnswer;
+              // Check correctness against the randomized speakTarget
+              const isCorrect = option === currentQuestion.speakTarget;
               
               const customStyle = {};
               if (isSelected && isCorrect) { customStyle.backgroundColor = '#eb2f96'; customStyle.color = 'white'; customStyle.borderColor = '#eb2f96'; }
@@ -218,7 +240,7 @@ const SpeakSession = ({ data, mode = 'listen', onHome }) => {
           {isWrong && (
             <Alert
               message={<span style={{ fontWeight: 'bold' }}>EXPLANATION</span>}
-              description={currentQuestion.explanation}
+              description={currentQuestion.explanation || "Select the option that matches the audio."}
               type="error"
               showIcon
               icon={<Brain size={24} />}

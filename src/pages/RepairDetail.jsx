@@ -118,9 +118,21 @@ const RepairDetail = () => {
     setSessionState(newState);
   };
 
+  // In src/pages/RepairDetail.jsx
+
   const checkAnswer = () => {
-    const currentSentence = words.join(' ').trim();
+    // 1. Join with spaces first
+    // 2. Use Regex to remove any whitespace (\s+) found immediately before punctuation ([,!.?;:])
+    const currentSentence = words.join(' ')
+      .replace(/\s+([,!.?;:])/g, '$1') 
+      .trim();
+
     const correctSentence = repairSet.questions[currentIndex].answer.trim();
+    
+    // Log for debugging if needed
+    // console.log("User constructed:", currentSentence);
+    // console.log("Target answer:", correctSentence);
+
     const correct = currentSentence === correctSentence;
     
     setIsCorrect(correct);

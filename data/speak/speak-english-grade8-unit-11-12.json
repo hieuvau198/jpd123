@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade8-unit-11-12",
+  "title": "Speak Practice - Grade 8 Unit 11 & 12",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-8", "science", "space"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which word refers to 'a person who travels in a spacecraft'?",
+      "options": ["Astronaut", "Scientist", "Pilot", "Driver"],
+      "correctAnswer": "Astronaut",
+      "level": "easy",
+      "explanation": "An 'Astronaut' is a person trained to travel in a spacecraft."
+    },
+    {
+      "id": 2,
+      "question": "A 'creature from another planet' is often called an...",
+      "options": ["Alien", "Animal", "Insect", "Enemy"],
+      "correctAnswer": "Alien",
+      "level": "easy",
+      "explanation": "An 'Alien' refers to a being from another world."
+    },
+    {
+      "id": 3,
+      "question": "Which word means 'having no weight'?",
+      "options": ["Weightless", "Heavy", "Light", "Massive"],
+      "correctAnswer": "Weightless",
+      "level": "medium",
+      "explanation": "'Weightless' means not apparently acted on by gravity."
+    },
+    {
+      "id": 4,
+      "question": "To 'invent' means to...",
+      "options": ["Create something new", "Discover something old", "Find something", "Buy something"],
+      "correctAnswer": "Create something new",
+      "level": "medium",
+      "explanation": "To 'Invent' is to create or design something that has not existed before."
+    },
+    {
+      "id": 5,
+      "question": "A huge collection of gas, dust, and billions of stars is a...",
+      "options": ["Galaxy", "Planet", "Moon", "Comet"],
+      "correctAnswer": "Galaxy",
+      "level": "hard",
+      "explanation": "A 'Galaxy' is a system of millions or billions of stars."
+    },
+    {
+      "id": 6,
+      "question": "Which science studies the structure and substances of the universe?",
+      "options": ["Chemistry", "Biology", "History", "Geography"],
+      "correctAnswer": "Chemistry",
+      "level": "medium",
+      "explanation": "'Chemistry' is the branch of science that deals with the identification of the substances of which matter is composed."
+    },
+    {
+      "id": 7,
+      "question": "A 'UFO' stands for...",
+      "options": ["Unidentified Flying Object", "United Flying Organization", "Under Flying Object", "Unknown Flying Object"],
+      "correctAnswer": "Unidentified Flying Object",
+      "level": "hard",
+      "explanation": "UFO stands for Unidentified Flying Object."
+    },
+    {
+      "id": 8,
+      "question": "Which word relates to 'the sun and the planets'?",
+      "options": ["Solar system", "Ecosystem", "School system", "Metro system"],
+      "correctAnswer": "Solar system",
+      "level": "medium",
+      "explanation": "The 'Solar system' is the collection of eight planets and their moons in orbit around the sun."
+    },
+    {
+      "id": 9,
+      "question": "To 'explore' means to...",
+      "options": ["Travel to learn about a place", "Stay at home", "Sleep", "Read a book"],
+      "correctAnswer": "Travel to learn about a place",
+      "level": "easy",
+      "explanation": "To 'Explore' means to travel through an unfamiliar area in order to learn about it."
+    },
+    {
+      "id": 10,
+      "question": "Artificial Intelligence is often abbreviated as...",
+      "options": ["AI", "IT", "PC", "TV"],
+      "correctAnswer": "AI",
+      "level": "easy",
+      "explanation": "AI stands for Artificial Intelligence."
+    },
+    {
+      "id": 11,
+      "question": "Which vehicle travels in space?",
+      "options": ["Spaceship", "Airplane", "Train", "Bus"],
+      "correctAnswer": "Spaceship",
+      "level": "easy",
+      "explanation": "A 'Spaceship' is a vehicle used for travel in outer space."
+    },
+    {
+      "id": 12,
+      "question": "Scientific knowledge used for practical purposes is called...",
+      "options": ["Technology", "Magic", "History", "Art"],
+      "correctAnswer": "Technology",
+      "level": "medium",
+      "explanation": "'Technology' is the application of scientific knowledge for practical purposes."
+    },
+    {
+      "id": 13,
+      "question": "The force that attracts a body toward the center of the earth is...",
+      "options": ["Gravity", "Magnetism", "Electricity", "Wind"],
+      "correctAnswer": "Gravity",
+      "level": "hard",
+      "explanation": "'Gravity' is the force that attracts a body toward the center of the earth."
+    },
+    {
+      "id": 14,
+      "question": "A 'Robot' is...",
+      "options": ["A machine capable of carrying out complex actions", "A human", "A toy", "A pet"],
+      "correctAnswer": "A machine capable of carrying out complex actions",
+      "level": "medium",
+      "explanation": "A 'Robot' is a machine capable of carrying out a complex series of actions automatically."
+    },
+    {
+      "id": 15,
+      "question": "Which word describes a planet that can support life?",
+      "options": ["Habitable", "Dead", "Empty", "Silent"],
+      "correctAnswer": "Habitable",
+      "level": "hard",
+      "explanation": "'Habitable' means good enough for people or animals to live in."
+    }
+  ]
+}

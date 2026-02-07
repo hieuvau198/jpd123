@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade8-unit-5-6",
+  "title": "Speak Practice - Grade 8 Unit 5 & 6",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-8", "traditions", "lifestyles"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which word means 'long life'?",
+      "options": ["Longevity", "Ceremony", "Reunion", "Tradition"],
+      "correctAnswer": "Longevity",
+      "level": "medium",
+      "explanation": "'Longevity' means long existence or service."
+    },
+    {
+      "id": 2,
+      "question": "What are 'table manners'?",
+      "options": ["Rules for eating", "Types of tables", "Food recipes", "Cooking styles"],
+      "correctAnswer": "Rules for eating",
+      "level": "easy",
+      "explanation": "'Table manners' are the rules of behavior that are considered acceptable while eating."
+    },
+    {
+      "id": 3,
+      "question": "A 'Family reunion' is when...",
+      "options": ["Family members gather together", "A family argues", "Family members live apart", "A family goes to work"],
+      "correctAnswer": "Family members gather together",
+      "level": "easy",
+      "explanation": "A 'Reunion' is an instance of two or more people coming together again after separation."
+    },
+    {
+      "id": 4,
+      "question": "Which fish is often associated with the Kitchen Gods in Vietnam?",
+      "options": ["Carp", "Salmon", "Shark", "Tuna"],
+      "correctAnswer": "Carp",
+      "level": "hard",
+      "explanation": "The 'Carp' is the fish used by the Kitchen Gods to travel to heaven."
+    },
+    {
+      "id": 5,
+      "question": "Fighting sports like Karate or Kung Fu are called...",
+      "options": ["Martial arts", "Acrobatics", "Gymnastics", "Wrestling"],
+      "correctAnswer": "Martial arts",
+      "level": "medium",
+      "explanation": "'Martial arts' are various sports or skills, mainly of Japanese origin, that originated as forms of self-defense."
+    },
+    {
+      "id": 6,
+      "question": "To 'worship' or give thanks to a god, people often...",
+      "options": ["Pray", "Play", "Run", "Sleep"],
+      "correctAnswer": "Pray",
+      "level": "easy",
+      "explanation": "To 'Pray' is to address a solemn request or expression of thanks to a deity."
+    },
+    {
+      "id": 7,
+      "question": "An object made by hand, often showing artistic skill, is a...",
+      "options": ["Handicraft", "Machine", "Robot", "Tool"],
+      "correctAnswer": "Handicraft",
+      "level": "medium",
+      "explanation": "'Handicraft' refers to activity involving the making of decorative domestic or other objects by hand."
+    },
+    {
+      "id": 8,
+      "question": "Food grown in your own garden is described as...",
+      "options": ["Home-grown", "Imported", "Processed", "Frozen"],
+      "correctAnswer": "Home-grown",
+      "level": "medium",
+      "explanation": "'Home-grown' means grown or produced in one's own garden or country."
+    },
+    {
+      "id": 9,
+      "question": "Which word refers to 'a polite word or sign of welcome'?",
+      "options": ["Greeting", "Meeting", "Parting", "Waving"],
+      "correctAnswer": "Greeting",
+      "level": "easy",
+      "explanation": "A 'Greeting' is a polite word or sign of welcome or recognition."
+    },
+    {
+      "id": 10,
+      "question": "Something that is done repeatedly and becomes a routine is a...",
+      "options": ["Habit", "Ceremony", "Festival", "Trick"],
+      "correctAnswer": "Habit",
+      "level": "easy",
+      "explanation": "A 'Habit' is a settled or regular tendency or practice."
+    },
+    {
+      "id": 11,
+      "question": "A paper light source often used in festivals is a...",
+      "options": ["Lantern", "Bulb", "Flashlight", "Candle"],
+      "correctAnswer": "Lantern",
+      "level": "easy",
+      "explanation": "A 'Lantern' is a lamp with a transparent case protecting the flame or electric bulb."
+    },
+    {
+      "id": 12,
+      "question": "People who 'wander from place to place' have a ______ lifestyle.",
+      "options": ["Nomadic", "Modern", "Sedentary", "Urban"],
+      "correctAnswer": "Nomadic",
+      "level": "hard",
+      "explanation": "'Nomadic' means living the life of a nomad; wandering."
+    },
+    {
+      "id": 13,
+      "question": "Which word means 'to look at with pleasure and respect'?",
+      "options": ["Admire", "Detest", "Ignore", "Break"],
+      "correctAnswer": "Admire",
+      "level": "medium",
+      "explanation": "'Admire' means to regard with respect or warm approval."
+    },
+    {
+      "id": 14,
+      "question": "Food prepared and sold by vendors in public areas is...",
+      "options": ["Street food", "Fast food", "Restaurant food", "Home cooking"],
+      "correctAnswer": "Street food",
+      "level": "easy",
+      "explanation": "'Street food' is ready-to-eat food or drink sold by a hawker, or vendor, in a street or other public place."
+    },
+    {
+      "id": 15,
+      "question": "A large public celebration is often called a...",
+      "options": ["Festival", "Meeting", "Session", "Class"],
+      "correctAnswer": "Festival",
+      "level": "easy",
+      "explanation": "A 'Festival' is a day or period of celebration, typically a religious commemoration."
+    }
+  ]
+}
