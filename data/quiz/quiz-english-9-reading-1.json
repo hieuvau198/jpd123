@@ -1,0 +1,48 @@
+{
+  "id": "quiz-english-9-reading-1",
+  "title": "English 9 - Reading Practice 1",
+  "subject": "English 9",
+  "tags": ["english-9", "reading", "comprehension", "daily-life"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Read the conversation:\n\nTom: 'Hi Mai, are you free this Sunday? I'm going to the book fair at the city center.'\nMai: 'I'd love to, but I have a swimming class in the morning. What time are you going?'\nTom: 'I plan to go around 2 pm. Can you join me then?'\nMai: 'That works perfectly! See you there.'\n\nQuestion: When will Mai meet Tom?",
+      "options": ["In the morning", "At 2 pm", "On Monday", "After the book fair"],
+      "correctAnswer": "At 2 pm",
+      "level": "easy",
+      "explanation": "Tom suggests 2 pm, and Mai says 'That works perfectly'."
+    },
+    {
+      "id": 2,
+      "question": "Read the paragraph:\n\n'My name is Lan. I live in a small village near the river. Every summer, my friends and I go fishing or fly kites in the rice fields. It is very peaceful here compared to the noisy city where my cousin lives.'\n\nQuestion: What does Lan do in the summer?",
+      "options": ["Goes shopping", "Goes fishing and flies kites", "Visits her cousin in the city", "Stays at home and studies"],
+      "correctAnswer": "Goes fishing and flies kites",
+      "level": "easy",
+      "explanation": "The text states: 'Every summer, my friends and I go fishing or fly kites'."
+    },
+    {
+      "id": 3,
+      "question": "Read the conversation:\n\nTeacher: 'Remember to submit your history project by next Friday.'\nStudent: 'Do we need to include pictures, sir?'\nTeacher: 'Yes, pictures are required, and you must write at least 300 words.'\n\nQuestion: What is a requirement for the project?",
+      "options": ["Submit it this Friday", "No pictures needed", "Write less than 300 words", "Include pictures"],
+      "correctAnswer": "Include pictures",
+      "level": "medium",
+      "explanation": "The teacher says: 'Yes, pictures are required'."
+    },
+    {
+      "id": 4,
+      "question": "Read the passage:\n\n'Teenagers today spend a lot of time on social media. While it helps them connect with friends, too much screen time can lead to eye problems and lack of sleep. Experts suggest limiting usage to two hours a day.'\n\nQuestion: What is a negative effect of too much social media mentioned in the text?",
+      "options": ["Connecting with friends", "Better sleep", "Eye problems", "Improved grades"],
+      "correctAnswer": "Eye problems",
+      "level": "medium",
+      "explanation": "The text mentions 'too much screen time can lead to eye problems'."
+    },
+    {
+      "id": 5,
+      "question": "Read the conversation:\n\nMom: 'It's raining heavily outside. Don't forget your raincoat, Nam.'\nNam: 'I can't find it, Mom. Can I take the umbrella instead?'\nMom: 'The wind is too strong for an umbrella. Look in the closet near the door.'\n\nQuestion: Why shouldn't Nam use an umbrella?",
+      "options": ["He doesn't have one", "It is broken", "The wind is too strong", "The rain is too light"],
+      "correctAnswer": "The wind is too strong",
+      "level": "medium",
+      "explanation": "Mom says: 'The wind is too strong for an umbrella'."
+    }
+  ]
+}

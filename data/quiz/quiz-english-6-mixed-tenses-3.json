@@ -1,0 +1,78 @@
+{
+  "id": "quiz-english-6-mixed-tenses-3",
+  "title": "Mixed Tenses - Test 3",
+  "subject": "English 6",
+  "tags": ["grammar", "tenses", "english-6", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "We ______ a great party last night.",
+      "options": ["have", "has", "having", "had"],
+      "answer": "had",
+      "explain": "Dấu hiệu 'last night' -> Quá khứ đơn của 'have' là 'had'."
+    },
+    {
+      "id": 2,
+      "question": "My sister ______ her homework at the moment.",
+      "options": ["do", "does", "is doing", "did"],
+      "answer": "is doing",
+      "explain": "Dấu hiệu 'at the moment' -> Thì hiện tại tiếp diễn."
+    },
+    {
+      "id": 3,
+      "question": "The sun ______ in the East.",
+      "options": ["rise", "rises", "is rising", "rose"],
+      "answer": "rises",
+      "explain": "Sự thật hiển nhiên -> Hiện tại đơn. Sun (số ít) -> rises."
+    },
+    {
+      "id": 4,
+      "question": "Don't worry. I ______ tell anyone your secret.",
+      "options": ["don't", "won't", "didn't", "not"],
+      "answer": "won't",
+      "explain": "Lời hứa/quyết định (tương lai đơn phủ định) -> will not = won't."
+    },
+    {
+      "id": 5,
+      "question": "They ______ happy regarding the test results yesterday.",
+      "options": ["are", "were", "was", "will be"],
+      "answer": "were",
+      "explain": "Dấu hiệu 'yesterday' -> Quá khứ đơn. 'They' đi với 'were'."
+    },
+    {
+      "id": 6,
+      "question": "______ you like chocolate?",
+      "options": ["Do", "Does", "Are", "Have"],
+      "answer": "Do",
+      "explain": "Hỏi về sở thích (sự thật) -> Hiện tại đơn. 'You' dùng 'Do'."
+    },
+    {
+      "id": 7,
+      "question": "It ______ a lot in the summer.",
+      "options": ["rain", "rains", "raining", "rained"],
+      "answer": "rains",
+      "explain": "Sự việc lặp lại/sự thật về mùa -> Hiện tại đơn."
+    },
+    {
+      "id": 8,
+      "question": "What ______ she buying at the market now?",
+      "options": ["does", "is", "did", "will"],
+      "answer": "is",
+      "explain": "Dấu hiệu 'now' và động từ 'buying' (V-ing) -> Câu hỏi thì hiện tại tiếp diễn (Is she...)."
+    },
+    {
+      "id": 9,
+      "question": "We ______ to the zoo, but then it started to rain.",
+      "options": ["go", "are going", "went", "will go"],
+      "answer": "went",
+      "explain": "Kể lại chuỗi sự việc trong quá khứ -> Quá khứ đơn (went)."
+    },
+    {
+      "id": 10,
+      "question": "Wait here. I ______ back in a minute.",
+      "options": ["am", "come", "came", "will be"],
+      "answer": "will be",
+      "explain": "Quyết định ngay lúc nói/Lời hứa -> Tương lai đơn."
+    }
+  ]
+}

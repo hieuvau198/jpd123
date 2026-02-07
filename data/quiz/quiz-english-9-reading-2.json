@@ -1,0 +1,48 @@
+{
+  "id": "quiz-english-9-reading-2",
+  "title": "English 9 - Reading Practice 2",
+  "subject": "English 9",
+  "tags": ["english-9", "reading", "comprehension", "environment", "culture"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Read the passage:\n\n'Ha Long Bay is one of Vietnam's most famous tourist attractions. It is known for its emerald waters and thousands of limestone islands topped with rainforests. Tourists often take boat tours to explore the caves.'\n\nQuestion: What is Ha Long Bay famous for?",
+      "options": ["High mountains and snow", "Emerald waters and limestone islands", "Desert landscapes", "Modern skyscrapers"],
+      "correctAnswer": "Emerald waters and limestone islands",
+      "level": "easy",
+      "explanation": "The text says it is known for 'emerald waters and thousands of limestone islands'."
+    },
+    {
+      "id": 2,
+      "question": "Read the conversation:\n\nGuide: 'Please do not leave any trash on the beach. We want to keep the ocean clean.'\nTourist: 'Are there any bins nearby?'\nGuide: 'Yes, there are recycling bins near the main gate. Please separate plastic and paper.'\n\nQuestion: What does the guide ask the tourist to do?",
+      "options": ["Leave trash on the beach", "Put trash in the recycling bins", "Throw trash in the ocean", "Burn the trash"],
+      "correctAnswer": "Put trash in the recycling bins",
+      "level": "easy",
+      "explanation": "The guide instructs to use the 'recycling bins near the main gate'."
+    },
+    {
+      "id": 3,
+      "question": "Read the passage:\n\n'Tet is the most important festival in Vietnam. Families clean and decorate their houses with peach blossoms or apricot blossoms. It is a time for family reunions and hoping for a lucky new year.'\n\nQuestion: What do families do during Tet?",
+      "options": ["Go to school", "Clean and decorate houses", "Plant rice", "Stay alone"],
+      "correctAnswer": "Clean and decorate houses",
+      "level": "medium",
+      "explanation": "The text states: 'Families clean and decorate their houses'."
+    },
+    {
+      "id": 4,
+      "question": "Read the conversation:\n\nSarah: 'I went to Kyoto last year. The old temples were beautiful.'\nJohn: 'Did you see the cherry blossoms?'\nSarah: 'No, I went in autumn, so I saw red maple leaves instead. It was still breathtaking.'\n\nQuestion: When did Sarah visit Kyoto?",
+      "options": ["In spring", "In summer", "In autumn", "In winter"],
+      "correctAnswer": "In autumn",
+      "level": "medium",
+      "explanation": "Sarah says: 'No, I went in autumn'."
+    },
+    {
+      "id": 5,
+      "question": "Read the paragraph:\n\n'Air pollution is a major problem in big cities. Vehicles and factories release harmful gases into the air. To reduce this, many cities are encouraging people to use public transport or bicycles.'\n\nQuestion: How can cities reduce air pollution according to the text?",
+      "options": ["By building more factories", "By driving more cars", "By encouraging public transport and bicycles", "By cutting down trees"],
+      "correctAnswer": "By encouraging public transport and bicycles",
+      "level": "hard",
+      "explanation": "The solution mentioned is 'encouraging people to use public transport or bicycles'."
+    }
+  ]
+}

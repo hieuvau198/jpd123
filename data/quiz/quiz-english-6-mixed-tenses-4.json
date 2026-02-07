@@ -1,0 +1,78 @@
+{
+  "id": "quiz-english-6-mixed-tenses-4",
+  "title": "Mixed Tenses - Test 4",
+  "subject": "English 6",
+  "tags": ["grammar", "tenses", "english-6", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "He ______ his teeth twice a day.",
+      "options": ["brush", "brushes", "is brushing", "brushed"],
+      "answer": "brushes",
+      "explain": "Dấu hiệu 'twice a day' (thói quen) -> Hiện tại đơn."
+    },
+    {
+      "id": 2,
+      "question": "Did you ______ TV last night?",
+      "options": ["watch", "watches", "watching", "watched"],
+      "answer": "watch",
+      "explain": "Câu hỏi quá khứ đơn (Did) -> Động từ chính về nguyên mẫu."
+    },
+    {
+      "id": 3,
+      "question": "I ______ my grandparents next weekend.",
+      "options": ["visit", "visited", "will visit", "visits"],
+      "answer": "will visit",
+      "explain": "Dấu hiệu 'next weekend' -> Tương lai đơn."
+    },
+    {
+      "id": 4,
+      "question": "Look at the cat! It ______ up the tree.",
+      "options": ["climb", "climbs", "is climbing", "climbed"],
+      "answer": "is climbing",
+      "explain": "Dấu hiệu 'Look!' -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 5,
+      "question": "Yesterday, I ______ up late.",
+      "options": ["get", "gets", "got", "getting"],
+      "answer": "got",
+      "explain": "Dấu hiệu 'Yesterday' -> Quá khứ đơn. (Get -> Got)."
+    },
+    {
+      "id": 6,
+      "question": "What ______ they doing now?",
+      "options": ["do", "are", "did", "will"],
+      "answer": "are",
+      "explain": "Câu hỏi 'now' + V-ing -> Hiện tại tiếp diễn (Are they)."
+    },
+    {
+      "id": 7,
+      "question": "My father ______ a doctor. He works in a big hospital.",
+      "options": ["is", "was", "be", "were"],
+      "answer": "is",
+      "explain": "Sự thật về nghề nghiệp hiện tại -> Hiện tại đơn."
+    },
+    {
+      "id": 8,
+      "question": "______ it rain yesterday?",
+      "options": ["Do", "Does", "Did", "Will"],
+      "answer": "Did",
+      "explain": "Dấu hiệu 'yesterday'. Câu hỏi quá khứ đơn (Did)."
+    },
+    {
+      "id": 9,
+      "question": "Hurry up! The bus ______.",
+      "options": ["comes", "coming", "is coming", "will come"],
+      "answer": "is coming",
+      "explain": "Dấu hiệu 'Hurry up!' -> Sự việc đang xảy ra ngay lúc nói."
+    },
+    {
+      "id": 10,
+      "question": "Next year, my sister ______ to university.",
+      "options": ["go", "goes", "went", "will go"],
+      "answer": "will go",
+      "explain": "Dấu hiệu 'Next year' -> Tương lai đơn."
+    }
+  ]
+}

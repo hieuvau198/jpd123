@@ -1,0 +1,78 @@
+{
+  "id": "quiz-english-6-mixed-tenses-5",
+  "title": "Mixed Tenses - Test 5",
+  "subject": "English 6",
+  "tags": ["grammar", "tenses", "english-6", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "I ______ a letter to my friend yesterday.",
+      "options": ["write", "writes", "writing", "wrote"],
+      "answer": "wrote",
+      "explain": "Dấu hiệu 'yesterday'. Quá khứ đơn (irregular verb: Write -> Wrote)."
+    },
+    {
+      "id": 2,
+      "question": "She ______ like ice cream.",
+      "options": ["don't", "doesn't", "didn't", "isn't"],
+      "answer": "doesn't",
+      "explain": "Sở thích (hiện tại đơn). Ngôi thứ 3 số ít dùng trợ động từ phủ định 'doesn't'."
+    },
+    {
+      "id": 3,
+      "question": "We ______ football at the moment.",
+      "options": ["play", "are playing", "played", "will play"],
+      "answer": "are playing",
+      "explain": "Dấu hiệu 'at the moment' -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 4,
+      "question": "The sun ______ yesterday morning.",
+      "options": ["shine", "shines", "shone", "will shine"],
+      "answer": "shone",
+      "explain": "Dấu hiệu 'yesterday' -> Quá khứ đơn (Shine -> Shone)."
+    },
+    {
+      "id": 5,
+      "question": "My parents ______ to Japan next week.",
+      "options": ["travel", "travels", "traveled", "will travel"],
+      "answer": "will travel",
+      "explain": "Dấu hiệu 'next week' -> Tương lai đơn."
+    },
+    {
+      "id": 6,
+      "question": "Where ______ you usually spend your summer holiday?",
+      "options": ["do", "did", "are", "will"],
+      "answer": "do",
+      "explain": "Dấu hiệu 'usually' -> Câu hỏi thói quen (Hiện tại đơn)."
+    },
+    {
+      "id": 7,
+      "question": "Be quiet! My baby sister ______.",
+      "options": ["sleep", "is sleeping", "slept", "sleeps"],
+      "answer": "is sleeping",
+      "explain": "Dấu hiệu 'Be quiet!' -> Sự việc đang diễn ra."
+    },
+    {
+      "id": 8,
+      "question": "______ you visit the museum last Sunday?",
+      "options": ["Do", "Did", "Are", "Will"],
+      "answer": "Did",
+      "explain": "Dấu hiệu 'last Sunday'. Câu hỏi quá khứ (Did)."
+    },
+    {
+      "id": 9,
+      "question": "My father usually watches TV in the evening, but tonight he ______ a book.",
+      "options": ["read", "reads", "is reading", "readed"],
+      "answer": "is reading",
+      "explain": "So sánh thói quen (usually) và hành động tạm thời (tonight) -> Hiện tại tiếp diễn."
+    },
+    {
+      "id": 10,
+      "question": "I promise I ______ make noise in class again.",
+      "options": ["don't", "won't", "didn't", "not"],
+      "answer": "won't",
+      "explain": "Lời hứa (promise) -> Tương lai đơn. Phủ định will not -> won't."
+    }
+  ]
+}

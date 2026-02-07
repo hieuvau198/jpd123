@@ -133,14 +133,18 @@ const FlashcardSession = ({ data, onHome }) => {
     } else {
       setFeedback('wrong');
       setCorrectAnswerDisplay(correctString);
-      setTimeout(() => {
-        setQueue(prev => [...prev, currentCard]);
-        setFeedback('neutral');
-        setCorrectAnswerDisplay("");
-        setInputValue("");
-        setCurrentIndex(prev => prev + 1);
-      }, 2500);
+      // REMOVED setTimeout here to pause on wrong answer
     }
+  };
+
+  // New function to handle manual advancement after wrong answer
+  const handleManualNext = () => {
+    const currentCard = queue[currentIndex];
+    setQueue(prev => [...prev, currentCard]); // Re-queue the wrong card
+    setFeedback('neutral');
+    setCorrectAnswerDisplay("");
+    setInputValue("");
+    setCurrentIndex(prev => prev + 1);
   };
 
   if (!data) return null;
@@ -337,8 +341,9 @@ const FlashcardSession = ({ data, onHome }) => {
         </Text>
 
         {feedback === 'wrong' ? (
-           <div style={{ padding: 20, background: '#fff1f0', border: '1px solid #ffa39e', borderRadius: 8, color: '#cf1322' }}>
-              <Text strong>Correct Answer: {correctAnswerDisplay}</Text>
+           <div style={{ padding: 20, background: '#fff1f0', border: '1px solid #ffa39e', borderRadius: 8, color: '#cf1322', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 15 }}>
+              <Text strong style={{ fontSize: 18 }}>Correct Answer: {correctAnswerDisplay}</Text>
+              <Button type="primary" danger onClick={handleManualNext}>Next Question</Button>
            </div>
         ) : (
           <form onSubmit={handleSpeakSubmit}>
