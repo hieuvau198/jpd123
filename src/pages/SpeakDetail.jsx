@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Result, Button, Spin, Card, Typography, Row, Col } from 'antd';
-import { CustomerServiceOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { CustomerServiceOutlined, ReadOutlined } from '@ant-design/icons';
 import SpeakSession from '../components/SpeakSession';
 import { getSpeakById } from '../firebase/speakService';
 
@@ -12,7 +12,7 @@ const SpeakDetail = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [mode, setMode] = useState(null); // 'listen' | 'stress'
+  const [mode, setMode] = useState(null); // 'listen' | 'definition'
 
   useEffect(() => {
     const fetch = async () => {
@@ -55,13 +55,14 @@ const SpeakDetail = () => {
           <Col xs={24} sm={12}>
             <Card 
               hoverable 
-              onClick={() => setMode('stress')}
+              onClick={() => setMode('definition')}
               style={{ textAlign: 'center', height: '100%', border: '2px solid #f0f0f0' }}
               bodyStyle={{ padding: '40px 20px' }}
             >
-              <ThunderboltOutlined style={{ fontSize: 48, color: '#1890ff', marginBottom: 20 }} />
-              <Title level={3}>Stress</Title>
-              <Text type="secondary">Listen to all variations and identify the correct pronunciation.</Text>
+              {/* Changed Icon to ReadOutlined (Book style) and Title to Definition */}
+              <ReadOutlined style={{ fontSize: 48, color: '#1890ff', marginBottom: 20 }} />
+              <Title level={3}>Definition</Title>
+              <Text type="secondary">Read the question or definition and select the correct answer.</Text>
             </Card>
           </Col>
         </Row>

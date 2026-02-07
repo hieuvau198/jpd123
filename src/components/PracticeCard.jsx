@@ -27,11 +27,6 @@ const PracticeCard = ({ practice, onClick }) => {
           <h3 className="font-bold text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-red-600 transition-colors">
             {practice.title}
           </h3>
-          {practice.subject && (
-            <span className="shrink-0 px-2 py-1 rounded-md bg-red-50 text-red-600 text-xs font-semibold border border-red-100">
-              {getSubjectName(practice.subject)}
-            </span>
-          )}
         </div>
       </div>
       
@@ -42,7 +37,7 @@ const PracticeCard = ({ practice, onClick }) => {
               {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
             </div>
             <span className="text-xs font-medium uppercase tracking-wide">
-              {practice.questions ? practice.questions.length : 0} items
+              {practice.questions ? practice.questions.length : 0} questions
             </span>
           </div>
 
