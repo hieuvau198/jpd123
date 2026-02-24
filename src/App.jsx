@@ -11,9 +11,11 @@ import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
 import RepairList from './pages/RepairList';
 import RepairDetail from './pages/RepairDetail';
-// Import New Speak Components
 import SpeakList from './pages/SpeakList';
 import SpeakDetail from './pages/SpeakDetail';
+// Import Defense (New)
+import DefenseList from './pages/DefenseList';
+import DefenseDetail from './pages/DefenseDetail';
 
 export default function App() {
   return (
@@ -37,9 +39,13 @@ export default function App() {
         <Route path="/repairs" element={<RepairList />} />
         <Route path="/repair/:id" element={<RepairDetail />} />
 
-        {/* Speak Routes (New) */}
+        {/* Speak Routes */}
         <Route path="/speaks" element={<SpeakList />} />
         <Route path="/speak/:id" element={<SpeakDetail />} />
+
+        {/* Defense Routes (New) */}
+        <Route path="/defense" element={<DefenseList />} />
+        <Route path="/defense/:id" element={<DefenseDetail />} />
         
         {/* Fallback */}
         <Route path="*" element={<Home />} />

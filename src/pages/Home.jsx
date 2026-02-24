@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-// Added Mic icon
-import { BookOpen, FileQuestion, Wrench, Settings, Mic } from 'lucide-react';
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -19,7 +18,7 @@ const Home = () => {
 
       <Row gutter={[24, 24]} justify="center">
         {/* Flashcards */}
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={8} md={6}>
           <Link to="/flashcards" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
@@ -32,7 +31,7 @@ const Home = () => {
         </Col>
 
         {/* Quizzes */}
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={8} md={6}>
           <Link to="/quizzes" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
@@ -45,7 +44,7 @@ const Home = () => {
         </Col>
 
         {/* Repairs */}
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={8} md={6}>
           <Link to="/repairs" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
@@ -57,8 +56,8 @@ const Home = () => {
           </Link>
         </Col>
 
-        {/* Speak (New Feature) */}
-        <Col xs={24} sm={6}>
+        {/* Speak */}
+        <Col xs={24} sm={8} md={6}>
           <Link to="/speaks" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
@@ -66,6 +65,19 @@ const Home = () => {
               </div>
               <Title level={3} style={{ color: '#eb2f96' }}>Speak</Title>
               <Text type="secondary">Listen & Distinguish.</Text>
+            </Card>
+          </Link>
+        </Col>
+
+        {/* Defense (New Feature) */}
+        <Col xs={24} sm={8} md={6}>
+          <Link to="/defense" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, borderColor: '#ff4d4f' }}>
+              <div style={{ marginBottom: 20 }}>
+                <Shield size={48} color="#ff4d4f" />
+              </div>
+              <Title level={3} style={{ color: '#ff4d4f' }}>Defense</Title>
+              <Text type="secondary">Gamified Practice.</Text>
             </Card>
           </Link>
         </Col>
