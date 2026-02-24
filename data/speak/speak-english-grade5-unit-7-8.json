@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade5-unit-7-8",
+  "title": "Speak Practice - Grade 5 Unit 7 & 8",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-5", "learning-english", "stories"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "To learn how to speak English, you should...?",
+      "options": ["Practice speaking every day", "Only write in a notebook", "Sleep all day", "Never talk"],
+      "correctAnswer": "Practice speaking every day",
+      "level": "easy",
+      "explanation": "'Practice' is doing something repeatedly to improve skill."
+    },
+    {
+      "id": 2,
+      "question": "Which word refers to 'the words used in a language'?",
+      "options": ["Vocabulary", "Grammar", "Maths", "Science"],
+      "correctAnswer": "Vocabulary",
+      "level": "medium",
+      "explanation": "'Vocabulary' is the body of words used in a particular language."
+    },
+    {
+      "id": 3,
+      "question": "A story about magic and imaginary beings is often called a...",
+      "options": ["Fairy tale", "News report", "History book", "Science journal"],
+      "correctAnswer": "Fairy tale",
+      "level": "medium",
+      "explanation": "A 'Fairy tale' is a children's story about magical and imaginary beings and lands."
+    },
+    {
+      "id": 4,
+      "question": "The main person in a story is called the...",
+      "options": ["Character", "Author", "Reader", "Singer"],
+      "correctAnswer": "Character",
+      "level": "easy",
+      "explanation": "A 'Character' is a person in a novel, play, or movie."
+    },
+    {
+      "id": 5,
+      "question": "If you are 'Good at' English, you...",
+      "options": ["Do it well", "Do it badly", "Hate it", "Don't know it"],
+      "correctAnswer": "Do it well",
+      "level": "easy",
+      "explanation": "To be 'Good at' something means to be skillful or successful at it."
+    },
+    {
+      "id": 6,
+      "question": "Which animal in stories is often described as 'clever' or 'cunning'?",
+      "options": ["Fox", "Chicken", "Pig", "Cow"],
+      "correctAnswer": "Fox",
+      "level": "medium",
+      "explanation": "The 'Fox' is traditionally associated with cunning and cleverness in fables."
+    },
+    {
+      "id": 7,
+      "question": "A 'Ghost' story is usually...",
+      "options": ["Scary", "Funny", "Happy", "Boring"],
+      "correctAnswer": "Scary",
+      "level": "easy",
+      "explanation": "Ghost stories are intended to be frightening or 'Scary'."
+    },
+    {
+      "id": 8,
+      "question": "To 'Understand' a foreign language means to...",
+      "options": ["Know what it means", "Forget it", "Guess it wrong", "Ignore it"],
+      "correctAnswer": "Know what it means",
+      "level": "medium",
+      "explanation": "'Understand' means to perceive the intended meaning of words."
+    },
+    {
+      "id": 9,
+      "question": "Snow White is a character who is...",
+      "options": ["Gentle and beautiful", "Cruel and ugly", "Lazy", "Mean"],
+      "correctAnswer": "Gentle and beautiful",
+      "level": "medium",
+      "explanation": "Snow White is traditionally described as gentle and the fairest of them all."
+    },
+    {
+      "id": 10,
+      "question": "What do you use to write new words in?",
+      "options": ["Notebook", "Table", "Wall", "Chair"],
+      "correctAnswer": "Notebook",
+      "level": "easy",
+      "explanation": "A 'Notebook' is a book of plain paper for writing notes."
+    },
+    {
+      "id": 11,
+      "question": "Aladdin found a magic...",
+      "options": ["Lamp", "Phone", "Car", "Computer"],
+      "correctAnswer": "Lamp",
+      "level": "easy",
+      "explanation": "Aladdin is famous for finding a magic lamp with a genie inside."
+    },
+    {
+      "id": 12,
+      "question": "Which skill involves using your ears?",
+      "options": ["Listening", "Writing", "Reading", "Speaking"],
+      "correctAnswer": "Listening",
+      "level": "easy",
+      "explanation": "'Listening' is the action of giving attention to sound."
+    },
+    {
+      "id": 13,
+      "question": "If a story is 'Funny', it makes you...",
+      "options": ["Laugh", "Cry", "Sleep", "Run"],
+      "correctAnswer": "Laugh",
+      "level": "easy",
+      "explanation": "Something 'Funny' causes laughter or amusement."
+    },
+    {
+      "id": 14,
+      "question": "To communicate with friends in other countries, you might write an...",
+      "options": ["Email", "Essay", "Exam", "Exercise"],
+      "correctAnswer": "Email",
+      "level": "medium",
+      "explanation": "An 'Email' is a common way to send messages electronically."
+    },
+    {
+      "id": 15,
+      "question": "Which word describes a person who works a lot?",
+      "options": ["Hard-working", "Lazy", "Slow", "Weak"],
+      "correctAnswer": "Hard-working",
+      "level": "medium",
+      "explanation": "'Hard-working' means tending to work with energy and commitment."
+    }
+  ]
+}

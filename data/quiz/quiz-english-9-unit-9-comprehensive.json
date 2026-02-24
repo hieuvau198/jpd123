@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-unit-9-comprehensive",
+  "title": "English 9 Unit 9 - Comprehensive Test (English in the World)",
+  "subject": "English 9",
+  "tags": ["english-9", "unit9", "vocab", "grammar", "relative-clauses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Someone who can speak two languages fluently is ______.",
+      "options": ["bilingual", "monolingual", "official", "fluent"],
+      "correctAnswer": "bilingual",
+      "level": "easy",
+      "explanation": "'Bilingual' nghĩa là song ngữ, nói được 2 thứ tiếng."
+    },
+    {
+      "id": 2,
+      "question": "The book ______ is on the table belongs to the teacher.",
+      "options": ["which", "who", "whose", "whom"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'The book' (vật) -> dùng 'which' làm chủ ngữ."
+    },
+    {
+      "id": 3,
+      "question": "English is the ______ language of many countries like the UK and USA.",
+      "options": ["first", "second", "foreign", "official"],
+      "correctAnswer": "first",
+      "level": "medium",
+      "explanation": "Ở Anh và Mỹ, tiếng Anh là tiếng mẹ đẻ (first language)."
+    },
+    {
+      "id": 4,
+      "question": "The girl ______ sits next to me is an exchange student.",
+      "options": ["who", "which", "where", "whose"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "'The girl' (người) -> dùng 'who' làm chủ ngữ."
+    },
+    {
+      "id": 5,
+      "question": "You can use a dictionary to ______ new words.",
+      "options": ["look up", "pick up", "go over", "take in"],
+      "correctAnswer": "look up",
+      "level": "medium",
+      "explanation": "'Look up' nghĩa là tra từ điển."
+    },
+    {
+      "id": 6,
+      "question": "He is the writer ______ books are best-sellers.",
+      "options": ["whose", "who", "which", "that"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Sách của nhà văn -> sở hữu -> dùng 'whose'."
+    },
+    {
+      "id": 7,
+      "question": "American English is a ______ of English.",
+      "options": ["variety", "vocabulary", "accent", "grammar"],
+      "correctAnswer": "variety",
+      "level": "hard",
+      "explanation": "'Variety' (biến thể) là từ dùng để chỉ các nhánh khác nhau của một ngôn ngữ (Anh-Anh, Anh-Mỹ...)."
+    },
+    {
+      "id": 8,
+      "question": "The country ______ I want to visit most is Australia.",
+      "options": ["which", "where", "who", "whose"],
+      "correctAnswer": "which",
+      "level": "medium",
+      "explanation": "'The country' đóng vai trò tân ngữ cho 'visit' (visit [the country]) -> dùng 'which'. Nếu dùng 'where' thì phải là 'visit in' hoặc nghĩa 'nơi tôi sống'."
+    },
+    {
+      "id": 9,
+      "question": "Try to ______ the main points of the lesson before the exam.",
+      "options": ["go over", "look up", "translate", "copy"],
+      "correctAnswer": "go over",
+      "level": "medium",
+      "explanation": "'Go over' nghĩa là xem lại, ôn lại."
+    },
+    {
+      "id": 10,
+      "question": "This is the school ______ my mother used to teach.",
+      "options": ["where", "which", "that", "who"],
+      "correctAnswer": "where",
+      "level": "medium",
+      "explanation": "Nơi chốn mà mẹ tôi từng dạy (teach AT the school) -> dùng 'where'."
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-comprehensive-2",
+  "title": "English 7 - Comprehensive Test 2 (Traffic & Connectors)",
+  "subject": "English 7",
+  "tags": ["english-7", "unit7", "unit8", "vocab", "grammar", "mixed-tenses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "You should fasten your ______ when driving a car.",
+      "options": ["seat belt", "roof", "handlebar", "pavement"],
+      "correctAnswer": "seat belt",
+      "level": "easy",
+      "explanation": "'Fasten seat belt' nghĩa là thắt dây an toàn."
+    },
+    {
+      "id": 2,
+      "question": "The road to the village is very ______, so drive carefully.",
+      "options": ["bumpy", "safe", "fast", "smooth"],
+      "correctAnswer": "bumpy",
+      "level": "medium",
+      "explanation": "'Bumpy' nghĩa là gập ghềnh, lồi lõm. Đường xấu thì cần lái xe cẩn thận."
+    },
+    {
+      "id": 3,
+      "question": "A person traveling in a vehicle but not driving it is a ______.",
+      "options": ["passenger", "driver", "pedestrian", "police"],
+      "correctAnswer": "passenger",
+      "level": "medium",
+      "explanation": "'Passenger' là hành khách (người ngồi trên xe nhưng không lái)."
+    },
+    {
+      "id": 4,
+      "question": "The weather was bad; ______, we enjoyed our trip.",
+      "options": ["although", "however", "but", "so"],
+      "correctAnswer": "however",
+      "level": "hard",
+      "explanation": "Dấu chấm phẩy (;) trước và dấu phẩy (,) sau là vị trí của 'however', dùng để nối hai mệnh đề độc lập tương phản."
+    },
+    {
+      "id": 5,
+      "question": "______ he is tired, he still finishes his work.",
+      "options": ["However", "So", "Although", "But"],
+      "correctAnswer": "Although",
+      "level": "medium",
+      "explanation": "Mệnh đề nhượng bộ đứng đầu câu: 'Mặc dù anh ấy mệt...'. Dùng 'Although'."
+    },
+    {
+      "id": 6,
+      "question": "She is rich. ______, she is not happy.",
+      "options": ["Because", "Although", "However", "So"],
+      "correctAnswer": "However",
+      "level": "easy",
+      "explanation": "Hai câu đơn trái ngược nhau: Giàu - Không hạnh phúc. Dùng 'However' ở đầu câu thứ hai."
+    },
+    {
+      "id": 7,
+      "question": "Where ______ you go last summer holiday?",
+      "options": ["do", "did", "are", "will"],
+      "correctAnswer": "did",
+      "level": "easy",
+      "explanation": "Câu hỏi ở quá khứ (last summer) với động từ thường 'go', ta dùng trợ động từ 'did'."
+    },
+    {
+      "id": 8,
+      "question": "They ______ football in the stadium at the moment.",
+      "options": ["play", "played", "are playing", "will play"],
+      "correctAnswer": "are playing",
+      "level": "medium",
+      "explanation": "'At the moment' là dấu hiệu của thì Hiện tại tiếp diễn -> are playing."
+    },
+    {
+      "id": 9,
+      "question": "We ______ our grandparents next weekend.",
+      "options": ["visit", "visited", "will visit", "visiting"],
+      "correctAnswer": "will visit",
+      "level": "easy",
+      "explanation": "'Next weekend' (cuối tuần sau) là dấu hiệu của thì Tương lai đơn -> will visit."
+    },
+    {
+      "id": 10,
+      "question": "She usually ______ up at 6 o'clock.",
+      "options": ["get", "gets", "getting", "got"],
+      "correctAnswer": "gets",
+      "level": "easy",
+      "explanation": "Thói quen ở hiện tại (usually) với chủ ngữ ngôi thứ 3 số ít (She) -> động từ thêm 's' (gets)."
+    }
+  ]
+}

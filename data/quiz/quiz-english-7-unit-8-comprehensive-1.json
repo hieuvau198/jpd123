@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-unit-8-comprehensive-1",
+  "title": "English 7 Unit 8 - Comprehensive Test 1 (Films & Connectors)",
+  "subject": "English 7",
+  "tags": ["english-7", "unit8", "vocab", "grammar", "although", "however"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "A film that makes people laugh is called a ______.",
+      "options": ["comedy", "documentary", "horror film", "thriller"],
+      "correctAnswer": "comedy",
+      "level": "easy",
+      "explanation": "'Comedy' (phim hài) là thể loại phim gây cười."
+    },
+    {
+      "id": 2,
+      "question": "______ the film was gripping, Tom slept from beginning to end.",
+      "options": ["Although", "However", "Because", "So"],
+      "correctAnswer": "Although",
+      "level": "medium",
+      "explanation": "Dùng 'Although' để nối hai mệnh đề tương phản trong cùng một câu: phim hấp dẫn - nhưng Tom lại ngủ."
+    },
+    {
+      "id": 3,
+      "question": "A ______ gives instructions to actors and directs the making of a film.",
+      "options": ["director", "actor", "critic", "viewer"],
+      "correctAnswer": "director",
+      "level": "medium",
+      "explanation": "'Director' là đạo diễn, người chỉ đạo diễn xuất và quá trình làm phim."
+    },
+    {
+      "id": 4,
+      "question": "The plot was weak. ______, the special effects were amazing.",
+      "options": ["However", "Although", "But", "So"],
+      "correctAnswer": "However",
+      "level": "medium",
+      "explanation": "Dùng 'However' sau dấu chấm để nối hai câu độc lập có ý nghĩa trái ngược nhau."
+    },
+    {
+      "id": 5,
+      "question": "The film ending was very ______. I cried a lot.",
+      "options": ["moving", "funny", "boring", "scary"],
+      "correctAnswer": "moving",
+      "level": "medium",
+      "explanation": "'Moving' nghĩa là cảm động, làm người xem rơi nước mắt."
+    },
+    {
+      "id": 6,
+      "question": "I didn't like the poster ______ the colors were beautiful.",
+      "options": ["although", "however", "so", "but"],
+      "correctAnswer": "although",
+      "level": "medium",
+      "explanation": "Mệnh đề nhượng bộ (màu sắc đẹp) đứng sau. Dùng 'although' để nối."
+    },
+    {
+      "id": 7,
+      "question": "A ______ film often features space travel, robots, or aliens.",
+      "options": ["science fiction", "history", "documentary", "romantic"],
+      "correctAnswer": "science fiction",
+      "level": "easy",
+      "explanation": "'Science fiction' (khoa học viễn tưởng) thường có du hành vũ trụ, robot, người ngoài hành tinh."
+    },
+    {
+      "id": 8,
+      "question": "She is a famous actress; ______, she is very shy in real life.",
+      "options": ["however", "although", "so", "because"],
+      "correctAnswer": "however",
+      "level": "hard",
+      "explanation": "Vị trí sau dấu chấm phẩy (;) và trước dấu phẩy (,) là của 'however'."
+    },
+    {
+      "id": 9,
+      "question": "The movie was so ______ that I couldn't take my eyes off the screen.",
+      "options": ["gripping", "dull", "boring", "bad"],
+      "correctAnswer": "gripping",
+      "level": "medium",
+      "explanation": "'Gripping' nghĩa là hấp dẫn, lôi cuốn, khiến khán giả không thể rời mắt."
+    },
+    {
+      "id": 10,
+      "question": "We ______ to the cinema to watch 'Iron Man' yesterday.",
+      "options": ["go", "went", "have gone", "are going"],
+      "correctAnswer": "went",
+      "level": "easy",
+      "explanation": "Có 'yesterday' (hôm qua) là dấu hiệu của thì Quá khứ đơn -> went."
+    }
+  ]
+}

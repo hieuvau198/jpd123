@@ -124,11 +124,12 @@ const TypingSession = ({ data, onHome, onBack }) => {
     return (
       <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
         <Result
-          status="success"
-          title="Session Completed!"
-          extra={[
-            <Button key="home" onClick={onHome}>Home</Button>,
-            <Button key="restart" type="primary" onClick={() => {
+  status="success"
+  title="Session Completed!"
+  extra={[
+    // Đổi thành onBack để quay lại menu 4 nút
+    <Button key="menu" onClick={onBack}>Back to Menu</Button>, 
+    <Button key="restart" type="primary" onClick={() => {
                setQueue(shuffleArray([...data.questions]));
                setCurrentIndex(0);
                setDirection(null); 

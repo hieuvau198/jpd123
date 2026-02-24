@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-7-unit-8-comprehensive-2",
+  "title": "English 7 Unit 8 - Comprehensive Test 2 (Films & Connectors)",
+  "subject": "English 7",
+  "tags": ["english-7", "unit8", "vocab", "grammar", "although", "however"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "A film showing real life events or stories is a ______.",
+      "options": ["documentary", "comedy", "cartoon", "fantasy"],
+      "correctAnswer": "documentary",
+      "level": "easy",
+      "explanation": "'Documentary' là phim tài liệu, phản ánh sự thật đời sống."
+    },
+    {
+      "id": 2,
+      "question": "______ they spent millions on the film, it was not successful.",
+      "options": ["Although", "However", "Because", "But"],
+      "correctAnswer": "Although",
+      "level": "medium",
+      "explanation": "Dùng 'Although' ở đầu câu để chỉ sự nhượng bộ: Mặc dù tốn nhiều tiền nhưng không thành công."
+    },
+    {
+      "id": 3,
+      "question": "That horror film was too ______ for me to watch alone.",
+      "options": ["scary", "funny", "enjoyable", "dull"],
+      "correctAnswer": "scary",
+      "level": "medium",
+      "explanation": "Phim kinh dị (horror film) thì tính chất phù hợp nhất là 'scary' (đáng sợ)."
+    },
+    {
+      "id": 4,
+      "question": "He is a talented actor. ______, he has not won an Oscar yet.",
+      "options": ["However", "Although", "So", "And"],
+      "correctAnswer": "However",
+      "level": "medium",
+      "explanation": "Hai câu đơn trái ngược nhau. Dùng 'However' ở đầu câu thứ hai."
+    },
+    {
+      "id": 5,
+      "question": "You should read the ______ to know what critics say about the film.",
+      "options": ["review", "poster", "script", "survey"],
+      "correctAnswer": "review",
+      "level": "medium",
+      "explanation": "'Review' là bài phê bình/đánh giá phim."
+    },
+    {
+      "id": 6,
+      "question": "We enjoyed the film ______ it was quite long.",
+      "options": ["although", "however", "because", "so"],
+      "correctAnswer": "although",
+      "level": "easy",
+      "explanation": "Thích phim - phim dài -> Hai ý tương phản. Dùng 'although'."
+    },
+    {
+      "id": 7,
+      "question": "The film 'Pirates of the Caribbean' ______ Johnny Depp as Jack Sparrow.",
+      "options": ["stars", "acts", "directs", "plays"],
+      "correctAnswer": "stars",
+      "level": "hard",
+      "explanation": "Động từ 'star' có nghĩa là có sự tham gia diễn xuất của ai đó (trong vai chính)."
+    },
+    {
+      "id": 8,
+      "question": "The ticket price is high; ______, it is a must-see film.",
+      "options": ["however", "though", "but", "so"],
+      "correctAnswer": "however",
+      "level": "medium",
+      "explanation": "Nối hai mệnh đề độc lập tương phản bằng dấu chấm phẩy và dấu phẩy -> 'however'."
+    },
+    {
+      "id": 9,
+      "question": "I felt very confusing because the plot was difficult to understand.",
+      "options": ["True", "False"],
+      "correctAnswer": "False",
+      "level": "hard",
+      "explanation": "Sai ở từ 'confusing'. Cảm xúc của con người dùng tính từ đuôi -ed. Câu đúng: 'I felt very confused...'. (Lưu ý: Đây là dạng bài tìm lỗi sai hoặc True/False)."
+    },
+    {
+      "id": 10,
+      "question": "She ______ a lot of movies recently.",
+      "options": ["has watched", "watches", "watched", "watch"],
+      "correctAnswer": "has watched",
+      "level": "medium",
+      "explanation": "Có 'recently' (gần đây) là dấu hiệu của thì Hiện tại hoàn thành -> has watched."
+    }
+  ]
+}

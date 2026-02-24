@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade5-unit-5-6",
+  "title": "Speak Practice - Grade 5 Unit 5 & 6",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-5", "weekend-plans", "school-lessons"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which activity involves going into a hole in a mountain or ground?",
+      "options": ["Explore a cave", "Build a sandcastle", "Swim in the sea", "Fly a kite"],
+      "correctAnswer": "Explore a cave",
+      "level": "medium",
+      "explanation": "A 'Cave' is a natural underground chamber in a hillside or cliff."
+    },
+    {
+      "id": 2,
+      "question": "What do you build with sand on the beach?",
+      "options": ["Sandcastle", "Snowman", "House", "Tent"],
+      "correctAnswer": "Sandcastle",
+      "level": "easy",
+      "explanation": "A 'Sandcastle' is a model of a castle built out of sand."
+    },
+    {
+      "id": 3,
+      "question": "If you are 'Sunbathing', you are...",
+      "options": ["Lying in the sun", "Swimming", "Running", "Eating"],
+      "correctAnswer": "Lying in the sun",
+      "level": "medium",
+      "explanation": "To 'Sunbathe' is to sit or lie in the sun."
+    },
+    {
+      "id": 4,
+      "question": "Which word refers to 'food from the sea' like fish or crabs?",
+      "options": ["Seafood", "Fast food", "Junk food", "Fruit"],
+      "correctAnswer": "Seafood",
+      "level": "easy",
+      "explanation": "'Seafood' includes shellfish and sea fish, served as food."
+    },
+    {
+      "id": 5,
+      "question": "The day after today is called...",
+      "options": ["Tomorrow", "Yesterday", "Tonight", "Weekend"],
+      "correctAnswer": "Tomorrow",
+      "level": "easy",
+      "explanation": "'Tomorrow' is the day following today."
+    },
+    {
+      "id": 6,
+      "question": "Which school subject teaches you about numbers?",
+      "options": ["Maths", "Music", "Art", "English"],
+      "correctAnswer": "Maths",
+      "level": "easy",
+      "explanation": "'Maths' (Mathematics) is the study of numbers, shapes, and patterns."
+    },
+    {
+      "id": 7,
+      "question": "In which subject do you learn about computers?",
+      "options": ["IT", "PE", "Science", "History"],
+      "correctAnswer": "IT",
+      "level": "medium",
+      "explanation": "'IT' stands for Information Technology."
+    },
+    {
+      "id": 8,
+      "question": "How often is 'Once a week'?",
+      "options": ["One time in 7 days", "Two times in 7 days", "Every day", "Never"],
+      "correctAnswer": "One time in 7 days",
+      "level": "medium",
+      "explanation": "'Once' means one time."
+    },
+    {
+      "id": 9,
+      "question": "Which subject involves singing and playing instruments?",
+      "options": ["Music", "Science", "Vietnamese", "Geography"],
+      "correctAnswer": "Music",
+      "level": "easy",
+      "explanation": "'Music' is the art of arranging sounds in time."
+    },
+    {
+      "id": 10,
+      "question": "A 'Boat trip' is a journey on...",
+      "options": ["Water", "Land", "Air", "Space"],
+      "correctAnswer": "Water",
+      "level": "easy",
+      "explanation": "A boat travels on water."
+    },
+    {
+      "id": 11,
+      "question": "Which subject involves drawing and painting?",
+      "options": ["Art", "Maths", "PE", "English"],
+      "correctAnswer": "Art",
+      "level": "easy",
+      "explanation": "'Art' class typically involves creative activities like drawing and painting."
+    },
+    {
+      "id": 12,
+      "question": "If you have a lesson 'Twice a week', you have it...",
+      "options": ["Two times", "Three times", "One time", "Four times"],
+      "correctAnswer": "Two times",
+      "level": "medium",
+      "explanation": "'Twice' means two times."
+    },
+    {
+      "id": 13,
+      "question": "What does 'PE' stand for?",
+      "options": ["Physical Education", "Primary Education", "Personal English", "Public Exam"],
+      "correctAnswer": "Physical Education",
+      "level": "hard",
+      "explanation": "PE stands for Physical Education (sports/exercise class)."
+    },
+    {
+      "id": 14,
+      "question": "To 'Explore' means to...",
+      "options": ["Look around a new place", "Sleep", "Eat dinner", "Watch TV"],
+      "correctAnswer": "Look around a new place",
+      "level": "medium",
+      "explanation": "To 'Explore' is to travel in or through an unfamiliar area to learn about it."
+    },
+    {
+      "id": 15,
+      "question": "Which word describes the land outside of cities and towns?",
+      "options": ["Countryside", "City", "Capital", "Center"],
+      "correctAnswer": "Countryside",
+      "level": "medium",
+      "explanation": "'Countryside' refers to rural areas."
+    }
+  ]
+}

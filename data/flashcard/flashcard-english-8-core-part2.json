@@ -1,0 +1,194 @@
+{
+  "id": "flashcard-english-grade-8-core-part2",
+  "title": "Tiếng Anh Lớp 8 - 30 Từ Vựng Mới (Phần 2)",
+  "subject": "english",
+  "tags": [
+    "english-8",
+    "vocabulary",
+    "core",
+    "part2"
+  ],
+  "description": "30 từ vựng tiếng Anh lớp 8 chủ đề Thảm họa thiên nhiên, Vũ trụ, Khoa học.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Alien",
+      "answer": "Người ngoài hành tinh",
+      "speak": "alien"
+    },
+    {
+      "id": 2,
+      "question": "Astronaut",
+      "answer": "Phi hành gia",
+      "speak": "astronaut"
+    },
+    {
+      "id": 3,
+      "question": "Biology",
+      "answer": "Sinh học",
+      "speak": "biology"
+    },
+    {
+      "id": 4,
+      "question": "Botanist",
+      "answer": "Nhà thực vật học",
+      "speak": "botanist"
+    },
+    {
+      "id": 5,
+      "question": "Chemistry",
+      "answer": "Hóa học",
+      "speak": "chemistry"
+    },
+    {
+      "id": 6,
+      "question": "Damage",
+      "answer": "Sự thiệt hại",
+      "speak": "damage"
+    },
+    {
+      "id": 7,
+      "question": "Deafening",
+      "answer": "Chói tai, đinh tai nhức óc",
+      "speak": "deafening"
+    },
+    {
+      "id": 8,
+      "question": "Debris",
+      "answer": "Mảnh vụn, đống đổ nát",
+      "speak": "debris"
+    },
+    {
+      "id": 9,
+      "question": "Destroy",
+      "answer": "Phá hủy",
+      "speak": "destroy"
+    },
+    {
+      "id": 10,
+      "question": "Disaster",
+      "answer": "Thảm họa",
+      "speak": "disaster"
+    },
+    {
+      "id": 11,
+      "question": "Earthquake",
+      "answer": "Động đất",
+      "speak": "earthquake"
+    },
+    {
+      "id": 12,
+      "question": "Evacuate",
+      "answer": "Sơ tán",
+      "speak": "evacuate"
+    },
+    {
+      "id": 13,
+      "question": "Galaxy",
+      "answer": "Thiên hà",
+      "speak": "galaxy"
+    },
+    {
+      "id": 14,
+      "question": "Gravity",
+      "answer": "Trọng lực",
+      "speak": "gravity"
+    },
+    {
+      "id": 15,
+      "question": "Hurricane",
+      "answer": "Bão lớn",
+      "speak": "hurricane"
+    },
+    {
+      "id": 16,
+      "question": "Mars",
+      "answer": "Sao Hỏa",
+      "speak": "mars"
+    },
+    {
+      "id": 17,
+      "question": "Meteor",
+      "answer": "Sao băng, thiên thạch",
+      "speak": "meteor"
+    },
+    {
+      "id": 18,
+      "question": "Orbit",
+      "answer": "Quỹ đạo",
+      "speak": "orbit"
+    },
+    {
+      "id": 19,
+      "question": "Planet",
+      "answer": "Hành tinh",
+      "speak": "planet"
+    },
+    {
+      "id": 20,
+      "question": "Poisonous",
+      "answer": "Có độc",
+      "speak": "poisonous"
+    },
+    {
+      "id": 21,
+      "question": "Pollution",
+      "answer": "Sự ô nhiễm",
+      "speak": "pollution"
+    },
+    {
+      "id": 22,
+      "question": "Rescue",
+      "answer": "Giải cứu",
+      "speak": "rescue"
+    },
+    {
+      "id": 23,
+      "question": "Researcher",
+      "answer": "Nhà nghiên cứu",
+      "speak": "researcher"
+    },
+    {
+      "id": 24,
+      "question": "Scientist",
+      "answer": "Nhà khoa học",
+      "speak": "scientist"
+    },
+    {
+      "id": 25,
+      "question": "Spacecraft",
+      "answer": "Tàu vũ trụ",
+      "speak": "spacecraft"
+    },
+    {
+      "id": 26,
+      "question": "Technology",
+      "answer": "Công nghệ",
+      "speak": "technology"
+    },
+    {
+      "id": 27,
+      "question": "Telescope",
+      "answer": "Kính viễn vọng",
+      "speak": "telescope"
+    },
+    {
+      "id": 28,
+      "question": "Tornado",
+      "answer": "Lốc xoáy",
+      "speak": "tornado"
+    },
+    {
+      "id": 29,
+      "question": "Universe",
+      "answer": "Vũ trụ",
+      "speak": "universe"
+    },
+    {
+      "id": 30,
+      "question": "Volcano",
+      "answer": "Núi lửa",
+      "speak": "volcano"
+    }
+  ]
+}

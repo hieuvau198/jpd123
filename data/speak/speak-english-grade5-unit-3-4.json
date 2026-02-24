@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade5-unit-3-4",
+  "title": "Speak Practice - Grade 5 Unit 3 & 4",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-5", "holiday", "party"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which word means 'very old'?",
+      "options": ["Ancient", "Modern", "New", "Young"],
+      "correctAnswer": "Ancient",
+      "level": "medium",
+      "explanation": "'Ancient' means belonging to the very distant past and no longer in existence."
+    },
+    {
+      "id": 2,
+      "question": "An 'Imperial city' is a city related to...",
+      "options": ["Kings and Queens", "Animals", "Robots", "Farmers"],
+      "correctAnswer": "Kings and Queens",
+      "level": "hard",
+      "explanation": "'Imperial' relates to an empire or an emperor (like Hue Imperial City)."
+    },
+    {
+      "id": 3,
+      "question": "Which vehicle travels on a railway?",
+      "options": ["Train", "Bus", "Taxi", "Boat"],
+      "correctAnswer": "Train",
+      "level": "easy",
+      "explanation": "A 'Train' runs on rails (railway)."
+    },
+    {
+      "id": 4,
+      "question": "A piece of land surrounded by water is an...",
+      "options": ["Island", "Airport", "Station", "Office"],
+      "correctAnswer": "Island",
+      "level": "medium",
+      "explanation": "An 'Island' is a piece of land surrounded by water."
+    },
+    {
+      "id": 5,
+      "question": "What do you call a trip where you eat a meal outdoors?",
+      "options": ["Picnic", "Meeting", "Class", "Sleep"],
+      "correctAnswer": "Picnic",
+      "level": "easy",
+      "explanation": "A 'Picnic' is an outing or occasion that involves taking a packed meal to be eaten outdoors."
+    },
+    {
+      "id": 6,
+      "question": "Which word means 'a social gathering of invited guests'?",
+      "options": ["Party", "Work", "Exam", "Queue"],
+      "correctAnswer": "Party",
+      "level": "easy",
+      "explanation": "A 'Party' is a social gathering of invited guests."
+    },
+    {
+      "id": 7,
+      "question": "A 'Cartoon' is a film made using...",
+      "options": ["Drawings", "Real people", "Photos", "Animals"],
+      "correctAnswer": "Drawings",
+      "level": "easy",
+      "explanation": "A 'Cartoon' is a motion picture using animation techniques (drawings)."
+    },
+    {
+      "id": 8,
+      "question": "To 'Invite' someone means to...",
+      "options": ["Ask them to come somewhere", "Tell them to go away", "Give them money", "Ignore them"],
+      "correctAnswer": "Ask them to come somewhere",
+      "level": "medium",
+      "explanation": "To 'Invite' is to make a polite, formal, or friendly request to (someone) to go somewhere or do something."
+    },
+    {
+      "id": 9,
+      "question": "Which game involves one person hiding and others looking for them?",
+      "options": ["Hide-and-seek", "Football", "Chess", "Tag"],
+      "correctAnswer": "Hide-and-seek",
+      "level": "medium",
+      "explanation": "'Hide-and-seek' is a children's game in which players hide and one person seeks them."
+    },
+    {
+      "id": 10,
+      "question": "A 'Present' is another word for a...",
+      "options": ["Gift", "Cake", "Song", "Card"],
+      "correctAnswer": "Gift",
+      "level": "easy",
+      "explanation": "A 'Present' is a thing given to someone as a gift."
+    },
+    {
+      "id": 11,
+      "question": "What is the 'Seaside'?",
+      "options": ["A place by the sea", "A mountain top", "A city center", "A desert"],
+      "correctAnswer": "A place by the sea",
+      "level": "easy",
+      "explanation": "'Seaside' refers to a place by the sea, especially a beach area."
+    },
+    {
+      "id": 12,
+      "question": "If something is 'Wonderful', it is...",
+      "options": ["Very good", "Very bad", "Boring", "Sad"],
+      "correctAnswer": "Very good",
+      "level": "medium",
+      "explanation": "'Wonderful' means inspiring delight, pleasure, or admiration; extremely good."
+    },
+    {
+      "id": 13,
+      "question": "Which vehicle flies in the air?",
+      "options": ["Plane", "Coach", "Motorbike", "Underground"],
+      "correctAnswer": "Plane",
+      "level": "easy",
+      "explanation": "A 'Plane' (airplane) flies in the air."
+    },
+    {
+      "id": 14,
+      "question": "To 'Chat' means to...",
+      "options": ["Talk in a friendly way", "Shout", "Sing", "Cry"],
+      "correctAnswer": "Talk in a friendly way",
+      "level": "medium",
+      "explanation": "'Chat' means to talk in a friendly and informal way."
+    },
+    {
+      "id": 15,
+      "question": "Candles are often put on a...",
+      "options": ["Birthday cake", "Pizza", "Soup", "Salad"],
+      "correctAnswer": "Birthday cake",
+      "level": "easy",
+      "explanation": "We put 'Candles' on a birthday cake."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "id": "flashcard-english-grade-7-core",
+  "title": "Tiếng Anh Lớp 7 - 30 Từ Vựng Cơ Bản",
+  "subject": "english",
+  "tags": [
+    "english-7",
+    "vocabulary",
+    "core"
+  ],
+  "description": "30 từ vựng quan trọng cho chương trình Tiếng Anh lớp 7 (Hobbies, Health, Arts)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Allergy",
+      "answer": "Dị ứng",
+      "speak": "allergy"
+    },
+    {
+      "id": 2,
+      "question": "Aquarium",
+      "answer": "Thủy cung",
+      "speak": "aquarium"
+    },
+    {
+      "id": 3,
+      "question": "Arrangement",
+      "answer": "Sự sắp xếp",
+      "speak": "arrangement"
+    },
+    {
+      "id": 4,
+      "question": "Benefit",
+      "answer": "Lợi ích",
+      "speak": "benefit"
+    },
+    {
+      "id": 5,
+      "question": "Calorie",
+      "answer": "Năng lượng (calo)",
+      "speak": "calorie"
+    },
+    {
+      "id": 6,
+      "question": "Carve",
+      "answer": "Khắc, chạm",
+      "speak": "carve"
+    },
+    {
+      "id": 7,
+      "question": "Charity",
+      "answer": "Từ thiện",
+      "speak": "charity"
+    },
+    {
+      "id": 8,
+      "question": "Community",
+      "answer": "Cộng đồng",
+      "speak": "community"
+    },
+    {
+      "id": 9,
+      "question": "Composer",
+      "answer": "Nhà soạn nhạc",
+      "speak": "composer"
+    },
+    {
+      "id": 10,
+      "question": "Cough",
+      "answer": "Ho",
+      "speak": "cough"
+    },
+    {
+      "id": 11,
+      "question": "Depression",
+      "answer": "Chán nản, trầm cảm",
+      "speak": "depression"
+    },
+    {
+      "id": 12,
+      "question": "Diet",
+      "answer": "Chế độ ăn uống",
+      "speak": "diet"
+    },
+    {
+      "id": 13,
+      "question": "Donate",
+      "answer": "Quyên góp",
+      "speak": "donate"
+    },
+    {
+      "id": 14,
+      "question": "Energy",
+      "answer": "Năng lượng",
+      "speak": "energy"
+    },
+    {
+      "id": 15,
+      "question": "Environment",
+      "answer": "Môi trường",
+      "speak": "environment"
+    },
+    {
+      "id": 16,
+      "question": "Essential",
+      "answer": "Cần thiết",
+      "speak": "essential"
+    },
+    {
+      "id": 17,
+      "question": "Expert",
+      "answer": "Chuyên gia",
+      "speak": "expert"
+    },
+    {
+      "id": 18,
+      "question": "Flu",
+      "answer": "Cảm cúm",
+      "speak": "flu"
+    },
+    {
+      "id": 19,
+      "question": "Gardening",
+      "answer": "Làm vườn",
+      "speak": "gardening"
+    },
+    {
+      "id": 20,
+      "question": "Headache",
+      "answer": "Đau đầu",
+      "speak": "headache"
+    },
+    {
+      "id": 21,
+      "question": "Homeless",
+      "answer": "Vô gia cư",
+      "speak": "homeless"
+    },
+    {
+      "id": 22,
+      "question": "Melody",
+      "answer": "Giai điệu",
+      "speak": "melody"
+    },
+    {
+      "id": 23,
+      "question": "Obesity",
+      "answer": "Béo phì",
+      "speak": "obesity"
+    },
+    {
+      "id": 24,
+      "question": "Opportunity",
+      "answer": "Cơ hội",
+      "speak": "opportunity"
+    },
+    {
+      "id": 25,
+      "question": "Performance",
+      "answer": "Buổi biểu diễn",
+      "speak": "performance"
+    },
+    {
+      "id": 26,
+      "question": "Portrait",
+      "answer": "Chân dung",
+      "speak": "portrait"
+    },
+    {
+      "id": 27,
+      "question": "Pottery",
+      "answer": "Đồ gốm",
+      "speak": "pottery"
+    },
+    {
+      "id": 28,
+      "question": "Provide",
+      "answer": "Cung cấp",
+      "speak": "provide"
+    },
+    {
+      "id": 29,
+      "question": "Sunburn",
+      "answer": "Cháy nắng",
+      "speak": "sunburn"
+    },
+    {
+      "id": 30,
+      "question": "Volunteer",
+      "answer": "Tình nguyện viên",
+      "speak": "volunteer"
+    }
+  ]
+}

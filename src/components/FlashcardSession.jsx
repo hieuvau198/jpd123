@@ -146,11 +146,12 @@ const FlashcardSession = ({ data, onHome }) => {
     return (
         <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
         <Result
-          status="success"
-          title="Session Completed!"
-          extra={[
-            <Button key="home" onClick={onHome}>Home</Button>,
-            <Button key="restart" type="primary" onClick={() => {
+  status="success"
+  title="Session Completed!"
+  extra={[
+    // Đổi thành setMode(null) để quay lại menu 4 nút
+    <Button key="menu" onClick={() => setMode(null)}>Back to Menu</Button>, 
+    <Button key="restart" type="primary" onClick={() => {
                setQueue(shuffleArray([...data.questions]));
                setCurrentIndex(0);
                setMode(null);
@@ -168,9 +169,10 @@ const FlashcardSession = ({ data, onHome }) => {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto', padding: '40px 20px' }}>
         <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-          <Button ghost icon={<Home size={16}/>} onClick={onHome} style={{ color: 'white' }}>Exit</Button>
-          <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
-        </Flex>
+  {/* Đổi onClick thành () => setMode(null) */}
+  <Button ghost icon={<Home size={16}/>} onClick={() => setMode(null)} style={{ color: 'white' }}>Exit</Button>
+  <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
+</Flex>
 
         {/* Single Static Card */}
         <Card 

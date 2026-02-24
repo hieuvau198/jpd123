@@ -1,0 +1,88 @@
+{
+  "id": "quiz-english-9-unit-8-comprehensive",
+  "title": "English 9 Unit 8 - Comprehensive Test (Tourism)",
+  "subject": "English 9",
+  "tags": ["english-9", "unit8", "vocab", "grammar", "relative-clauses"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Before the trip, we prepared a detailed ______.",
+      "options": ["itinerary", "agency", "graveyard", "loft"],
+      "correctAnswer": "itinerary",
+      "level": "medium",
+      "explanation": "'Itinerary' là lịch trình chuyến đi."
+    },
+    {
+      "id": 2,
+      "question": "The tour guide ______ led us was very knowledgeable.",
+      "options": ["who", "which", "whom", "whose"],
+      "correctAnswer": "who",
+      "level": "easy",
+      "explanation": "Người hướng dẫn viên (người) -> dùng 'who' làm chủ ngữ."
+    },
+    {
+      "id": 3,
+      "question": "If you want a cheap trip, you should book a ______ holiday.",
+      "options": ["package", "business", "luxury", "ruinous"],
+      "correctAnswer": "package",
+      "level": "medium",
+      "explanation": "'Package holiday' (kỳ nghỉ trọn gói) thường rẻ hơn đặt lẻ."
+    },
+    {
+      "id": 4,
+      "question": "This is the brochure ______ I picked up at the travel agency.",
+      "options": ["which", "who", "where", "whose"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'Brochure' (vật) -> dùng 'which'."
+    },
+    {
+      "id": 5,
+      "question": "We stayed in a ______ to experience the local culture.",
+      "options": ["homestay", "resort", "hotel", "villa"],
+      "correctAnswer": "homestay",
+      "level": "medium",
+      "explanation": "'Homestay' (ở nhà dân) là cách tốt nhất để trải nghiệm văn hóa địa phương."
+    },
+    {
+      "id": 6,
+      "question": "The man ______ car broke down is asking for help.",
+      "options": ["whose", "who", "whom", "which"],
+      "correctAnswer": "whose",
+      "level": "medium",
+      "explanation": "Xe của người đàn ông -> chỉ sở hữu -> dùng 'whose'."
+    },
+    {
+      "id": 7,
+      "question": "My father speaks English very ______.",
+      "options": ["smoothly", "smooth", "ruinous", "fixed"],
+      "correctAnswer": "smoothly",
+      "level": "medium",
+      "explanation": "Cần trạng từ để bổ nghĩa cho động từ 'speaks'. 'Smoothly' (trôi chảy)."
+    },
+    {
+      "id": 8,
+      "question": "Ha Long Bay is a place ______ attracts millions of visitors.",
+      "options": ["which", "who", "where", "whose"],
+      "correctAnswer": "which",
+      "level": "easy",
+      "explanation": "'A place' (vật/địa điểm) làm chủ ngữ cho động từ 'attracts' -> dùng 'which' (hoặc 'that'). 'Where' không làm chủ ngữ."
+    },
+    {
+      "id": 9,
+      "question": "You should bring a map to avoid getting lost when you ______ around the old town.",
+      "options": ["wander", "hunt", "estimate", "propose"],
+      "correctAnswer": "wander",
+      "level": "hard",
+      "explanation": "'Wander' nghĩa là đi lang thang, dạo chơi."
+    },
+    {
+      "id": 10,
+      "question": "I prefer ______ tourism because I can choose my own schedule.",
+      "options": ["self-guided", "package", "group", "agency"],
+      "correctAnswer": "self-guided",
+      "level": "medium",
+      "explanation": "'Self-guided' nghĩa là tự túc/tự hướng dẫn, cho phép tự chọn lịch trình."
+    }
+  ]
+}

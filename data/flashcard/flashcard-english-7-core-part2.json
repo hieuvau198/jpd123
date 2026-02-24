@@ -1,0 +1,194 @@
+{
+  "id": "flashcard-english-grade-7-core-part2",
+  "title": "Tiếng Anh Lớp 7 - 30 Từ Vựng Mới (Phần 2)",
+  "subject": "english",
+  "tags": [
+    "english-7",
+    "vocabulary",
+    "core",
+    "part2"
+  ],
+  "description": "30 từ vựng tiếng Anh lớp 7 chủ đề Giao thông, Phim ảnh, Năng lượng.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Alternative",
+      "answer": "Thay thế",
+      "speak": "alternative"
+    },
+    {
+      "id": 2,
+      "question": "Animation",
+      "answer": "Phim hoạt hình",
+      "speak": "animation"
+    },
+    {
+      "id": 3,
+      "question": "Atmosphere",
+      "answer": "Bầu không khí",
+      "speak": "atmosphere"
+    },
+    {
+      "id": 4,
+      "question": "Biogas",
+      "answer": "Khí sinh học",
+      "speak": "biogas"
+    },
+    {
+      "id": 5,
+      "question": "Camera",
+      "answer": "Máy ảnh",
+      "speak": "camera"
+    },
+    {
+      "id": 6,
+      "question": "Carbon footprint",
+      "answer": "Dấu chân carbon (Lượng khí thải)",
+      "speak": "carbon footprint"
+    },
+    {
+      "id": 7,
+      "question": "Commute",
+      "answer": "Đi lại đều đặn",
+      "speak": "commute"
+    },
+    {
+      "id": 8,
+      "question": "Congestion",
+      "answer": "Sự tắc nghẽn",
+      "speak": "congestion"
+    },
+    {
+      "id": 9,
+      "question": "Director",
+      "answer": "Đạo diễn",
+      "speak": "director"
+    },
+    {
+      "id": 10,
+      "question": "Distance",
+      "answer": "Khoảng cách",
+      "speak": "distance"
+    },
+    {
+      "id": 11,
+      "question": "Exhibition",
+      "answer": "Cuộc triển lãm",
+      "speak": "exhibition"
+    },
+    {
+      "id": 12,
+      "question": "Exhaust fume",
+      "answer": "Khí thải",
+      "speak": "exhaust fume"
+    },
+    {
+      "id": 13,
+      "question": "Festival",
+      "answer": "Lễ hội",
+      "speak": "festival"
+    },
+    {
+      "id": 14,
+      "question": "Fossil fuel",
+      "answer": "Nhiên liệu hóa thạch",
+      "speak": "fossil fuel"
+    },
+    {
+      "id": 15,
+      "question": "Frightening",
+      "answer": "Đáng sợ",
+      "speak": "frightening"
+    },
+    {
+      "id": 16,
+      "question": "Generator",
+      "answer": "Máy phát điện",
+      "speak": "generator"
+    },
+    {
+      "id": 17,
+      "question": "Helmet",
+      "answer": "Mũ bảo hiểm",
+      "speak": "helmet"
+    },
+    {
+      "id": 18,
+      "question": "Hydro",
+      "answer": "Thủy điện",
+      "speak": "hydro"
+    },
+    {
+      "id": 19,
+      "question": "Instrument",
+      "answer": "Nhạc cụ",
+      "speak": "instrument"
+    },
+    {
+      "id": 20,
+      "question": "Musician",
+      "answer": "Nhạc sĩ",
+      "speak": "musician"
+    },
+    {
+      "id": 21,
+      "question": "Nuclear",
+      "answer": "Hạt nhân",
+      "speak": "nuclear"
+    },
+    {
+      "id": 22,
+      "question": "Passenger",
+      "answer": "Hành khách",
+      "speak": "passenger"
+    },
+    {
+      "id": 23,
+      "question": "Pedestrian",
+      "answer": "Người đi bộ",
+      "speak": "pedestrian"
+    },
+    {
+      "id": 24,
+      "question": "Photographer",
+      "answer": "Nhiếp ảnh gia",
+      "speak": "photographer"
+    },
+    {
+      "id": 25,
+      "question": "Renewable",
+      "answer": "Có thể tái tạo",
+      "speak": "renewable"
+    },
+    {
+      "id": 26,
+      "question": "Review",
+      "answer": "Bài đánh giá",
+      "speak": "review"
+    },
+    {
+      "id": 27,
+      "question": "Sculpture",
+      "answer": "Bức tượng điêu khắc",
+      "speak": "sculpture"
+    },
+    {
+      "id": 28,
+      "question": "Solar",
+      "answer": "Thuộc về mặt trời",
+      "speak": "solar"
+    },
+    {
+      "id": 29,
+      "question": "Traffic jam",
+      "answer": "Tắc đường",
+      "speak": "traffic jam"
+    },
+    {
+      "id": 30,
+      "question": "Vehicle",
+      "answer": "Phương tiện giao thông",
+      "speak": "vehicle"
+    }
+  ]
+}

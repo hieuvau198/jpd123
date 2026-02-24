@@ -1,0 +1,128 @@
+{
+  "id": "speak-english-grade5-unit-1-2",
+  "title": "Speak Practice - Grade 5 Unit 1 & 2",
+  "subject": "English Vocabulary",
+  "tags": ["vocabulary", "english-5", "address", "daily-routine"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the word for 'a way in a city or town that has houses and buildings'?",
+      "options": ["Street", "Forest", "River", "Sky"],
+      "correctAnswer": "Street",
+      "level": "easy",
+      "explanation": "A 'Street' is a public road in a city or town."
+    },
+    {
+      "id": 2,
+      "question": "Which word means 'a very tall building'?",
+      "options": ["Tower", "Cottage", "Hut", "Tent"],
+      "correctAnswer": "Tower",
+      "level": "medium",
+      "explanation": "A 'Tower' is a tall narrow building, either freestanding or forming part of a building."
+    },
+    {
+      "id": 3,
+      "question": "Choose the word for 'the place where you were born and grew up'.",
+      "options": ["Hometown", "Market", "School", "Zoo"],
+      "correctAnswer": "Hometown",
+      "level": "easy",
+      "explanation": "Your 'Hometown' is the town or city that you come from."
+    },
+    {
+      "id": 4,
+      "question": "Which adjective describes a place with 'too many people'?",
+      "options": ["Crowded", "Quiet", "Empty", "Small"],
+      "correctAnswer": "Crowded",
+      "level": "medium",
+      "explanation": "'Crowded' means full of people."
+    },
+    {
+      "id": 5,
+      "question": "If you live in a 'Village', you live in the...",
+      "options": ["Countryside", "City center", "Ocean", "Space"],
+      "correctAnswer": "Countryside",
+      "level": "medium",
+      "explanation": "A 'Village' is a group of houses and associated buildings, larger than a hamlet and smaller than a town, situated in a rural area."
+    },
+    {
+      "id": 6,
+      "question": "What is a 'Flat'?",
+      "options": ["A set of rooms for living in", "A type of car", "A kind of food", "A pet"],
+      "correctAnswer": "A set of rooms for living in",
+      "level": "medium",
+      "explanation": "A 'Flat' (apartment) is a set of rooms forming an individual residence."
+    },
+    {
+      "id": 7,
+      "question": "Which activity do you do in the morning to clean your teeth?",
+      "options": ["Brush teeth", "Wash face", "Comb hair", "Get dressed"],
+      "correctAnswer": "Brush teeth",
+      "level": "easy",
+      "explanation": "We 'Brush teeth' to clean them."
+    },
+    {
+      "id": 8,
+      "question": "To 'Surf the internet' means to...",
+      "options": ["Look for information online", "Swim in the sea", "Play football", "Read a book"],
+      "correctAnswer": "Look for information online",
+      "level": "medium",
+      "explanation": "'Surf the internet' means to spend time visiting a lot of websites."
+    },
+    {
+      "id": 9,
+      "question": "What comes after 'Wake up' in a daily routine?",
+      "options": ["Get up", "Sleep", "Dream", "Sneeze"],
+      "correctAnswer": "Get up",
+      "level": "easy",
+      "explanation": "After you 'Wake up' (open eyes), you 'Get up' (leave the bed)."
+    },
+    {
+      "id": 10,
+      "question": "Which word tells you how often you do something (e.g., 100% of the time)?",
+      "options": ["Always", "Never", "Sometimes", "Rarely"],
+      "correctAnswer": "Always",
+      "level": "medium",
+      "explanation": "'Always' means at all times; on all occasions."
+    },
+    {
+      "id": 11,
+      "question": "A 'Project' at school is usually...",
+      "options": ["A piece of planned work", "A game", "A holiday", "A snack"],
+      "correctAnswer": "A piece of planned work",
+      "level": "hard",
+      "explanation": "A 'Project' is an enterprise that is carefully planned and designed to achieve a particular aim."
+    },
+    {
+      "id": 12,
+      "question": "Which meal do you eat in the evening?",
+      "options": ["Dinner", "Breakfast", "Lunch", "Snack"],
+      "correctAnswer": "Dinner",
+      "level": "easy",
+      "explanation": "'Dinner' is the main meal of the day, taken in the evening."
+    },
+    {
+      "id": 13,
+      "question": "If a street is 'Busy', it has...",
+      "options": ["Lots of traffic and activity", "No cars", "No people", "Only trees"],
+      "correctAnswer": "Lots of traffic and activity",
+      "level": "medium",
+      "explanation": "'Busy' means having a great deal to do; occupied."
+    },
+    {
+      "id": 14,
+      "question": "What is the opposite of 'Large'?",
+      "options": ["Small", "Big", "Huge", "Tall"],
+      "correctAnswer": "Small",
+      "level": "easy",
+      "explanation": "'Small' is the opposite of 'Large'."
+    },
+    {
+      "id": 15,
+      "question": "A 'District' is a part of a...",
+      "options": ["City or country", "House", "School", "Car"],
+      "correctAnswer": "City or country",
+      "level": "hard",
+      "explanation": "A 'District' is an area of a country or city."
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "id": "flashcard-english-grade-8-core",
+  "title": "Tiếng Anh Lớp 8 - 30 Từ Vựng Cơ Bản",
+  "subject": "english",
+  "tags": [
+    "english-8",
+    "vocabulary",
+    "core"
+  ],
+  "description": "30 từ vựng quan trọng cho chương trình Tiếng Anh lớp 8 (Countryside, Customs, Teens)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Addicted",
+      "answer": "Nghiện (thích quá mức)",
+      "speak": "addicted"
+    },
+    {
+      "id": 2,
+      "question": "Ancestor",
+      "answer": "Tổ tiên",
+      "speak": "ancestor"
+    },
+    {
+      "id": 3,
+      "question": "Anniversary",
+      "answer": "Ngày kỷ niệm",
+      "speak": "anniversary"
+    },
+    {
+      "id": 4,
+      "question": "Beehive",
+      "answer": "Tổ ong",
+      "speak": "beehive"
+    },
+    {
+      "id": 5,
+      "question": "Brave",
+      "answer": "Dũng cảm",
+      "speak": "brave"
+    },
+    {
+      "id": 6,
+      "question": "Buffalo",
+      "answer": "Con trâu",
+      "speak": "buffalo"
+    },
+    {
+      "id": 7,
+      "question": "Cattle",
+      "answer": "Gia súc",
+      "speak": "cattle"
+    },
+    {
+      "id": 8,
+      "question": "Ceremony",
+      "answer": "Nghi lễ",
+      "speak": "ceremony"
+    },
+    {
+      "id": 9,
+      "question": "Commemorate",
+      "answer": "Tưởng nhớ",
+      "speak": "commemorate"
+    },
+    {
+      "id": 10,
+      "question": "Communication",
+      "answer": "Sự giao tiếp",
+      "speak": "communication"
+    },
+    {
+      "id": 11,
+      "question": "Companion",
+      "answer": "Bạn đồng hành",
+      "speak": "companion"
+    },
+    {
+      "id": 12,
+      "question": "Competition",
+      "answer": "Cuộc thi",
+      "speak": "competition"
+    },
+    {
+      "id": 13,
+      "question": "Convenient",
+      "answer": "Tiện lợi",
+      "speak": "convenient"
+    },
+    {
+      "id": 14,
+      "question": "Craft",
+      "answer": "Thủ công",
+      "speak": "craft"
+    },
+    {
+      "id": 15,
+      "question": "Cruel",
+      "answer": "Độc ác",
+      "speak": "cruel"
+    },
+    {
+      "id": 16,
+      "question": "Cultural",
+      "answer": "Thuộc về văn hóa",
+      "speak": "cultural"
+    },
+    {
+      "id": 17,
+      "question": "Custom",
+      "answer": "Phong tục",
+      "speak": "custom"
+    },
+    {
+      "id": 18,
+      "question": "Disturb",
+      "answer": "Làm phiền",
+      "speak": "disturb"
+    },
+    {
+      "id": 19,
+      "question": "Ethnic",
+      "answer": "Thuộc dân tộc",
+      "speak": "ethnic"
+    },
+    {
+      "id": 20,
+      "question": "Generous",
+      "answer": "Hào phóng",
+      "speak": "generous"
+    },
+    {
+      "id": 21,
+      "question": "Harvest",
+      "answer": "Mùa gặt",
+      "speak": "harvest"
+    },
+    {
+      "id": 22,
+      "question": "Heritage",
+      "answer": "Di sản",
+      "speak": "heritage"
+    },
+    {
+      "id": 23,
+      "question": "Hospitality",
+      "answer": "Lòng mến khách",
+      "speak": "hospitality"
+    },
+    {
+      "id": 24,
+      "question": "Leisure",
+      "answer": "Thời gian rảnh rỗi",
+      "speak": "leisure"
+    },
+    {
+      "id": 25,
+      "question": "Minority",
+      "answer": "Dân tộc thiểu số",
+      "speak": "minority"
+    },
+    {
+      "id": 26,
+      "question": "Nomadic",
+      "answer": "Nay đây mai đó (du mục)",
+      "speak": "nomadic"
+    },
+    {
+      "id": 27,
+      "question": "Paddy field",
+      "answer": "Cánh đồng lúa",
+      "speak": "paddy field"
+    },
+    {
+      "id": 28,
+      "question": "Procession",
+      "answer": "Đám rước",
+      "speak": "procession"
+    },
+    {
+      "id": 29,
+      "question": "Socialize",
+      "answer": "Giao lưu xã hội",
+      "speak": "socialize"
+    },
+    {
+      "id": 30,
+      "question": "Tradition",
+      "answer": "Truyền thống",
+      "speak": "tradition"
+    }
+  ]
+}
