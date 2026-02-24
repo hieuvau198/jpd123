@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import DefenseGameSession from '../components/DefenseGameSession';
+import DefenseGameSession from '../components/defense/DefenseGameSession';
 import { defenseLevels } from '../../data/mockDefenseData';
 
 const DefenseDetail = () => {
