@@ -6,18 +6,29 @@ const { Title, Text } = Typography;
 
 // --- Game Constants ---
 const TOWER_HP_MAX = 5;
-const GAME_WIDTH = 800;  // Wider battlefield
-const GAME_HEIGHT = 450; // Taller battlefield
-const TOWER_SIZE = 80;   // Bigger tower
-const ENEMY_SIZE = 60;   // Bigger enemies
-const TOWER_X = 50;      // Tower position from left
+const GAME_WIDTH = 800;  
+const GAME_HEIGHT = 450; 
+const TOWER_SIZE = 80;   
+const ENEMY_SIZE = 80;   
+const TOWER_X = 50;      
 
-// Asset Path (Ensure 'game_objects' folder is in your 'public' directory)
-const ENEMY_ASSET = '/game_objects/dinosaurs/pterosaur1.png'; 
+// --- Animation Configuration ---
+const FRAME_COUNT = 20; // 0001 to 0020
+const ANIMATION_SPEED = 3; // Updates per game loop (Lower = Faster)
+
+// Generate the paths for the 20 frames
+const ZOMBIE_FRAMES = Array.from({ length: FRAME_COUNT }, (_, i) => {
+  const num = (i + 1).toString().padStart(4, '0'); // 0001, 0002...
+  return `/game_objects/zombies/run/Run_Body_270_${num}.png`;
+});
+// const ZOMBIE_FRAMES = Array.from({ length: FRAME_COUNT }, (_, i) => {
+//   const num = (i + 1).toString().padStart(4, '0'); // 0001, 0002...
+//   return `/game_objects/zombies/270/Walk_Body_270_${num}.png`;
+// });
 
 const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   // Game State
-  const [gameState, setGameState] = useState('playing'); // playing, won, lost
+  const [gameState, setGameState] = useState('playing'); 
   const [hp, setHp] = useState(TOWER_HP_MAX);
   const [score, setScore] = useState(0);
   const [enemies, setEnemies] = useState([]);
@@ -34,13 +45,20 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
 
   const currentQuestion = levelData.questions[qIndex % levelData.questions.length];
 
+  // --- Preload Images (Optional but recommended for smoothness) ---
+  useEffect(() => {
+    ZOMBIE_FRAMES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   // --- Game Loop Logic ---
   
-  // Spawn Enemy (From Right Side Only)
+  // Spawn Enemy 
   const spawnEnemy = () => {
     if (gameState !== 'playing') return;
     
-    // Spawn at the rightmost edge, random Y height
     const startX = GAME_WIDTH + 50; 
     const startY = Math.random() * (GAME_HEIGHT - ENEMY_SIZE);
 
@@ -48,7 +66,10 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       id: Date.now() + Math.random(),
       x: startX,
       y: startY,
-      speed: 1.5 + (Math.random() * 0.5), // Slightly faster for bigger map
+      speed: 1.5 + (Math.random() * 0.5), 
+      // Animation State
+      frameIndex: 0,
+      frameTimer: 0
     };
 
     enemiesRef.current.push(newEnemy);
@@ -58,11 +79,9 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   const updateGame = () => {
     if (gameState !== 'playing') return;
 
-    // Target is the center of the tower
     const targetX = TOWER_X;
     const targetY = GAME_HEIGHT / 2 - TOWER_SIZE / 2;
 
-    // Move enemies
     enemiesRef.current = enemiesRef.current.filter(enemy => {
       const dx = targetX - enemy.x;
       const dy = targetY - enemy.y;
@@ -82,6 +101,14 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       const angle = Math.atan2(dy, dx);
       enemy.x += Math.cos(angle) * enemy.speed;
       enemy.y += Math.sin(angle) * enemy.speed;
+
+      // Update Animation Frame
+      enemy.frameTimer++;
+      if (enemy.frameTimer >= ANIMATION_SPEED) {
+        enemy.frameIndex = (enemy.frameIndex + 1) % FRAME_COUNT;
+        enemy.frameTimer = 0;
+      }
+
       return true;
     });
 
@@ -117,7 +144,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
     if (isWrong || gameState !== 'playing') return;
     
     if (option === currentQuestion.answer) {
-      // Correct! - Kill closest enemy to the tower
+      // Correct! - Kill closest enemy
       const targetX = TOWER_X;
       const targetY = GAME_HEIGHT / 2;
       
@@ -137,12 +164,10 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
         setEnemies([...enemiesRef.current]);
       }
 
-      // Update Score & Question
       setScore(prev => prev + 1);
       setQIndex(prev => prev + 1);
       
     } else {
-      // Wrong!
       setIsWrong(true);
       setTimeout(() => setIsWrong(false), 1000);
     }
@@ -156,7 +181,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
         <Result
           status="success"
           title="VICTORY!"
-          subTitle={`You defended the base against ${score} Pterosaurs!`}
+          subTitle={`You defended the base against ${score} Zombies!`}
           extra={[
             <Button key="home" onClick={onHome} icon={<Home size={16} />}>Home</Button>,
             <Button key="retry" type="primary" onClick={onRestart} icon={<RefreshCw size={16} />}>Replay</Button>
@@ -204,10 +229,10 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
           position: 'relative', 
           width: '100%', 
           height: GAME_HEIGHT, 
-          background: 'linear-gradient(to right, #e6f7ff, #f0f5ff)',
+          background: 'linear-gradient(to right, #333, #555)', 
           overflow: 'hidden'
         }}>
-          {/* Base / Tower (Left Most) */}
+          {/* Base / Tower */}
           <div style={{
             position: 'absolute',
             left: TOWER_X,
@@ -226,12 +251,12 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
             <Shield color="white" size={40} />
           </div>
 
-          {/* Enemies (Pterosaurs) */}
+          {/* Enemies (Sequence Animation) */}
           {enemies.map(e => (
             <img 
               key={e.id} 
-              src={ENEMY_ASSET}
-              alt="Enemy"
+              src={ZOMBIE_FRAMES[e.frameIndex]} // Cycles 0 to 19
+              alt="Zombie"
               style={{
                 position: 'absolute',
                 left: e.x,
@@ -239,15 +264,15 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
                 width: ENEMY_SIZE,
                 height: ENEMY_SIZE,
                 zIndex: 5,
-                transition: 'none',
-                transform: 'scaleX(1)' // -1 is Flip image if needed to face left
+                transition: 'none', 
+                pointerEvents: 'none' // Improves performance
               }}
             />
           ))}
         </div>
       </Card>
 
-      {/* Compact Question Area (Bottom) */}
+      {/* Question Area */}
       <Card 
         size="small"
         style={{ width: '100%', background: '#fff' }}
