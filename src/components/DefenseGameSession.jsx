@@ -19,7 +19,7 @@ const ANIMATION_SPEED = 3; // Updates per game loop (Lower = Faster)
 // Generate the paths for the 20 frames
 const ZOMBIE_FRAMES = Array.from({ length: FRAME_COUNT }, (_, i) => {
   const num = (i + 1).toString().padStart(4, '0'); // 0001, 0002...
-  return `/game_objects/zombies/run/Run_Body_270_${num}.png`;
+  return `/game_objects/zombies/skin_1/Run_Body_270_${num}.png`;
 });
 // const ZOMBIE_FRAMES = Array.from({ length: FRAME_COUNT }, (_, i) => {
 //   const num = (i + 1).toString().padStart(4, '0'); // 0001, 0002...
