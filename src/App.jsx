@@ -44,8 +44,8 @@ export default function App() {
         <Route path="/speak/:id" element={<SpeakDetail />} />
 
         {/* Defense Routes (New) */}
-        <Route path="/defense" element={<DefenseList />} />
-        <Route path="/defense/:id" element={<DefenseDetail />} />
+        <Route path="/challenge" element={<DefenseList />} />
+        <Route path="/challenge/:id" element={<DefenseDetail />} />
         
         {/* Fallback */}
         <Route path="*" element={<Home />} />

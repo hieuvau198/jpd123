@@ -39,7 +39,7 @@ const DefenseList = () => {
           {levels.map((level) => (
             <div 
               key={level.id}
-              onClick={() => navigate(`/defense/${level.id}`)}
+              onClick={() => navigate(`/challenge/${level.id}`)}
               className="bg-white/10 hover:bg-white/20 p-6 rounded-xl cursor-pointer transition-all border border-white/5 hover:border-red-500/50 group"
             >
               <div className="flex justify-between items-start mb-4">

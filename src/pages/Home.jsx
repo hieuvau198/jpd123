@@ -70,7 +70,7 @@ const Home = () => {
 
         {/* Defense (New Feature) */}
         <Col xs={24} sm={8} md={6}>
-          <Link to="/defense" style={{ textDecoration: 'none' }}>
+          <Link to="/challenge" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, borderColor: '#ff4d4f' }}>
               <div style={{ marginBottom: 20 }}>
                 <Swords size={48} color="#ff4d4f" />

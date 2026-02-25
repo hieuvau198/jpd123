@@ -80,7 +80,7 @@ const DefenseDetail = () => {
       <DefenseGameSession 
         key={sessionKey} 
         levelData={levelData} 
-        onHome={() => navigate('/defense')}
+        onHome={() => navigate('/challenge')}
         onRestart={() => setSessionKey(prev => prev + 1)}
       />
     </div>

@@ -27,8 +27,8 @@ export const DIFFICULTIES = {
 
 export const SKIN_PROPS = {
   1: { hp: 1, size: 150, speedMod: 1.0 },
-  2: { hp: 2, size: 200, speedMod: 0.8 },
-  3: { hp: 3, size: 250, speedMod: 0.6 }
+  2: { hp: 2, size: 200, speedMod: 0.7 },
+  3: { hp: 3, size: 250, speedMod: 0.5 }
 };
 
 export const BACKGROUND_IMAGES = [
