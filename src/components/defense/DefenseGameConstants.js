@@ -2,18 +2,19 @@ export const TOWER_HP_MAX = 5;
 export const TOWER_SIZE = 80;
 export const TOWER_X = 50;
 
-export const FRAME_COUNT = 10;
-export const ANIMATION_SPEED = 4;
-
-export const getFrames = (skinNum) => Array.from({ length: FRAME_COUNT }, (_, i) => {
-  const num = (i + 1).toString().padStart(4, '0');
-  return `/game_objects/zombies/skin_${skinNum}/Run_Body_270_${num}.png`;
-});
-
-export const ZOMBIE_FRAMES = {
-  1: getFrames(1),
-  2: getFrames(2),
-  3: getFrames(3)
+// Replaced Zombie Frames with Spaceship Assets
+export const SPACESHIP_ASSETS = {
+  1: [
+    '/game_objects/spaceship/spaceship_270_1.png', 
+    '/game_objects/spaceship/spaceship_270_2.png'
+  ],
+  2: [
+    '/game_objects/spaceship/spaceship_270_3.png', 
+    '/game_objects/spaceship/spaceship_270_4.png'
+  ],
+  3: [
+    '/game_objects/spaceship/spaceship_270_5.png'
+  ]
 };
 
 export const DIFFICULTIES = {
@@ -25,9 +26,9 @@ export const DIFFICULTIES = {
 };
 
 export const SKIN_PROPS = {
-  1: { hp: 1, size: 180,  speedMod: 1.0 },
-  2: { hp: 2, size: 240, speedMod: 0.8 },
-  3: { hp: 3, size: 300, speedMod: 0.6 }
+  1: { hp: 1, size: 150, speedMod: 1.0 },
+  2: { hp: 2, size: 200, speedMod: 0.8 },
+  3: { hp: 3, size: 250, speedMod: 0.6 }
 };
 
 export const BACKGROUND_IMAGES = [

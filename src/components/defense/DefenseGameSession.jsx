@@ -3,8 +3,7 @@ import { Card, Button, Typography, Result } from 'antd';
 import { Heart, Shield, Home, RefreshCw, Target } from 'lucide-react';
 
 import { 
-  TOWER_HP_MAX, TOWER_SIZE, TOWER_X, FRAME_COUNT, ANIMATION_SPEED, 
-  ZOMBIE_FRAMES, DIFFICULTIES, SKIN_PROPS, BACKGROUND_IMAGES
+  TOWER_HP_MAX, TOWER_SIZE, TOWER_X, DIFFICULTIES, SKIN_PROPS, BACKGROUND_IMAGES, SPACESHIP_ASSETS
 } from './DefenseGameConstants';
 import DefenseQuestionOverlay from './DefenseQuestionOverlay';
 
@@ -36,8 +35,8 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
 
   // --- Preload Images & Fullscreen Listener ---
   useEffect(() => {
-    Object.values(ZOMBIE_FRAMES).forEach((skinGroup) => {
-      skinGroup.forEach((src) => {
+    Object.values(SPACESHIP_ASSETS).forEach((imageArray) => {
+      imageArray.forEach((src) => {
         const img = new Image();
         img.src = src;
       });
@@ -98,6 +97,10 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
     const width = gameAreaRef.current ? gameAreaRef.current.clientWidth : window.innerWidth;
     const height = gameAreaRef.current ? gameAreaRef.current.clientHeight : window.innerHeight;
 
+    // Pick a random image variant from the selected level
+    const availableImages = SPACESHIP_ASSETS[skin];
+    const selectedImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+
     const newEnemy = {
       id: Date.now() + Math.random(),
       x: width + 50,
@@ -107,8 +110,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       hp: props.hp,
       maxHp: props.hp,
       size: props.size,
-      frameIndex: 0,
-      frameTimer: 0
+      image: selectedImage
     };
 
     enemiesRef.current.push(newEnemy);
@@ -139,11 +141,6 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       enemy.x += Math.cos(angle) * enemy.speed;
       enemy.y += Math.sin(angle) * enemy.speed;
 
-      enemy.frameTimer++;
-      if (enemy.frameTimer >= ANIMATION_SPEED) {
-        enemy.frameIndex = (enemy.frameIndex + 1) % FRAME_COUNT;
-        enemy.frameTimer = 0;
-      }
       return true;
     });
 
@@ -233,7 +230,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
         <Result
           status={gameState === 'won' ? "success" : "error"}
           title={gameState === 'won' ? "VICTORY!" : "DEFEAT"}
-          subTitle={gameState === 'won' ? `You defended the base against ${score} Zombies on ${difficultyRef.current?.label} difficulty!` : "The base has been overrun."}
+          subTitle={gameState === 'won' ? `You defended the base against ${score} Spaceships on ${difficultyRef.current?.label} difficulty!` : "The base has been overrun."}
           extra={[
             <Button key="home" onClick={onHome} icon={<Home size={16} />}>Home</Button>,
             <Button key="retry" type="primary" onClick={handleRestart} icon={<RefreshCw size={16} />}>Play Again</Button>
@@ -249,17 +246,15 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       ref={fullscreenWrapRef}
       style={{ 
         width: isFullscreen ? '100vw' : '100%', 
-        height: isFullscreen ? '100vh' : '700px', // Fallback container size if not fullscreen
+        height: isFullscreen ? '100vh' : '700px',
         maxWidth: isFullscreen ? 'none' : '1200px',
         margin: '0 auto', 
         display: 'flex', 
         flexDirection: 'column',
-        // --- NEW BACKGROUND STYLES HERE ---
         backgroundImage: `url("${bgImage}")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        // ----------------------------------
         borderRadius: isFullscreen ? 0 : 12,
         overflow: 'hidden',
         boxShadow: isFullscreen ? 'none' : '0 10px 30px rgba(0,0,0,0.3)'
@@ -268,7 +263,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
       {/* Header Stats pinned to top */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.6)', padding: '15px 25px', zIndex: 10 }}>
         <div style={{ display: 'flex', gap: 30 }}>
-          <Text strong style={{ fontSize: 18, color: 'white' }}><Shield size={20} className="inline mr-1" color="#1890ff" /> Killed: {Math.min(score, levelData.enemyCount)} / {levelData.enemyCount}</Text>
+          <Text strong style={{ fontSize: 18, color: 'white' }}><Shield size={20} className="inline mr-1" color="#1890ff" /> Destroyed: {Math.min(score, levelData.enemyCount)} / {levelData.enemyCount}</Text>
           <Text strong style={{ fontSize: 18, color: hp < 3 ? '#ff4d4f' : '#52c41a' }}><Heart size={20} className="inline mr-1" fill={hp < 3 ? '#ff4d4f' : '#52c41a'} /> HP: {hp}</Text>
           <Text strong style={{ fontSize: 18, color: '#ccc' }}>Difficulty: {difficultyRef.current?.label}</Text>
         </div>
@@ -312,9 +307,14 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
               </div>
             )}
             <img 
-              src={ZOMBIE_FRAMES[e.skin][e.frameIndex]}
-              alt="Zombie"
-              style={{ width: '100%', height: '100%' }}
+              src={e.image}
+              alt="Spaceship"
+              style={{ 
+                width: '100%', 
+                height: '100%',
+                // Floating/Jiggling animation using Math.sin based on the X coordinate
+                transform: `translateY(${Math.sin(e.x / 15) * 8}px) rotate(${Math.cos(e.x / 15) * 4}deg)`
+              }}
             />
           </div>
         ))}

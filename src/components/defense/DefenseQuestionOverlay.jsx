@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Typography, Alert } from 'antd';
 
 const { Title } = Typography;
 
 const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, handleAnswer }) => {
+  
+  // --- Keyboard Shortcuts Listener ---
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Don't do anything if there's no question or if they are in the "wrong answer" timeout
+      if (!currentQuestion || isWrong) return;
+
+      const key = event.key.toLowerCase();
+      let optionIndex = -1;
+
+      // Map 1, 2, 3, 4, 5 and q, w, e, r, t to indices 0 - 4
+      if (key === '1' || key === 'q') optionIndex = 0;
+      else if (key === '2' || key === 'w') optionIndex = 1;
+      else if (key === '3' || key === 'e') optionIndex = 2;
+      else if (key === '4' || key === 'r') optionIndex = 3;
+      else if (key === '5' || key === 't') optionIndex = 4;
+
+      // If a valid key was pressed and the option exists, trigger the answer
+      if (optionIndex !== -1 && currentQuestion.options[optionIndex]) {
+        handleAnswer(currentQuestion.options[optionIndex]);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestion, isWrong, handleAnswer]);
+
   if (!currentQuestion) return null;
 
   return (
     <div style={{
       position: 'absolute',
-      bottom: '5%',
+      top: '45%', 
       left: '50%',
-      transform: 'translateX(-50%)',
-      // The background and blur are completely removed here
+      transform: 'translate(-50%, -50%)',
       background: 'transparent', 
       padding: '20px 30px',
       zIndex: 100,
@@ -32,10 +58,20 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
         />
       )}
       
-      {/* Made the text white with a drop shadow so it stands out against the dark map */}
-      <Title level={4} style={{ margin: 0, textAlign: 'center', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-        {currentQuestion.question}
-      </Title>
+      {/* Tightly fitting container for the question text */}
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.95)',
+        padding: '10px 24px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+        width: 'fit-content',
+        maxWidth: '100%',
+        textAlign: 'center'
+      }}>
+        <Title level={4} style={{ margin: 0, color: '#333' }}>
+          {currentQuestion.question}
+        </Title>
+      </div>
       
       <div style={{ display: 'flex', gap: 10, width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
         {currentQuestion.options.map((opt, i) => (
@@ -49,10 +85,24 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
             style={{ 
               minWidth: 150, 
               flex: '1 1 200px',
-              // Added a slight shadow to the buttons so they pop against the background
-              boxShadow: '0 4px 12px rgba(0,0,0,0.4)' 
+              boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+              fontWeight: 'bold',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
+            {/* Added a small badge to show the shortcut number */}
+            <span style={{ 
+              background: 'rgba(0,0,0,0.1)', 
+              padding: '2px 6px', 
+              borderRadius: '4px', 
+              fontSize: '0.8em',
+              color: isWrong && selectedOption === opt ? '#fff' : '#666'
+            }}>
+              [{i + 1}]
+            </span>
             {opt}
           </Button>
         ))}
