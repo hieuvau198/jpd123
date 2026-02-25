@@ -35,7 +35,7 @@ const FlashcardSession = ({ data, onHome }) => {
       if (e.code === 'Space') {
         e.preventDefault();
         if (queue[currentIndex]) {
-          handleSpeech(queue[currentIndex].speak);
+          handleSpeech(queue[currentIndex].question);
         }
       } else if (e.code === 'ArrowRight') handleNext();
       else if (e.code === 'ArrowLeft') handlePrev();
@@ -177,7 +177,7 @@ const FlashcardSession = ({ data, onHome }) => {
         {/* Single Static Card */}
         <Card 
           hoverable
-          onClick={() => handleSpeech(currentCard.speak)}
+          onClick={() => handleSpeech(currentCard.question)}
           style={{ 
             minHeight: 350, 
             display: 'flex', 
@@ -214,7 +214,7 @@ const FlashcardSession = ({ data, onHome }) => {
             icon={<Volume2 size={16} />} 
             onClick={(e) => {
               e.stopPropagation(); 
-              handleSpeech(currentCard.speak);
+              handleSpeech(currentCard.question);
             }}
           >
             Listen

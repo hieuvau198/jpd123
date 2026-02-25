@@ -63,10 +63,10 @@ const TypingSession = ({ data, onHome, onBack }) => {
     let correctString = "";
 
     if (direction === 'vi_en') {
-      const target = (currentCard.speak || "").toLowerCase().trim();
+      const target = (currentCard.question || "").toLowerCase().trim();
       const input = userAns.toLowerCase().trim();
       isCorrect = input === target;
-      correctString = currentCard.speak;
+      correctString = currentCard.question;
     } else {
       const rawAnswers = (currentCard.answer || "").split('/');
       const input = removeVietnameseTones(userAns);
@@ -141,7 +141,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
   }
 
   const currentCard = queue[currentIndex];
-  const displayQuestion = direction === 'vi_en' ? currentCard.answer : currentCard.speak;
+  const displayQuestion = direction === 'vi_en' ? currentCard.answer : currentCard.question;
   const inputPlaceholder = direction === 'vi_en' ? "Type English..." : "Type Vietnamese...";
 
   return (
@@ -159,7 +159,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
               type="text" 
               shape="circle" 
               icon={<Volume2 size={24} />} 
-              onClick={() => handleSpeech(currentCard.speak)}
+              onClick={() => handleSpeech(currentCard.question)}
             />
         </Flex>
 

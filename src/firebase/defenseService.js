@@ -59,3 +59,16 @@ export const getDefenseById = async (id) => {
     return null;
   }
 };
+
+export const updateDefenseSet = async (id, data) => {
+  try {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    // Overwrite the document with the new payload
+    const payload = { ...data, itemType: 'defense' };
+    await setDoc(docRef, payload); 
+    return { success: true, message: 'Updated successfully' };
+  } catch (error) {
+    console.error("Error updating defense:", error);
+    throw error;
+  }
+};

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Modal, Form, Select, Input, InputNumber } from 'antd';
-import { UploadCloud, Trash2, RefreshCw, Plus, Shield } from 'lucide-react';
-import { getAllDefenses, saveDefenseSet, deleteDefenseSet } from '../../firebase/defenseService';
+// 1. ADD 'Edit' ICON HERE
+import { UploadCloud, Trash2, RefreshCw, Plus, Shield, Edit } from 'lucide-react';
+// 2. IMPORT 'updateDefenseSet' HERE
+import { getAllDefenses, saveDefenseSet, deleteDefenseSet, updateDefenseSet } from '../../firebase/defenseService';
 import { getAllFlashcards } from '../../firebase/flashcardService';
 import { getAllQuizzes } from '../../firebase/quizService';
 import { getAllRepairs } from '../../firebase/repairService';
@@ -16,6 +18,8 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   
   const [isModalVisible, setIsModalVisible] = useState(false);
+  // 3. ADD editingId STATE
+  const [editingId, setEditingId] = useState(null); 
   const [defenseForm] = Form.useForm();
   const selectedDefenseType = Form.useWatch('type', defenseForm);
   
@@ -33,12 +37,8 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
     setLoading(false);
   };
 
-  const openDefenseModal = async () => {
-    defenseForm.resetFields();
-    defenseForm.setFieldsValue({ enemyCount: 20, spawnRate: 2000 });
-    setIsModalVisible(true);
-    
-    // Fetch dependencies specifically when the modal opens to save quota
+  // Extract source fetching into a reusable function
+  const fetchSources = async () => {
     setLoading(true);
     try {
       const [f, q, r, s] = await Promise.all([
@@ -51,28 +51,74 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
     setLoading(false);
   };
 
-  const handleCreateDefense = async (values) => {
+  const openDefenseModal = async () => {
+    setEditingId(null); // Ensure we are not in edit mode
+    defenseForm.resetFields();
+    defenseForm.setFieldsValue({ enemyCount: 20, spawnRate: 2000 });
+    setIsModalVisible(true);
+    await fetchSources();
+  };
+
+  // 4. ADD FUNCTION TO OPEN MODAL FOR EDITING
+  const openEditModal = async (record) => {
+    setEditingId(record.id);
+    defenseForm.setFieldsValue({
+      title: record.title,
+      type: record.type,
+      sourceId: record.sourceId,
+      enemyCount: record.enemyCount,
+      spawnRate: record.spawnRate,
+      tags: record.tags || [],
+    });
+    setIsModalVisible(true);
+    await fetchSources();
+  };
+
+  // 5. UPDATE SUBMIT HANDLER TO HANDLE BOTH CREATE AND UPDATE
+  const handleSaveDefense = async (values) => {
     setLoading(true);
     try {
-      const newDefense = {
-        id: `def-${Date.now()}`,
-        title: values.title,
-        type: values.type,
-        sourceId: values.sourceId,
-        enemyCount: values.enemyCount,
-        spawnRate: values.spawnRate,
-        tags: values.tags || [],
-      };
-      const result = await saveDefenseSet(newDefense);
-      if (result.success) {
-        message.success('Defense Level Created Successfully!');
-        setIsModalVisible(false);
-        loadData();
+      if (editingId) {
+        // Update existing
+        const updatedDefense = {
+          id: editingId,
+          title: values.title,
+          type: values.type,
+          sourceId: values.sourceId,
+          enemyCount: values.enemyCount,
+          spawnRate: values.spawnRate,
+          tags: values.tags || [],
+        };
+        const result = await updateDefenseSet(editingId, updatedDefense);
+        if (result.success) {
+          message.success('Defense Level Updated Successfully!');
+          setIsModalVisible(false);
+          loadData();
+        } else {
+          message.error(result.message);
+        }
       } else {
-        message.error(result.message);
+        // Create new
+        const newDefense = {
+          id: `def-${Date.now()}`,
+          title: values.title,
+          type: values.type,
+          sourceId: values.sourceId,
+          enemyCount: values.enemyCount,
+          spawnRate: values.spawnRate,
+          tags: values.tags || [],
+        };
+        const result = await saveDefenseSet(newDefense);
+        if (result.success) {
+          message.success('Defense Level Created Successfully!');
+          setIsModalVisible(false);
+          loadData();
+        } else {
+          message.error(result.message);
+        }
       }
     } catch (error) {
-      message.error('Failed to create defense config');
+      message.error(`Failed to ${editingId ? 'update' : 'create'} defense config`);
     } finally {
       setLoading(false);
     }
@@ -83,7 +129,6 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
     return sources[selectedDefenseType].map(s => ({ label: s.title, value: s.id }));
   };
 
-  // ... Import and Delete handlers ...
   const handleImport = (file) => {
     processingFiles.current += 1;
     setLoading(true);
@@ -164,11 +209,15 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
     {
       title: 'Action',
       key: 'action',
-      width: 80,
+      width: 100,
+      // 6. ADD EDIT BUTTON TO THE ACTIONS COLUMN
       render: (_, record) => (
-        <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
-          <Button danger type="text" icon={<Trash2 size={16} />} />
-        </Popconfirm>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button type="text" icon={<Edit size={16} />} onClick={() => openEditModal(record)} />
+          <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
+            <Button danger type="text" icon={<Trash2 size={16} />} />
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -212,13 +261,14 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
       />
 
       <Modal
-        title={<div><Shield className="inline mr-2 text-red-500" size={20} /> Create New Defense Level</div>}
+        // 7. DYNAMIC MODAL TITLE AND BUTTON TEXT
+        title={<div><Shield className="inline mr-2 text-red-500" size={20} /> {editingId ? 'Edit Defense Level' : 'Create New Defense Level'}</div>}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         destroyOnClose
       >
-        <Form form={defenseForm} layout="vertical" onFinish={handleCreateDefense} style={{ marginTop: 20 }}>
+        <Form form={defenseForm} layout="vertical" onFinish={handleSaveDefense} style={{ marginTop: 20 }}>
           <Form.Item name="title" label="Defense Level Title" rules={[{ required: true, message: 'Required' }]}>
             <Input placeholder="e.g. Unit 1 Base Defense" />
           </Form.Item>
@@ -257,7 +307,7 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
 
           <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
             <Button onClick={() => setIsModalVisible(false)} style={{ marginRight: 10 }}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={loading}>Save Defense Config</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>{editingId ? 'Update Config' : 'Save Defense Config'}</Button>
           </Form.Item>
         </Form>
       </Modal>
