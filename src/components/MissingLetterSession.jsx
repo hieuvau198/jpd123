@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Button, Flex, Progress, Result, message } from 'antd';
-import { ArrowLeft, RotateCcw } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Volume2 } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -83,6 +83,18 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     }
   }, [currentIndex, queue]); 
 
+  const handleSpeech = (text) => {
+    if (!text) return;
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      if (synth.speaking) synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      synth.speak(utterance);
+    }
+  };
+
   // Focus helper
   const handleFocus = () => {
     if (inputRef.current && status === "") {
@@ -110,19 +122,16 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     if (constructedWord.toLowerCase() === fullWord.toLowerCase()) {
         setStatus("success");
         message.success("Correct!");
-        // Success can still auto-advance, or you can remove this too if preferred.
-        // Keeping it for flow as usually requested, unless explicitly asked to stop.
+        handleSpeech(fullWord); // Auto speak on correct
         setTimeout(() => handleNext(), 800);
     } else {
         setStatus("error");
         message.error("Incorrect, try again!");
-        // REMOVED: setTimeout and automatic handleNext
-        // REMOVED: Immediate queue update (updating queue here would trigger useEffect and reset the view)
+        handleSpeech(fullWord); // Auto speak on wrong
     }
   };
 
   const handleNext = () => {
-    // If we are moving on from an error, retry this card later (append to queue)
     if (status === 'error') {
         const currentCard = queue[currentIndex];
         setQueue(prev => [...prev, currentCard]);
@@ -140,7 +149,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-        // If in error state, Enter acts as "Next"
         if (status === 'error') {
             handleNext();
         } else {
@@ -268,9 +276,20 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         <Text type="secondary" style={{ textTransform: 'uppercase', fontSize: 12, letterSpacing: 1 }}>
             Meaning
         </Text>
-        <Title level={3} style={{ marginTop: 5, marginBottom: 40 }}>
-            {currentCard.answer}
-        </Title>
+        <Flex justify="center" align="center" gap="small" style={{ marginTop: 5, marginBottom: 40 }}>
+            <Title level={3} style={{ margin: 0 }}>
+                {currentCard.answer}
+            </Title>
+            <Button 
+                type="text" 
+                shape="circle" 
+                icon={<Volume2 size={24} />} 
+                onClick={(e) => { 
+                    e.stopPropagation(); 
+                    handleSpeech(fullWord); 
+                }}
+            />
+        </Flex>
 
         {/* THE WORD DISPLAY */}
         {renderWord()}
@@ -293,11 +312,9 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
             size="large" 
             onClick={(e) => { 
                 e.stopPropagation(); 
-                if (status === 'error') handleNext(); // Manual Next on error
+                if (status === 'error') handleNext(); 
                 else handleCheck(); 
             }}
-            // Disable if incomplete (unless error/success state)
-            // But if error, we want it ENABLED so they can click Next
             disabled={status === 'success' || (status === "" && inputValue.length < missingCount)}
             style={{ marginTop: 30, width: 200 }}
         >

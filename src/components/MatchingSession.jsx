@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, Result, message, Progress } from 'antd';
-import { ArrowLeft, CheckCircle, Trophy } from 'lucide-react';
+import { ArrowLeft, Trophy } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -95,12 +95,32 @@ const MatchingSession = ({ data, onHome, onBack }) => {
 
   }, [sectionIndex, allQuestions]);
 
+  const handleSpeech = (text) => {
+    if (!text) return;
+    if ('speechSynthesis' in window) {
+      const synth = window.speechSynthesis;
+      if (synth.speaking) synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      synth.speak(utterance);
+    }
+  };
+
   // 3. Card Click Handler
   const handleCardClick = (uid) => {
     if (isProcessing || matchedIds.has(uid) || selectedIds.includes(uid)) return;
 
     const newSelected = [...selectedIds, uid];
     setSelectedIds(newSelected);
+
+    // Speak immediately if the user's first click is an English word
+    if (newSelected.length === 1) {
+       const firstCard = gameItems.find(item => item.uid === newSelected[0]);
+       if (firstCard.type === 'question') {
+           handleSpeech(firstCard.content);
+       }
+    }
 
     // If 2 cards selected, check match
     if (newSelected.length === 2) {
@@ -109,8 +129,17 @@ const MatchingSession = ({ data, onHome, onBack }) => {
       const card1 = gameItems.find(item => item.uid === newSelected[0]);
       const card2 = gameItems.find(item => item.uid === newSelected[1]);
 
+      // Determine the English text to speak upon validation
+      const qCard = [card1, card2].find(c => c.type === 'question');
+      let textToSpeak = qCard ? qCard.content : '';
+      if (!textToSpeak) {
+          const fallbackQ = gameItems.find(item => item.pairId === card2.pairId && item.type === 'question');
+          if (fallbackQ) textToSpeak = fallbackQ.content;
+      }
+
       if (card1.pairId === card2.pairId) {
         // MATCH
+        handleSpeech(textToSpeak); // Speak on right answer
         const newMatched = new Set([...matchedIds, card1.uid, card2.uid]);
         setMatchedIds(newMatched);
         setSelectedIds([]);
@@ -123,6 +152,7 @@ const MatchingSession = ({ data, onHome, onBack }) => {
 
       } else {
         // NO MATCH
+        handleSpeech(textToSpeak); // Speak on wrong answer
         setTimeout(() => {
             setSelectedIds([]);
             setIsProcessing(false);

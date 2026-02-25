@@ -76,6 +76,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
 
     if (isCorrect) {
       setFeedback('correct');
+      handleSpeech(currentCard.question); // Auto speak on correct
       setTimeout(() => {
         setFeedback('neutral');
         setInputValue("");
@@ -84,6 +85,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
       }, 800);
     } else {
       setFeedback('wrong');
+      handleSpeech(currentCard.question); // Auto speak on wrong
       setCorrectAnswerDisplay(correctString);
     }
   };
@@ -127,7 +129,6 @@ const TypingSession = ({ data, onHome, onBack }) => {
   status="success"
   title="Session Completed!"
   extra={[
-    // Đổi thành onBack để quay lại menu 4 nút
     <Button key="menu" onClick={onBack}>Back to Menu</Button>, 
     <Button key="restart" type="primary" onClick={() => {
                setQueue(shuffleArray([...data.questions]));
@@ -152,7 +153,6 @@ const TypingSession = ({ data, onHome, onBack }) => {
       </Flex>
 
       <Card style={{ textAlign: 'center', padding: 40, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-        {/* Speak Button included next to the question */}
         <Flex justify="center" align="center" gap="small" style={{ marginBottom: 10 }}>
             <Title level={2} style={{ margin: 0 }}>{displayQuestion}</Title>
             <Button 
