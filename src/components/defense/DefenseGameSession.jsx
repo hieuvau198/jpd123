@@ -216,12 +216,12 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   // --- UI Renders ---
   if (gameState === 'menu') {
     return (
-      <Card style={{ textAlign: 'center', maxWidth: 400, margin: '60px auto', boxShadow: '0 4px 12px rgba(226, 59, 59, 0.1)' }}>
-        <Title level={2}><Target size={28} className="inline mr-2" color="#1890ff"/> Select Difficulty</Title>
-        <Text type="secondary" style={{ display: 'block', marginBottom: 20 }}>Prepare to defend the base!</Text>
+<div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-8">
+  <Card style={{ textAlign: 'center', maxWidth: 400, margin: '60px auto', boxShadow: '0 4px 12px rgba(226, 59, 59, 0.1)' }}>
+        <Title level={2}><Target size={28} className="inline mr-2 mb-4" color="#1890ff"/> Select Difficulty</Title>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
           {Object.entries(DIFFICULTIES).map(([key, config]) => (
-            <Button key={key} size="large" type={config.color} danger={config.danger} onClick={() => startGame(key)}>
+            <Button key={key} size="large" type='primary' onClick={() => startGame(key)}>
               {config.label}
             </Button>
           ))}
@@ -230,22 +230,26 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
           <Button type="text" onClick={onHome} icon={<Home size={16} />}>Back to Home</Button>
         </div>
       </Card>
+      </div>
+      
     );
   }
 
   if (gameState === 'won' || gameState === 'lost') {
     return (
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-8">
       <Card style={{ textAlign: 'center', maxWidth: 600, margin: '40px auto' }}>
         <Result
           status={gameState === 'won' ? "success" : "error"}
           title={gameState === 'won' ? "VICTORY!" : "DEFEAT"}
-          subTitle={gameState === 'won' ? `You defended the base against ${score} Spaceships on ${difficultyRef.current?.label} difficulty!` : "The base has been overrun."}
+          subTitle={gameState === 'won' ? `You defended the base against ${score} Spaceships on ${difficultyRef.current?.label} difficulty!` : "Weakass."}
           extra={[
             <Button key="home" onClick={onHome} icon={<Home size={16} />}>Home</Button>,
             <Button key="retry" type="primary" onClick={handleRestart} icon={<RefreshCw size={16} />}>Play Again</Button>
           ]}
         />
       </Card>
+      </div>
     );
   }
 

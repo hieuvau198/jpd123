@@ -18,20 +18,19 @@ const DefenseList = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto bg-slate-900">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-8">
       <div className="flex flex-col gap-6 mb-8">
+        <h2 className="text-3xl sm:text-4xl font-bold text-white flex items-center gap-3">
+          <Shield className="text-red-500" />
+          Challenge Area
+        </h2>
+      </div>
         <button 
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-white/90 hover:text-white px-4 py-2 rounded-lg w-fit"
+          className="flex items-center gap-2 text-white/90 hover:text-white  py-4 rounded-lg w-fit"
         >
            <Home size={18}/> Back Home
         </button>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white flex items-center gap-3">
-          <Shield className="text-red-500" />
-          Defense Mode
-        </h2>
-        <p className="text-white/60">Protect the tower by answering questions before the enemies reach the center!</p>
-      </div>
 
       {loading ? (
         <div className="text-white">Loading levels...</div>
@@ -48,7 +47,7 @@ const DefenseList = () => {
                   <Swords className="text-red-500 group-hover:text-white" size={24} />
                 </div>
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-500 text-white uppercase">
-                  {level.type}
+                  {level.type = 'flashcard' ? 'Words' : 'English'}
                 </span>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">{level.title}</h3>

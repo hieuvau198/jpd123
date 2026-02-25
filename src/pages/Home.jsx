@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield } from 'lucide-react';
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -12,8 +12,7 @@ const Home = () => {
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 50 }}>
-        <Title level={1}>English Practice Hub</Title>
-        <Text type="secondary" style={{ fontSize: '1.2rem' }}>Select a mode to start learning</Text>
+        <Title level={1}>English Hub</Title>
       </div>
 
       <Row gutter={[24, 24]} justify="center">
@@ -74,10 +73,10 @@ const Home = () => {
           <Link to="/defense" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, borderColor: '#ff4d4f' }}>
               <div style={{ marginBottom: 20 }}>
-                <Shield size={48} color="#ff4d4f" />
+                <Swords size={48} color="#ff4d4f" />
               </div>
-              <Title level={3} style={{ color: '#ff4d4f' }}>Defense</Title>
-              <Text type="secondary">Gamified Practice.</Text>
+              <Title level={3} style={{ color: '#ff4d4f' }}>Challenge</Title>
+              <Text type="secondary">Earn your Title</Text>
             </Card>
           </Link>
         </Col>
