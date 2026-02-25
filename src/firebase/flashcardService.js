@@ -1,9 +1,8 @@
+// src/firebase/flashcardService.js
 import { db } from './firebase-config';
-import { collection, getDocs, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, deleteDoc, getDoc, query, where } from 'firebase/firestore';
 
 const COLLECTION_NAME = 'flashcards';
-
-// ... (keep getAllFlashcards, saveFlashcardSet, deleteFlashcardSet as they were) ...
 
 export const getAllFlashcards = async () => {
   try {
@@ -19,22 +18,31 @@ export const getAllFlashcards = async () => {
   }
 };
 
+// --- NEW FUNCTION TO SAVE QUOTA ---
+export const getFlashcardsByTag = async (tag) => {
+  try {
+    const q = query(collection(db, COLLECTION_NAME), where('tags', 'array-contains', tag));
+    const querySnapshot = await getDocs(q);
+    const flashcards = [];
+    querySnapshot.forEach((doc) => {
+      flashcards.push({ ...doc.data(), id: doc.id, type: 'flashcard' });
+    });
+    return flashcards;
+  } catch (error) {
+    console.error(`Error fetching flashcards for tag ${tag}:`, error);
+    return [];
+  }
+};
+
 export const saveFlashcardSet = async (data) => {
-  // ... existing code ...
-    try {
+  try {
     if (!data.id) throw new Error("Flashcard data must have an 'id' field.");
-    
     const docRef = doc(db, COLLECTION_NAME, data.id);
-    
-    // Check if it exists
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return { success: false, message: 'ID already exists' };
     }
-
-    // Ensure the data saved has the type 'flashcard'
     const payload = { ...data, type: 'flashcard' };
-    
     await setDoc(docRef, payload);
     return { success: true, message: 'Saved successfully' };
   } catch (error) {
@@ -44,8 +52,7 @@ export const saveFlashcardSet = async (data) => {
 };
 
 export const deleteFlashcardSet = async (id) => {
-    // ... existing code ...
-    try {
+  try {
     await deleteDoc(doc(db, COLLECTION_NAME, id));
     return true;
   } catch (error) {
@@ -54,7 +61,6 @@ export const deleteFlashcardSet = async (id) => {
   }
 };
 
-// --- NEW FUNCTION ---
 export const getFlashcardById = async (id) => {
   try {
     const docRef = doc(db, COLLECTION_NAME, id);

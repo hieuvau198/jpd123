@@ -1,5 +1,9 @@
 [
   {
+    "id": "english-3",
+    "name": "English 3"
+  },
+  {
     "id": "english-4",
     "name": "English 4"
   },
@@ -22,6 +26,22 @@
   {
     "id": "english-9",
     "name": "English 9"
+  },
+  {
+    "id": "english-10",
+    "name": "English 10"
+  },
+  {
+    "id": "english-11",
+    "name": "English 11"
+  },
+  {
+    "id": "english-12",
+    "name": "English 12"
+  },
+  {
+    "id": "english-core",
+    "name": "Core"
   },
   {
     "id": "vocab",

@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css'; 
 
 // Components
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './components/admin/AdminDashboard';
 import Home from './pages/Home';
 import FlashcardList from './pages/FlashcardList';
 import FlashcardDetail from './pages/FlashcardDetail';
