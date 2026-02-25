@@ -1,0 +1,328 @@
+{
+  "id": "quiz-core-mixed-tenses-hard",
+  "title": "Core English - Mixed Tenses (Hard)",
+  "subject": "Core English",
+  "tags": ["core", "b1", "grammar", "mixed-tenses", "hard"],
+  "questions": [
+    {
+      "id": 1,
+      "question": "By the time we arrived at the cinema, the film ______.",
+      "options": ["started", "has started", "had started", "was starting"],
+      "correctAnswer": "had started",
+      "level": "hard",
+      "explanation": "Hành động 'phim bắt đầu' xảy ra trước một hành động khác trong quá khứ (chúng tôi đến) -> dùng Quá khứ hoàn thành (had started)."
+    },
+    {
+      "id": 2,
+      "question": "I ______ for two hours when he finally called me.",
+      "options": ["have been waiting", "had been waiting", "was waiting", "waited"],
+      "correctAnswer": "had been waiting",
+      "level": "hard",
+      "explanation": "Hành động chờ đợi kéo dài liên tục đến một thời điểm trong quá khứ (when he called) -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 3,
+      "question": "This time next week, we ______ on a beach in Hawaii.",
+      "options": ["will relax", "will be relaxing", "are relaxing", "relax"],
+      "correctAnswer": "will be relaxing",
+      "level": "hard",
+      "explanation": "'This time next week' là thời điểm xác định trong tương lai -> Tương lai tiếp diễn (will be V-ing)."
+    },
+    {
+      "id": 4,
+      "question": "You look exhausted! What ______?",
+      "options": ["have you done", "did you do", "have you been doing", "were you doing"],
+      "correctAnswer": "have you been doing",
+      "level": "hard",
+      "explanation": "Nhấn mạnh quá trình của hành động vừa mới kết thúc để lại hậu quả rõ ràng ở hiện tại (look exhausted) -> Hiện tại hoàn thành tiếp diễn."
+    },
+    {
+      "id": 5,
+      "question": "I will call you as soon as I ______ the report.",
+      "options": ["will finish", "am finishing", "finish", "finished"],
+      "correctAnswer": "finish",
+      "level": "hard",
+      "explanation": "Trong mệnh đề trạng ngữ chỉ thời gian (as soon as, when...), không dùng thì tương lai mà dùng thì Hiện tại đơn."
+    },
+    {
+      "id": 6,
+      "question": "Hardly ______ the house when it started to rain heavily.",
+      "options": ["I had left", "had I left", "I left", "did I leave"],
+      "correctAnswer": "had I left",
+      "level": "hard",
+      "explanation": "Cấu trúc đảo ngữ: Hardly + had + S + V3/ed + when + S + V2/ed (Vừa mới... thì...)."
+    },
+    {
+      "id": 7,
+      "question": "It's the first time I ______ such a delicious meal.",
+      "options": ["eat", "am eating", "have eaten", "ate"],
+      "correctAnswer": "have eaten",
+      "level": "hard",
+      "explanation": "Cấu trúc: It is the first/second... time + S + have/has + V3/ed (Hiện tại hoàn thành)."
+    },
+    {
+      "id": 8,
+      "question": "By 2030, scientists ______ a cure for this disease.",
+      "options": ["will discover", "are going to discover", "will have discovered", "discover"],
+      "correctAnswer": "will have discovered",
+      "level": "hard",
+      "explanation": "Có 'By + mốc thời gian trong tương lai' -> dùng Tương lai hoàn thành (will have V3/ed)."
+    },
+    {
+      "id": 9,
+      "question": "He told me that he ______ to London the previous year.",
+      "options": ["went", "has gone", "had gone", "goes"],
+      "correctAnswer": "had gone",
+      "level": "hard",
+      "explanation": "Câu gián tiếp, lùi thì từ Quá khứ đơn (last year -> the previous year) sang Quá khứ hoàn thành (had gone)."
+    },
+    {
+      "id": 10,
+      "question": "If I ______ you were coming, I would have baked a cake.",
+      "options": ["knew", "know", "have known", "had known"],
+      "correctAnswer": "had known",
+      "level": "hard",
+      "explanation": "Câu điều kiện loại 3 diễn tả điều không có thật trong quá khứ: If + S + had V3/ed."
+    },
+    {
+      "id": 11,
+      "question": "When I got to the station, the train ______.",
+      "options": ["had already left", "already left", "has already left", "was already leaving"],
+      "correctAnswer": "had already left",
+      "level": "hard",
+      "explanation": "Tàu đã rời đi trước khi tôi đến nhà ga -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 12,
+      "question": "How long ______ English before you moved to the UK?",
+      "options": ["have you studied", "did you study", "had you been studying", "were you studying"],
+      "correctAnswer": "had you been studying",
+      "level": "hard",
+      "explanation": "Nhấn mạnh quá trình học liên tục trước một thời điểm ở quá khứ (moved) -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 13,
+      "question": "Please don't call me at 10 PM. I ______.",
+      "options": ["will sleep", "will have slept", "will be sleeping", "sleep"],
+      "correctAnswer": "will be sleeping",
+      "level": "hard",
+      "explanation": "Hành động sẽ đang diễn ra tại một thời điểm cụ thể trong tương lai (10 PM) -> Tương lai tiếp diễn."
+    },
+    {
+      "id": 14,
+      "question": "By the end of this month, we ______ the construction.",
+      "options": ["will finish", "will have finished", "are finishing", "finish"],
+      "correctAnswer": "will have finished",
+      "level": "hard",
+      "explanation": "By + thời điểm tương lai -> Tương lai hoàn thành."
+    },
+    {
+      "id": 15,
+      "question": "I ______ such a beautiful beach before I went to Maldives.",
+      "options": ["never saw", "have never seen", "had never seen", "didn't see"],
+      "correctAnswer": "had never seen",
+      "level": "hard",
+      "explanation": "Chưa từng thấy trước một thời điểm quá khứ (went) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 16,
+      "question": "The ground is wet because it ______ all morning.",
+      "options": ["has rained", "has been raining", "rained", "was raining"],
+      "correctAnswer": "has been raining",
+      "level": "hard",
+      "explanation": "Hành động mưa liên tục gây ra kết quả hiện tại (ground is wet) -> Hiện tại hoàn thành tiếp diễn."
+    },
+    {
+      "id": 17,
+      "question": "At this time tomorrow, they ______ over the Atlantic.",
+      "options": ["will fly", "will be flying", "will have flown", "fly"],
+      "correctAnswer": "will be flying",
+      "level": "hard",
+      "explanation": "At this time tomorrow -> Tương lai tiếp diễn."
+    },
+    {
+      "id": 18,
+      "question": "By next year, they ______ here for ten years.",
+      "options": ["will have lived", "will live", "have lived", "live"],
+      "correctAnswer": "will have lived",
+      "level": "hard",
+      "explanation": "Tổng kết khoảng thời gian tính đến một mốc tương lai -> Tương lai hoàn thành."
+    },
+    {
+      "id": 19,
+      "question": "She suddenly remembered that she ______ her keys inside the house.",
+      "options": ["forgets", "forgot", "has forgotten", "had forgotten"],
+      "correctAnswer": "had forgotten",
+      "level": "hard",
+      "explanation": "Hành động để quên chìa khóa xảy ra trước khi nhớ ra (remembered) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 20,
+      "question": "Your clothes are covered in mud! What ______?",
+      "options": ["did you do", "have you done", "have you been doing", "were you doing"],
+      "correctAnswer": "have you been doing",
+      "level": "hard",
+      "explanation": "Nhấn mạnh quá trình dẫn đến kết quả hiện tại (covered in mud) -> Hiện tại hoàn thành tiếp diễn."
+    },
+    {
+      "id": 21,
+      "question": "He was very tired because he ______ all day.",
+      "options": ["was driving", "has driven", "had been driving", "drove"],
+      "correctAnswer": "had been driving",
+      "level": "hard",
+      "explanation": "Lái xe liên tục trước khi cảm thấy mệt ở quá khứ (was tired) -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 22,
+      "question": "We will have dinner when he ______.",
+      "options": ["will arrive", "arrives", "is arriving", "arrived"],
+      "correctAnswer": "arrives",
+      "level": "hard",
+      "explanation": "Mệnh đề thời gian với 'when' chia Hiện tại đơn mang ý nghĩa tương lai."
+    },
+    {
+      "id": 23,
+      "question": "When I reached the counter, I realized I ______ my wallet.",
+      "options": ["lost", "have lost", "had lost", "was losing"],
+      "correctAnswer": "had lost",
+      "level": "hard",
+      "explanation": "Sự việc mất ví xảy ra trước khi nhận ra (realized) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 24,
+      "question": "The boys are out of breath because they ______ football.",
+      "options": ["have played", "have been playing", "were playing", "played"],
+      "correctAnswer": "have been playing",
+      "level": "hard",
+      "explanation": "Nhấn mạnh tính liên tục của hành động vừa chấm dứt để lại hậu quả hiện tại (out of breath)."
+    },
+    {
+      "id": 25,
+      "question": "I hope they ______ the road by the time we come back.",
+      "options": ["will repair", "will be repairing", "will have repaired", "have repaired"],
+      "correctAnswer": "will have repaired",
+      "level": "hard",
+      "explanation": "By the time we come back (tương lai) -> Tương lai hoàn thành."
+    },
+    {
+      "id": 26,
+      "question": "They ______ for over an hour when the bus finally arrived.",
+      "options": ["have waited", "have been waiting", "had waited", "had been waiting"],
+      "correctAnswer": "had been waiting",
+      "level": "hard",
+      "explanation": "Chờ đợi liên tục hơn 1 tiếng trước khi xe buýt đến (arrived) -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 27,
+      "question": "Tomorrow at 7 PM, we ______ dinner at the new restaurant.",
+      "options": ["will have", "will be having", "will have had", "are having"],
+      "correctAnswer": "will be having",
+      "level": "hard",
+      "explanation": "Thời điểm cụ thể trong tương lai -> Tương lai tiếp diễn."
+    },
+    {
+      "id": 28,
+      "question": "I didn't recognize her because we ______ only once before.",
+      "options": ["met", "were meeting", "have met", "had met"],
+      "correctAnswer": "had met",
+      "level": "hard",
+      "explanation": "Gặp nhau trước mốc quá khứ (didn't recognize) -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 29,
+      "question": "She ______ French for 3 years, but she still struggles with speaking.",
+      "options": ["learns", "learned", "has been learning", "had learned"],
+      "correctAnswer": "has been learning",
+      "level": "hard",
+      "explanation": "Hành động bắt đầu trong quá khứ, tiếp diễn đến hiện tại và nhấn mạnh quá trình."
+    },
+    {
+      "id": 30,
+      "question": "By the time you wake up, I ______ reading this book.",
+      "options": ["will finish", "will have finished", "am finishing", "finish"],
+      "correctAnswer": "will have finished",
+      "level": "hard",
+      "explanation": "Hoàn thành trước một mốc thời gian tương lai -> Tương lai hoàn thành."
+    },
+    {
+      "id": 31,
+      "question": "When we got to the party, most people ______.",
+      "options": ["went", "have gone", "had gone", "were going"],
+      "correctAnswer": "had gone",
+      "level": "hard",
+      "explanation": "Mọi người đã rời đi trước khi chúng tôi đến -> Quá khứ hoàn thành."
+    },
+    {
+      "id": 32,
+      "question": "I ______ to reach you all day! Where have you been?",
+      "options": ["tried", "have tried", "have been trying", "had tried"],
+      "correctAnswer": "have been trying",
+      "level": "hard",
+      "explanation": "Nhấn mạnh quá trình cố gắng liên tục trong quá khứ kéo dài đến hiện tại."
+    },
+    {
+      "id": 33,
+      "question": "Don't phone me between 8 and 9. I ______ for my exam.",
+      "options": ["will study", "will be studying", "study", "am studying"],
+      "correctAnswer": "will be studying",
+      "level": "hard",
+      "explanation": "Sẽ đang làm gì trong một khoảng thời gian tương lai -> Tương lai tiếp diễn."
+    },
+    {
+      "id": 34,
+      "question": "By Christmas, I ______ enough money to buy a new laptop.",
+      "options": ["will save", "will be saving", "will have saved", "have saved"],
+      "correctAnswer": "will have saved",
+      "level": "hard",
+      "explanation": "Tính đến mốc tương lai (By Christmas) -> Tương lai hoàn thành."
+    },
+    {
+      "id": 35,
+      "question": "He failed the test because he ______ hard enough.",
+      "options": ["didn't study", "hasn't studied", "hadn't been studying", "wasn't studying"],
+      "correctAnswer": "hadn't been studying",
+      "level": "hard",
+      "explanation": "Quá trình không học tập chăm chỉ diễn ra trước kết quả trượt (failed) -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 36,
+      "question": "I won't leave the office until I ______ this task.",
+      "options": ["will finish", "am finishing", "have finished", "had finished"],
+      "correctAnswer": "have finished",
+      "level": "hard",
+      "explanation": "Sau 'until' có thể dùng Hiện tại hoàn thành để nhấn mạnh sự hoàn tất trước khi hành động tương lai (won't leave) xảy ra."
+    },
+    {
+      "id": 37,
+      "question": "The streets were wet. It ______ all night.",
+      "options": ["rained", "was raining", "has been raining", "had been raining"],
+      "correctAnswer": "had been raining",
+      "level": "hard",
+      "explanation": "Kết quả ở quá khứ (were wet) do một hành động diễn ra liên tục trước đó -> Quá khứ hoàn thành tiếp diễn."
+    },
+    {
+      "id": 38,
+      "question": "I ______ about moving to a new house recently.",
+      "options": ["am thinking", "was thinking", "have been thinking", "had thought"],
+      "correctAnswer": "have been thinking",
+      "level": "hard",
+      "explanation": "Suy nghĩ liên tục dạo gần đây (recently) -> Hiện tại hoàn thành tiếp diễn."
+    },
+    {
+      "id": 39,
+      "question": "Next Saturday, we ______ on the beach in the sun.",
+      "options": ["will lie", "will be lying", "are lying", "lie"],
+      "correctAnswer": "will be lying",
+      "level": "hard",
+      "explanation": "Dự kiến sẽ đang diễn ra tại mốc tương lai -> Tương lai tiếp diễn."
+    },
+    {
+      "id": 40,
+      "question": "Before the manager returns, we ______ the preparations.",
+      "options": ["will complete", "are completing", "will have completed", "completed"],
+      "correctAnswer": "will have completed",
+      "level": "hard",
+      "explanation": "Hoàn tất trước một thời điểm/hành động khác trong tương lai (returns) -> Tương lai hoàn thành."
+    }
+  ]
+}
