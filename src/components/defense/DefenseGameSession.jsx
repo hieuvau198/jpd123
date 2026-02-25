@@ -5,7 +5,8 @@ import { Heart, Shield, Home, RefreshCw, Target } from 'lucide-react';
 import { 
   TOWER_HP_MAX, TOWER_SIZE, TOWER_X, DIFFICULTIES, SKIN_PROPS, BACKGROUND_IMAGES, SPACESHIP_ASSETS
 } from './DefenseGameConstants';
-import DefenseQuestionOverlay from './DefenseQuestionOverlay';
+import DefenseFlashcardOverlay from './DefenseFlashcardOverlay';
+import DefenseQuizOverlay from './DefenseQuizOverlay';
 
 const { Title, Text } = Typography;
 
@@ -31,7 +32,8 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   const fullscreenWrapRef = useRef(null);
   const gameAreaRef = useRef(null);
 
-  const currentQuestion = levelData.questions[qIndex % levelData.questions.length];
+  // Note: Depending on source, currentItem could be a quiz question or a flashcard word
+  const currentItem = levelData.questions[qIndex % levelData.questions.length];
 
   // --- Preload Images & Fullscreen Listener ---
   useEffect(() => {
@@ -97,7 +99,6 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
     const width = gameAreaRef.current ? gameAreaRef.current.clientWidth : window.innerWidth;
     const height = gameAreaRef.current ? gameAreaRef.current.clientHeight : window.innerHeight;
 
-    // Pick a random image variant from the selected level
     const availableImages = SPACESHIP_ASSETS[skin];
     const selectedImage = availableImages[Math.floor(Math.random() * availableImages.length)];
 
@@ -164,11 +165,12 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   }, [score, levelData.enemyCount]);
 
   // --- Interaction Logic ---
-  const handleAnswer = (option) => {
+  // Updated `handleAnswer` expects the overlay to tell it if the answer was correct based on mode
+  const handleAnswer = (option, isCorrect) => {
     if (isWrong || gameState !== 'playing') return;
     setSelectedOption(option);
     
-    if (option === currentQuestion.answer) {
+    if (isCorrect) {
       const targetX = TOWER_X;
       const height = gameAreaRef.current ? gameAreaRef.current.clientHeight : 450;
       const targetY = height / 2;
@@ -312,20 +314,29 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
               style={{ 
                 width: '100%', 
                 height: '100%',
-                // Floating/Jiggling animation using Math.sin based on the X coordinate
                 transform: `translateY(${Math.sin(e.x / 15) * 8}px) rotate(${Math.cos(e.x / 15) * 4}deg)`
               }}
             />
           </div>
         ))}
 
-        {/* Overlay Component containing Questions */}
-        <DefenseQuestionOverlay 
-          currentQuestion={currentQuestion}
-          isWrong={isWrong}
-          selectedOption={selectedOption}
-          handleAnswer={handleAnswer}
-        />
+        {/* Conditionally Render Overlay based on data type */}
+        {levelData.type === 'flashcard' ? (
+          <DefenseFlashcardOverlay 
+            currentWord={currentItem}
+            allWords={levelData.questions}
+            isWrong={isWrong}
+            selectedOption={selectedOption}
+            handleAnswer={handleAnswer}
+          />
+        ) : (
+          <DefenseQuizOverlay 
+            currentQuestion={currentItem}
+            isWrong={isWrong}
+            selectedOption={selectedOption}
+            handleAnswer={handleAnswer}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,37 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button, Typography, Alert } from 'antd';
 
 const { Title } = Typography;
 
-const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, handleAnswer }) => {
+const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOption, handleAnswer }) => {
   
+  // Randomize choices for the flashcard (1 correct meaning + 2 random distractors)
+  const options = useMemo(() => {
+    if (!currentWord || !allWords) return [];
+    const correctMeaning = currentWord.meaning;
+    
+    // Ensure unique distractors from the rest of the flashcard set
+    const otherMeanings = Array.from(new Set(allWords
+      .map(w => w.meaning)
+      .filter(m => m !== correctMeaning)
+    ));
+    
+    // Shuffle and pick 2
+    const shuffledOthers = otherMeanings.sort(() => 0.5 - Math.random());
+    const distractors = shuffledOthers.slice(0, 2);
+    
+    // Combine and shuffle the options
+    const combined = [correctMeaning, ...distractors].sort(() => 0.5 - Math.random());
+    return combined;
+  }, [currentWord, allWords]);
+
   // --- Keyboard Shortcuts Listener ---
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Don't do anything if there's no question or if they are in the "wrong answer" timeout
-      if (!currentQuestion || isWrong) return;
+      if (!currentWord || isWrong) return;
 
       const key = event.key.toLowerCase();
       let optionIndex = -1;
 
-      // Map 1, 2, 3, 4, 5 and q, w, e, r, t to indices 0 - 4
       if (key === '1' || key === 'q') optionIndex = 0;
       else if (key === '2' || key === 'w') optionIndex = 1;
       else if (key === '3' || key === 'e') optionIndex = 2;
-      else if (key === '4' || key === 'r') optionIndex = 3;
-      else if (key === '5' || key === 't') optionIndex = 4;
 
-      // If a valid key was pressed and the option exists, trigger the answer
-      if (optionIndex !== -1 && currentQuestion.options[optionIndex]) {
-        handleAnswer(currentQuestion.options[optionIndex]);
+      if (optionIndex !== -1 && options[optionIndex]) {
+        const opt = options[optionIndex];
+        // Pass both the selected option and a boolean indicating if it's correct
+        handleAnswer(opt, opt === currentWord.meaning);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentQuestion, isWrong, handleAnswer]);
+  }, [currentWord, isWrong, handleAnswer, options]);
 
-  if (!currentQuestion) return null;
+  if (!currentWord) return null;
 
   return (
     <div style={{
@@ -58,7 +75,6 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
         />
       )}
       
-      {/* Tightly fitting container for the question text */}
       <div style={{
         background: 'rgba(255, 255, 255, 0.95)',
         padding: '10px 24px',
@@ -69,16 +85,16 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
         textAlign: 'center'
       }}>
         <Title level={4} style={{ margin: 0, color: '#333' }}>
-          {currentQuestion.question}
+          {currentWord.word}
         </Title>
       </div>
       
       <div style={{ display: 'flex', gap: 10, width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {currentQuestion.options.map((opt, i) => (
+        {options.map((opt, i) => (
           <Button 
             key={i} 
             size="large" 
-            onClick={() => handleAnswer(opt)}
+            onClick={() => handleAnswer(opt, opt === currentWord.meaning)}
             disabled={isWrong}
             type={isWrong && selectedOption === opt ? 'primary' : 'default'}
             danger={isWrong && selectedOption === opt}
@@ -93,7 +109,6 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
               gap: '8px'
             }}
           >
-            {/* Added a small badge to show the shortcut number */}
             <span style={{ 
               background: 'rgba(0,0,0,0.1)', 
               padding: '2px 6px', 
@@ -111,4 +126,4 @@ const DefenseQuestionOverlay = ({ currentQuestion, isWrong, selectedOption, hand
   );
 };
 
-export default DefenseQuestionOverlay;
+export default DefenseFlashcardOverlay;
