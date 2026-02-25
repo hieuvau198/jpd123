@@ -8,12 +8,14 @@ const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOptio
   // Randomize choices for the flashcard (1 correct meaning + 2 random distractors)
   const options = useMemo(() => {
     if (!currentWord || !allWords) return [];
-    const correctMeaning = currentWord.meaning;
     
-    // Ensure unique distractors from the rest of the flashcard set
+    // FIX: Support both 'answer' and 'meaning'
+    const correctMeaning = currentWord.answer || currentWord.meaning;
+    
+    // FIX: Support both 'answer' and 'meaning'
     const otherMeanings = Array.from(new Set(allWords
-      .map(w => w.meaning)
-      .filter(m => m !== correctMeaning)
+      .map(w => w.answer || w.meaning)
+      .filter(m => m && m !== correctMeaning) // ensure m is defined
     ));
     
     // Shuffle and pick 2
@@ -39,8 +41,9 @@ const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOptio
 
       if (optionIndex !== -1 && options[optionIndex]) {
         const opt = options[optionIndex];
-        // Pass both the selected option and a boolean indicating if it's correct
-        handleAnswer(opt, opt === currentWord.meaning);
+        // FIX: Compare with both 'answer' and 'meaning'
+        const isCorrect = opt === (currentWord.answer || currentWord.meaning);
+        handleAnswer(opt, isCorrect);
       }
     };
 
@@ -49,6 +52,9 @@ const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOptio
   }, [currentWord, isWrong, handleAnswer, options]);
 
   if (!currentWord) return null;
+  
+  // FIX: Support both 'question' and 'word' for the display text
+  const displayText = currentWord.question || currentWord.word;
 
   return (
     <div style={{
@@ -76,7 +82,7 @@ const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOptio
       )}
       
       <div style={{
-        background: 'rgba(255, 255, 255, 0.95)',
+        background: 'rgba(104, 255, 235, 0.95)',
         padding: '10px 24px',
         borderRadius: '8px',
         boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
@@ -85,40 +91,43 @@ const DefenseFlashcardOverlay = ({ currentWord, allWords, isWrong, selectedOptio
         textAlign: 'center'
       }}>
         <Title level={4} style={{ margin: 0, color: '#333' }}>
-          {currentWord.word}
+          {displayText}
         </Title>
       </div>
       
-      <div style={{ display: 'flex', gap: 10, width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+      {/* UPDATE THIS DIV FOR TOP-DOWN LAYOUT */}
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', /* This forces items to stack vertically */
+        gap: 12, 
+        width: '100%', 
+        alignItems: 'center'     /* Centers the buttons horizontally */
+      }}>
         {options.map((opt, i) => (
           <Button 
             key={i} 
             size="large" 
-            onClick={() => handleAnswer(opt, opt === currentWord.meaning)}
+            onClick={() => handleAnswer(opt, opt === (currentWord.answer || currentWord.meaning))}
             disabled={isWrong}
             type={isWrong && selectedOption === opt ? 'primary' : 'default'}
             danger={isWrong && selectedOption === opt}
             style={{ 
-              minWidth: 150, 
-              flex: '1 1 200px',
+              width: '30%',         /* Make buttons uniform width */
+              maxWidth: '400px',     /* Prevent them from getting too wide on large screens */
+              minHeight: '50px',     /* Give them a bit more height for readability */
               boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
               fontWeight: 'bold',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              whiteSpace: 'normal',  /* Allow text to wrap if the meaning is long */
+              height: 'auto',        /* Let height adjust based on text */
+              padding: '10px 15px'
             }}
           >
-            <span style={{ 
-              background: 'rgba(0,0,0,0.1)', 
-              padding: '2px 6px', 
-              borderRadius: '4px', 
-              fontSize: '0.8em',
-              color: isWrong && selectedOption === opt ? '#fff' : '#666'
-            }}>
-              [{i + 1}]
-            </span>
-            {opt}
+            
+            <span>{opt}</span>
           </Button>
         ))}
       </div>

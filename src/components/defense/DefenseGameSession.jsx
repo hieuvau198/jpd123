@@ -23,6 +23,9 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   const [qIndex, setQIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isWrong, setIsWrong] = useState(false);
+  
+  // NEW: State to hold our randomized questions
+  const [activeQuestions, setActiveQuestions] = useState(levelData.questions);
 
   // Refs
   const requestRef = useRef();
@@ -32,8 +35,8 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   const fullscreenWrapRef = useRef(null);
   const gameAreaRef = useRef(null);
 
-  // Note: Depending on source, currentItem could be a quiz question or a flashcard word
-  const currentItem = levelData.questions[qIndex % levelData.questions.length];
+  // UPDATE: Use activeQuestions instead of levelData.questions
+  const currentItem = activeQuestions[qIndex % activeQuestions.length];
 
   // --- Preload Images & Fullscreen Listener ---
   useEffect(() => {
@@ -65,6 +68,11 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
     setQIndex(0);
     enemiesRef.current = [];
     setEnemies([]);
+    
+    // NEW: Shuffle the questions array so it's random every time you play
+    const shuffledQuestions = [...levelData.questions].sort(() => 0.5 - Math.random());
+    setActiveQuestions(shuffledQuestions);
+
     const randomImg = BACKGROUND_IMAGES[Math.floor(Math.random() * BACKGROUND_IMAGES.length)];
     setBgImage(randomImg);
     setGameState('playing');
@@ -165,7 +173,6 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
   }, [score, levelData.enemyCount]);
 
   // --- Interaction Logic ---
-  // Updated `handleAnswer` expects the overlay to tell it if the answer was correct based on mode
   const handleAnswer = (option, isCorrect) => {
     if (isWrong || gameState !== 'playing') return;
     setSelectedOption(option);
@@ -324,7 +331,7 @@ const DefenseGameSession = ({ levelData, onHome, onRestart }) => {
         {levelData.type === 'flashcard' ? (
           <DefenseFlashcardOverlay 
             currentWord={currentItem}
-            allWords={levelData.questions}
+            allWords={levelData.questions} // We still pass the original full un-shuffled array here to generate distractors
             isWrong={isWrong}
             selectedOption={selectedOption}
             handleAnswer={handleAnswer}
