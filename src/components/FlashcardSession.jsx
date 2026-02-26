@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, Result, InputNumber } from 'antd';
-import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowLeft, ArrowRight, Volume2 } from 'lucide-react';
+import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowLeft, ArrowRight, Volume2, SpellCheck } from 'lucide-react';
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
 import TypingSession from './TypingSession'; // Imported the new component
+import SpellingBeeSession from './SpellingBeeSession';
 
 const { Title, Text } = Typography;
 
@@ -147,6 +148,8 @@ const FlashcardSession = ({ data, onHome }) => {
   if (mode === 'speak') {
     return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   }
+
+  if (mode === 'spellingbee') return <SpellingBeeSession data={sessionData} onBack={() => setMode(null)} />;
 
   // --- MAIN MENU ---
   if (!mode) {
