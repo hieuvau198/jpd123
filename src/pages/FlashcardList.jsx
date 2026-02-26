@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Loader2, Layers, Filter } from 'lucide-react';
-import { getAllFlashcards } from '../firebase/flashcardService';
+// Import getFlashcardsByTag instead of getAllFlashcards
+import { getFlashcardsByTag } from '../firebase/flashcardService'; 
 import PracticeCard from '../components/PracticeCard';
-import availableTags from '../data/system/tags.json'; // Import tags
+import availableTags from '../data/system/tags.json';
 
 const FlashcardList = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  // Default to the first tag found in the JSON, otherwise 'all'
-  const [selectedTag, setSelectedTag] = useState(availableTags.length > 0 ? availableTags[0].id : 'all');
+  const [loading, setLoading] = useState(false); // Default to false
+  const [selectedTag, setSelectedTag] = useState(null); // Default is no tag
   const navigate = useNavigate();
 
+  // Update useEffect to run whenever selectedTag changes
   useEffect(() => {
     const fetch = async () => {
-      const res = await getAllFlashcards();
+      if (!selectedTag) {
+        setData([]); // Clear data if no tag is selected
+        return;
+      }
+      
+      setLoading(true);
+      // Call Firebase only for the selected tag
+      const res = await getFlashcardsByTag(selectedTag);
       setData(res);
       setLoading(false);
     };
     fetch();
-  }, []);
-
-  // Filter logic
-  const filteredData = selectedTag === 'all' 
-    ? data 
-    : data.filter(item => item.tags && item.tags.includes(selectedTag));
+  }, [selectedTag]);
 
   return (
     <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
@@ -52,16 +55,6 @@ const FlashcardList = () => {
             <Filter size={20} />
             <span className="text-sm font-medium whitespace-nowrap">Filter by:</span>
           </div>
-          
-          <button
-            onClick={() => setSelectedTag('all')}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
-              ${selectedTag === 'all' 
-                ? 'bg-yellow-400 text-black shadow-lg scale-105' 
-                : 'bg-white/10 text-white hover:bg-white/20'}`}
-          >
-            All
-          </button>
 
           {availableTags.map((tag) => (
             <button
@@ -82,10 +75,14 @@ const FlashcardList = () => {
         <div className="flex justify-center items-center h-64">
              <Loader2 className="w-12 h-12 text-white animate-spin opacity-80" />
         </div>
+      ) : !selectedTag ? (
+        <div className="flex justify-center items-center h-64 text-white/60 text-lg">
+          Please select a tag above to load flashcards.
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredData.length > 0 ? (
-            filteredData.map((item) => (
+          {data.length > 0 ? (
+            data.map((item) => (
                <PracticeCard 
                  key={item.id}
                  practice={item} 

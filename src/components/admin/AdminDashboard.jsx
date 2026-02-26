@@ -10,7 +10,7 @@ import FlashcardManager from './FlashcardManager';
 import DefenseManager from './DefenseManager';
 
 // Firebase Services
-import { getAllQuizzes, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
+import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
 import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../../firebase/repairService';
 import { getAllSpeaks, saveSpeakSet, deleteSpeakSet } from '../../firebase/speakService';
 
@@ -48,7 +48,10 @@ const AdminDashboard = () => {
           color="green" 
           uploadText="Import Quizzes (JSON)" 
           uploadColor="#52c41a"
-          fetchFn={getAllQuizzes} saveFn={saveQuizSet} deleteFn={deleteQuizSet}
+          fetchFn={getAllQuizzes} 
+          fetchByTagFn={getQuizzesByTag} // <-- ADD THIS LINE
+          saveFn={saveQuizSet} 
+          deleteFn={deleteQuizSet}
         />
       )
     },

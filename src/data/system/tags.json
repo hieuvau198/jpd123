@@ -58,5 +58,21 @@
   {
     "id": "other",
     "name": "Other"
+  },
+  {
+    "id": "english-a1",
+    "name": "A1"
+  },
+  {
+    "id": "english-a2",
+    "name": "A2"
+  },
+  {
+    "id": "english-b1",
+    "name": "B1"
+  },
+  {
+    "id": "english-b2",
+    "name": "B2"
   }
 ]

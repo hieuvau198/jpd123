@@ -1,22 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography } from 'antd';
-import { UploadCloud, Trash2, RefreshCw } from 'lucide-react';
+// IMPORT Select
+import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select } from 'antd';
+// IMPORT Filter
+import { UploadCloud, Trash2, RefreshCw, Filter } from 'lucide-react';
+// IMPORT tags
+import tagsData from '../../data/system/tags.json';
 
 const { Text } = Typography;
+const { Option } = Select;
 
-const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, saveFn, deleteFn }) => {
+// ADD fetchByTagFn to props
+const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, fetchByTagFn, saveFn, deleteFn }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  
+  // State for tags: Default to 'none' if filter is enabled, else 'all'
+  const [selectedTag, setSelectedTag] = useState(fetchByTagFn ? 'none' : 'all');
   const processingFiles = useRef(0);
 
+  // Trigger loadData when selectedTag changes
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectedTag]);
 
   const loadData = async () => {
+    // If tag filtering is enabled and 'none' is selected, don't fetch
+    if (fetchByTagFn && selectedTag === 'none') {
+      setData([]);
+      return;
+    }
+
     setLoading(true);
-    const result = await fetchFn();
+    let result = [];
+    
+    // Choose the right fetch function
+    if (fetchByTagFn && selectedTag !== 'all') {
+      result = await fetchByTagFn(selectedTag);
+    } else {
+      result = await fetchFn();
+    }
+    
     setData(result);
     setLoading(false);
   };
@@ -121,7 +145,27 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, s
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 15 }}>
+      {/* Change justifyContent to space-between to fit the filter on the left */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+        
+        {/* Render TAG FILTER only if fetchByTagFn is passed */}
+        {fetchByTagFn ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Filter size={16} color="#888" />
+            <Select 
+              value={selectedTag} 
+              onChange={setSelectedTag} 
+              style={{ width: 200 }}
+            >
+              <Option value="none">None (Select to view)</Option>
+              <Option value="all">All Items</Option>
+              {tagsData.map(tag => (
+                <Option key={tag.id} value={tag.id}>{tag.name}</Option>
+              ))}
+            </Select>
+          </div>
+        ) : <div />}
+
         <div style={{ display: 'flex', gap: 10 }}>
           {selectedRowKeys.length > 0 && (
             <Popconfirm title={`Delete ${selectedRowKeys.length} items?`} onConfirm={handleBulkDelete} okText="Yes" cancelText="No">
@@ -130,7 +174,7 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, s
                </Button>
             </Popconfirm>
           )}
-          <Button icon={<RefreshCw size={16}/>} onClick={loadData} loading={loading}>
+          <Button icon={<RefreshCw size={16}/>} onClick={loadData} loading={loading} disabled={fetchByTagFn && selectedTag === 'none'}>
             Refresh
           </Button>
         </div>

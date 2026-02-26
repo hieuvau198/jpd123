@@ -200,6 +200,19 @@ const FlashcardSession = ({ data, onHome }) => {
             <Title level={4}>Matching</Title>
             <Text type="secondary">Pair words & meanings.</Text>
           </Card>
+
+          {/* ADD THE SPELLING BEE CARD HERE */}
+          <Card 
+            hoverable 
+            onClick={() => setMode('spellingbee')}
+            style={{ width: 240, textAlign: 'center' }}
+          >
+            <SpellCheck size={48} style={{ marginBottom: 16, color: '#eb2f96' }} />
+            <Title level={4}>Spelling Bee</Title>
+            <Text type="secondary">Listen and spell the word.</Text>
+          </Card>
+          {/* ------------------------------- */}
+
         </Flex>
 
         <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>

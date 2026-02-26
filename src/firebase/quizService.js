@@ -1,5 +1,5 @@
 import { db } from './firebase-config';
-import { collection, getDocs, doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, deleteDoc, getDoc, query, where } from 'firebase/firestore';
 
 const COLLECTION_NAME = 'quizzes';
 
@@ -16,6 +16,21 @@ export const getAllQuizzes = async () => {
     return quizzes;
   } catch (error) {
     console.error("Error fetching quizzes:", error);
+    return [];
+  }
+};
+
+export const getQuizzesByTag = async (tag) => {
+  try {
+    const q = query(collection(db, COLLECTION_NAME), where('tags', 'array-contains', tag));
+    const querySnapshot = await getDocs(q);
+    const quizzes = [];
+    querySnapshot.forEach((doc) => {
+      quizzes.push({ ...doc.data(), id: doc.id, type: 'quiz' });
+    });
+    return quizzes;
+  } catch (error) {
+    console.error(`Error fetching quizzes for tag ${tag}:`, error);
     return [];
   }
 };
