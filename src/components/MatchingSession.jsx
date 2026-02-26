@@ -71,7 +71,7 @@ const MatchingSession = ({ data, onHome, onBack }) => {
       deck.push({
         uid: `q-${q.id}`,
         pairId: q.id,
-        content: q.speak || q.question,
+        content: q.question || q.question,
         type: 'question'
       });
       deck.push({
