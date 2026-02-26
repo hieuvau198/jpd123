@@ -42,7 +42,7 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
   useEffect(() => {
     if (queue.length > 0 && currentIndex < queue.length) {
       const currentCard = queue[currentIndex];
-      const target = (currentCard.speak || currentCard.question).trim(); 
+      const target = (currentCard.question || currentCard.speak).trim(); 
       setFullWord(target);
 
       // --- NEW MASKING LOGIC ---
