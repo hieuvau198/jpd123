@@ -1,3 +1,11 @@
+import spaceship1_1 from '../../assets/spaceship/spaceship_270_1.png';
+import spaceship1_2 from '../../assets/spaceship/spaceship_270_2.png';
+
+import spaceship2_1 from '../../assets/spaceship/spaceship_270_3.png';
+import spaceship2_2 from '../../assets/spaceship/spaceship_270_4.png';
+
+import spaceship3_1 from '../../assets/spaceship/spaceship_270_5.png';
+
 export const TOWER_HP_MAX = 5;
 export const TOWER_SIZE = 80;
 export const TOWER_X = 50;
@@ -5,15 +13,15 @@ export const TOWER_X = 50;
 // Replaced Zombie Frames with Spaceship Assets
 export const SPACESHIP_ASSETS = {
   1: [
-    '/game_objects/spaceship/spaceship_270_1.png', 
-    '/game_objects/spaceship/spaceship_270_2.png'
+    spaceship1_1, 
+    spaceship1_2
   ],
   2: [
-    '/game_objects/spaceship/spaceship_270_3.png', 
-    '/game_objects/spaceship/spaceship_270_4.png'
+    spaceship2_1, 
+    spaceship2_2
   ],
   3: [
-    '/game_objects/spaceship/spaceship_270_5.png'
+    spaceship3_1
   ]
 };
 
