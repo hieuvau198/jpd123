@@ -55,6 +55,19 @@ const Home = () => {
           </Link>
         </Col>
 
+        {/* Phonetic */}
+        <Col xs={24} sm={8} md={6}>
+          <Link to="/phonetic" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <Mic size={48} color="#2febe2" />
+              </div>
+              <Title level={3} style={{ color: '#2febe2' }}>Phonetic</Title>
+              <Text type="secondary">Identify Sounds.</Text>
+            </Card>
+          </Link>
+        </Col>
+
         {/* Speak */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/speaks" style={{ textDecoration: 'none' }}>

@@ -1,13 +1,16 @@
+// src/components/admin/AdminDashboard.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs } from 'antd';
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield } from 'lucide-react';
+// Add Volume2 for phonetics
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2 } from 'lucide-react';
 
 // Admin Components
 import AdminLogin from './AdminLogin';
 import GenericManager from './GenericManager';
 import FlashcardManager from './FlashcardManager';
 import DefenseManager from './DefenseManager';
+import PhoneticManager from './PhoneticManager'; // <-- Import the new manager
 
 // Firebase Services
 import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
@@ -49,9 +52,22 @@ const AdminDashboard = () => {
           uploadText="Import Quizzes (JSON)" 
           uploadColor="#52c41a"
           fetchFn={getAllQuizzes} 
-          fetchByTagFn={getQuizzesByTag} // <-- ADD THIS LINE
+          fetchByTagFn={getQuizzesByTag}
           saveFn={saveQuizSet} 
           deleteFn={deleteQuizSet}
+        />
+      )
+    },
+    // --> NEW PHONETIC TAB <--
+    {
+      key: 'phonetic',
+      label: 'Phonetic',
+      children: (
+        <PhoneticManager 
+          icon={<Volume2 color="#fa541c" size={24} />} 
+          color="volcano" 
+          uploadText="Import Phonetics (JSON)" 
+          uploadColor="#fa541c" 
         />
       )
     },

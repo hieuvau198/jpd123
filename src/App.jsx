@@ -13,7 +13,9 @@ import RepairList from './pages/RepairList';
 import RepairDetail from './pages/RepairDetail';
 import SpeakList from './pages/SpeakList';
 import SpeakDetail from './pages/SpeakDetail';
-// Import Defense (New)
+import PhoneticList from './pages/PhoneticList';
+import PhoneticDetail from './pages/PhoneticDetail';
+
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
 
@@ -42,6 +44,9 @@ export default function App() {
         {/* Speak Routes */}
         <Route path="/speaks" element={<SpeakList />} />
         <Route path="/speak/:id" element={<SpeakDetail />} />
+
+        <Route path="/phonetic" element={<PhoneticList />} />
+        <Route path="/phonetic/:id" element={<PhoneticDetail />} />
 
         {/* Defense Routes (New) */}
         <Route path="/challenge" element={<DefenseList />} />
