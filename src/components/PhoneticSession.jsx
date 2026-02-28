@@ -5,9 +5,28 @@ import { Volume2, CheckCircle2, XCircle, ArrowRight, RotateCcw } from 'lucide-re
 
 const { Title, Text } = Typography;
 
+// Helper function to randomly shuffle an array (Fisher-Yates algorithm)
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 const PhoneticSession = ({ data, onFinish }) => {
-  // Initialize with the original questions
-  const [questions, setQuestions] = useState(data.questions || []);
+  // Initialize with shuffled questions and shuffled options
+  const [questions, setQuestions] = useState(() => {
+    if (!data || !data.questions) return [];
+    
+    // Deep copy, shuffle the questions, and shuffle options inside each question
+    return shuffleArray(data.questions).map(q => ({
+      ...q,
+      options: shuffleArray(q.options)
+    }));
+  });
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -41,7 +60,11 @@ const PhoneticSession = ({ data, onFinish }) => {
   const handleNext = () => {
     if (selectedOption !== currentQuestion.correctAnswer) {
       // Incorrect answer: recycle it to the end of the array
-      setQuestions(prev => [...prev, currentQuestion]);
+      // We also reshuffle its options so it looks fresh when they see it again
+      setQuestions(prev => [
+        ...prev, 
+        { ...currentQuestion, options: shuffleArray(currentQuestion.options) }
+      ]);
     }
     setSelectedOption(null);
     setIsAnswered(false);
