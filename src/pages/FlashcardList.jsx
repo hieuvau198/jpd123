@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom'; // Import useSearchParams
 import { Home, Loader2, Layers, Filter } from 'lucide-react';
-// Import getFlashcardsByTag instead of getAllFlashcards
 import { getFlashcardsByTag } from '../firebase/flashcardService'; 
 import PracticeCard from '../components/PracticeCard';
 import availableTags from '../data/system/tags.json';
 
 const FlashcardList = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); // Default to false
-  const [selectedTag, setSelectedTag] = useState(null); // Default is no tag
+  const [loading, setLoading] = useState(false); 
+  const [searchParams, setSearchParams] = useSearchParams(); // Replace useState with useSearchParams
+  const selectedTag = searchParams.get('tag'); // Read the tag from the URL
   const navigate = useNavigate();
 
-  // Update useEffect to run whenever selectedTag changes
   useEffect(() => {
     const fetch = async () => {
       if (!selectedTag) {
-        setData([]); // Clear data if no tag is selected
+        setData([]); 
         return;
       }
       
       setLoading(true);
-      // Call Firebase only for the selected tag
       const res = await getFlashcardsByTag(selectedTag);
       setData(res);
       setLoading(false);
@@ -59,7 +57,7 @@ const FlashcardList = () => {
           {availableTags.map((tag) => (
             <button
               key={tag.id}
-              onClick={() => setSelectedTag(tag.id)}
+              onClick={() => setSearchParams({ tag: tag.id })} // Update the URL when clicked
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
                 ${selectedTag === tag.id 
                   ? 'bg-yellow-400 text-black shadow-lg scale-105' 
@@ -86,7 +84,8 @@ const FlashcardList = () => {
                <PracticeCard 
                  key={item.id}
                  practice={item} 
-                 onClick={() => navigate(`/flashcard/${item.id}`)} 
+                 // Pass the tag to the detail page URL so we can return with it later
+                 onClick={() => navigate(`/flashcard/${item.id}${selectedTag ? `?tag=${selectedTag}` : ''}`)} 
                />
             ))
           ) : (
