@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom'; // Added useSearchParams
 import { Home, Loader2, Library, Filter } from 'lucide-react';
 // Import getQuizzesByTag instead of getAllQuizzes
 import { getQuizzesByTag } from '../firebase/quizService'; 
@@ -9,7 +9,11 @@ import availableTags from '../data/system/tags.json'; // Import tags
 const QuizList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false); // Default to false
-  const [selectedTag, setSelectedTag] = useState(null); // Default to no tag
+  
+  // Replaced useState with useSearchParams
+  const [searchParams, setSearchParams] = useSearchParams(); 
+  const selectedTag = searchParams.get('tag'); // Read the tag from the URL
+  
   const navigate = useNavigate();
 
   // Fetch only when the selected tag changes
@@ -61,7 +65,7 @@ const QuizList = () => {
           {availableTags.map((tag) => (
             <button
               key={tag.id}
-              onClick={() => setSelectedTag(tag.id)}
+              onClick={() => setSearchParams({ tag: tag.id })} // Update the URL when clicked
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
                 ${selectedTag === tag.id 
                   ? 'bg-yellow-400 text-black shadow-lg scale-105' 
@@ -88,7 +92,8 @@ const QuizList = () => {
                <PracticeCard 
                  key={item.id}
                  practice={item} 
-                 onClick={() => navigate(`/quiz/${item.id}`)} 
+                 // Pass the tag to the detail page URL so we can return with it later
+                 onClick={() => navigate(`/quiz/${item.id}${selectedTag ? `?tag=${selectedTag}` : ''}`)} 
                />
             ))
           ) : (
