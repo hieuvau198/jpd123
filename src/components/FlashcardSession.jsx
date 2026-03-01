@@ -3,7 +3,7 @@ import { Card, Button, Typography, Flex, Result, InputNumber } from 'antd';
 import { Home, Layers, Keyboard, HelpCircle, Grid, ArrowLeft, ArrowRight, Volume2, SpellCheck } from 'lucide-react';
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
-import TypingSession from './TypingSession'; // Imported the new component
+import TypingSession from './TypingSession';
 import SpellingBeeSession from './SpellingBeeSession';
 
 const { Title, Text } = Typography;
@@ -17,38 +17,48 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
+// RATING SYSTEM CONSTANTS
+export const ALL_LEVELS = [
+  { min: 0, max: 50, title: 'Mèo Mập', img: 'https://i.postimg.cc/zfHKSDK4/fat-cat-1.png', color: '#595959' },
+  { min: 51, max: 80, title: 'Sói Xám', img: 'https://i.postimg.cc/MHS7Gkcd/wolf-1.jpg', color: '#1890ff' },
+  { min: 81, max: 99, title: 'Hổ Béo', img: 'https://i.postimg.cc/hPMLK5KM/fat-tiger-1.png', color: '#fa8c16' },
+  { min: 100, max: 100, title: 'Vua Rồng', img: 'https://i.postimg.cc/zXmzVzGV/dragon-1.jpg', color: '#f5222d' },
+];
+
+export const getRatingInfo = (score) => {
+  if (score === 100) return ALL_LEVELS[3];
+  if (score > 80) return ALL_LEVELS[2];
+  if (score > 50) return ALL_LEVELS[1];
+  return ALL_LEVELS[0];
+};
+
 const FlashcardSession = ({ data, onHome }) => {
   const [mode, setMode] = useState(null); 
   
-  // New States for Customizing Session Size
   const [setupMode, setSetupMode] = useState(false);
   const [sessionData, setSessionData] = useState(null);
   const [wordCount, setWordCount] = useState(30);
   
-  // Basic Session State (Used for Flashcard View Mode)
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 1. Initial Data Check
   useEffect(() => {
     if (data && data.questions) {
       if (data.questions.length > 30) {
-        setWordCount(30); // Default input value
+        setWordCount(30); 
         setSetupMode(true);
       } else {
-        setSessionData(data); // Under 30 words, skip setup
+        setSessionData(data); 
       }
     }
   }, [data]);
 
-  // 2. Setup Queue whenever sessionData is ready
   useEffect(() => {
     if (sessionData && sessionData.questions) {
       setQueue(shuffleArray([...sessionData.questions]));
     }
   }, [sessionData]);
 
-  // Keyboard navigation for view mode
   useEffect(() => {
     if (mode !== 'view') return;
     const handleKeyDown = (e) => {
@@ -79,6 +89,8 @@ const FlashcardSession = ({ data, onHome }) => {
   const handleNext = () => {
     if (currentIndex < queue.length - 1) {
       setCurrentIndex(prev => prev + 1);
+    } else {
+      setCurrentIndex(prev => prev + 1); // Trigger complete screen
     }
   };
 
@@ -90,7 +102,6 @@ const FlashcardSession = ({ data, onHome }) => {
 
   if (!data) return null;
 
-  // --- SETUP SCREEN (Asking for number of words) ---
   if (setupMode) {
     return (
       <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
@@ -116,7 +127,6 @@ const FlashcardSession = ({ data, onHome }) => {
           onClick={() => {
             const shuffled = shuffleArray([...data.questions]);
             const selectedQuestions = shuffled.slice(0, wordCount);
-            // Lock in the subset for the whole session
             setSessionData({ ...data, questions: selectedQuestions });
             setSetupMode(false);
           }}
@@ -131,27 +141,13 @@ const FlashcardSession = ({ data, onHome }) => {
     );
   }
 
-  // Safety check to ensure sessionData is populated before rendering modes
   if (!sessionData) return null;
 
-  // --- RENDER SEPARATED MODES ---
-  // Notice we pass `sessionData` to these instead of `data` now
-
-  if (mode === 'missing') {
-    return <MissingLetterSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
-  }
-
-  if (mode === 'matching') {
-    return <MatchingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
-  }
-
-  if (mode === 'speak') {
-    return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
-  }
-
+  if (mode === 'missing') return <MissingLetterSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
+  if (mode === 'matching') return <MatchingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
+  if (mode === 'speak') return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'spellingbee') return <SpellingBeeSession data={sessionData} onBack={() => setMode(null)} />;
 
-  // --- MAIN MENU ---
   if (!mode) {
     return (
       <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
@@ -161,58 +157,35 @@ const FlashcardSession = ({ data, onHome }) => {
         </Text>
         
         <Flex wrap gap="large" justify="center">
-          <Card 
-            hoverable 
-            onClick={() => setMode('view')}
-            style={{ width: 240, textAlign: 'center' }}
-          >
+          <Card hoverable onClick={() => setMode('view')} style={{ width: 240, textAlign: 'center' }}>
             <Layers size={48} style={{ marginBottom: 16, color: '#1890ff' }} />
             <Title level={4}>Flashcard</Title>
             <Text type="secondary">View and Listen.</Text>
           </Card>
           
-          <Card 
-            hoverable 
-            onClick={() => setMode('speak')}
-            style={{ width: 240, textAlign: 'center' }}
-          >
+          <Card hoverable onClick={() => setMode('speak')} style={{ width: 240, textAlign: 'center' }}>
             <Keyboard size={48} style={{ marginBottom: 16, color: '#52c41a' }} />
             <Title level={4}>Typing</Title>
             <Text type="secondary">Type the full answer.</Text>
           </Card>
 
-          <Card 
-            hoverable 
-            onClick={() => setMode('missing')}
-            style={{ width: 240, textAlign: 'center' }}
-          >
+          <Card hoverable onClick={() => setMode('missing')} style={{ width: 240, textAlign: 'center' }}>
             <HelpCircle size={48} style={{ marginBottom: 16, color: '#faad14' }} />
             <Title level={4}>Missing Letter</Title>
             <Text type="secondary">Fill in the blank.</Text>
           </Card>
 
-          <Card 
-            hoverable 
-            onClick={() => setMode('matching')}
-            style={{ width: 240, textAlign: 'center' }}
-          >
+          <Card hoverable onClick={() => setMode('matching')} style={{ width: 240, textAlign: 'center' }}>
             <Grid size={48} style={{ marginBottom: 16, color: '#722ed1' }} />
             <Title level={4}>Matching</Title>
             <Text type="secondary">Pair words & meanings.</Text>
           </Card>
 
-          {/* ADD THE SPELLING BEE CARD HERE */}
-          <Card 
-            hoverable 
-            onClick={() => setMode('spellingbee')}
-            style={{ width: 240, textAlign: 'center' }}
-          >
+          <Card hoverable onClick={() => setMode('spellingbee')} style={{ width: 240, textAlign: 'center' }}>
             <SpellCheck size={48} style={{ marginBottom: 16, color: '#eb2f96' }} />
             <Title level={4}>Spelling Bee</Title>
             <Text type="secondary">Listen and spell the word.</Text>
           </Card>
-          {/* ------------------------------- */}
-
         </Flex>
 
         <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>
@@ -222,13 +195,17 @@ const FlashcardSession = ({ data, onHome }) => {
     );
   }
 
-  // --- COMPLETED SCREEN (For Flashcard View Mode Only) ---
+  // --- COMPLETED SCREEN FOR FLASHCARD VIEW ---
   if (currentIndex >= queue.length && mode === 'view') {
+    const score = 100; // Viewing flashcards doesn't have "mistakes", so automatic perfect!
+    const rating = getRatingInfo(score);
+
     return (
-      <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
+      <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: '40px 0' }}>
         <Result
           status="success"
           title="Session Completed!"
+          subTitle="You have successfully reviewed all the flashcards."
           extra={[
             <Button key="menu" onClick={() => setMode(null)}>Back to Menu</Button>, 
             <Button key="restart" type="primary" onClick={() => {
@@ -237,23 +214,40 @@ const FlashcardSession = ({ data, onHome }) => {
                setMode(null);
             }}>Restart</Button>,
           ]}
-        />
+        >
+          <Flex vertical align="center" gap="large" style={{ marginTop: 20 }}>
+            <Title level={3}>Your Score: {score}/100</Title>
+            <Title level={4} style={{ color: rating.color, margin: 0 }}>Rank: {rating.title}</Title>
+            <img src={rating.img} alt={rating.title} style={{ width: 150, height: 150, objectFit: 'cover', borderRadius: '50%', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
+
+            <div style={{ marginTop: 30, textAlign: 'center' }}>
+              <Text strong style={{ fontSize: 16, display: 'block', marginBottom: 16 }}>All Rank Levels</Text>
+              <Flex gap="middle" wrap justify="center">
+                {ALL_LEVELS.map(lvl => (
+                  <Card key={lvl.title} size="small" style={{ width: 120, opacity: rating.title === lvl.title ? 1 : 0.5, textAlign: 'center' }}>
+                    <img src={lvl.img} alt={lvl.title} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: '50%', marginBottom: 8 }} />
+                    <div style={{ lineHeight: '1.2' }}><Text strong>{lvl.title}</Text></div>
+                    <div style={{ marginTop: 4 }}><Text type="secondary" style={{ fontSize: 12 }}>{lvl.min === lvl.max ? '100 pts' : `${lvl.min}-${lvl.max} pts`}</Text></div>
+                  </Card>
+                ))}
+              </Flex>
+            </div>
+          </Flex>
+        </Result>
       </Flex>
     );
   }
 
   const currentCard = queue[currentIndex];
 
-  // --- FLASHCARD VIEW ---
   if (mode === 'view') {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto', padding: '40px 20px' }}>
         <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-          <Button ghost icon={<Home size={16}/>} onClick={() => setMode(null)} style={{ color: 'white' }}>Exit</Button>
-          <Text strong style={{ color: 'white' }}>{currentIndex + 1} / {queue.length}</Text>
+          <Button ghost icon={<Home size={16}/>} onClick={() => setMode(null)} style={{ color: '#555' }}>Exit</Button>
+          <Text strong>{currentIndex + 1} / {queue.length}</Text>
         </Flex>
 
-        {/* Single Static Card */}
         <Card 
           hoverable
           onClick={() => handleSpeech(currentCard.question)}
@@ -287,19 +281,8 @@ const FlashcardSession = ({ data, onHome }) => {
 
         <Flex justify="center" gap="middle">
           <Button size="large" icon={<ArrowLeft size={16} />} onClick={(e) => {e.stopPropagation(); handlePrev()}} disabled={currentIndex === 0}>Prev</Button>
-          
-          <Button 
-            size="large" 
-            icon={<Volume2 size={16} />} 
-            onClick={(e) => {
-              e.stopPropagation(); 
-              handleSpeech(currentCard.question);
-            }}
-          >
-            Listen
-          </Button>
-
-          <Button size="large" icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}} disabled={currentIndex === queue.length - 1}>Next</Button>
+          <Button size="large" icon={<Volume2 size={16} />} onClick={(e) => {e.stopPropagation(); handleSpeech(currentCard.question);}}>Listen</Button>
+          <Button size="large" icon={<ArrowRight size={16} />} iconPosition='end' onClick={(e) => {e.stopPropagation(); handleNext()}}>Next</Button>
         </Flex>
       </div>
     );
