@@ -25,8 +25,8 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
             }} 
         />
 
-        <Title level={2}>Điểm: {score}/100</Title>
-        <Title level={3} style={{ color: rating.color, margin: 0 }}>Danh Hiệu: {rating.title}</Title>
+        <Title level={2}>Score: {score}/100</Title>
+        <Title level={3} style={{ color: rating.color, margin: 0 }}>Rank: {rating.title}</Title>
 
         {/* Buttons displayed directly instead of using the Antd <Result extra={...}> array */}
         <Flex gap="middle" style={{ marginTop: 20 }}>
@@ -41,7 +41,7 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
         {/* Rank Levels Display */}
         <div style={{ marginTop: 30, textAlign: 'center' }}>
           <Text strong style={{ fontSize: 16, display: 'block', marginBottom: 16 }}>
-            Bảng Xếp Hạng
+            Ranking
           </Text>
           <Flex gap="middle" wrap justify="center">
             {ALL_LEVELS.map(lvl => (
