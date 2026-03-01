@@ -178,7 +178,7 @@ const MatchingSession = ({ data, onHome, onBack }) => {
           title="All Sections Completed!"
           subTitle={`You successfully matched all ${allQuestions.length} pairs.`}
           extra={[
-            <Button key="home" onClick={onHome}>Home</Button>,
+            <Button key="menu" onClick={onBack}>Back to Menu</Button>, // Changed from onHome to onBack
             <Button key="restart" type="primary" onClick={() => {
                setAllQuestions(shuffleArray([...data.questions]));
                setSectionIndex(0);
