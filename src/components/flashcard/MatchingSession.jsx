@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, Result, message, Progress } from 'antd';
 import { ArrowLeft, Trophy } from 'lucide-react';
-import { ALL_LEVELS, getRatingInfo } from './FlashcardSession';
+import { ALL_LEVELS, getRatingInfo } from './flashcardConstants';
+import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
 
@@ -154,46 +155,21 @@ const MatchingSession = ({ data, onHome, onBack }) => {
   };
 
   if (isFinished) {
-    const score = Math.max(0, Math.round(((allQuestions.length - wrongPairIds.size) / allQuestions.length) * 100));
-    const rating = getRatingInfo(score);
-
-    return (
-      <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: '40px 0' }}>
-        <Result
-          status="success"
-         
-          extra={[
-            <Button key="menu" onClick={onBack}>Back to Menu</Button>, 
-            <Button key="restart" type="primary" onClick={() => {
-               setAllQuestions(shuffleArray([...data.questions]));
-               setSectionIndex(0);
-               setWrongPairIds(new Set());
-               setIsFinished(false);
-            }}>Play Again</Button>,
-          ]}
-        >
-          <Flex vertical align="center" gap="large" style={{ marginTop: 20 }}>
-            <Title level={3}>Your Score: {score}/100</Title>
-            <Title level={4} style={{ color: rating.color, margin: 0 }}>Rank: {rating.title}</Title>
-            <img src={rating.img} alt={rating.title} style={{ width: 150, height: 150, objectFit: 'cover', borderRadius: '50%', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
-
-            <div style={{ marginTop: 30, textAlign: 'center' }}>
-              <Text strong style={{ fontSize: 16, display: 'block', marginBottom: 16 }}>All Rank Levels</Text>
-              <Flex gap="middle" wrap justify="center">
-                {ALL_LEVELS.map(lvl => (
-                  <Card key={lvl.title} size="small" style={{ width: 120, opacity: rating.title === lvl.title ? 1 : 0.5, textAlign: 'center' }}>
-                    <img src={lvl.img} alt={lvl.title} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: '50%', marginBottom: 8 }} />
-                    <div style={{ lineHeight: '1.2' }}><Text strong>{lvl.title}</Text></div>
-                    <div style={{ marginTop: 4 }}><Text type="secondary" style={{ fontSize: 12 }}>{lvl.min === lvl.max ? '100 pts' : `${lvl.min}-${lvl.max} pts`}</Text></div>
-                  </Card>
-                ))}
-              </Flex>
-            </div>
-          </Flex>
-        </Result>
-      </Flex>
-    );
-  }
+  const score = Math.max(0, Math.round(((allQuestions.length - wrongPairIds.size) / allQuestions.length) * 100));
+  
+  return (
+    <SessionResult 
+      score={score}
+      onBack={onBack}
+      onRestart={() => {
+        setAllQuestions(shuffleArray([...data.questions]));
+        setSectionIndex(0);
+        setWrongPairIds(new Set());
+        setIsFinished(false);
+      }}
+    />
+  );
+}
 
   const totalSections = Math.ceil(allQuestions.length / SECTION_SIZE);
   const progressPercent = Math.round((sectionIndex / totalSections) * 100);
