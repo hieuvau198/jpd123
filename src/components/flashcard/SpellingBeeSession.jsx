@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Result, Space, Badge } from 'antd';
-import { Home, Volume2, ArrowRight, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { Card, Button, Typography, Flex, Space, Badge } from 'antd';
+import { Home, Volume2, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
 
@@ -117,24 +118,14 @@ const SpellingBeeSession = ({ data, onBack }) => {
 
   // --- COMPLETED SCREEN ---
   if (isFinished) {
+    const calculatedScore = Math.max(0, Math.round((score / queue.length) * 100));
+    
     return (
-      <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: 20 }}>
-        <Card style={{ width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <Result
-            icon={<CheckCircle size={60} color="#52c41a" />}
-            status="success"
-            title="Spelling Bee Complete!"
-            subTitle="Great job practicing your spelling."
-            extra={[
-              <div key="score" style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 20 }}>
-                Score: {score} / {queue.length}
-              </div>,
-              <Button key="home" icon={<Home size={16}/>} onClick={onBack}>Exit</Button>,
-              <Button key="restart" type="primary" icon={<RefreshCw size={16}/>} onClick={restart}>Restart</Button>
-            ]}
-          />
-        </Card>
-      </Flex>
+      <SessionResult 
+        score={calculatedScore} 
+        onBack={onBack} 
+        onRestart={restart} 
+      />
     );
   }
 

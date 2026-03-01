@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Typography, Button, Flex, Progress, Result, message } from 'antd';
-import { ArrowLeft, RotateCcw, Volume2 } from 'lucide-react';
+import { Card, Typography, Button, Flex, Progress, message } from 'antd';
+import { ArrowLeft, Volume2 } from 'lucide-react';
+import SessionResult from '../SessionResult'; // Imported SessionResult
 
 const { Title, Text } = Typography;
 
@@ -17,6 +18,9 @@ const shuffleArray = (array) => {
 const MissingLetterSession = ({ data, onHome, onBack }) => {
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Track unique IDs of questions the user got wrong for SessionResult calculation
+  const [wrongIds, setWrongIds] = useState(new Set());
 
   // Game State
   const [fullWord, setFullWord] = useState("");         
@@ -118,6 +122,8 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         }
     }
 
+    const currentCard = queue[currentIndex];
+
     // Compare Case Insensitive
     if (constructedWord.toLowerCase() === fullWord.toLowerCase()) {
         setStatus("success");
@@ -128,6 +134,8 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         setStatus("error");
         message.error("Incorrect, try again!");
         handleSpeech(fullWord); // Auto speak on wrong
+        // Register this specific card ID/text as a wrong attempt
+        setWrongIds(prev => new Set(prev).add(currentCard.id || currentCard.question));
     }
   };
 
@@ -157,23 +165,21 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     }
   };
 
-  // --- FINISHED ---
+  // --- FINISHED --- Use the new SessionResult
   if (currentIndex >= queue.length && queue.length > 0) {
+    const totalUniqueQuestions = data.questions.length;
+    const score = Math.max(0, Math.round(((totalUniqueQuestions - wrongIds.size) / totalUniqueQuestions) * 100));
+
     return (
-      <Flex justify="center" align="center" style={{ minHeight: '80vh' }}>
-        <Result
-          status="success"
-          title="Session Completed!"
-          subTitle={`You mastered ${data.questions.length} words.`}
-          extra={[
-            <Button key="menu" onClick={onBack}>Back to Menu</Button>,
-            <Button key="restart" type="primary" onClick={() => {
-               setQueue(shuffleArray([...data.questions]));
-               setCurrentIndex(0);
-            }}>Restart</Button>,
-          ]}
-        />
-      </Flex>
+      <SessionResult 
+        score={score} 
+        onBack={onBack} 
+        onRestart={() => {
+           setQueue(shuffleArray([...data.questions]));
+           setCurrentIndex(0);
+           setWrongIds(new Set());
+        }} 
+      />
     );
   }
 

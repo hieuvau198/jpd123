@@ -5,14 +5,13 @@ import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 const { Title, Text } = Typography;
 
 const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", restartText = "Play Again" }) => {
-  // Logic remains the same for every mode
   const rating = getRatingInfo(score);
 
   return (
-    <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: '40px 0' }}>
-      <Flex vertical align="center" gap="large" style={{ marginTop: 20 }}>
-        
-        {/* Bigger image in a square shape (borderRadius: 16 gives it slightly rounded square corners) */}
+    <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
+      
+      {/* Left Side: Score & Actions */}
+      <Flex vertical align="center" gap="large">
         <img 
           src={rating.img} 
           alt={rating.title} 
@@ -25,10 +24,9 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
             }} 
         />
 
-        <Title level={2}>Score: {score}/100</Title>
+        <Title level={2} style={{ margin: 0 }}>Score: {score}/100</Title>
         <Title level={3} style={{ color: rating.color, margin: 0 }}>Rank: {rating.title}</Title>
 
-        {/* Buttons displayed directly instead of using the Antd <Result extra={...}> array */}
         <Flex gap="middle" style={{ marginTop: 20 }}>
           <Button size="large" onClick={onBack}>
             {backText}
@@ -37,48 +35,48 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
             {restartText}
           </Button>
         </Flex>
+      </Flex>
 
-        {/* Rank Levels Display */}
-        <div style={{ marginTop: 30, textAlign: 'center' }}>
-          <Text strong style={{ fontSize: 16, display: 'block', marginBottom: 16 }}>
-            Ranking
-          </Text>
-          <Flex gap="middle" wrap justify="center">
-            {ALL_LEVELS.map(lvl => (
-              <Card 
-                key={lvl.title} 
-                size="small" 
-                style={{ 
-                  width: 120, 
-                  opacity: rating.title === lvl.title ? 1 : 0.5, 
-                  textAlign: 'center' 
-                }}
-              >
+      {/* Right Side: Ranking List (Top-Down) */}
+      <Flex vertical gap="middle" align="center">
+        <Text strong style={{ fontSize: 20, display: 'block', marginBottom: 8 }}>
+          Ranking Levels
+        </Text>
+        <Flex vertical gap="small" style={{ maxHeight: '600px', overflowY: 'auto', paddingRight: 10 }}>
+          {ALL_LEVELS.map(lvl => (
+            <Card 
+              key={lvl.title} 
+              size="small" 
+              style={{ 
+                width: 250, 
+                opacity: rating.title === lvl.title ? 1 : 0.5,
+                borderColor: rating.title === lvl.title ? '#1677ff' : '#f0f0f0',
+                backgroundColor: rating.title === lvl.title ? '#f0f5ff' : '#ffffff'
+              }}
+            >
+              <Flex align="center" gap="middle">
                 <img 
                   src={lvl.img} 
                   alt={lvl.title} 
                   style={{ 
-                    width: 60, 
-                    height: 60, 
+                    width: 50, 
+                    height: 50, 
                     objectFit: 'cover', 
-                    borderRadius: 8, // Made these square as well to match the main image theme
-                    marginBottom: 8 
+                    borderRadius: 8
                   }} 
                 />
-                <div style={{ lineHeight: '1.2' }}>
+                <Flex vertical>
                   <Text strong>{lvl.title}</Text>
-                </div>
-                <div style={{ marginTop: 4 }}>
                   <Text type="secondary" style={{ fontSize: 12 }}>
-                    {lvl.min === lvl.max ? '100' : `${lvl.min}-${lvl.max}`}
+                    {lvl.min === lvl.max ? '100' : `${lvl.min}-${lvl.max}`} pts
                   </Text>
-                </div>
-              </Card>
-            ))}
-          </Flex>
-        </div>
-
+                </Flex>
+              </Flex>
+            </Card>
+          ))}
+        </Flex>
       </Flex>
+
     </Flex>
   );
 };

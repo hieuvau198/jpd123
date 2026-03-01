@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'; // Import useSearchParams
 import { Spin, Result, Button } from 'antd';
-import FlashcardSession from '../components/FlashcardSession';
+import FlashcardSession from '../components/flashcard/FlashcardSession';
 import { getFlashcardById } from '../firebase/flashcardService';
 
 const FlashcardDetail = () => {

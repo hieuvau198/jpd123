@@ -12,7 +12,7 @@ const Home = () => {
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 50 }}>
-        <Title level={1}>English Hub</Title>
+        <Title level={1}>🗿🗿🗿</Title>
       </div>
 
       <Row gutter={[24, 24]} justify="center">
@@ -95,17 +95,7 @@ const Home = () => {
         </Col>
       </Row>
 
-      {/* Admin Link */}
-      <div style={{ textAlign: 'center', marginTop: 60 }}>
-        <Button 
-          type="text" 
-          icon={<Settings size={14} />} 
-          onClick={() => navigate('/admin')}
-          style={{ color: '#999' }}
-        >
-          Admin Dashboard
-        </Button>
-      </div>
+      
     </div>
   );
 };
