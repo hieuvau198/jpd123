@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, InputNumber } from 'antd';
-import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck } from 'lucide-react';
+// Added CheckSquare to lucide-react imports
+import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck, CheckSquare } from 'lucide-react'; 
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
 import TypingSession from './TypingSession';
 import SpellingBeeSession from './SpellingBeeSession';
 import ViewSession from './ViewSession';
+import MCSession from './MCSession'; // Added import for the new MC Session
 
 const { Title, Text } = Typography;
 
@@ -85,6 +87,8 @@ const FlashcardSession = ({ data, onHome }) => {
   if (mode === 'matching') return <MatchingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'speak') return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'spellingbee') return <SpellingBeeSession data={sessionData} onBack={() => setMode(null)} />;
+  // Add the new MC mode route
+  if (mode === 'mc') return <MCSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />; 
 
   // Menu Mode
   return (
@@ -123,6 +127,13 @@ const FlashcardSession = ({ data, onHome }) => {
           <SpellCheck size={48} style={{ marginBottom: 16, color: '#eb2f96' }} />
           <Title level={4}>Spelling Bee</Title>
           <Text type="secondary">Listen and spell the word.</Text>
+        </Card>
+
+        {/* Add the Multiple Choice Card */}
+        <Card hoverable onClick={() => setMode('mc')} style={{ width: 240, textAlign: 'center' }}>
+          <CheckSquare size={48} style={{ marginBottom: 16, color: '#13c2c2' }} />
+          <Title level={4}>Multiple Choice</Title>
+          <Text type="secondary">Choose the correct meaning.</Text>
         </Card>
       </Flex>
 
