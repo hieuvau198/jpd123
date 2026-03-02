@@ -48,7 +48,7 @@ const QuizList = () => {
             </button>
             <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
               <Library className="text-yellow-300" />
-              Quiz Library x
+              Quiz Library
             </h2>
           </div>
         </div>
