@@ -4,7 +4,8 @@ import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 
 const { Title, Text } = Typography;
 
-const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", restartText = "Play Again" }) => {
+// Add resultMessage to props
+const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", restartText = "Play Again", resultMessage }) => {
   const rating = getRatingInfo(score);
 
   return (
@@ -26,6 +27,13 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
 
         <Title level={2} style={{ margin: 0 }}>Score: {score}/100</Title>
         <Title level={3} style={{ color: rating.color, margin: 0 }}>Rank: {rating.title}</Title>
+        
+        {/* Render the result message if it exists */}
+        {resultMessage && (
+          <Text style={{ fontSize: 18, marginTop: 10, textAlign: 'center', maxWidth: 400, color: '#555' }}>
+            {resultMessage}
+          </Text>
+        )}
 
         <Flex gap="middle" style={{ marginTop: 20 }}>
           <Button size="large" onClick={onBack}>

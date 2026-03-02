@@ -133,6 +133,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
     return (
       <SessionResult 
         score={score} 
+        resultMessage={`"${data?.title || 'current'}": Type ${totalUniqueQuestions} words!`}
         onBack={onBack} 
         onRestart={() => {
            setQueue(shuffleArray([...data.questions]));

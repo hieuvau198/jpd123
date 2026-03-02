@@ -173,6 +173,7 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     return (
       <SessionResult 
         score={score} 
+        resultMessage={`"${data?.title || 'current'}": Fill ${totalUniqueQuestions} words!`}
         onBack={onBack} 
         onRestart={() => {
            setQueue(shuffleArray([...data.questions]));

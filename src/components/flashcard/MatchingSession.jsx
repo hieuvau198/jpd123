@@ -160,6 +160,7 @@ const MatchingSession = ({ data, onHome, onBack }) => {
   return (
     <SessionResult 
       score={score}
+      resultMessage={`"${data?.title || 'current'}": Matching ${allQuestions.length} questions!`}
       onBack={onBack}
       onRestart={() => {
         setAllQuestions(shuffleArray([...data.questions]));

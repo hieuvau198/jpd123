@@ -98,6 +98,7 @@ const MCSession = ({ data, onHome, onBack }) => {
     return (
       <SessionResult 
         score={finalScore}
+        resultMessage={`"${data?.title || 'current'}": MC ${questions.length} words!`}
         onBack={onBack}
         onRestart={initGame}
       />

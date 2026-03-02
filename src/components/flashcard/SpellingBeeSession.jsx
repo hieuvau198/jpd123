@@ -123,6 +123,7 @@ const SpellingBeeSession = ({ data, onBack }) => {
     return (
       <SessionResult 
         score={calculatedScore} 
+        resultMessage={`"${data?.title || 'current'}": Spell ${queue.length} words!`}
         onBack={onBack} 
         onRestart={restart} 
       />
