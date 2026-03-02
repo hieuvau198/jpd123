@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, InputNumber } from 'antd';
-// Added CheckSquare to lucide-react imports
 import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck, CheckSquare } from 'lucide-react'; 
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
 import TypingSession from './TypingSession';
 import SpellingBeeSession from './SpellingBeeSession';
 import ViewSession from './ViewSession';
-import MCSession from './MCSession'; // Added import for the new MC Session
+import MCSession from './MCSession';
 
 const { Title, Text } = Typography;
 
@@ -20,7 +19,8 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-const FlashcardSession = ({ data, onHome }) => {
+// Accept initialNumbers as a prop
+const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   const [mode, setMode] = useState(null); 
   
   const [setupMode, setSetupMode] = useState(false);
@@ -29,14 +29,21 @@ const FlashcardSession = ({ data, onHome }) => {
 
   useEffect(() => {
     if (data && data.questions) {
-      if (data.questions.length > 30) {
+      if (initialNumbers && !isNaN(initialNumbers) && initialNumbers > 0) {
+        // Automatically skip setup and choose random words if initialNumbers is valid
+        const limit = Math.min(initialNumbers, data.questions.length);
+        const shuffled = shuffleArray([...data.questions]);
+        const selectedQuestions = shuffled.slice(0, limit);
+        setSessionData({ ...data, questions: selectedQuestions });
+      } else if (data.questions.length > 30) {
+        // Fallback to manual setup mode
         setWordCount(30); 
         setSetupMode(true);
       } else {
         setSessionData(data); 
       }
     }
-  }, [data]);
+  }, [data, initialNumbers]);
 
   if (!data) return null;
 
@@ -81,16 +88,13 @@ const FlashcardSession = ({ data, onHome }) => {
 
   if (!sessionData) return null;
 
-  // Render the selected session mode component
   if (mode === 'view') return <ViewSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'missing') return <MissingLetterSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'matching') return <MatchingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'speak') return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'spellingbee') return <SpellingBeeSession data={sessionData} onBack={() => setMode(null)} />;
-  // Add the new MC mode route
   if (mode === 'mc') return <MCSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />; 
 
-  // Menu Mode
   return (
     <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
       <Title level={2}>{sessionData.title}</Title>
@@ -129,7 +133,6 @@ const FlashcardSession = ({ data, onHome }) => {
           <Text type="secondary">Listen and spell the word.</Text>
         </Card>
 
-        {/* Add the Multiple Choice Card */}
         <Card hoverable onClick={() => setMode('mc')} style={{ width: 240, textAlign: 'center' }}>
           <CheckSquare size={48} style={{ marginBottom: 16, color: '#13c2c2' }} />
           <Title level={4}>Multiple Choice</Title>

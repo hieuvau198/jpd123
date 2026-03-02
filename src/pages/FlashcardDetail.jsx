@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom'; // Import useSearchParams
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
 import FlashcardSession from '../components/flashcard/FlashcardSession';
 import { getFlashcardById } from '../firebase/flashcardService';
@@ -7,8 +7,13 @@ import { getFlashcardById } from '../firebase/flashcardService';
 const FlashcardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams(); // Get the search parameters
-  const tag = searchParams.get('tag'); // Extract the tag
+  const [searchParams] = useSearchParams();
+  const tag = searchParams.get('tag');
+  
+  // Extract the "numbers" parameter if it exists
+  const numbersParam = searchParams.get('numbers');
+  const initialNumbers = numbersParam ? parseInt(numbersParam, 10) : null;
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +26,6 @@ const FlashcardDetail = () => {
     fetch();
   }, [id]);
 
-  // Helper function to return to the list page with the correct tag
   const handleBackToList = () => {
     navigate(tag ? `/flashcards?tag=${tag}` : '/flashcards');
   };
@@ -40,7 +44,8 @@ const FlashcardDetail = () => {
   return (
     <FlashcardSession 
       data={data} 
-      onHome={handleBackToList} // Use the helper to navigate back with the exact tag
+      onHome={handleBackToList}
+      initialNumbers={initialNumbers} // Pass down the initial numbers
     />
   );
 };
