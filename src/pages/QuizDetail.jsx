@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Result, Button, Spin } from 'antd';
 import QuizSession from '../components/QuizSession';
 import { getQuizById } from '../firebase/quizService';
@@ -7,6 +7,12 @@ import { getQuizById } from '../firebase/quizService';
 const QuizDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
+  // Extract the "numbers" parameter if it exists
+  const numbersParam = searchParams.get('numbers');
+  const initialNumbers = numbersParam ? parseInt(numbersParam, 10) : null;
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +39,7 @@ const QuizDetail = () => {
     <QuizSession 
       data={data} 
       onHome={() => navigate('/quizzes')} 
+      initialNumbers={initialNumbers} // Pass down the initial numbers
     />
   );
 };

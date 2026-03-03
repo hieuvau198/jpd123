@@ -1,5 +1,9 @@
 [
   {
+    "id": "english-core",
+    "name": "Core"
+  },
+  {
     "id": "english-3",
     "name": "English 3"
   },
@@ -28,20 +32,20 @@
     "name": "English 9"
   },
   {
-    "id": "english-10",
-    "name": "English 10"
+    "id": "english-a1",
+    "name": "A1"
   },
   {
-    "id": "english-11",
-    "name": "English 11"
+    "id": "english-a2",
+    "name": "A2"
   },
   {
-    "id": "english-12",
-    "name": "English 12"
+    "id": "english-b1",
+    "name": "B1"
   },
   {
-    "id": "english-core",
-    "name": "Core"
+    "id": "english-b2",
+    "name": "B2"
   },
   {
     "id": "vocab",
@@ -58,21 +62,5 @@
   {
     "id": "other",
     "name": "Other"
-  },
-  {
-    "id": "english-a1",
-    "name": "A1"
-  },
-  {
-    "id": "english-a2",
-    "name": "A2"
-  },
-  {
-    "id": "english-b1",
-    "name": "B1"
-  },
-  {
-    "id": "english-b2",
-    "name": "B2"
   }
 ]
