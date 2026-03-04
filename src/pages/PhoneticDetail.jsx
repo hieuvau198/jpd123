@@ -32,15 +32,7 @@ const PhoneticDetail = () => {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '20px' }}>
-      <Button type="text" icon={<ArrowLeft size={16} />} onClick={() => navigate('/phonetic')} style={{ marginBottom: 20 }}>
-        Back to List
-      </Button>
-
-      <div style={{ marginBottom: 30 }}>
-        <Title level={2}>{data.title}</Title>
-      </div>
-
+    <div>
       <PhoneticSession data={data} onFinish={() => navigate('/phonetic')} />
     </div>
   );

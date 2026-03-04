@@ -1,7 +1,8 @@
 // src/components/PhoneticSession.jsx
 import React, { useState } from 'react';
-import { Card, Button, Typography, Progress, Result, Alert } from 'antd';
-import { Volume2, CheckCircle2, XCircle, ArrowRight, RotateCcw } from 'lucide-react';
+import { Card, Button, Typography, Progress, Alert } from 'antd';
+import { Volume2, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import SessionResult from './SessionResult';
 
 const { Title, Text } = Typography;
 
@@ -71,6 +72,21 @@ const PhoneticSession = ({ data, onFinish }) => {
     setCurrentIndex(prev => prev + 1);
   };
 
+  // Function to handle restarting the session
+  const handleRestart = () => {
+    setQuestions(() => {
+      if (!data || !data.questions) return [];
+      return shuffleArray(data.questions).map(q => ({
+        ...q,
+        options: shuffleArray(q.options)
+      }));
+    });
+    setCurrentIndex(0);
+    setCorrectCount(0);
+    setSelectedOption(null);
+    setIsAnswered(false);
+  };
+
   const renderHighlightedWord = (word, highlightIndexes) => {
     if (!highlightIndexes || highlightIndexes.length === 0) return word;
     return word.split('').map((char, index) => {
@@ -91,19 +107,17 @@ const PhoneticSession = ({ data, onFinish }) => {
   };
 
   if (isFinished) {
+    const finalScore = Math.round((correctCount / data.questions.length) * 100) || 0;
+
     return (
-      <Card style={{ textAlign: 'center', padding: '40px 20px', borderRadius: 16 }}>
-        <Result
-          status="success"
-          title="Session Complete!"
-          subTitle={`You correctly identified ${correctCount} out of ${data.questions.length} unique questions.`}
-          extra={[
-            <Button type="primary" size="large" icon={<RotateCcw size={18} />} onClick={onFinish} key="done">
-              Finish
-            </Button>
-          ]}
-        />
-      </Card>
+      <SessionResult
+        score={finalScore}
+        onBack={onFinish}
+        onRestart={handleRestart}
+        backText="Home"
+        restartText="Play Again"
+        resultMessage={`${data.title}: correct ${correctCount}/${data.questions.length}.`}
+      />
     );
   }
 

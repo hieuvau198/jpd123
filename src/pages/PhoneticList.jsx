@@ -50,7 +50,7 @@ const PhoneticList = () => {
               <Text type="secondary" style={{ display: 'block', marginBottom: 10 }}>{set.description}</Text>
               <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                 <Tag color="volcano">{set.subject}</Tag>
-                {set.questions && <Tag>{set.questions.length} Qs</Tag>}
+                {set.questions && <Tag>{set.questions.length} Questions</Tag>}
               </div>
             </Card>
           ))}
