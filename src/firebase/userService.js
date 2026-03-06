@@ -1,6 +1,6 @@
 // src/firebase/userService.js
 import { db } from './firebase-config';
-import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where } from 'firebase/firestore';
 
 const COLLECTION_NAME = 'users';
 
@@ -49,6 +49,28 @@ export const deleteUser = async (id) => {
     return { success: true };
   } catch (error) {
     console.error("Error deleting user:", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (username, password, role) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME), 
+      where("username", "==", username),
+      where("password", "==", password),
+      where("role", "==", role)
+    );
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      return { success: true, user: { id: userDoc.id, ...userDoc.data() } };
+    } else {
+      return { success: false, message: "Invalid credentials or role" };
+    }
+  } catch (error) {
+    console.error("Login error:", error);
     throw error;
   }
 };

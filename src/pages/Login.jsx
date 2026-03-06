@@ -1,24 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Typography, Select, Input, Button, message } from 'antd';
 import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../firebase/userService';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const Login = () => {
   const [role, setRole] = useState('Student');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // You can replace this with actual Firebase authentication later
-    message.success(`Logging in as ${role}...`);
-    
-    // Check role and route accordingly
-    if (role === 'Admin') {
-      navigate('/admin');
-    } else {
-      navigate('/profile');
+  // Clear any existing session when accessing the login page manually
+  useEffect(() => {
+    localStorage.removeItem('userSession');
+  }, []);
+
+  const handleLogin = async () => {
+    if (!username || !password) {
+      message.error("Please enter both username and password");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await loginUser(username, password, role);
+      
+      if (result.success) {
+        // Save session data
+        localStorage.setItem('userSession', JSON.stringify({
+          isLoggedIn: true,
+          ...result.user
+        }));
+
+        message.success(`Welcome back, ${result.user.name}!`);
+        
+        if (role === 'Admin') {
+          navigate('/admin');
+        } else {
+          navigate('/profile');
+        }
+      } else {
+        message.error(result.message);
+      }
+    } catch (error) {
+      message.error("Failed to connect to the server.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,10 +71,23 @@ const Login = () => {
           <Option value="Admin">Admin</Option>
         </Select>
 
-        <Input placeholder="Username (Optional)" style={{ marginBottom: 15 }} size="large" />
-        <Input.Password placeholder="Password (Optional)" style={{ marginBottom: 20 }} size="large" />
+        <Input 
+          placeholder="Username" 
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ marginBottom: 15 }} 
+          size="large" 
+        />
+        <Input.Password 
+          placeholder="Password" 
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onPressEnter={handleLogin}
+          style={{ marginBottom: 20 }} 
+          size="large" 
+        />
 
-        <Button type="primary" block size="large" onClick={handleLogin}>
+        <Button type="primary" block size="large" onClick={handleLogin} loading={loading}>
           Sign In
         </Button>
         <Button type="link" onClick={() => navigate('/')} style={{ marginTop: 10 }}>
