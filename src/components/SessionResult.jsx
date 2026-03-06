@@ -1,12 +1,66 @@
-import React from 'react';
-import { Button, Typography, Flex, Card } from 'antd';
+import React, { useEffect } from 'react';
+import { Button, Typography, Flex, Card, message } from 'antd';
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
+import { getUserMissions, updateMission } from '../firebase/missionService'; // Import mission services
 
 const { Title, Text } = Typography;
 
-// Add resultMessage to props
-const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", restartText = "Play Again", resultMessage }) => {
+// Added practiceId and practiceType to props
+const SessionResult = ({ 
+  score, 
+  onBack, 
+  onRestart, 
+  backText = "Back to Menu", 
+  restartText = "Play Again", 
+  resultMessage,
+  practiceId,     // <--- NEW: e.g., 'flashcard_123' or 'quiz_456'
+  practiceType    // <--- NEW: e.g., 'flashcard', 'quiz'
+}) => {
   const rating = getRatingInfo(score);
+
+  useEffect(() => {
+    const checkAndCompleteMission = async () => {
+      // 1. Ignore if it's not a flashcard or quiz, or if no ID is provided
+      if (!practiceId || !['Flashcard', 'Quiz'].includes(practiceType)) {
+        return;
+      }
+
+      try {
+        // 2. Get the logged-in user (assuming stored in localStorage, adjust if using Context/Redux)
+        const userStr = localStorage.getItem('userSession') || localStorage.getItem('user');
+        if (!userStr) return;
+        const user = JSON.parse(userStr);
+
+        // 3. Fetch user's missions
+        // Note: Using forceRefresh = true might be safer here to ensure we don't use stale cache
+        const missions = await getUserMissions(user.id, true); 
+
+        // 4. Find a matching mission that hasn't been completed yet
+        // Note: Adjust the property names (like m.practiceId, m.status) to match your actual Firebase document structure
+        const pendingMission = missions.find(m => {
+          // Check if the mission references this specific practice
+          const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
+          const isPending = m.status !== 'Đã chinh phục'; 
+          
+          return matchesId && isPending;
+        });
+
+        // 5. If a matching pending mission exists, mark it as completed
+        if (pendingMission) {
+          await updateMission(pendingMission.id, { 
+            status: 'Đã chinh phục',
+            completedAt: new Date(),
+            userId: user.id // Pass userId to updateMission so it clears the cache for this user
+          });
+          message.success('Mission Completed! 🎉');
+        }
+      } catch (error) {
+        console.error("Error checking/updating mission:", error);
+      }
+    };
+
+    checkAndCompleteMission();
+  }, [practiceId, practiceType]); // Run this effect when the component mounts
 
   return (
     <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
@@ -82,7 +136,6 @@ const SessionResult = ({ score, onBack, onRestart, backText = "Back to Menu", re
           ))}
         </Flex>
       </Flex>
-
     </Flex>
   );
 };

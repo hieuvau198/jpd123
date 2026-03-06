@@ -168,6 +168,8 @@ const MatchingSession = ({ data, onHome, onBack }) => {
         setWrongPairIds(new Set());
         setIsFinished(false);
       }}
+      practiceId={data.id} // Pass the flashcard ID
+      practiceType="Flashcard"      // Tell it this is a flashcard
     />
   );
 }

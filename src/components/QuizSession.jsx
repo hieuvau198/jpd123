@@ -163,6 +163,8 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
         score={finalScore}
         onBack={onHome}
         onRestart={restart}
+        practiceId={quizData.id}      
+        practiceType="quiz"           
         backText="Home"
         restartText="Restart"
         resultMessage="You have successfully completed the quiz session."
