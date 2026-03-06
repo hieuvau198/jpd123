@@ -25,7 +25,7 @@ const Home = () => {
   const handleAuthNavigation = () => {
     if (!loggedInUser) {
       navigate('/login');
-    } else if (loggedInUser.role === 'admin') {
+    } else if (loggedInUser.role === 'Admin') {
       navigate('/admin'); // Or wherever your admin dashboard is located
     } else {
       navigate('/profile');
@@ -35,7 +35,7 @@ const Home = () => {
   const getButtonConfig = () => {
     if (!loggedInUser) {
       return { label: 'Login', icon: <User size={16} /> };
-    } else if (loggedInUser.role === 'admin') {
+    } else if (loggedInUser.role === 'Admin') {
       return { label: 'Admin', icon: <ShieldCheck size={16} /> };
     } else {
       return { label: 'Profile', icon: <User size={16} /> };

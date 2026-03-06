@@ -54,12 +54,13 @@ const ProfileMissions = ({ currentUser }) => {
   };
 
   const handleGoToPractice = (mission) => {
+    // Change plural base paths to match the detail routes in App.jsx
     const routeMap = {
-      'Flashcard': '/flashcards',
-      'Quiz': '/quizzes',
-      'Phonetic': '/phonetic',
-      'Repair': '/repairs',
-      'Speak': '/speaks',
+      'Flashcard': '/flashcard', // was '/flashcards'
+      'Quiz': '/quiz',           // was '/quizzes'
+      'Phonetic': '/phonetic',   
+      'Repair': '/repair',       // was '/repairs'
+      'Speak': '/speak',         // was '/speaks'
       'Defense': '/challenge'
     };
     
