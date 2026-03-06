@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-// IMPORT Select
-import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select } from 'antd';
-// IMPORT Filter
-import { UploadCloud, Trash2, RefreshCw, Filter } from 'lucide-react';
+// Added Modal, Alert, Flex, Title for the preview modal
+import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Alert, Flex } from 'antd';
+// Added Eye, CheckCircle, Brain icons for the preview styling
+import { UploadCloud, Trash2, RefreshCw, Filter, Eye, CheckCircle, Brain } from 'lucide-react';
 // IMPORT tags
 import tagsData from '../../data/system/tags.json';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 const { Option } = Select;
 
 // ADD fetchByTagFn to props
@@ -18,6 +18,10 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
   // State for tags: Default to 'none' if filter is enabled, else 'all'
   const [selectedTag, setSelectedTag] = useState(fetchByTagFn ? 'none' : 'all');
   const processingFiles = useRef(0);
+
+  // States for Preview Modal
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
 
   // Trigger loadData when selectedTag changes
   useEffect(() => {
@@ -102,6 +106,11 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
     }
   };
 
+  const handlePreview = (record) => {
+    setPreviewData(record);
+    setPreviewVisible(true);
+  };
+
   const columns = [
     {
       title: 'Title',
@@ -134,11 +143,17 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
     {
       title: 'Action',
       key: 'action',
-      width: 80,
+      width: 100,
       render: (_, record) => (
-        <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
-          <Button danger type="text" icon={<Trash2 size={16} />} />
-        </Popconfirm>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {/* Show Preview button only for quiz types to match your request */}
+          {type === 'quiz' && (
+            <Button type="text" icon={<Eye size={16} />} onClick={() => handlePreview(record)} />
+          )}
+          <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
+            <Button danger type="text" icon={<Trash2 size={16} />} />
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -197,6 +212,70 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
         pagination={{ pageSize: 10 }}
         size="small"
       />
+
+      {/* Preview Modal for Quizzes styled like QuizSession */}
+      <Modal
+        title={`Preview: ${previewData?.title}`}
+        open={previewVisible}
+        onCancel={() => setPreviewVisible(false)}
+        footer={null}
+        width={800}
+        styles={{ body: { maxHeight: '75vh', overflowY: 'auto', padding: '20px', background: '#fff' } }}
+      >
+        {previewData && type === 'quiz' && (() => {
+          const rawQuestions = Array.isArray(previewData) 
+            ? previewData.flatMap(d => d.questions) 
+            : (previewData.questions || []);
+
+          if (!rawQuestions || rawQuestions.length === 0) {
+            return <p>No questions found in this quiz source.</p>;
+          }
+
+          return rawQuestions.map((q, index) => {
+            const correctAnswer = q.correctAnswer || q.answer;
+            return (
+              <div key={index} style={{ marginBottom: 40, padding: '20px', border: '1px solid #f0f0f0', borderRadius: 8 }}>
+                <Title level={4} style={{ marginTop: 0 }}>
+                  {index + 1}. {q.text || q.question}
+                </Title>
+                <Flex vertical gap="middle" style={{ marginTop: 20 }}>
+                  {q.options?.map((opt, idx) => {
+                    const isCorrect = String(opt).trim() === String(correctAnswer).trim();
+                    const customStyle = isCorrect 
+                      ? { backgroundColor: 'black', color: 'white', borderColor: 'black' } 
+                      : {};
+
+                    return (
+                      <Button
+                        key={idx}
+                        size="large"
+                        block
+                        style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
+                      >
+                        <Flex justify="space-between" align="center" style={{ width: '100%' }}>
+                           <span>{opt}</span>
+                           {isCorrect && <CheckCircle size={20} />}
+                        </Flex>
+                      </Button>
+                    );
+                  })}
+                </Flex>
+
+                {q.explanation && (
+                  <Alert
+                    message={<span style={{ fontWeight: 'bold' }}>INSIGHT</span>}
+                    description={q.explanation}
+                    type="info"
+                    showIcon
+                    icon={<Brain size={24} />}
+                    style={{ marginTop: 20, borderColor: 'black', background: '#f8f9fa' }}
+                  />
+                )}
+              </div>
+            );
+          });
+        })()}
+      </Modal>
     </div>
   );
 };
