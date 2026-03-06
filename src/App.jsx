@@ -2,11 +2,14 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css'; 
 
+// Import the new NavBar
+import NavBar from './components/layout/NavBar';
+
 // Components
 import AdminDashboard from './components/admin/AdminDashboard';
 import Home from './pages/Home';
-import Login from './pages/Login'; // <-- Added Login
-import Profile from './pages/Profile'; // <-- Added Profile
+import Login from './pages/Login'; 
+import Profile from './pages/Profile'; 
 import FlashcardList from './pages/FlashcardList';
 import FlashcardDetail from './pages/FlashcardDetail';
 import QuizList from './pages/QuizList';
@@ -25,6 +28,9 @@ import UserManager from './components/admin/UserManager/UserManager';
 export default function App() {
   return (
     <main>
+      {/* The NavBar will now sit on top of all routes */}
+      <NavBar />
+      
       <Routes>
         {/* Home Page */}
         <Route path="/" element={<Home />} />
