@@ -54,19 +54,23 @@ const ProfileMissions = ({ currentUser }) => {
   };
 
   const handleGoToPractice = (mission) => {
-    // Change plural base paths to match the detail routes in App.jsx
+    // 1. Fixed plural paths to match App.jsx
     const routeMap = {
-      'Flashcard': '/flashcard', // was '/flashcards'
-      'Quiz': '/quiz',           // was '/quizzes'
-      'Phonetic': '/phonetic',   
-      'Repair': '/repair',       // was '/repairs'
-      'Speak': '/speak',         // was '/speaks'
+      'Flashcard': '/flashcard', 
+      'Quiz': '/quiz',           
+      'Phonetic': '/phonetic',
+      'Repair': '/repair',       
+      'Speak': '/speak',         
       'Defense': '/challenge'
     };
     
     const basePath = routeMap[mission.type];
     if (basePath) {
-      navigate(`${basePath}/${mission.practiceId}`);
+      // 2. Add the numbers parameter if targetQuestions exists
+      const queryParam = mission.targetQuestions ? `?numbers=${mission.targetQuestions}` : '';
+      
+      // Navigate to the full URL (e.g., /flashcard/123?numbers=10)
+      navigate(`${basePath}/${mission.practiceId}${queryParam}`);
     }
   };
 
