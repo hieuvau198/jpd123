@@ -1,25 +1,60 @@
-import React from 'react';
+// src/pages/Home.jsx
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-// Added User icon for the login button
-import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User } from 'lucide-react'; 
+// Imported ShieldCheck for Admin icon
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User, ShieldCheck } from 'lucide-react'; 
 
 const { Title, Text } = Typography;
 
 const Home = () => {
   const navigate = useNavigate();
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  useEffect(() => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('userSession'));
+      if (storedUser) {
+        setLoggedInUser(storedUser);
+      }
+    } catch (e) {
+      console.error("Failed to read user from localStorage", e);
+    }
+  }, []);
+
+  const handleAuthNavigation = () => {
+    if (!loggedInUser) {
+      navigate('/login');
+    } else if (loggedInUser.role === 'admin') {
+      navigate('/admin'); // Or wherever your admin dashboard is located
+    } else {
+      navigate('/profile');
+    }
+  };
+
+  const getButtonConfig = () => {
+    if (!loggedInUser) {
+      return { label: 'Login', icon: <User size={16} /> };
+    } else if (loggedInUser.role === 'admin') {
+      return { label: 'Admin', icon: <ShieldCheck size={16} /> };
+    } else {
+      return { label: 'Profile', icon: <User size={16} /> };
+    }
+  };
+
+  const btnConfig = getButtonConfig();
 
   return (
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20, position: 'relative' }}>
       
-      {/* Login Button positioned at the top right */}
+      {/* Dynamic Login/Profile/Admin Button */}
       <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10 }}>
         <Button 
           type="primary" 
-          onClick={() => navigate('/login')}
+          onClick={handleAuthNavigation}
           style={{ display: 'flex', alignItems: 'center', gap: 5 }}
         >
-          <User size={16} /> Login
+          {btnConfig.icon} {btnConfig.label}
         </Button>
       </div>
 
