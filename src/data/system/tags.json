@@ -32,10 +32,6 @@
     "name": "English 9"
   },
   {
-    "id": "english-a1",
-    "name": "A1"
-  },
-  {
     "id": "english-a2",
     "name": "A2"
   },
@@ -46,6 +42,10 @@
   {
     "id": "english-b2",
     "name": "B2"
+  },
+  {
+    "id": "english-c1",
+    "name": "C1"
   },
   {
     "id": "vocab",
