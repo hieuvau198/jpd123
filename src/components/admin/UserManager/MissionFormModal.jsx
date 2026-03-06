@@ -15,7 +15,6 @@ const { Option } = Select;
 
 const removeAccents = (str) => {
   if (!str) return '';
-  // Normalize string and remove diacritical marks (accents)
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 };
 
@@ -23,6 +22,7 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
   const [form] = Form.useForm();
   const [practiceOptions, setPracticeOptions] = useState([]);
   const [loadingPractices, setLoadingPractices] = useState(false);
+  const [fetchedData, setFetchedData] = useState([]); // Store raw data to extract total questions
   
   // Watch the selected type to dynamically load practices
   const selectedType = Form.useWatch('type', form);
@@ -40,29 +40,31 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
         form.setFieldsValue({
           status: 'Chưa làm',
           percentage: 0,
-          startDate: dayjs(), // Default to today
-          endDate: dayjs().add(2, 'day'), // Default to 2 days from now
+          startDate: dayjs(), 
+          endDate: dayjs().add(2, 'day'), 
+          targetQuestions: 1, // Default value
         });
       }
     } else {
       form.resetFields();
       setPracticeOptions([]);
+      setFetchedData([]);
     }
   }, [visible, editingRecord, form]);
-
-  
 
   // Fetch practice data when the mission "type" changes
   useEffect(() => {
     const fetchPractices = async () => {
       if (!selectedType) {
         setPracticeOptions([]);
+        setFetchedData([]);
         return;
       }
       
       setLoadingPractices(true);
-      // Reset the selected practice source when type changes
-      form.setFieldsValue({ practiceId: null }); 
+      if (!editingRecord) {
+        form.setFieldsValue({ practiceId: null, name: null, totalQuestions: null, targetQuestions: 1 }); 
+      }
       
       try {
         let data = [];
@@ -76,8 +78,8 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
           default: break;
         }
 
-        // Format data for the Select options. 
-        // We use name, title, or id to represent the label depending on your document structure.
+        setFetchedData(data); // Save the raw data
+
         const options = data.map(item => ({
           label: item.name || item.title || item.id,
           value: item.id
@@ -94,7 +96,29 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
     if (visible) {
       fetchPractices();
     }
-  }, [selectedType, visible, form]);
+  }, [selectedType, visible, form, editingRecord]);
+
+  // Handle auto-filling name and totalQuestions when practice source is selected
+  const handlePracticeChange = (value) => {
+    const selectedItem = fetchedData.find(item => item.id === value);
+    if (selectedItem) {
+      const name = selectedItem.name || selectedItem.title || selectedItem.id;
+      
+      // Calculate total questions dynamically based on common array fields in your data models
+      const total = selectedItem.questions?.length 
+                 || selectedItem.flashcards?.length 
+                 || selectedItem.items?.length 
+                 || selectedItem.words?.length 
+                 || selectedItem.data?.length
+                 || 10; // Fallback if no array is found
+                 
+      form.setFieldsValue({
+         name: name,
+         totalQuestions: total,
+         targetQuestions: Math.min(10, total) // Default to max 10, or total if less
+      });
+    }
+  };
 
   return (
     <Modal 
@@ -104,6 +128,9 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
       footer={null}
     >
       <Form form={form} layout="vertical" onFinish={onSave}>
+        {/* Hidden field to store the practice name */}
+        <Form.Item name="name" hidden><Input /></Form.Item>
+
         <div style={{ display: 'flex', gap: '10px' }}>
           <Form.Item name="type" label="Mission Type" style={{ flex: 1 }} rules={[{ required: true }]}>
             <Select placeholder="Select type">
@@ -123,13 +150,23 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
               loading={loadingPractices}
               options={practiceOptions}
               disabled={!selectedType}
-              // Replace optionFilterProp="label" with this custom filter
+              onChange={handlePracticeChange}
               filterOption={(input, option) => {
                 const normalizedInput = removeAccents(input);
                 const normalizedLabel = removeAccents(option?.label || '');
                 return normalizedLabel.includes(normalizedInput);
               }}
             />
+          </Form.Item>
+        </div>
+
+        {/* New Question Target Fields */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Form.Item name="targetQuestions" label="Target Questions" style={{ flex: 1 }} rules={[{ required: true, message: 'Required' }]}>
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="totalQuestions" label="Total Questions (Auto)" style={{ flex: 1 }}>
+            <InputNumber disabled style={{ width: '100%' }} />
           </Form.Item>
         </div>
 

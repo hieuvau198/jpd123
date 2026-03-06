@@ -12,7 +12,22 @@ const UserMissionsModal = ({
   
   const columns = [
     { title: 'Type', dataIndex: 'type', key: 'type', render: (t) => <Tag>{t}</Tag> },
-    { title: 'Practice ID / Name', dataIndex: 'practiceId', key: 'practiceId' },
+    { 
+      title: 'Mission Name', 
+      dataIndex: 'name', 
+      key: 'name', 
+      // Fallback to practiceId for older records
+      render: (text, record) => <Text strong>{text || record.practiceId}</Text> 
+    },
+    { 
+      title: 'Target / Total', 
+      key: 'questions', 
+      render: (_, record) => (
+        <Tag color="blue">
+          {record.targetQuestions || 0} / {record.totalQuestions || 0}
+        </Tag>
+      ) 
+    },
     { 
       title: 'Status', 
       dataIndex: 'status', 
@@ -48,7 +63,7 @@ const UserMissionsModal = ({
       title={`Missions for ${user?.name}`} 
       open={visible} 
       onCancel={onCancel} 
-      width={800}
+      width={900}
       footer={null}
     >
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>

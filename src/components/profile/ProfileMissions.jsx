@@ -7,13 +7,24 @@ import { getUserMissions } from '../../firebase/missionService';
 
 const { Title } = Typography;
 
+// Helper to truncate long names to exactly 5 words (First 4 + ... + Last 1)
+const truncateName = (name) => {
+  if (!name) return 'Unknown Mission';
+  const words = name.trim().split(/\s+/);
+  if (words.length > 5) {
+    const firstFour = words.slice(0, 4).join(' ');
+    const lastWord = words[words.length - 1];
+    return `${firstFour} ... ${lastWord}`;
+  }
+  return name;
+};
+
 const ProfileMissions = ({ currentUser }) => {
   const navigate = useNavigate();
   const [missions, setMissions] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Robustly check for the user's ID
     let userId = currentUser?.id;
     
     if (!userId) {
@@ -43,7 +54,6 @@ const ProfileMissions = ({ currentUser }) => {
   };
 
   const handleGoToPractice = (mission) => {
-    // Fixed paths to match the routes defined in Home.jsx
     const routeMap = {
       'Flashcard': '/flashcards',
       'Quiz': '/quizzes',
@@ -61,7 +71,26 @@ const ProfileMissions = ({ currentUser }) => {
 
   const columns = [
     { title: 'Type', dataIndex: 'type', key: 'type', render: (t) => <Tag>{t}</Tag> },
-    { title: 'Practice', dataIndex: 'practiceId', key: 'practiceId' },
+    { 
+      title: 'Mission Name', 
+      dataIndex: 'name', 
+      key: 'name', 
+      render: (text, record) => (
+        <Typography.Text strong>
+          {truncateName(text || record.practiceId)}
+        </Typography.Text>
+      )
+    },
+    { 
+      title: 'Target', 
+      key: 'questions', 
+      render: (_, record) => {
+        if (record.targetQuestions && record.totalQuestions) {
+           return <Tag color="blue">{record.targetQuestions} / {record.totalQuestions}</Tag>;
+        }
+        return <Tag>N/A</Tag>;
+      }
+    },
     { 
       title: 'Status', 
       dataIndex: 'status', 
@@ -71,7 +100,7 @@ const ProfileMissions = ({ currentUser }) => {
         return <Tag color={color}>{status}</Tag>;
       }
     },
-    { title: 'Progress (%)', dataIndex: 'percentage', key: 'percentage' },
+    { title: 'Done', dataIndex: 'percentage', key: 'percentage' },
     { 
       title: 'Deadline', 
       dataIndex: 'endDate', 
