@@ -5,6 +5,8 @@ import './App.css';
 // Components
 import AdminDashboard from './components/admin/AdminDashboard';
 import Home from './pages/Home';
+import Login from './pages/Login'; // <-- Added Login
+import Profile from './pages/Profile'; // <-- Added Profile
 import FlashcardList from './pages/FlashcardList';
 import FlashcardDetail from './pages/FlashcardDetail';
 import QuizList from './pages/QuizList';
@@ -26,10 +28,14 @@ export default function App() {
       <Routes>
         {/* Home Page */}
         <Route path="/" element={<Home />} />
+
+        {/* Auth & Profile Routes (New) */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
         
         {/* Admin Route */}
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<UserManager />} /> {/* <-- Add this line */}
+        <Route path="/admin/users" element={<UserManager />} /> 
         
         {/* Flashcard Routes */}
         <Route path="/flashcards" element={<FlashcardList />} />
@@ -50,7 +56,7 @@ export default function App() {
         <Route path="/phonetic" element={<PhoneticList />} />
         <Route path="/phonetic/:id" element={<PhoneticDetail />} />
 
-        {/* Defense Routes (New) */}
+        {/* Defense Routes */}
         <Route path="/challenge" element={<DefenseList />} />
         <Route path="/challenge/:id" element={<DefenseDetail />} />
         

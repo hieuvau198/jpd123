@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords } from 'lucide-react';
+// Added User icon for the login button
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User } from 'lucide-react'; 
 
 const { Title, Text } = Typography;
 
@@ -9,9 +10,21 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
+    <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20, position: 'relative' }}>
+      
+      {/* Login Button positioned at the top right */}
+      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10 }}>
+        <Button 
+          type="primary" 
+          onClick={() => navigate('/login')}
+          style={{ display: 'flex', alignItems: 'center', gap: 5 }}
+        >
+          <User size={16} /> Login
+        </Button>
+      </div>
+
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 50 }}>
+      <div style={{ textAlign: 'center', marginBottom: 50, marginTop: 40 }}>
         <Title level={1}>🗿🗿🗿</Title>
       </div>
 
@@ -94,8 +107,6 @@ const Home = () => {
           </Link>
         </Col>
       </Row>
-
-      
     </div>
   );
 };
