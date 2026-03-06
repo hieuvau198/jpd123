@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs } from 'antd';
 // Add Volume2 for phonetics
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2 } from 'lucide-react';
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users } from 'lucide-react';
 
 // Admin Components
 import AdminLogin from './AdminLogin';
@@ -123,7 +123,19 @@ const AdminDashboard = () => {
       <Card>
         <Tabs activeKey={activeTab} onChange={setActiveTab} items={tabItems} type="card" />
       </Card>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
+        <Title level={2} style={{ margin: 0 }}>Content Management</Title>
+        <div style={{ display: 'flex', gap: '10px' }}> {/* <-- Wrap buttons in a div */}
+          {/* New User Management Button */}
+          <Button type="primary" icon={<Users size={16} />} onClick={() => navigate('/admin/users')}>
+            Manage Users
+          </Button>
+          <Button icon={<Home size={16} />} onClick={() => navigate('/')}>Back to Home</Button>
+        </div>
+      </div>
     </div>
+    
   );
 };
 

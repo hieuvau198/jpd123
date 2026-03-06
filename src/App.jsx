@@ -18,6 +18,7 @@ import PhoneticDetail from './pages/PhoneticDetail';
 
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
+import UserManager from './components/admin/UserManager';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         
         {/* Admin Route */}
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<UserManager />} /> {/* <-- Add this line */}
         
         {/* Flashcard Routes */}
         <Route path="/flashcards" element={<FlashcardList />} />
