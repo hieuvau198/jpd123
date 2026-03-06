@@ -13,6 +13,12 @@ import { getAllDefenses } from '../../../firebase/defenseService';
 
 const { Option } = Select;
 
+const removeAccents = (str) => {
+  if (!str) return '';
+  // Normalize string and remove diacritical marks (accents)
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+};
+
 const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading }) => {
   const [form] = Form.useForm();
   const [practiceOptions, setPracticeOptions] = useState([]);
@@ -43,6 +49,8 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
       setPracticeOptions([]);
     }
   }, [visible, editingRecord, form]);
+
+  
 
   // Fetch practice data when the mission "type" changes
   useEffect(() => {
@@ -113,9 +121,14 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
               showSearch
               placeholder="Select a practice source..."
               loading={loadingPractices}
-              optionFilterProp="label" // Allows searching by the label text
               options={practiceOptions}
               disabled={!selectedType}
+              // Replace optionFilterProp="label" with this custom filter
+              filterOption={(input, option) => {
+                const normalizedInput = removeAccents(input);
+                const normalizedLabel = removeAccents(option?.label || '');
+                return normalizedLabel.includes(normalizedInput);
+              }}
             />
           </Form.Item>
         </div>

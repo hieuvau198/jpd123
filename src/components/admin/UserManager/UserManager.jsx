@@ -156,9 +156,12 @@ const UserManager = () => {
       key: 'actions',
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px' }}>
-          <Button type="primary" size="small" icon={<Target size={14} />} onClick={() => openMissionsList(record)}>
-            Missions
-          </Button>
+          {/* Conditionally render this button only if role is Student */}
+          {record.role === 'Student' && (
+            <Button type="primary" size="small" icon={<Target size={14} />} onClick={() => openMissionsList(record)}>
+              Missions
+            </Button>
+          )}
           <Button type="text" icon={<Edit size={16} />} onClick={() => handleShowUserModal(record)} />
           <Popconfirm title="Delete this user?" onConfirm={() => handleDeleteUser(record.id)} okText="Yes">
             <Button type="text" danger icon={<Trash2 size={16} />} />
