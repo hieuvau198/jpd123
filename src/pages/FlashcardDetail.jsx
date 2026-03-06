@@ -8,22 +8,35 @@ const FlashcardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const tag = searchParams.get('tag');
   
-  // Extract the "numbers" parameter if it exists
+  // Explicitly fallback to null if not found
+  const tag = searchParams.get('tag') || null;
+  
+  // Extract the "numbers" parameter if it exists safely
   const numbersParam = searchParams.get('numbers');
-  const initialNumbers = numbersParam ? parseInt(numbersParam, 10) : null;
+  const initialNumbers = numbersParam && !isNaN(parseInt(numbersParam, 10)) 
+    ? parseInt(numbersParam, 10) 
+    : null;
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await getFlashcardById(id);
-      setData(res);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await getFlashcardById(id);
+        setData(res);
+      } catch (error) {
+        console.error("Error fetching flashcard:", error);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetch();
+    if (id) {
+        fetch();
+    }
   }, [id]);
 
   const handleBackToList = () => {
