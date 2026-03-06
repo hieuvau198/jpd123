@@ -20,7 +20,7 @@ import PhoneticDetail from './pages/PhoneticDetail';
 
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
-import UserManager from './components/admin/UserManager';
+import UserManager from './components/admin/UserManager/UserManager';
 
 export default function App() {
   return (
