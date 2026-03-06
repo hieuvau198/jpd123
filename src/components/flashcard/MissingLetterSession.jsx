@@ -180,6 +180,8 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
            setCurrentIndex(0);
            setWrongIds(new Set());
         }} 
+        practiceId={data.id} // Pass the flashcard ID
+      practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }

@@ -126,6 +126,8 @@ const SpellingBeeSession = ({ data, onBack }) => {
         resultMessage={`"${data?.title || 'current'}": Spell ${queue.length} words!`}
         onBack={onBack} 
         onRestart={restart} 
+        practiceId={data.id} // Pass the flashcard ID
+      practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }

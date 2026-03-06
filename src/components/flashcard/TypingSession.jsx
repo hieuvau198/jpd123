@@ -141,6 +141,8 @@ const TypingSession = ({ data, onHome, onBack }) => {
            setWrongIds(new Set());
            setDirection(null); 
         }} 
+        practiceId={data.id} // Pass the flashcard ID
+      practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }

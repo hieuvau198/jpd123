@@ -69,7 +69,7 @@ const ViewSession = ({ data, onHome, onBack }) => {
   if (currentIndex >= queue.length) {
     return (
       <SessionResult 
-        score={100} // Viewing flashcards is practice, so automatic perfect score
+        score={1} // Viewing flashcards is practice, so automatic perfect score
         onBack={onBack} 
         onRestart={() => {
            setQueue(shuffleArray([...data.questions]));

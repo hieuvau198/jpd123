@@ -101,6 +101,8 @@ const MCSession = ({ data, onHome, onBack }) => {
         resultMessage={`"${data?.title || 'current'}": MC ${questions.length} words!`}
         onBack={onBack}
         onRestart={initGame}
+        practiceId={data.id} // Pass the flashcard ID
+      practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }

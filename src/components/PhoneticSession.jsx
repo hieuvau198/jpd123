@@ -117,6 +117,8 @@ const PhoneticSession = ({ data, onFinish }) => {
         backText="Home"
         restartText="Play Again"
         resultMessage={`${data.title}: correct ${correctCount}/${data.questions.length}.`}
+        practiceId={data.id} // Pass the flashcard ID
+      practiceType="Phonetic"      // Tell it this is a flashcard
       />
     );
   }
