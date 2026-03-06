@@ -105,7 +105,17 @@ const ProfileMissions = ({ currentUser }) => {
         return <Tag color={color}>{status}</Tag>;
       }
     },
-    { title: 'Done', dataIndex: 'percentage', key: 'percentage' },
+    { title: 'Done', dataIndex: 'percentage', key: 'percentage',
+      render: (text) => {
+      // Multiply the value (text) by 100 and add the '%' symbol
+      if (typeof text === 'number' || (typeof text === 'string' && !isNaN(Number(text)))) {
+        const value = Number(text) * 100;
+        // Optional: format to a specific number of decimal places, e.g., 2
+        return `${value}%`;
+      }
+      return text; // Return original text if it's not a valid number
+    },
+     },
     { 
       title: 'Deadline', 
       dataIndex: 'endDate', 

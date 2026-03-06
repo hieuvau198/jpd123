@@ -26,33 +26,55 @@ const SessionResult = ({
       }
 
       try {
-        // 2. Get the logged-in user (assuming stored in localStorage, adjust if using Context/Redux)
+        // 2. Get the logged-in user
         const userStr = localStorage.getItem('userSession') || localStorage.getItem('user');
         if (!userStr) return;
         const user = JSON.parse(userStr);
 
         // 3. Fetch user's missions
-        // Note: Using forceRefresh = true might be safer here to ensure we don't use stale cache
         const missions = await getUserMissions(user.id, true); 
 
-        // 4. Find a matching mission that hasn't been completed yet
-        // Note: Adjust the property names (like m.practiceId, m.status) to match your actual Firebase document structure
+        // 4. Find a matching mission that hasn't been fully completed yet
         const pendingMission = missions.find(m => {
-          // Check if the mission references this specific practice
           const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
           const isPending = m.status !== 'Đã chinh phục'; 
           
           return matchesId && isPending;
         });
 
-        // 5. If a matching pending mission exists, mark it as completed
+        // 5. If a matching pending mission exists, update its progress
         if (pendingMission) {
-          await updateMission(pendingMission.id, { 
-            status: 'Đã chinh phục',
-            completedAt: new Date(),
-            userId: user.id // Pass userId to updateMission so it clears the cache for this user
-          });
-          message.success('Mission Completed! 🎉');
+          // Calculate new percentage (e.g., 80 / 100 = 0.8)
+          const newPercentage = score / 100;
+          
+          // Only update if the new score is better than their previous progress
+          const currentPercentage = pendingMission.percentage || 0;
+          
+          if (newPercentage > currentPercentage) {
+            const isCompleted = newPercentage >= 1.0; // Assuming 100% is required to complete
+
+            const updatePayload = {
+              percentage: newPercentage,
+              userId: user.id // Pass userId to updateMission so it clears the cache for this user
+            };
+
+            // If they reached 100%, mark as complete and set the completion date
+            if (isCompleted) {
+              updatePayload.status = 'Đã chinh phục';
+              updatePayload.completedAt = new Date();
+            } else {
+              updatePayload.status = 'Đang thực hiện'; // Make sure it stays pending if < 100%
+            }
+
+            await updateMission(pendingMission.id, updatePayload);
+            
+            // Show appropriate message to the user
+            if (isCompleted) {
+              message.success('Mission Completed! 🎉');
+            } else {
+              message.info(`Mission progress updated to ${score}%! Keep going!`);
+            }
+          }
         }
       } catch (error) {
         console.error("Error checking/updating mission:", error);
@@ -60,7 +82,7 @@ const SessionResult = ({
     };
 
     checkAndCompleteMission();
-  }, [practiceId, practiceType]); // Run this effect when the component mounts
+  }, [practiceId, practiceType, score]); // Added `score` to dependency array
 
   return (
     <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
