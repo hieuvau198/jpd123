@@ -48,7 +48,7 @@ const Home = () => {
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20, position: 'relative' }}>
       
       {/* Dynamic Login/Profile/Admin Button */}
-      <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10 }}>
+      {/* <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10 }}>
         <Button 
           type="primary" 
           onClick={handleAuthNavigation}
@@ -56,7 +56,7 @@ const Home = () => {
         >
           {btnConfig.icon} {btnConfig.label}
         </Button>
-      </div>
+      </div> */}
 
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 50, marginTop: 40 }}>
