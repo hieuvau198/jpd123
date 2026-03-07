@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs } from 'antd';
 // Add Volume2 for phonetics
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users } from 'lucide-react';
-
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical } from 'lucide-react';
+import { getAllChemistry, getChemistryByTag, saveChemistrySet, deleteChemistrySet } from '../../firebase/chemistryService';
 // Admin Components
 import AdminLogin from './AdminLogin';
 import GenericManager from './GenericManager';
@@ -110,7 +110,24 @@ const AdminDashboard = () => {
           uploadColor="#f5222d" 
         />
       )
-    }
+    },
+    {
+      key: 'chemistry',
+      label: 'Chemistry',
+      children: (
+        <GenericManager 
+          type="chemistry" 
+          icon={<FlaskConical color="#13c2c2" size={24} />} 
+          color="cyan" 
+          uploadText="Import Chemistry Sets (JSON)" 
+          uploadColor="#13c2c2"
+          fetchFn={getAllChemistry} 
+          fetchByTagFn={getChemistryByTag}
+          saveFn={saveChemistrySet} 
+          deleteFn={deleteChemistrySet}
+        />
+      )
+    },
   ];
 
   return (

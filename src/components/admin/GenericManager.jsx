@@ -1,50 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
-// Added Modal, Alert, Flex, Title for the preview modal
 import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Alert, Flex } from 'antd';
-// Added Eye, CheckCircle, Brain icons for the preview styling
 import { UploadCloud, Trash2, RefreshCw, Filter, Eye, CheckCircle, Brain } from 'lucide-react';
-// IMPORT tags
 import tagsData from '../../data/system/tags.json';
+
+// --- ADDED FOR CHEMISTRY RENDERING ---
+import 'katex/dist/katex.min.css';
+import { BlockMath, InlineMath } from 'react-katex';
 
 const { Text, Title } = Typography;
 const { Option } = Select;
 
-// ADD fetchByTagFn to props
 const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, fetchByTagFn, saveFn, deleteFn }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  
-  // State for tags: Default to 'none' if filter is enabled, else 'all'
   const [selectedTag, setSelectedTag] = useState(fetchByTagFn ? 'none' : 'all');
   const processingFiles = useRef(0);
 
-  // States for Preview Modal
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewData, setPreviewData] = useState(null);
 
-  // Trigger loadData when selectedTag changes
   useEffect(() => {
     loadData();
   }, [selectedTag]);
 
   const loadData = async () => {
-    // If tag filtering is enabled and 'none' is selected, don't fetch
     if (fetchByTagFn && selectedTag === 'none') {
       setData([]);
       return;
     }
-
     setLoading(true);
     let result = [];
-    
-    // Choose the right fetch function
     if (fetchByTagFn && selectedTag !== 'all') {
       result = await fetchByTagFn(selectedTag);
     } else {
       result = await fetchFn();
     }
-    
     setData(result);
     setLoading(false);
   };
@@ -52,7 +43,6 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
   const handleImport = (file) => {
     processingFiles.current += 1;
     setLoading(true);
-
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
@@ -69,9 +59,7 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
         message.error(`Error processing ${file.name}: ` + err.message);
       } finally {
         processingFiles.current -= 1;
-        if (processingFiles.current === 0) {
-          loadData();
-        }
+        if (processingFiles.current === 0) loadData();
       }
     };
     reader.readAsText(file);
@@ -111,6 +99,25 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
     setPreviewVisible(true);
   };
 
+  // Helper to safely mix regular text and KaTeX formulas
+const renderMixedText = (text) => {
+  if (!text || typeof text !== 'string') return text;
+  
+  // If the string doesn't contain a '$', render it as normal text
+  if (!text.includes('$')) return <span>{text}</span>;
+
+  // Split the text by $...$
+  const parts = text.split(/\$(.*?)\$/g);
+  return parts.map((part, index) => {
+    // Odd indices are the LaTeX formulas inside the $...$
+    if (index % 2 === 1) {
+      return <InlineMath key={index} math={part} />;
+    }
+    // Even indices are the regular text outside
+    return <span key={index}>{part}</span>;
+  });
+};
+
   const columns = [
     {
       title: 'Title',
@@ -146,8 +153,8 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
       width: 100,
       render: (_, record) => (
         <div style={{ display: 'flex', gap: 8 }}>
-          {/* Show Preview button only for quiz types to match your request */}
-          {type === 'quiz' && (
+          {/* UPDATED: Allow preview for both quiz and chemistry */}
+          {(type === 'quiz' || type === 'chemistry') && (
             <Button type="text" icon={<Eye size={16} />} onClick={() => handlePreview(record)} />
           )}
           <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
@@ -160,18 +167,11 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
 
   return (
     <div>
-      {/* Change justifyContent to space-between to fit the filter on the left */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-        
-        {/* Render TAG FILTER only if fetchByTagFn is passed */}
         {fetchByTagFn ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Filter size={16} color="#888" />
-            <Select 
-              value={selectedTag} 
-              onChange={setSelectedTag} 
-              style={{ width: 200 }}
-            >
+            <Select value={selectedTag} onChange={setSelectedTag} style={{ width: 200 }}>
               <Option value="none">None (Select to view)</Option>
               <Option value="all">All Items</Option>
               {tagsData.map(tag => (
@@ -203,17 +203,8 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
         </Upload.Dragger>
       </div>
 
-      <Table 
-        rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
-        columns={columns} 
-        dataSource={data} 
-        rowKey="id"
-        loading={loading}
-        pagination={{ pageSize: 10 }}
-        size="small"
-      />
+      <Table rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }} columns={columns} dataSource={data} rowKey="id" loading={loading} pagination={{ pageSize: 10 }} size="small" />
 
-      {/* Preview Modal for Quizzes styled like QuizSession */}
       <Modal
         title={`Preview: ${previewData?.title}`}
         open={previewVisible}
@@ -222,38 +213,35 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
         width={800}
         styles={{ body: { maxHeight: '75vh', overflowY: 'auto', padding: '20px', background: '#fff' } }}
       >
-        {previewData && type === 'quiz' && (() => {
-          const rawQuestions = Array.isArray(previewData) 
-            ? previewData.flatMap(d => d.questions) 
-            : (previewData.questions || []);
-
-          if (!rawQuestions || rawQuestions.length === 0) {
-            return <p>No questions found in this quiz source.</p>;
-          }
+        {previewData && (type === 'quiz' || type === 'chemistry') && (() => {
+          const rawQuestions = Array.isArray(previewData) ? previewData.flatMap(d => d.questions) : (previewData.questions || []);
+          if (!rawQuestions || rawQuestions.length === 0) return <p>No questions found in this source.</p>;
 
           return rawQuestions.map((q, index) => {
             const correctAnswer = q.correctAnswer || q.answer;
             return (
               <div key={index} style={{ marginBottom: 40, padding: '20px', border: '1px solid #f0f0f0', borderRadius: 8 }}>
                 <Title level={4} style={{ marginTop: 0 }}>
-                  {index + 1}. {q.text || q.question}
-                </Title>
+  {index + 1}. {type === 'chemistry' ? renderMixedText(q.text || q.question) : (q.text || q.question)}
+</Title>
+                
+                {/* Dedicated block formula display for Chemistry */}
+                {type === 'chemistry' && q.formula && (
+                  <div style={{ margin: '20px 0', padding: '15px', background: '#e6f7ff', borderLeft: '4px solid #1890ff', borderRadius: '4px', textAlign: 'center', fontSize: '1.2rem' }}>
+                    <BlockMath math={q.formula} />
+                  </div>
+                )}
+
                 <Flex vertical gap="middle" style={{ marginTop: 20 }}>
                   {q.options?.map((opt, idx) => {
                     const isCorrect = String(opt).trim() === String(correctAnswer).trim();
-                    const customStyle = isCorrect 
-                      ? { backgroundColor: 'black', color: 'white', borderColor: 'black' } 
-                      : {};
+                    const customStyle = isCorrect ? { backgroundColor: 'black', color: 'white', borderColor: 'black' } : {};
 
                     return (
-                      <Button
-                        key={idx}
-                        size="large"
-                        block
-                        style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
-                      >
+                      <Button key={idx} size="large" block style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}>
                         <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                           <span>{opt}</span>
+                           {/* If chemistry, render the options as math so chemical formulas look great in the buttons */}
+                           <span>{type === 'chemistry' ? renderMixedText(opt) : opt}</span>
                            {isCorrect && <CheckCircle size={20} />}
                         </Flex>
                       </Button>
@@ -264,7 +252,7 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
                 {q.explanation && (
                   <Alert
                     message={<span style={{ fontWeight: 'bold' }}>INSIGHT</span>}
-                    description={q.explanation}
+                    description={type === 'chemistry' ? renderMixedText(q.explanation) : q.explanation}
                     type="info"
                     showIcon
                     icon={<Brain size={24} />}
