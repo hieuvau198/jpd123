@@ -37,6 +37,11 @@ export const getAllChemistry = async () => {
 };
 
 export const getChemistryByTag = async (tag) => {
+  // FIX: If the tag is 'all' or null/undefined, fetch all quizzes instead
+  if (!tag || tag === 'all') {
+    return await getAllChemistry();
+  }
+
   if (cache.byTag[tag]) return cache.byTag[tag];
 
   try {
