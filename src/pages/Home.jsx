@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
 // Imported ShieldCheck for Admin icon
-import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User, ShieldCheck } from 'lucide-react'; 
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User, ShieldCheck, FlaskConical } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -141,6 +141,23 @@ const Home = () => {
             </Card>
           </Link>
         </Col>
+
+
+      </Row>
+
+      <Row gutter={[24, 24]} justify="center" className='mt-20'>
+        <Col xs={24} sm={8} md={6}>
+          <Link to="/chem-quizzes" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <FlaskConical size={48} color="#13c2c2" />
+              </div>
+              <Title level={3} style={{ color: '#13c2c2' }}>Chem Quiz</Title>
+              <Text type="secondary">Alcohol is not good for you</Text>
+            </Card>
+          </Link>
+        </Col>
+
       </Row>
     </div>
   );

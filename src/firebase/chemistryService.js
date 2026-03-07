@@ -2,7 +2,7 @@
 import { db } from './firebase-config';
 import { collection, getDocs, doc, setDoc, deleteDoc, getDoc, query, where } from 'firebase/firestore';
 
-const COLLECTION_NAME = 'chemistry_quizzes';
+const COLLECTION_NAME = 'chem_quiz';
 
 const cache = {
   all: null,
