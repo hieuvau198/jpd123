@@ -20,6 +20,8 @@ import SpeakList from './pages/SpeakList';
 import SpeakDetail from './pages/SpeakDetail';
 import PhoneticList from './pages/PhoneticList';
 import PhoneticDetail from './pages/PhoneticDetail';
+import ChemQuizList from './pages/ChemQuizList';
+import ChemQuizDetail from './pages/ChemQuizDetail';
 
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
@@ -65,7 +67,11 @@ export default function App() {
         {/* Defense Routes */}
         <Route path="/challenge" element={<DefenseList />} />
         <Route path="/challenge/:id" element={<DefenseDetail />} />
-        
+
+        {/* Chemistry Quiz Routes */}
+        <Route path="/chem-quizzes" element={<ChemQuizList />} />
+        <Route path="/chem-quiz/:id" element={<ChemQuizDetail />} />
+
         {/* Fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
