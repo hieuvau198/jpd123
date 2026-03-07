@@ -17,6 +17,7 @@ const Login = () => {
   // Clear any existing session when accessing the login page manually
   useEffect(() => {
     localStorage.removeItem('userSession');
+    window.dispatchEvent(new Event('authChange')); // Notify NavBar on manual visit
   }, []);
 
   const handleLogin = async () => {
@@ -35,6 +36,9 @@ const Login = () => {
           isLoggedIn: true,
           ...result.user
         }));
+
+        // 🔥 ADD THIS LINE to trigger the NavBar update automatically
+        window.dispatchEvent(new Event('authChange'));
 
         message.success(`Welcome back, ${result.user.name}!`);
         

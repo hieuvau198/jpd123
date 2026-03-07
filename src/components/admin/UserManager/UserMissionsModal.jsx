@@ -11,52 +11,41 @@ const UserMissionsModal = ({
 }) => {
   
   const columns = [
-    { title: 'Type', dataIndex: 'type', key: 'type', render: (t) => <Tag>{t}</Tag> },
-    { 
-      title: 'Mission Name', 
-      dataIndex: 'name', 
-      key: 'name', 
-      // Fallback to practiceId for older records
-      render: (text, record) => <Text strong>{text || record.practiceId}</Text> 
-    },
-    { 
-      title: 'Target / Total', 
-      key: 'questions', 
-      render: (_, record) => (
-        <Tag color="blue">
-          {record.targetQuestions || 0} / {record.totalQuestions || 0}
-        </Tag>
-      ) 
-    },
-    { 
-      title: 'Status', 
-      dataIndex: 'status', 
-      key: 'status',
-      render: (status) => {
-        const color = status === 'Đã chinh phục' ? 'green' : (status === 'Đang làm' ? 'orange' : 'default');
-        return <Tag color={color}>{status}</Tag>;
-      }
-    },
-    { title: 'Progress (%)', dataIndex: 'percentage', key: 'percentage' },
-    { 
-      title: 'Deadline', 
-      dataIndex: 'endDate', 
-      key: 'endDate', 
-      render: (date) => date ? dayjs(date).format('DD/MM/YYYY') : 'N/A' 
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button type="text" size="small" icon={<Edit size={14} />} onClick={() => onEdit(record)} />
-          <Popconfirm title="Delete this mission?" onConfirm={() => onDelete(record.id)}>
-            <Button type="text" danger size="small" icon={<Trash2 size={14} />} />
-          </Popconfirm>
+  { 
+    title: 'Mission Name', 
+    dataIndex: 'name', 
+    key: 'name', 
+    render: (text, record) => (
+      <div>
+        <Text strong>{text || record.practiceId}</Text>
+        <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <Tag color="blue" style={{ fontSize: '11px' }}>
+            {record.targetQuestions || 0} / {record.totalQuestions || 0}
+          </Tag>
+          <Tag 
+            color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
+            style={{ fontSize: '11px' }}
+          >
+            {record.status}
+          </Tag>
         </div>
-      ),
-    }
-  ];
+      </div>
+    )
+  },
+  // Remove the 'Progress (%)' column object entirely from the array
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <Button type="text" size="small" icon={<Edit size={14} />} onClick={() => onEdit(record)} />
+        <Popconfirm title="Delete this mission?" onConfirm={() => onDelete(record.id)}>
+          <Button type="text" danger size="small" icon={<Trash2 size={14} />} />
+        </Popconfirm>
+      </div>
+    ),
+  }
+];
 
   return (
     <Modal 

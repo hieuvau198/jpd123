@@ -75,68 +75,50 @@ const ProfileMissions = ({ currentUser }) => {
   };
 
   const columns = [
-    { title: 'Type', dataIndex: 'type', key: 'type', render: (t) => <Tag>{t}</Tag> },
-    { 
-      title: 'Mission Name', 
-      dataIndex: 'name', 
-      key: 'name', 
-      render: (text, record) => (
-        <Typography.Text strong>
-          {truncateName(text || record.practiceId)}
-        </Typography.Text>
-      )
-    },
-    { 
-      title: 'Target', 
-      key: 'questions', 
-      render: (_, record) => {
-        if (record.targetQuestions && record.totalQuestions) {
-           return <Tag color="blue">{record.targetQuestions} / {record.totalQuestions}</Tag>;
-        }
-        return <Tag>N/A</Tag>;
-      }
-    },
-    { 
-      title: 'Status', 
-      dataIndex: 'status', 
-      key: 'status',
-      render: (status) => {
-        const color = status === 'Đã chinh phục' ? 'green' : (status === 'Đang làm' ? 'orange' : 'default');
-        return <Tag color={color}>{status}</Tag>;
-      }
-    },
-    { title: 'Done', dataIndex: 'percentage', key: 'percentage',
-      render: (text) => {
-      // Multiply the value (text) by 100 and add the '%' symbol
-      if (typeof text === 'number' || (typeof text === 'string' && !isNaN(Number(text)))) {
-        const value = Number(text) * 100;
-        // Optional: format to a specific number of decimal places, e.g., 2
-        return `${value}%`;
-      }
-      return text; // Return original text if it's not a valid number
-    },
-     },
-    { 
-      title: 'Deadline', 
-      dataIndex: 'endDate', 
-      key: 'endDate', 
-      render: (date) => date ? dayjs(date).format('DD/MM/YYYY') : 'N/A' 
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Button 
-          type="primary" 
-          size="small" 
-          icon={<PlayCircle size={14} />} 
-          onClick={() => handleGoToPractice(record)}
-        >
-          Practice
-        </Button>
-      ),
+  { 
+    title: 'Mission Name', 
+    dataIndex: 'name', 
+    key: 'name', 
+    render: (text, record) => {
+      // Calculate percentage string
+      const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
+        ? Number(record.percentage) * 100 
+        : record.percentage;
+
+      return (
+        <div>
+          <Typography.Text strong>
+            {truncateName(text || record.practiceId)}
+          </Typography.Text>
+          <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center' }}>
+            <Tag color="blue" style={{ fontSize: '11px' }}>
+              {record.targetQuestions || 0} / {record.totalQuestions || 0}
+            </Tag>
+            <Tag 
+              color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
+              style={{ fontSize: '11px' }}
+            >
+              {record.status} {pctValue}%
+            </Tag>
+          </div>
+        </div>
+      );
     }
-  ];
+  },
+  // Remove the 'Done' column object entirely from the array
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Button 
+        type="primary" 
+        size="small" 
+        icon={<PlayCircle size={14} />} 
+        onClick={() => handleGoToPractice(record)}
+      />
+    ),
+  }
+];
 
   return (
     <Card 
