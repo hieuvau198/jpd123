@@ -147,7 +147,7 @@ const Home = () => {
 
       <Row gutter={[24, 24]} justify="center" className='mt-20'>
         <Col xs={24} sm={8} md={6}>
-          <Link to="/chem-quizzes" style={{ textDecoration: 'none' }}>
+          <Link to="/chem-quiz" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
               <div style={{ marginBottom: 20 }}>
                 <FlaskConical size={48} color="#13c2c2" />

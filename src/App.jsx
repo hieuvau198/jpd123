@@ -69,7 +69,7 @@ export default function App() {
         <Route path="/challenge/:id" element={<DefenseDetail />} />
 
         {/* Chemistry Quiz Routes */}
-        <Route path="/chem-quizzes" element={<ChemQuizList />} />
+        <Route path="/chem-quiz" element={<ChemQuizList />} />
         <Route path="/chem-quiz/:id" element={<ChemQuizDetail />} />
 
         {/* Fallback */}

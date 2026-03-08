@@ -10,6 +10,7 @@ import { getAllPhonetics } from '../../../firebase/phoneticService';
 import { getAllRepairs } from '../../../firebase/repairService';
 import { getAllSpeaks } from '../../../firebase/speakService';
 import { getAllDefenses } from '../../../firebase/defenseService';
+import { getAllChemistry } from '../../../firebase/chemistryService';
 
 const { Option } = Select;
 
@@ -75,6 +76,7 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
           case 'Repair': data = await getAllRepairs(); break;
           case 'Speak': data = await getAllSpeaks(); break;
           case 'Defense': data = await getAllDefenses(); break;
+          case 'Chem Quiz': data = await getAllChemistry(); break;
           default: break;
         }
 
@@ -136,6 +138,7 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
             <Select placeholder="Select type">
               <Option value="Flashcard">Flashcard</Option>
               <Option value="Quiz">Quiz</Option>
+              <Option value="Chem Quiz">Chem Quiz</Option>
               <Option value="Phonetic">Phonetic</Option>
               <Option value="Repair">Repair</Option>
               <Option value="Speak">Speak</Option>
