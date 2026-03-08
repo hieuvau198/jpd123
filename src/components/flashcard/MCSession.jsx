@@ -17,9 +17,11 @@ const shuffleArray = (array) => {
 const MCSession = ({ data, onHome, onBack }) => {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  
+  // Track unique IDs of questions the user got wrong for scoring
+  const [wrongIds, setWrongIds] = useState(new Set());
   
   const timerRef = useRef(null);
 
@@ -50,23 +52,53 @@ const MCSession = ({ data, onHome, onBack }) => {
       // Combine and shuffle the options so the correct answer isn't always first
       const options = shuffleArray([correctAnswer, ...wrongAnswers]);
       
-      return { ...q, options };
+      return { ...q, options, correctAttemptsNeeded: 1 };
     });
     
     setQuestions(mcQuestions);
     setCurrentIndex(0);
-    setScore(0);
+    setWrongIds(new Set());
     setIsFinished(false);
     setSelectedAnswer(null);
   };
 
-  const handleNext = () => {
+  const handleNext = (isCorrectParam) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-    
-    if (currentIndex + 1 < questions.length) {
+
+    const currentQ = questions[currentIndex];
+    const isCorrect = typeof isCorrectParam === 'boolean' ? isCorrectParam : selectedAnswer === currentQ.answer;
+
+    let updatedQ = { ...currentQ };
+    let needsRequeue = false;
+
+    if (!isCorrect) {
+       // Failed, reset attempts to 2 so they have to get it right twice
+       updatedQ.correctAttemptsNeeded = 2;
+       needsRequeue = true;
+    } else {
+       // Decrement attempts needed
+       updatedQ.correctAttemptsNeeded = (updatedQ.correctAttemptsNeeded || 1) - 1;
+       if (updatedQ.correctAttemptsNeeded > 0) {
+           needsRequeue = true;
+       }
+    }
+
+    if (needsRequeue) {
+       setQuestions(prev => {
+          const newQueue = [...prev];
+          // Re-insert exactly after 2 questions (index + 3)
+          const insertPos = Math.min(currentIndex + 3, newQueue.length);
+          newQueue.splice(insertPos, 0, updatedQ);
+          return newQueue;
+       });
+    }
+
+    // Determine if we are at the end
+    const newLength = questions.length + (needsRequeue ? 1 : 0);
+    if (currentIndex + 1 < newLength) {
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
     } else {
@@ -81,34 +113,39 @@ const MCSession = ({ data, onHome, onBack }) => {
     const currentQ = questions[currentIndex];
     
     if (ans === currentQ.answer) {
-      setScore(prev => prev + 1);
       // Auto-advance if correct
       timerRef.current = setTimeout(() => {
-        handleNext();
+        handleNext(true);
       }, 1000);
-    } 
-    // If wrong, we do nothing here. The user must click the "Next" button.
+    } else {
+      // Record wrong answer
+      setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
+    }
   };
 
   if (questions.length === 0) return null;
 
   if (isFinished) {
-    // Calculate percentage score
-    const finalScore = Math.round((score / questions.length) * 100);
+    // Calculate percentage score based strictly on original unique questions length
+    const totalUniqueQuestions = data.questions.length;
+    const finalScore = Math.max(0, Math.round(((totalUniqueQuestions - wrongIds.size) / totalUniqueQuestions) * 100));
     return (
       <SessionResult 
         score={finalScore}
-        resultMessage={`"${data?.title || 'current'}": MC ${questions.length} words!`}
+        resultMessage={`"${data?.title || 'current'}": MC ${totalUniqueQuestions} words!`}
         onBack={onBack}
         onRestart={initGame}
         practiceId={data.id} // Pass the flashcard ID
-      practiceType="Flashcard"      // Tell it this is a flashcard
+        practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }
 
   const currentQ = questions[currentIndex];
   const progressPercent = Math.round((currentIndex / questions.length) * 100);
+  
+  // Dynamic accurate score based on real progress
+  const currentScore = data?.questions?.length ? Math.max(0, Math.round(((data.questions.length - wrongIds.size) / data.questions.length) * 100)) : 0;
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
@@ -124,19 +161,19 @@ const MCSession = ({ data, onHome, onBack }) => {
         </div>
 
         <Button type="text" disabled>
-            Score: {score}
+            Score: {currentScore}%
         </Button>
       </Flex>
 
-      {/* Next Button Container (Placed at the top, below the progress bar) */}
+      {/* Next Button Container */}
       <Flex justify="center" align="center" style={{ minHeight: 50, marginBottom: 20 }}>
         {selectedAnswer !== null && selectedAnswer !== currentQ.answer && (
-          <Button type="primary" danger size="large" onClick={handleNext}>
+          <Button type="primary" danger size="large" onClick={() => handleNext(false)}>
             Next Question
           </Button>
         )}
         {selectedAnswer !== null && selectedAnswer === currentQ.answer && (
-          <Button type="primary" style={{ backgroundColor: '#52c41a' }} size="large" onClick={handleNext}>
+          <Button type="primary" style={{ backgroundColor: '#52c41a' }} size="large" onClick={() => handleNext(true)}>
             Correct! Next Question
           </Button>
         )}
@@ -155,7 +192,7 @@ const MCSession = ({ data, onHome, onBack }) => {
         <Title level={2}>{currentQ.question}</Title>
       </Card>
 
-      {/* 2x2 Grid Layout for Options (4 corners) */}
+      {/* 2x2 Grid Layout for Options */}
       <div 
         style={{ 
           display: 'grid', 
@@ -170,12 +207,10 @@ const MCSession = ({ data, onHome, onBack }) => {
 
           if (selectedAnswer !== null) {
             if (opt === currentQ.answer) {
-              // Always show correct answer in green after a choice is made
               bgColor = '#f6ffed';
               borderColor = '#b7eb8f';
               textColor = '#52c41a';
             } else if (opt === selectedAnswer) {
-              // Highlight the wrong selected answer in red
               bgColor = '#fff2f0';
               borderColor = '#ffccc7';
               textColor = '#f5222d';
@@ -193,7 +228,7 @@ const MCSession = ({ data, onHome, onBack }) => {
                 borderColor: borderColor,
                 transition: 'all 0.3s ease',
                 borderRadius: 12,
-                height: '100%', // Ensure all cards stretch equally in the grid
+                height: '100%',
                 minHeight: '120px'
               }}
               bodyStyle={{ 

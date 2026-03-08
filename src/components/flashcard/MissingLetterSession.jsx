@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Typography, Button, Flex, Progress, message } from 'antd';
 import { ArrowLeft, Volume2 } from 'lucide-react';
-import SessionResult from '../SessionResult'; // Imported SessionResult
+import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
 
@@ -18,69 +18,56 @@ const shuffleArray = (array) => {
 const MissingLetterSession = ({ data, onHome, onBack }) => {
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Track unique IDs of questions the user got wrong for SessionResult calculation
   const [wrongIds, setWrongIds] = useState(new Set());
 
   // Game State
   const [fullWord, setFullWord] = useState("");         
-  const [hiddenIndices, setHiddenIndices] = useState(new Set()); // Which indices are missing
-  const [missingCount, setMissingCount] = useState(0); // How many letters are missing total
-  
-  // User Input is a simple string. 
+  const [hiddenIndices, setHiddenIndices] = useState(new Set()); 
+  const [missingCount, setMissingCount] = useState(0); 
   const [inputValue, setInputValue] = useState("");
+  const [status, setStatus] = useState(""); 
   
-  const [status, setStatus] = useState(""); // "", "error", "success"
-  
-  // Invisible input ref to capture typing
   const inputRef = useRef(null);
 
-  // 1. Initialize & Shuffle
+  // 1. Initialize & Shuffle with correctAttemptsNeeded = 1
   useEffect(() => {
     if (data && data.questions) {
-      setQueue(shuffleArray([...data.questions]));
+      setQueue(shuffleArray([...data.questions]).map(q => ({ ...q, correctAttemptsNeeded: 1 })));
     }
   }, [data]);
 
-  // 2. Setup Word & Mask (Reset on card change)
+  // 2. Setup Word & Mask
   useEffect(() => {
     if (queue.length > 0 && currentIndex < queue.length) {
       const currentCard = queue[currentIndex];
       const target = (currentCard.question || currentCard.speak).trim(); 
       setFullWord(target);
 
-      // --- NEW MASKING LOGIC ---
       const chars = target.split('');
       const validIndices = chars.map((c, i) => /[a-zA-Z]/.test(c) ? i : -1).filter(i => i !== -1);
       
       const len = validIndices.length;
       let blanksToHide = 1;
 
-      // Rule: <= 4 -> 1, 5-7 -> 2, >7 -> 3
       if (len <= 4) blanksToHide = 1;
       else if (len <= 7) blanksToHide = 2;
       else blanksToHide = 3;
 
-      // Safety check: don't hide more than we have
       if (blanksToHide > len) blanksToHide = len;
 
       const newHiddenIndices = new Set();
-      // Randomly select indices
       for (let k = 0; k < blanksToHide; k++) {
         if (validIndices.length === 0) break;
         const r = Math.floor(Math.random() * validIndices.length);
         newHiddenIndices.add(validIndices[r]);
-        validIndices.splice(r, 1); // remove so we don't pick again
+        validIndices.splice(r, 1); 
       }
 
       setHiddenIndices(newHiddenIndices);
       setMissingCount(blanksToHide);
-      
-      // Reset State
       setInputValue("");
       setStatus("");
       
-      // Auto-focus the invisible input
       setTimeout(() => {
         if (inputRef.current) inputRef.current.focus();
       }, 100);
@@ -99,7 +86,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     }
   };
 
-  // Focus helper
   const handleFocus = () => {
     if (inputRef.current && status === "") {
       inputRef.current.focus();
@@ -109,7 +95,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
   const handleCheck = () => {
     if (status !== "" || inputValue.length < missingCount) return;
 
-    // Construct the user's attempted word to verify
     let constructedWord = "";
     let inputIndex = 0;
 
@@ -124,30 +109,54 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
 
     const currentCard = queue[currentIndex];
 
-    // Compare Case Insensitive
+    // Correct Answer Logic
     if (constructedWord.toLowerCase() === fullWord.toLowerCase()) {
         setStatus("success");
         message.success("Correct!");
-        handleSpeech(fullWord); // Auto speak on correct
-        setTimeout(() => handleNext(), 800);
+        handleSpeech(fullWord); 
+        
+        setTimeout(() => {
+            setQueue(prevQueue => {
+                const newQueue = [...prevQueue];
+                const cardToUpdate = newQueue[currentIndex];
+                const remainingAttempts = (cardToUpdate.correctAttemptsNeeded || 1) - 1;
+                
+                // If it still needs more attempts, requeue it safely
+                if (remainingAttempts > 0) {
+                    const updatedCard = { ...cardToUpdate, correctAttemptsNeeded: remainingAttempts };
+                    const insertPos = Math.min(currentIndex + 3, newQueue.length);
+                    newQueue.splice(insertPos, 0, updatedCard);
+                }
+                return newQueue;
+            });
+            setCurrentIndex(prev => prev + 1);
+        }, 800);
+        
     } else {
+        // Wrong Answer Logic
         setStatus("error");
         message.error("Incorrect, try again!");
-        handleSpeech(fullWord); // Auto speak on wrong
-        // Register this specific card ID/text as a wrong attempt
+        handleSpeech(fullWord); 
         setWrongIds(prev => new Set(prev).add(currentCard.id || currentCard.question));
     }
   };
 
   const handleNext = () => {
+    // Manually triggered only after a wrong answer
     if (status === 'error') {
-        const currentCard = queue[currentIndex];
-        setQueue(prev => [...prev, currentCard]);
+        setQueue(prevQueue => {
+            const newQueue = [...prevQueue];
+            const cardToUpdate = newQueue[currentIndex];
+            // Failed, reset attempts to 2
+            const updatedCard = { ...cardToUpdate, correctAttemptsNeeded: 2 };
+            const insertPos = Math.min(currentIndex + 3, newQueue.length);
+            newQueue.splice(insertPos, 0, updatedCard);
+            return newQueue;
+        });
     }
     setCurrentIndex(prev => prev + 1);
   };
 
-  // Handle Input Change
   const handleChange = (e) => {
     const val = e.target.value;
     if (val.length <= missingCount && /^[a-zA-Z]*$/.test(val)) {
@@ -165,7 +174,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
     }
   };
 
-  // --- FINISHED --- Use the new SessionResult
   if (currentIndex >= queue.length && queue.length > 0) {
     const totalUniqueQuestions = data.questions.length;
     const score = Math.max(0, Math.round(((totalUniqueQuestions - wrongIds.size) / totalUniqueQuestions) * 100));
@@ -176,12 +184,12 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         resultMessage={`"${data?.title || 'current'}": Fill ${totalUniqueQuestions} words!`}
         onBack={onBack} 
         onRestart={() => {
-           setQueue(shuffleArray([...data.questions]));
+           setQueue(shuffleArray([...data.questions]).map(q => ({ ...q, correctAttemptsNeeded: 1 })));
            setCurrentIndex(0);
            setWrongIds(new Set());
         }} 
-        practiceId={data.id} // Pass the flashcard ID
-      practiceType="Flashcard"      // Tell it this is a flashcard
+        practiceId={data.id} 
+        practiceType="Flashcard"      
       />
     );
   }
@@ -189,7 +197,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
   const currentCard = queue[currentIndex] || {};
   const progressPercent = Math.round(((currentIndex) / queue.length) * 100);
 
-  // --- RENDER WORD ---
   const renderWord = () => {
     const chars = fullWord.split('');
     let inputIndex = 0;
@@ -244,7 +251,6 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
-      {/* Invisible Input for Capture */}
       <input
         ref={inputRef}
         type="text"
@@ -253,15 +259,9 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         onKeyDown={handleKeyDown}
         disabled={status !== ""}
         autoComplete="off"
-        style={{ 
-            opacity: 0, 
-            position: 'absolute', 
-            top: -1000, 
-            pointerEvents: 'none' 
-        }}
+        style={{ opacity: 0, position: 'absolute', top: -1000, pointerEvents: 'none' }}
       />
 
-      {/* HEADER */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>Back</Button>
         <div style={{ width: '60%', margin: '0 10px' }}>
@@ -270,17 +270,11 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
         <Text strong>{currentIndex + 1} / {queue.length}</Text>
       </Flex>
 
-      {/* CLICK CARD TO FOCUS */}
       <Card 
         hoverable
         onClick={handleFocus}
         bordered={false} 
-        style={{ 
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)', 
-            textAlign: 'center',
-            padding: '20px 0',
-            cursor: 'text' 
-        }}
+        style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)', textAlign: 'center', padding: '20px 0', cursor: 'text' }}
       >
         <Text type="secondary" style={{ textTransform: 'uppercase', fontSize: 12, letterSpacing: 1 }}>
             Meaning
@@ -293,17 +287,12 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
                 type="text" 
                 shape="circle" 
                 icon={<Volume2 size={24} />} 
-                onClick={(e) => { 
-                    e.stopPropagation(); 
-                    handleSpeech(fullWord); 
-                }}
+                onClick={(e) => { e.stopPropagation(); handleSpeech(fullWord); }}
             />
         </Flex>
 
-        {/* THE WORD DISPLAY */}
         {renderWord()}
         
-        {/* INSTRUCTIONS */}
         <div style={{ minHeight: 30 }}>
             {status === 'error' ? (
                 <Text type="danger" strong>Correct Answer: {fullWord}</Text>

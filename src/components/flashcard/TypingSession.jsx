@@ -35,7 +35,8 @@ const TypingSession = ({ data, onHome, onBack }) => {
 
   useEffect(() => {
     if (data && data.questions) {
-      setQueue(shuffleArray([...data.questions]));
+      // Initialize queue with correctAttemptsNeeded = 1 for each question
+      setQueue(shuffleArray([...data.questions]).map(q => ({ ...q, correctAttemptsNeeded: 1 })));
     }
   }, [data]);
 
@@ -84,6 +85,21 @@ const TypingSession = ({ data, onHome, onBack }) => {
       setTimeout(() => {
         setFeedback('neutral');
         setInputValue("");
+        
+        const remainingAttempts = (currentCard.correctAttemptsNeeded || 1) - 1;
+        
+        if (remainingAttempts > 0) {
+          // They got it right, but they failed it previously, so they need to see it one last time
+          setQueue(prev => {
+            const newQueue = [...prev];
+            const updatedCard = { ...currentCard, correctAttemptsNeeded: remainingAttempts };
+            // Insert 3 positions ahead (meaning after exactly 2 questions)
+            const insertPos = Math.min(currentIndex + 3, newQueue.length);
+            newQueue.splice(insertPos, 0, updatedCard);
+            return newQueue;
+          });
+        }
+
         setCurrentIndex(prev => prev + 1); 
       }, 800);
     } else {
@@ -97,7 +113,17 @@ const TypingSession = ({ data, onHome, onBack }) => {
 
   const handleManualNext = () => {
     const currentCard = queue[currentIndex];
-    setQueue(prev => [...prev, currentCard]); // Re-queue the wrong card
+    
+    // Reset correct attempts to 2 because they got it wrong
+    setQueue(prev => {
+      const newQueue = [...prev];
+      const updatedCard = { ...currentCard, correctAttemptsNeeded: 2 };
+      // Re-insert exactly after 2 questions (index + 3)
+      const insertPos = Math.min(currentIndex + 3, newQueue.length);
+      newQueue.splice(insertPos, 0, updatedCard);
+      return newQueue;
+    });
+
     setFeedback('neutral');
     setCorrectAnswerDisplay("");
     setInputValue("");
@@ -136,13 +162,13 @@ const TypingSession = ({ data, onHome, onBack }) => {
         resultMessage={`"${data?.title || 'current'}": Type ${totalUniqueQuestions} words!`}
         onBack={onBack} 
         onRestart={() => {
-           setQueue(shuffleArray([...data.questions]));
+           setQueue(shuffleArray([...data.questions]).map(q => ({ ...q, correctAttemptsNeeded: 1 })));
            setCurrentIndex(0);
            setWrongIds(new Set());
            setDirection(null); 
         }} 
         practiceId={data.id} // Pass the flashcard ID
-      practiceType="Flashcard"      // Tell it this is a flashcard
+        practiceType="Flashcard"      // Tell it this is a flashcard
       />
     );
   }
