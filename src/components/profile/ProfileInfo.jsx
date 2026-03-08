@@ -19,12 +19,12 @@ const ProfileInfo = ({ user }) => {
       <User size={60} color="#52c41a" style={{ marginBottom: 10 }}/>
       <Title level={3}>Student Profile</Title>
       <Text type="secondary" style={{ display: 'block', marginBottom: 20 }}>
-        Welcome back, {user?.username || 'Student'}!
+        Welcome back, {user?.name || 'Student'}!
       </Text>
       
       <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
         <Button type="default" onClick={() => navigate('/')}>
-          Go to Home
+          Home
         </Button>
         <Button danger onClick={handleLogout}>
           Logout
