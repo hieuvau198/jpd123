@@ -142,45 +142,74 @@ const UserManager = () => {
   };
 
   const userColumns = [
-    { title: 'Name', dataIndex: 'name', key: 'name', sorter: (a, b) => a.name.localeCompare(b.name) },
-    { title: 'Username', dataIndex: 'username', key: 'username' },
-    { 
-      title: 'Role', 
-      dataIndex: 'role', 
-      key: 'role',
-      render: (role) => <Tag color={role === 'Admin' ? 'red' : 'blue'}>{role}</Tag>
-    },
-    { title: 'Grade', dataIndex: 'grade', key: 'grade' },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {/* Conditionally render this button only if role is Student */}
-          {record.role === 'Student' && (
-            <Button type="primary" size="small" icon={<Target size={14} />} onClick={() => openMissionsList(record)}>
-              Missions
-            </Button>
-          )}
-          <Button type="text" icon={<Edit size={16} />} onClick={() => handleShowUserModal(record)} />
-          <Popconfirm title="Delete this user?" onConfirm={() => handleDeleteUser(record.id)} okText="Yes">
-            <Button type="text" danger icon={<Trash2 size={16} />} />
-          </Popconfirm>
+  { 
+    title: 'User',
+    dataIndex: 'name',
+    key: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    render: (_, record) => (
+      <div>
+        <Typography.Text strong>{record.name}</Typography.Text>
+
+        <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
+          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+            @{record.username}
+          </Typography.Text>
+
+          <Tag color={record.role === "Admin" ? "red" : "blue"} style={{ fontSize: 11 }}>
+            {record.role}
+          </Tag>
         </div>
-      ),
-    },
-  ];
+      </div>
+    )
+  },
+
+  { title: 'Grade', dataIndex: 'grade', key: 'grade' },
+
+  {
+    title: 'Actions',
+    key: 'actions',
+    render: (_, record) => (
+      <div style={{ display: 'flex', gap: '8px' }}>
+        {record.role === 'Student' && (
+          <Button
+            type="primary"
+            size="small"
+            icon={<Target size={14} />}
+            onClick={() => openMissionsList(record)}
+          >
+            Missions
+          </Button>
+        )}
+
+        <Button
+          type="text"
+          icon={<Edit size={16} />}
+          onClick={() => handleShowUserModal(record)}
+        />
+
+        <Popconfirm
+          title="Delete this user?"
+          onConfirm={() => handleDeleteUser(record.id)}
+          okText="Yes"
+        >
+          <Button type="text" danger icon={<Trash2 size={16} />} />
+        </Popconfirm>
+      </div>
+    ),
+  },
+];
 
   return (
     <div style={{ maxWidth: 1200, margin: '40px auto', padding: 20 }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin')}>Back</Button>
-          <Title level={2} style={{ margin: 0 }}>User Management</Title>
+          <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin')}></Button>
+          
         </div>
         <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>
-          Add New User
+          New User
         </Button>
       </div>
 

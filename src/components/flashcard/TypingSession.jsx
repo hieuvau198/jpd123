@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Space } from 'antd';
-import { Home, ArrowRightLeft, Volume2 } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, Volume2 } from 'lucide-react';
 import SessionResult from '../SessionResult'; // Imported SessionResult
 
 const { Title, Text } = Typography;
@@ -179,8 +179,8 @@ const TypingSession = ({ data, onHome, onBack }) => {
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
-      <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-         <Button icon={<Home size={16}/>} onClick={onBack}>Exit</Button>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
+         <Button icon={<ArrowLeft size={20}/>} onClick={onBack} />
          <Text strong>{currentIndex + 1} / {queue.length}</Text>
       </Flex>
 

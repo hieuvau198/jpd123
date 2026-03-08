@@ -99,11 +99,11 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
   if (!currentQuestion) return null;
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-8 mt-8 bg-white rounded-xl shadow-md pb-24">
+    <div className="max-w-3xl mx-4 sm:mx-auto p-4 sm:p-8 mt-20 bg-white rounded-xl shadow-md pb-24">
       <div className="flex justify-between items-center mb-6">
          <h2 className="text-xl font-bold text-gray-800">{data.title || 'Chemistry Quiz'}</h2>
          {/* Show remaining questions in queue */}
-         <span className="text-gray-500 font-medium">Questions Left: {queue.length}</span>
+         <span className="text-gray-500 font-medium">{queue.length}</span>
       </div>
       
       <div className="mb-8 p-6 border border-gray-100 rounded-lg bg-gray-50">
@@ -171,7 +171,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
               size="large" 
               icon={<ArrowRight size={18} />} 
               onClick={handleNext}
-              className="px-8"
+              className="px-8 mt-4"
             >
               Next
             </Button>

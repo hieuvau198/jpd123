@@ -37,10 +37,10 @@ const AdminDashboard = () => {
   return (
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
-        <Title level={2} style={{ margin: 0 }}>English Management</Title>
+        
         <div style={{ display: 'flex', gap: '10px' }}>
-          <Button type="primary" icon={<Users size={16} />} onClick={() => navigate('/admin/users')}>Manage Users</Button>
-          <Button icon={<Home size={16} />} onClick={() => navigate('/')}>Back to Home</Button>
+          <Button type="primary" icon={<Users size={16} />} onClick={() => navigate('/admin/users')}></Button>
+          <Button icon={<Home size={16} />} onClick={() => navigate('/')} className='ml-4'></Button>
         </div>
       </div>
 

@@ -96,11 +96,9 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   if (mode === 'mc') return <MCSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />; 
 
   return (
-    <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
+    <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh',marginTop: 30 }}>
       <Title level={2}>{sessionData.title}</Title>
-      <Text type="secondary" style={{ marginBottom: 40 }}>
-        {sessionData.description} (Practicing {sessionData.questions.length} words)
-      </Text>
+      
       
       <Flex wrap gap="large" justify="center">
         <Card hoverable onClick={() => setMode('view')} style={{ width: 240, textAlign: 'center' }}>
@@ -141,7 +139,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
       </Flex>
 
       <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>
-        Back to Home
+        Home
       </Button>
     </Flex>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Tag, Button, Typography } from 'antd';
-import { PlayCircle } from 'lucide-react';
+import { Card, Table, Tag, Typography } from 'antd'; // Removed Button
+// You can remove the PlayCircle import if you aren't using it elsewhere
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { getUserMissions } from '../../firebase/missionService';
@@ -54,7 +54,6 @@ const ProfileMissions = ({ currentUser }) => {
   };
 
   const handleGoToPractice = (mission) => {
-    // 1. Fixed plural paths to match App.jsx
     const routeMap = {
       'Flashcard': '/flashcard', 
       'Quiz': '/quiz',           
@@ -67,59 +66,44 @@ const ProfileMissions = ({ currentUser }) => {
     
     const basePath = routeMap[mission.type];
     if (basePath) {
-      // 2. Add the numbers parameter if targetQuestions exists
       const queryParam = mission.targetQuestions ? `?numbers=${mission.targetQuestions}` : '';
-      
-      // Navigate to the full URL (e.g., /flashcard/123?numbers=10)
       navigate(`${basePath}/${mission.practiceId}${queryParam}`);
     }
   };
 
+  // 1. Removed the 'Action' column entirely
   const columns = [
-  { 
-    title: 'Mission Name', 
-    dataIndex: 'name', 
-    key: 'name', 
-    render: (text, record) => {
-      // Calculate percentage string
-      const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
-        ? Number(record.percentage) * 100 
-        : record.percentage;
+    { 
+      title: 'Mission Name', 
+      dataIndex: 'name', 
+      key: 'name', 
+      render: (text, record) => {
+        // Calculate percentage string and round to nearest whole integer
+        const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
+          ? Math.round(Number(record.percentage) * 100) 
+          : record.percentage;
 
-      return (
-        <div>
-          <Typography.Text strong>
-            {truncateName(text || record.practiceId)}
-          </Typography.Text>
-          <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center' }}>
-            <Tag color="blue" style={{ fontSize: '11px' }}>
-              {record.targetQuestions || 0} / {record.totalQuestions || 0}
-            </Tag>
-            <Tag 
-              color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
-              style={{ fontSize: '11px' }}
-            >
-              {record.status} {pctValue}%
-            </Tag>
+        return (
+          <div>
+            <Typography.Text strong>
+              {truncateName(text || record.practiceId)}
+            </Typography.Text>
+            <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center' }}>
+              <Tag color="blue" style={{ fontSize: '11px' }}>
+                {record.targetQuestions || 0} / {record.totalQuestions || 0}
+              </Tag>
+              <Tag 
+                color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
+                style={{ fontSize: '11px' }}
+              >
+                {record.status} {pctValue}%
+              </Tag>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     }
-  },
-  // Remove the 'Done' column object entirely from the array
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Button 
-        type="primary" 
-        size="small" 
-        icon={<PlayCircle size={14} />} 
-        onClick={() => handleGoToPractice(record)}
-      />
-    ),
-  }
-];
+  ];
 
   return (
     <Card 
@@ -135,6 +119,11 @@ const ProfileMissions = ({ currentUser }) => {
         scroll={{ x: true }}
         pagination={{ pageSize: 5 }}
         locale={{ emptyText: "You have no assigned missions right now." }}
+        // 2. Added onRow to make the entire row clickable
+        onRow={(record) => ({
+          onClick: () => handleGoToPractice(record),
+          style: { cursor: 'pointer' } // Changes cursor to pointer on hover
+        })}
       />
     </Card>
   );

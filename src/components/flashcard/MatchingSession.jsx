@@ -179,8 +179,8 @@ const MatchingSession = ({ data, onHome, onBack }) => {
 
   return (
     <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20 }}>
-      <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button icon={<ArrowLeft size={16} />} onClick={onBack}>Back</Button>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
+        <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
             <Flex vertical align="center">
