@@ -25,7 +25,7 @@ const SessionResult = ({
   useEffect(() => {
     const checkAndCompleteMission = async () => {
       // 1. Ignore if it's not a flashcard or quiz, or if no ID is provided
-      if (!practiceId || !['Flashcard', 'Quiz', 'Phonetic', 'Repair'].includes(practiceType)) {
+      if (!practiceId || !['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz'].includes(practiceType)) {
         return;
       }
 

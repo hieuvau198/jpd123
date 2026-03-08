@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Result, Button, Typography, Flex, Alert } from 'antd';
+import { Button, Typography, Flex, Alert } from 'antd'; // Removed 'Result'
 import { CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
+import SessionResult from '../SessionResult'; // Import SessionResult
 
 const { Title, Text } = Typography;
 
-const ChemQuizSession = ({ data, onHome, initialNumbers }) => {
+const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
   const [queue, setQueue] = useState([]);
   const [score, setScore] = useState(0);
   const [totalAttempted, setTotalAttempted] = useState(0); // Real original question count
@@ -68,22 +69,30 @@ const ChemQuizSession = ({ data, onHome, initialNumbers }) => {
     }
   };
 
+  const handleRestart = () => {
+    const questions = Array.isArray(data) ? data.flatMap(d => d.questions) : (data.questions || []);
+    const initialQs = initialNumbers ? questions.slice(0, initialNumbers) : questions;
+    setQueue(initialQs);
+    setTotalAttempted(initialQs.length);
+    setScore(0);
+    setFinished(false);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+  };
+
   if (finished) {
+    const finalScore = totalAttempted > 0 ? Math.round((score / totalAttempted) * 100) : 0;
     return (
-      <div className="min-h-[80vh] flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-lg text-center">
-          <Result
-            status="success"
-            title="Quiz Completed!"
-            subTitle={`You scored ${score} out of ${totalAttempted} (First Try)`}
-            extra={[
-              <Button type="primary" size="large" key="home" onClick={onHome}>
-                Back to List
-              </Button>
-            ]}
-          />
-        </div>
-      </div>
+      <SessionResult
+        score={finalScore}
+        onBack={onHome}
+        onRestart={handleRestart}
+        backText="Back to List"
+        restartText="Try Again"
+        resultMessage={`You answered ${score} out of ${totalAttempted} correctly on the first try!`}
+        practiceId={practiceId}
+        practiceType="Chem Quiz"
+      />
     );
   }
 

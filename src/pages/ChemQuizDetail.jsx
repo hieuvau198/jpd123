@@ -39,6 +39,7 @@ const ChemQuizDetail = () => {
       data={data} 
       onHome={() => navigate('/chem-quizzes')} 
       initialNumbers={initialNumbers} 
+      practiceId={id} // Add this prop
     />
   );
 };
