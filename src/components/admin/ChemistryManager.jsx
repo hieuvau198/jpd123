@@ -119,12 +119,12 @@ const ChemistryManager = ({ icon, color, uploadText, uploadColor, fetchFn, fetch
       </div>
       
       <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
-        <Upload.Dragger accept=".json" multiple={true} showUploadList={false} beforeUpload={handleImport}>
-          <p className="ant-upload-drag-icon"><UploadCloud size={32} color={uploadColor} /></p>
-          <p className="ant-upload-text">{uploadText}</p>
-          <p className="ant-upload-hint">Ignores if ID already exists.</p>
-        </Upload.Dragger>
-      </div>
+  <Upload.Dragger accept=".json,.txt" multiple={true} showUploadList={false} beforeUpload={handleImport}>
+    <p className="ant-upload-drag-icon"><UploadCloud size={32} color={uploadColor} /></p>
+    <p className="ant-upload-text">{uploadText}</p>
+    <p className="ant-upload-hint">Ignores if ID already exists.</p>
+  </Upload.Dragger>
+</div>
 
       <Table columns={columns} dataSource={data} rowKey="id" loading={loading} pagination={{ pageSize: 10 }} size="small" />
 

@@ -1,15 +1,15 @@
 // src/components/admin/AdminDashboard.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Card, Button, Tabs, Divider } from 'antd'; // added Divider
+import { Typography, Card, Button, Tabs, Divider } from 'antd'; 
 import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical } from 'lucide-react';
 
-import AdminLogin from './AdminLogin';
+// Removed AdminLogin import
 import GenericManager from './GenericManager';
 import FlashcardManager from './FlashcardManager';
 import DefenseManager from './DefenseManager';
 import PhoneticManager from './PhoneticManager'; 
-import ChemistryManager from './ChemistryManager'; // <-- Import new manager
+import ChemistryManager from './ChemistryManager';
 
 import { getAllChemistry, getChemistryByTag, saveChemistrySet, deleteChemistrySet } from '../../firebase/chemistryService';
 import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
@@ -20,10 +20,10 @@ const { Title } = Typography;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Removed isAuthenticated state
   const [activeTab, setActiveTab] = useState('flashcard');
 
-  if (!isAuthenticated) return <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />;
+  // Removed the if (!isAuthenticated) check
 
   const tabItems = [
     { key: 'flashcard', label: 'Flashcards', children: <FlashcardManager icon={<FileJson color="#faad14" size={24} />} color="blue" uploadText="Import Flashcards (JSON)" uploadColor="#1890ff" /> },
