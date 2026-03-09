@@ -152,20 +152,16 @@ const UserManager = () => {
         <Typography.Text strong>{record.name}</Typography.Text>
 
         <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
-          <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-            @{record.username}
-          </Typography.Text>
-
           <Tag color={record.role === "Admin" ? "red" : "blue"} style={{ fontSize: 11 }}>
             {record.role}
+          </Tag>
+          <Tag color='green' style={{ fontSize: 11 }}>
+            {record.grade}
           </Tag>
         </div>
       </div>
     )
   },
-
-  { title: 'Grade', dataIndex: 'grade', key: 'grade' },
-
   {
     title: 'Actions',
     key: 'actions',

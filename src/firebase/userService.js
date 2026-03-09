@@ -55,16 +55,26 @@ export const deleteUser = async (id) => {
 
 export const loginUser = async (username, password, role) => {
   try {
+    // 1. Query only by role to get the subset of users (avoids case-sensitive constraints)
     const q = query(
       collection(db, COLLECTION_NAME), 
-      where("username", "==", username),
-      where("password", "==", password),
       where("role", "==", role)
     );
     const querySnapshot = await getDocs(q);
     
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
+    // 2. Convert the input username to lowercase
+    const lowerInputUsername = username.toLowerCase().trim();
+
+    // 3. Find the matching user in JavaScript (case-insensitive username, exact password)
+    const userDoc = querySnapshot.docs.find((doc) => {
+      const data = doc.data();
+      return (
+        data.username?.toLowerCase() === lowerInputUsername && 
+        data.password === password
+      );
+    });
+    
+    if (userDoc) {
       return { success: true, user: { id: userDoc.id, ...userDoc.data() } };
     } else {
       return { success: false, message: "Invalid credentials or role" };

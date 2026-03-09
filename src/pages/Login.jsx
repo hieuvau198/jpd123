@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f2f5' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Card style={{ width: 350, textAlign: 'center' }}>
         <div style={{ marginBottom: 20 }}>
           <User size={40} color="#1890ff" />
