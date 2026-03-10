@@ -56,25 +56,30 @@ const SessionResult = ({
           if (newPercentage > currentPercentage) {
             const isCompleted = newPercentage >= 100;
 
-            // FIX: Coin Calculations with proper 0-100 percentage handling
-            const maxCoin = pendingMission.maxCoin || 0;
-            const currentEarningCoin = pendingMission.earningCoin || 0;
+            // 1. Get correct variables from the mission
+            const maxCoins = pendingMission.max_coins || 0;
+            const currentEarningCoins = pendingMission.earning_coins || 0;
             
-            // Multiply by (newPercentage / 100) instead of just newPercentage
-            const newEarningCoin = Math.floor((newPercentage / 100) * maxCoin);
-            const newlyEarnedCoins = Math.max(0, newEarningCoin - currentEarningCoin);
+            // 2. Calculate expected coins based on percentage
+            // Example: 500 * (55 / 100) = 275 coins
+            const expectedCoins = Math.floor(maxCoins * (newPercentage / 100));
+            
+            // 3. Find out if we need to add new coins
+            const newlyEarnedCoins = Math.max(0, expectedCoins - currentEarningCoins);
+            const newTotalEarningCoins = currentEarningCoins + newlyEarnedCoins;
 
             const updatePayload = {
               percentage: newPercentage,
-              earningCoin: newEarningCoin,
+              earning_coins: newTotalEarningCoins,
               userId: user.id 
             };
 
             if (isCompleted) {
               updatePayload.status = 'Đã chinh phục';
               updatePayload.completedAt = new Date();
-              if (newEarningCoin < maxCoin) {
-                  updatePayload.earningCoin = maxCoin;
+              // Ensure they get full max_coins if completed
+              if (newTotalEarningCoins < maxCoins) {
+                  updatePayload.earning_coins = maxCoins;
               }
             } else {
               updatePayload.status = 'Đang thực hiện'; 
@@ -82,6 +87,7 @@ const SessionResult = ({
 
             await updateMission(pendingMission.id, updatePayload);
 
+            // 4. Update the user's personal balance with the newly earned coins
             if (newlyEarnedCoins > 0) {
                const currentPersonalCoins = user.personal_coins || 0;
                const newTotalCoins = currentPersonalCoins + newlyEarnedCoins;
@@ -97,7 +103,7 @@ const SessionResult = ({
               missionName: pendingMission.title || 'this mission', 
               previousPercent: Math.round(currentPercentage),
               newPercent: Math.round(newPercentage),
-              gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage), // <-- ADDED: Calculate gained points
+              gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage),
               newlyEarnedCoins: newlyEarnedCoins
             });
             setShowMissionModal(true);
@@ -175,15 +181,9 @@ const SessionResult = ({
       >
         <Result
           status="success"
-          title={missionResult?.isCompleted ? "🎉 Mission Conquered! 🎉" : "🚀 Mission Progress Updated! 🚀"}
+          title={missionResult?.isCompleted ? "🎉 Thưởng Nhiệm Vụ! 🎉" : "🚀 Mission Progress Updated! 🚀"}
           subTitle={
             <div style={{ marginTop: 20 }}>
-              <Text style={{ fontSize: 18, display: 'block', marginBottom: 10 }}>
-                {missionResult?.isCompleted
-                  ? `Incredible! You scored ${score} and completely finished ${missionResult?.missionName}.`
-                  : `You've reached ${score}% completion! Keep up the great work.`}
-              </Text>
-              
               {/* NEW: Display gained points side-by-side with coins */}
               {missionResult?.gainedPercent > 0 && (
                 <Text style={{ fontSize: 18, display: 'block', marginBottom: 10, color: '#52c41a', fontWeight: 'bold' }}>
