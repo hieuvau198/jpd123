@@ -42,7 +42,7 @@ export default function MissionFormModal({ visible, onCancel, onSave, editingRec
     let max = all.max_coins || 0;
     if (changed.targetQuestions !== undefined) form.setFieldsValue({ max_coins: (max = changed.targetQuestions * 10) });
     if ('targetQuestions' in changed || 'percentage' in changed || 'max_coins' in changed) {
-      form.setFieldsValue({ earning_coins: Math.floor(((all.percentage || 0) / 100) * max) });
+      form.setFieldsValue({ earning_coins: Math.floor(((all.percentage || 0)) * max) });
     }
   };
 

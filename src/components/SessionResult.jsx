@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress } from 'antd';
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
+import { updateUser } from '../firebase/userService'; // Import updateUser
 
 const { Title, Text } = Typography;
 
@@ -17,33 +18,30 @@ const SessionResult = ({
 }) => {
   const rating = getRatingInfo(score);
   
-  // New states for loading and the "big view" modal
   const [isCheckingMission, setIsCheckingMission] = useState(false);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [missionResult, setMissionResult] = useState(null);
 
   useEffect(() => {
     const checkAndCompleteMission = async () => {
-      // 1. Ignore if it's not a flashcard or quiz, or if no ID is provided
       if (!practiceId || !['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz'].includes(practiceType)) {
         return;
       }
 
-      setIsCheckingMission(true); // Start loading
+      setIsCheckingMission(true);
 
       try {
-        // 2. Get the logged-in user
-        const userStr = localStorage.getItem('userSession') || localStorage.getItem('user');
+        const storageKey = localStorage.getItem('userSession') ? 'userSession' : 'user';
+        const userStr = localStorage.getItem(storageKey);
+        
         if (!userStr) {
           setIsCheckingMission(false);
           return;
         }
         const user = JSON.parse(userStr);
 
-        // 3. Fetch user's missions
         const missions = await getUserMissions(user.id, true); 
 
-        // 4. Find a matching mission that hasn't been fully completed yet
         const pendingMission = missions.find(m => {
           const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
           const isPending = m.status !== 'Đã chinh phục'; 
@@ -51,34 +49,59 @@ const SessionResult = ({
           return matchesId && isPending;
         });
 
-        // 5. If a matching pending mission exists, update its progress
         if (pendingMission) {
-          const newPercentage = score / 100;
+          const newPercentage = score;
           const currentPercentage = pendingMission.percentage || 0;
           
           if (newPercentage > currentPercentage) {
-            const isCompleted = newPercentage >= 1.0;
+            const isCompleted = newPercentage >= 100;
+
+            // Coin Calculations
+            const maxCoin = pendingMission.maxCoin || 0;
+            const currentEarningCoin = pendingMission.earningCoin || 0;
+            
+            // Calculate total earned so far based on percentage, then find the difference
+            const newEarningCoin = Math.floor(newPercentage * maxCoin);
+            const newlyEarnedCoins = Math.max(0, newEarningCoin - currentEarningCoin);
 
             const updatePayload = {
               percentage: newPercentage,
+              earningCoin: newEarningCoin,
               userId: user.id 
             };
 
             if (isCompleted) {
               updatePayload.status = 'Đã chinh phục';
               updatePayload.completedAt = new Date();
+              // Ensure they get the full amount if rounding issues occur at 100%
+              if (newEarningCoin < maxCoin) {
+                  updatePayload.earningCoin = maxCoin;
+              }
             } else {
               updatePayload.status = 'Đang thực hiện'; 
             }
 
+            // Update Mission
             await updateMission(pendingMission.id, updatePayload);
+
+            // Update User's personal_coins if they earned any
+            if (newlyEarnedCoins > 0) {
+               const currentPersonalCoins = user.personal_coins || 0;
+               const newTotalCoins = currentPersonalCoins + newlyEarnedCoins;
+               
+               await updateUser(user.id, { personal_coins: newTotalCoins });
+               
+               // Keep localStorage in sync so the app reflects the new balance everywhere
+               user.personal_coins = newTotalCoins;
+               localStorage.setItem(storageKey, JSON.stringify(user));
+            }
             
-            // Save the result and show the big modal instead of a small message
             setMissionResult({
               isCompleted,
-              missionName: pendingMission.title || 'this mission', // use title if available
-              previousPercent: Math.round(currentPercentage * 100),
-              newPercent: Math.round(newPercentage * 100)
+              missionName: pendingMission.title || 'this mission', 
+              previousPercent: Math.round(currentPercentage),
+              newPercent: Math.round(newPercentage),
+              newlyEarnedCoins: newlyEarnedCoins
             });
             setShowMissionModal(true);
           }
@@ -86,7 +109,7 @@ const SessionResult = ({
       } catch (error) {
         console.error("Error checking/updating mission:", error);
       } finally {
-        setIsCheckingMission(false); // Stop loading no matter what
+        setIsCheckingMission(false);
       }
     };
 
@@ -94,7 +117,6 @@ const SessionResult = ({
   }, [practiceId, practiceType, score]);
 
   return (
-    // Wrap the entire component in a Spin to show a loading overlay and block clicks
     <Spin 
       spinning={isCheckingMission} 
       tip="Checking your mission progress..." 
@@ -181,7 +203,7 @@ const SessionResult = ({
         centered
         width={600}
         closable={false}
-        maskClosable={false} // Force them to acknowledge it
+        maskClosable={false}
         footer={[
           <Button 
             key="awesome" 
@@ -198,12 +220,19 @@ const SessionResult = ({
           title={missionResult?.isCompleted ? "🎉 Mission Conquered! 🎉" : "🚀 Mission Progress Updated! 🚀"}
           subTitle={
             <div style={{ marginTop: 20 }}>
-              <Text style={{ fontSize: 18, display: 'block', marginBottom: 20 }}>
+              <Text style={{ fontSize: 18, display: 'block', marginBottom: 10 }}>
                 {missionResult?.isCompleted
                   ? `Incredible! You scored ${score} and completely finished ${missionResult?.missionName}.`
                   : `You've reached ${score}% completion! Keep up the great work.`}
               </Text>
               
+              {/* Coin display */}
+              {missionResult?.newlyEarnedCoins > 0 && (
+                <Text style={{ fontSize: 18, display: 'block', marginBottom: 20, color: '#faad14', fontWeight: 'bold' }}>
+                  💰 You earned {missionResult.newlyEarnedCoins} coins!
+                </Text>
+              )}
+
               <Flex vertical gap="small">
                 <Text type="secondary">Your Progress:</Text>
                 <Progress
