@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress } from 'antd';
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
-import { updateUser } from '../firebase/userService'; // Import updateUser
+import { updateUser } from '../firebase/userService'; 
 
 const { Title, Text } = Typography;
 
@@ -56,12 +56,12 @@ const SessionResult = ({
           if (newPercentage > currentPercentage) {
             const isCompleted = newPercentage >= 100;
 
-            // Coin Calculations
+            // FIX: Coin Calculations with proper 0-100 percentage handling
             const maxCoin = pendingMission.maxCoin || 0;
             const currentEarningCoin = pendingMission.earningCoin || 0;
             
-            // Calculate total earned so far based on percentage, then find the difference
-            const newEarningCoin = Math.floor(newPercentage * maxCoin);
+            // Multiply by (newPercentage / 100) instead of just newPercentage
+            const newEarningCoin = Math.floor((newPercentage / 100) * maxCoin);
             const newlyEarnedCoins = Math.max(0, newEarningCoin - currentEarningCoin);
 
             const updatePayload = {
@@ -73,7 +73,6 @@ const SessionResult = ({
             if (isCompleted) {
               updatePayload.status = 'Đã chinh phục';
               updatePayload.completedAt = new Date();
-              // Ensure they get the full amount if rounding issues occur at 100%
               if (newEarningCoin < maxCoin) {
                   updatePayload.earningCoin = maxCoin;
               }
@@ -81,17 +80,14 @@ const SessionResult = ({
               updatePayload.status = 'Đang thực hiện'; 
             }
 
-            // Update Mission
             await updateMission(pendingMission.id, updatePayload);
 
-            // Update User's personal_coins if they earned any
             if (newlyEarnedCoins > 0) {
                const currentPersonalCoins = user.personal_coins || 0;
                const newTotalCoins = currentPersonalCoins + newlyEarnedCoins;
                
                await updateUser(user.id, { personal_coins: newTotalCoins });
                
-               // Keep localStorage in sync so the app reflects the new balance everywhere
                user.personal_coins = newTotalCoins;
                localStorage.setItem(storageKey, JSON.stringify(user));
             }
@@ -101,6 +97,7 @@ const SessionResult = ({
               missionName: pendingMission.title || 'this mission', 
               previousPercent: Math.round(currentPercentage),
               newPercent: Math.round(newPercentage),
+              gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage), // <-- ADDED: Calculate gained points
               newlyEarnedCoins: newlyEarnedCoins
             });
             setShowMissionModal(true);
@@ -117,11 +114,7 @@ const SessionResult = ({
   }, [practiceId, practiceType, score]);
 
   return (
-    <Spin 
-      spinning={isCheckingMission} 
-      tip="Checking your mission progress..." 
-      size="large"
-    >
+    <Spin spinning={isCheckingMission} tip="Checking your mission progress..." size="large">
       <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
         
         {/* Left Side: Score & Actions */}
@@ -129,15 +122,8 @@ const SessionResult = ({
           <img 
             src={rating.img} 
             alt={rating.title} 
-            style={{ 
-                width: 350, 
-                height: 350, 
-                objectFit: 'cover', 
-                borderRadius: 16, 
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)' 
-              }} 
+            style={{ width: 350, height: 350, objectFit: 'cover', borderRadius: 16, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} 
           />
-
           <Title level={2} style={{ margin: 0 }}> {rating.title}: {score}/100</Title>        
           
           {resultMessage && (
@@ -147,43 +133,24 @@ const SessionResult = ({
           )}
 
           <Flex gap="middle" style={{ marginTop: 20 }}>
-            <Button size="large" onClick={onBack} disabled={isCheckingMission}>
-              {backText}
-            </Button>
-            <Button size="large" type="primary" onClick={onRestart} disabled={isCheckingMission}>
-              {restartText}
-            </Button>
+            <Button size="large" onClick={onBack} disabled={isCheckingMission}>{backText}</Button>
+            <Button size="large" type="primary" onClick={onRestart} disabled={isCheckingMission}>{restartText}</Button>
           </Flex>
         </Flex>
 
-        {/* Right Side: Ranking List (Top-Down) */}
+        {/* Right Side: Ranking List */}
         <Flex vertical gap="middle" align="center">
-          <Text strong style={{ fontSize: 20, display: 'block', marginBottom: 8 }}>
-            Ranking Levels
-          </Text>
+          <Text strong style={{ fontSize: 20, display: 'block', marginBottom: 8 }}>Ranking Levels</Text>
           <Flex vertical gap="small" style={{ maxHeight: '600px', overflowY: 'auto', paddingRight: 10 }}>
             {ALL_LEVELS.map(lvl => (
-              <Card 
-                key={lvl.title} 
-                size="small" 
-                style={{ 
+              <Card key={lvl.title} size="small" style={{ 
                   width: 250, 
                   opacity: rating.title === lvl.title ? 1 : 0.5,
                   borderColor: rating.title === lvl.title ? '#1677ff' : '#f0f0f0',
                   backgroundColor: rating.title === lvl.title ? '#f0f5ff' : '#ffffff'
-                }}
-              >
+                }}>
                 <Flex align="center" gap="middle">
-                  <img 
-                    src={lvl.img} 
-                    alt={lvl.title} 
-                    style={{ 
-                      width: 50, 
-                      height: 50, 
-                      objectFit: 'cover', 
-                      borderRadius: 8
-                    }} 
-                  />
+                  <img src={lvl.img} alt={lvl.title} style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 8 }} />
                   <Flex vertical>
                     <Text strong>{lvl.title}</Text>
                     <Text type="secondary" style={{ fontSize: 12 }}>
@@ -204,16 +171,7 @@ const SessionResult = ({
         width={600}
         closable={false}
         maskClosable={false}
-        footer={[
-          <Button 
-            key="awesome" 
-            type="primary" 
-            size="large" 
-            onClick={() => setShowMissionModal(false)}
-          >
-            Awesome!
-          </Button>
-        ]}
+        footer={[<Button key="awesome" type="primary" size="large" onClick={() => setShowMissionModal(false)}>Awesome!</Button>]}
       >
         <Result
           status="success"
@@ -226,7 +184,13 @@ const SessionResult = ({
                   : `You've reached ${score}% completion! Keep up the great work.`}
               </Text>
               
-              {/* Coin display */}
+              {/* NEW: Display gained points side-by-side with coins */}
+              {missionResult?.gainedPercent > 0 && (
+                <Text style={{ fontSize: 18, display: 'block', marginBottom: 10, color: '#52c41a', fontWeight: 'bold' }}>
+                  📈 +{missionResult.gainedPercent} Points Gained!
+                </Text>
+              )}
+
               {missionResult?.newlyEarnedCoins > 0 && (
                 <Text style={{ fontSize: 18, display: 'block', marginBottom: 20, color: '#faad14', fontWeight: 'bold' }}>
                   💰 You earned {missionResult.newlyEarnedCoins} coins!

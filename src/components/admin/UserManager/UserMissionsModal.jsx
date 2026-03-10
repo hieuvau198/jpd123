@@ -1,6 +1,5 @@
-// src/components/admin/UserMissionsModal.jsx
 import React from 'react';
-import { Modal, Table, Button, Tag, Popconfirm, Typography } from 'antd';
+import { Modal, Table, Button, Tag, Popconfirm, Typography, Progress } from 'antd';
 import { Edit, Trash2 } from 'lucide-react';
 import dayjs from 'dayjs';
 
@@ -19,15 +18,19 @@ const UserMissionsModal = ({
       <div>
         <Text strong>{text || record.practiceId}</Text>
         <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
+          
+          {/* Restored Progress Display */}
           <Tag color="blue" style={{ fontSize: '11px' }}>
-            {record.targetQuestions || 0} / {record.totalQuestions || 0}
+            Progress: {Math.round(record.percentage || 0)}%
           </Tag>
-          {/* New Coins Tag */}
+
+          {/* Fixed properties: earningCoin and maxCoin (Not earning_coins) */}
           <Tag color="gold" style={{ fontSize: '11px' }}>
             💰 {record.earning_coins || 0} / {record.max_coins || 0}
           </Tag>
+          
           <Tag 
-            color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
+            color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' || record.status === 'Đang thực hiện' ? 'orange' : 'default')}
             style={{ fontSize: '11px' }}
           >
             {record.status}
@@ -36,7 +39,14 @@ const UserMissionsModal = ({
       </div>
     )
   },
-  // Remove the 'Progress (%)' column object entirely from the array
+  {
+    title: 'Progress Bar',
+    key: 'progress',
+    width: 150,
+    render: (_, record) => (
+      <Progress percent={Math.round(record.percentage || 0)} size="small" />
+    )
+  },
   {
     title: 'Action',
     key: 'action',
