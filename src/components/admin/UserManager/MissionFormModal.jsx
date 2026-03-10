@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Select, DatePicker, InputNumber, Input, Button } from 'antd';
 import dayjs from 'dayjs';
 
-// Import all your services
 import { getAllFlashcards } from '../../../firebase/flashcardService';
 import { getAllQuizzes } from '../../../firebase/quizService';
 import { getAllPhonetics } from '../../../firebase/phoneticService';
@@ -12,190 +11,90 @@ import { getAllSpeaks } from '../../../firebase/speakService';
 import { getAllDefenses } from '../../../firebase/defenseService';
 import { getAllChemistry } from '../../../firebase/chemistryService';
 
-const { Option } = Select;
+// 1. Map services to dynamically call them
+const services = { Flashcard: getAllFlashcards, Quiz: getAllQuizzes, 'Chem Quiz': getAllChemistry, Phonetic: getAllPhonetics, Repair: getAllRepairs, Speak: getAllSpeaks, Defense: getAllDefenses };
+const removeAccents = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
-const removeAccents = (str) => {
-  if (!str) return '';
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-};
-
-const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading }) => {
+export default function MissionFormModal({ visible, onCancel, onSave, editingRecord, loading }) {
   const [form] = Form.useForm();
-  const [practiceOptions, setPracticeOptions] = useState([]);
-  const [loadingPractices, setLoadingPractices] = useState(false);
-  const [fetchedData, setFetchedData] = useState([]); // Store raw data to extract total questions
-  
-  // Watch the selected type to dynamically load practices
-  const selectedType = Form.useWatch('type', form);
+  const [{ data: fetchedData, loading: loadingPractices }, setPractices] = useState({ data: [], loading: false });
+  const type = Form.useWatch('type', form);
 
-  // Initialize form values when modal opens
+  // 2. Handle Initialization & Reset
   useEffect(() => {
-    if (visible) {
-      if (editingRecord) {
-        form.setFieldsValue({
-          ...editingRecord,
-          startDate: editingRecord.startDate ? dayjs(editingRecord.startDate) : null,
-          endDate: editingRecord.endDate ? dayjs(editingRecord.endDate) : null,
-        });
-      } else {
-        form.setFieldsValue({
-          status: 'Chưa làm',
-          percentage: 0,
-          startDate: dayjs(), 
-          endDate: dayjs().add(2, 'day'), 
-          targetQuestions: 1, // Default value
-        });
-      }
-    } else {
-      form.resetFields();
-      setPracticeOptions([]);
-      setFetchedData([]);
-    }
+    if (!visible) return form.resetFields();
+    form.setFieldsValue(editingRecord 
+      ? { ...editingRecord, startDate: dayjs(editingRecord.startDate), endDate: dayjs(editingRecord.endDate) } 
+      : { status: 'Chưa làm', percentage: 0, startDate: dayjs(), endDate: dayjs().add(2, 'day'), targetQuestions: 1 });
   }, [visible, editingRecord, form]);
 
-  // Fetch practice data when the mission "type" changes
+  // 3. Handle Dynamic Fetching
   useEffect(() => {
-    const fetchPractices = async () => {
-      if (!selectedType) {
-        setPracticeOptions([]);
-        setFetchedData([]);
-        return;
-      }
-      
-      setLoadingPractices(true);
-      if (!editingRecord) {
-        form.setFieldsValue({ practiceId: null, name: null, totalQuestions: null, targetQuestions: 1 }); 
-      }
-      
-      try {
-        let data = [];
-        switch (selectedType) {
-          case 'Flashcard': data = await getAllFlashcards(); break;
-          case 'Quiz': data = await getAllQuizzes(); break;
-          case 'Phonetic': data = await getAllPhonetics(); break;
-          case 'Repair': data = await getAllRepairs(); break;
-          case 'Speak': data = await getAllSpeaks(); break;
-          case 'Defense': data = await getAllDefenses(); break;
-          case 'Chem Quiz': data = await getAllChemistry(); break;
-          default: break;
-        }
+    if (!visible || !type) return setPractices({ data: [], loading: false });
+    setPractices(p => ({ ...p, loading: true }));
+    if (!editingRecord) form.setFieldsValue({ practiceId: null, name: null, totalQuestions: null, targetQuestions: 1 });
+    
+    services[type]?.().then(data => setPractices({ data, loading: false })).catch(() => setPractices({ data: [], loading: false }));
+  }, [type, visible, form, editingRecord]);
 
-        setFetchedData(data); // Save the raw data
-
-        const options = data.map(item => ({
-          label: item.name || item.title || item.id,
-          value: item.id
-        }));
-        
-        setPracticeOptions(options);
-      } catch (error) {
-        console.error("Failed to load practices:", error);
-      } finally {
-        setLoadingPractices(false);
-      }
-    };
-
-    if (visible) {
-      fetchPractices();
-    }
-  }, [selectedType, visible, form, editingRecord]);
-
-  // Handle auto-filling name and totalQuestions when practice source is selected
-  const handlePracticeChange = (value) => {
-    const selectedItem = fetchedData.find(item => item.id === value);
-    if (selectedItem) {
-      const name = selectedItem.name || selectedItem.title || selectedItem.id;
-      
-      // Calculate total questions dynamically based on common array fields in your data models
-      const total = selectedItem.questions?.length 
-                 || selectedItem.flashcards?.length 
-                 || selectedItem.items?.length 
-                 || selectedItem.words?.length 
-                 || selectedItem.data?.length
-                 || 10; // Fallback if no array is found
-                 
-      form.setFieldsValue({
-         name: name,
-         totalQuestions: total,
-         targetQuestions: Math.min(10, total) // Default to max 10, or total if less
-      });
+  // 4. Handle Logic Updates (Target -> Max Coins -> Earning Coins)
+  const handleValuesChange = (changed, all) => {
+    let max = all.max_coins || 0;
+    if (changed.targetQuestions !== undefined) form.setFieldsValue({ max_coins: (max = changed.targetQuestions * 10) });
+    if ('targetQuestions' in changed || 'percentage' in changed || 'max_coins' in changed) {
+      form.setFieldsValue({ earning_coins: Math.floor(((all.percentage || 0) / 100) * max) });
     }
   };
 
+  const handlePracticeChange = (val) => {
+    const item = fetchedData.find(i => i.id === val);
+    if (!item) return;
+    const total = item.questions?.length || item.flashcards?.length || item.items?.length || item.words?.length || item.data?.length || 10;
+    form.setFieldsValue({ name: item.name || item.title || item.id, totalQuestions: total, targetQuestions: Math.min(10, total) });
+  };
+
+  // Reusable flex wrapper to save space
+  const FlexRow = ({ children }) => <div style={{ display: 'flex', gap: 10 }}>{children}</div>;
+
   return (
-    <Modal 
-      title={editingRecord ? "Edit Mission" : "Assign Mission"} 
-      open={visible} 
-      onCancel={onCancel} 
-      footer={null}
-    >
-      <Form form={form} layout="vertical" onFinish={onSave}>
-        {/* Hidden field to store the practice name */}
+    <Modal title={editingRecord ? "Edit Mission" : "Assign Mission"} open={visible} onCancel={onCancel} footer={null}>
+      <Form form={form} layout="vertical" onValuesChange={handleValuesChange} onFinish={onSave}>
         <Form.Item name="name" hidden><Input /></Form.Item>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <FlexRow>
           <Form.Item name="type" label="Mission Type" style={{ flex: 1 }} rules={[{ required: true }]}>
-            <Select placeholder="Select type">
-              <Option value="Flashcard">Flashcard</Option>
-              <Option value="Quiz">Quiz</Option>
-              <Option value="Chem Quiz">Chem Quiz</Option>
-              <Option value="Phonetic">Phonetic</Option>
-              <Option value="Repair">Repair</Option>
-              <Option value="Speak">Speak</Option>
-              <Option value="Defense">Defense</Option>
-            </Select>
+            <Select options={Object.keys(services).map(v => ({ value: v, label: v }))} placeholder="Select type" />
           </Form.Item>
-          
           <Form.Item name="practiceId" label="Practice Source" style={{ flex: 2 }} rules={[{ required: true }]}>
-            <Select 
-              showSearch
-              placeholder="Select a practice source..."
-              loading={loadingPractices}
-              options={practiceOptions}
-              disabled={!selectedType}
-              onChange={handlePracticeChange}
-              filterOption={(input, option) => {
-                const normalizedInput = removeAccents(input);
-                const normalizedLabel = removeAccents(option?.label || '');
-                return normalizedLabel.includes(normalizedInput);
-              }}
-            />
+            <Select showSearch placeholder="Select a practice source..." loading={loadingPractices} disabled={!type} onChange={handlePracticeChange}
+              options={fetchedData.map(i => ({ label: i.name || i.title || i.id, value: i.id }))}
+              filterOption={(inp, opt) => removeAccents(opt?.label).includes(removeAccents(inp))} />
           </Form.Item>
-        </div>
+        </FlexRow>
 
-        {/* New Question Target Fields */}
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Form.Item name="targetQuestions" label="Target Questions" style={{ flex: 1 }} rules={[{ required: true, message: 'Required' }]}>
-            <InputNumber min={1} style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="totalQuestions" label="Total Questions (Auto)" style={{ flex: 1 }}>
-            <InputNumber disabled style={{ width: '100%' }} />
-          </Form.Item>
-        </div>
+        <FlexRow>
+          <Form.Item name="targetQuestions" label="Target Questions" style={{ flex: 1 }} rules={[{ required: true }]}><InputNumber min={1} style={{ width: '100%' }} /></Form.Item>
+          <Form.Item name="totalQuestions" label="Total (Auto)" style={{ flex: 1 }}><InputNumber disabled style={{ width: '100%' }} /></Form.Item>
+        </FlexRow>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Form.Item name="startDate" label="Start Date" style={{ flex: 1 }}>
-            <DatePicker style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="endDate" label="End Date" style={{ flex: 1 }}>
-            <DatePicker style={{ width: '100%' }} />
-          </Form.Item>
-        </div>
+        <FlexRow>
+          <Form.Item name="max_coins" label="Max Coins Reward" style={{ flex: 1 }}><InputNumber min={0} style={{ width: '100%' }} /></Form.Item>
+          <Form.Item name="earning_coins" label="Earned Coins" style={{ flex: 1 }}><InputNumber disabled style={{ width: '100%' }} /></Form.Item>
+        </FlexRow>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <FlexRow>
+          <Form.Item name="startDate" label="Start Date" style={{ flex: 1 }}><DatePicker style={{ width: '100%' }} /></Form.Item>
+          <Form.Item name="endDate" label="End Date" style={{ flex: 1 }}><DatePicker style={{ width: '100%' }} /></Form.Item>
+        </FlexRow>
+
+        <FlexRow>
           <Form.Item name="status" label="Status" style={{ flex: 2 }} rules={[{ required: true }]}>
-            <Select>
-              <Option value="Chưa làm">Chưa làm</Option>
-              <Option value="Đang làm">Đang làm</Option>
-              <Option value="Đã chinh phục">Đã chinh phục</Option>
-            </Select>
+            <Select options={[{ value: 'Chưa làm' }, { value: 'Đang làm' }, { value: 'Đã chinh phục' }]} />
           </Form.Item>
-          <Form.Item name="percentage" label="Progress (%)" style={{ flex: 1 }}>
-            <InputNumber min={0} max={100} style={{ width: '100%' }} />
-          </Form.Item>
-        </div>
+          <Form.Item name="percentage" label="Progress (%)" style={{ flex: 1 }}><InputNumber min={0} max={100} style={{ width: '100%' }} /></Form.Item>
+        </FlexRow>
 
-        <Form.Item name="notes" label="Extra Notes">
+        <Form.Item name="notes" label="Extra Notes" initialValue="Default instructions...">
           <Input.TextArea rows={2} placeholder="Optional instructions..." />
         </Form.Item>
 
@@ -205,6 +104,4 @@ const MissionFormModal = ({ visible, onCancel, onSave, editingRecord, loading })
       </Form>
     </Modal>
   );
-};
-
-export default MissionFormModal;
+}

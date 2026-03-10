@@ -117,21 +117,26 @@ const UserManager = () => {
 
   const handleSaveMission = async (values) => {
     setMissionLoading(true);
-    try {
-      const payload = {
-        ...values,
-        userId: selectedUser.id,
-        startDate: values.startDate ? values.startDate.toISOString() : null,
-        endDate: values.endDate ? values.endDate.toISOString() : null,
-      };
+  try {
+    const percentage = values.percentage || 0;
+    const maxCoins = values.max_coins || 0;
+    
+    const payload = {
+      ...values,
+      userId: selectedUser.id,
+      // Calculate earning_coins based on percentage
+      earning_coins: Math.floor((percentage / 100) * maxCoins),
+      startDate: values.startDate ? values.startDate.toISOString() : null,
+      endDate: values.endDate ? values.endDate.toISOString() : null,
+    };
 
-      if (editingMission) {
-        await updateMission(editingMission.id, payload);
-        message.success("Mission updated!");
-      } else {
-        await createMission(payload);
-        message.success("Mission added!");
-      }
+    if (editingMission) {
+      await updateMission(editingMission.id, payload);
+      message.success("Mission updated!");
+    } else {
+      await createMission(payload);
+      message.success("Mission added!");
+    }
       setIsMissionFormVisible(false);
       loadUserMissions(selectedUser.id);
     } catch (error) {

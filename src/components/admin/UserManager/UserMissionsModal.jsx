@@ -22,6 +22,10 @@ const UserMissionsModal = ({
           <Tag color="blue" style={{ fontSize: '11px' }}>
             {record.targetQuestions || 0} / {record.totalQuestions || 0}
           </Tag>
+          {/* New Coins Tag */}
+          <Tag color="gold" style={{ fontSize: '11px' }}>
+            💰 {record.earning_coins || 0} / {record.max_coins || 0}
+          </Tag>
           <Tag 
             color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
             style={{ fontSize: '11px' }}
