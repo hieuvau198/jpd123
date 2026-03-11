@@ -19,20 +19,27 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-// Helper to split the chemical formula into left (Reactants) and right (Products) sides
+// Helper to split the chemical formula and capture the arrow + condition
 const splitFormula = (formula) => {
-  if (!formula) return { left: '', right: '' };
+  if (!formula) return { left: '', right: '', arrow: '\\rightarrow' };
+  const match = formula.match(/(\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow)/);
+  const arrow = match ? match[0] : '\\rightarrow';
   const parts = formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
   return {
     left: parts[0] ? parts[0].trim() : '',
-    right: parts[1] ? parts[1].trim() : formula 
+    right: parts[1] ? parts[1].trim() : formula,
+    arrow
   };
 };
 
 const MCSession = ({ data, onBack }) => {
-  const [mode, setMode] = useState(null); // 'name-formula' | 'formula-formula' | 'formula-description'
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [mode, setMode] = useState(null);
+  
+  // Spaced Repetition Queue State
+  const [queue, setQueue] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
@@ -45,9 +52,10 @@ const MCSession = ({ data, onBack }) => {
         let correctOption = '';
         let allWrongOptionsData = [];
         
-        // Define what type of content is being displayed to render KaTeX conditionally
         let qType = 'text';
         let aType = 'text';
+
+        const { left, right, arrow } = splitFormula(reaction.formula);
 
         if (mode === 'name-formula') {
           questionText = reaction.name;
@@ -56,9 +64,10 @@ const MCSession = ({ data, onBack }) => {
           qType = 'text';
           aType = 'formula';
         } else if (mode === 'formula-formula') {
-          questionText = splitFormula(reaction.formula).right;
-          correctOption = splitFormula(reaction.formula).left;
-          allWrongOptionsData = data.reactions.map(r => splitFormula(r.formula).left);
+          // Display the reactants + arrow at the end of the question
+          questionText = `${left} \\space ${arrow} \\text{ ?}`;
+          correctOption = right;
+          allWrongOptionsData = data.reactions.map(r => splitFormula(r.formula).right);
           qType = 'formula';
           aType = 'formula';
         } else if (mode === 'formula-description') {
@@ -69,11 +78,8 @@ const MCSession = ({ data, onBack }) => {
           aType = 'text';
         }
 
-        // Get up to 3 random wrong options
         const wrongOptionsPool = allWrongOptionsData.filter(opt => opt !== correctOption);
         const selectedWrongOptions = shuffleArray(wrongOptionsPool).slice(0, 3);
-        
-        // Combine and shuffle to get 4 final options
         const options = shuffleArray([correctOption, ...selectedWrongOptions]);
 
         return {
@@ -86,8 +92,11 @@ const MCSession = ({ data, onBack }) => {
         };
       });
 
-      setQuestions(shuffleArray(generatedQuestions));
-      setCurrentIndex(0);
+      // Initialize the queue: each question needs 1 correct answer to pass initially.
+      const initialQueue = shuffleArray(generatedQuestions).map(q => ({ ...q, needed: 1, attempts: 0 }));
+      setQueue(initialQueue);
+      setTotalQuestions(initialQueue.length);
+      setCompletedCount(0);
       setScore(0);
       setIsFinished(false);
       setSelectedAnswer(null);
@@ -99,21 +108,42 @@ const MCSession = ({ data, onBack }) => {
   };
 
   const handleAnswer = (option) => {
-    if (selectedAnswer !== null) return; // Prevent multiple clicks
+    if (selectedAnswer !== null || queue.length === 0) return;
 
     setSelectedAnswer(option);
     
-    const isCorrect = option === questions[currentIndex].correct;
-    if (isCorrect) {
+    const currentQ = queue[0];
+    const isCorrect = option === currentQ.correct;
+    
+    // Only grant score if they got it right on their very first attempt
+    if (isCorrect && currentQ.attempts === 0) {
       setScore((prev) => prev + 1);
     }
 
-    // Wait a second before moving to the next question
     setTimeout(() => {
-      if (currentIndex < questions.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-        setSelectedAnswer(null);
+      let newQueue = [...queue];
+      let processedQ = { ...newQueue.shift() }; // Remove from front
+      processedQ.attempts += 1;
+
+      if (isCorrect) {
+        processedQ.needed -= 1;
       } else {
+        processedQ.needed = 2; // Penalty: requires 2 correct answers to clear
+      }
+
+      if (processedQ.needed > 0) {
+        // Push the question back into the queue at most 2 slots away
+        const insertIndex = Math.min(2, newQueue.length);
+        newQueue.splice(insertIndex, 0, processedQ);
+      } else {
+        setCompletedCount((prev) => prev + 1);
+      }
+
+      setQueue(newQueue);
+      setSelectedAnswer(null);
+
+      // Finish when the queue is totally empty
+      if (newQueue.length === 0) {
         setIsFinished(true);
       }
     }, 1200);
@@ -121,8 +151,9 @@ const MCSession = ({ data, onBack }) => {
 
   const resetSession = () => {
     setMode(null);
-    setQuestions([]);
-    setCurrentIndex(0);
+    setQueue([]);
+    setTotalQuestions(0);
+    setCompletedCount(0);
     setScore(0);
     setSelectedAnswer(null);
     setIsFinished(false);
@@ -138,11 +169,11 @@ const MCSession = ({ data, onBack }) => {
 
   // ---------------- Render Result Screen ----------------
   if (isFinished) {
-    const finalScore = Math.round((score / questions.length) * 100);
+    const finalScore = Math.round((score / totalQuestions) * 100);
     return (
       <SessionResult 
         score={finalScore}
-        resultMessage={`"${data?.title || 'Chemistry'}": You got ${score} out of ${questions.length} correct!`}
+        resultMessage={`"${data?.title || 'Chemistry'}": You got ${score} out of ${totalQuestions} correct on the first try!`}
         onBack={onBack}
         onRestart={resetSession}
         practiceId={data?.id} 
@@ -176,7 +207,7 @@ const MCSession = ({ data, onBack }) => {
             
             <Button size="large" block style={{ height: 'auto', padding: '16px' }} onClick={() => handleModeSelect('formula-formula')}>
               <Flex align="center" justify="center" gap="middle" style={{ fontSize: '1.2rem', width: '100%' }}>
-                <FlaskConical size={24} /> Products → Reactants
+                <FlaskConical size={24} /> Reactants → Products
               </Flex>
             </Button>
             
@@ -192,10 +223,10 @@ const MCSession = ({ data, onBack }) => {
   }
 
   // ---------------- Render Question Screen ----------------
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion = queue[0];
   if (!currentQuestion) return null;
 
-  const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
+  const progressPercent = Math.round((completedCount / totalQuestions) * 100);
 
   return (
     <div className="min-h-screen p-4 sm:p-8 max-w-4xl mx-auto flex flex-col">
@@ -204,7 +235,7 @@ const MCSession = ({ data, onBack }) => {
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
           <Flex vertical align="center">
-            <Text strong style={{ color: 'white' }}>Question {currentIndex + 1} of {questions.length}</Text>
+            <Text strong style={{ color: 'white' }}>Learned: {completedCount} / {totalQuestions}</Text>
             <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
           </Flex>
         </div>
@@ -223,12 +254,17 @@ const MCSession = ({ data, onBack }) => {
         <div className="text-center mb-10">
           <Text type="secondary" style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: 1 }}>
             {mode === 'name-formula' && 'Which formula belongs to:'}
-            {mode === 'formula-formula' && 'What are the reactants for:'}
+            {mode === 'formula-formula' && 'What are the products for:'}
             {mode === 'formula-description' && 'What is the description of:'}
           </Text>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', marginTop: 16, color: '#1f2937' }}>
             {renderContent(currentQuestion.question, currentQuestion.qType)}
           </div>
+          {currentQuestion.attempts > 0 && (
+            <Text type="danger" style={{ display: 'block', marginTop: 10 }}>
+              (Review)
+            </Text>
+          )}
         </div>
 
         <Row gutter={[16, 16]}>

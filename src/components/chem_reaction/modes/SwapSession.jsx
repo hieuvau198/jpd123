@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Flex, Progress, message } from 'antd';
-import { ArrowLeft, CheckCircle, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import SessionResult from '../../SessionResult';
 
 // Import KaTeX for rendering chemical formulas
@@ -26,12 +26,15 @@ const splitToCompounds = (sideString) => {
 };
 
 const SwapSession = ({ data, onBack }) => {
-  const [reactions, setReactions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [queue, setQueue] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
   // Game state for current question
+  const [currentQuestionKey, setCurrentQuestionKey] = useState('');
   const [targetLeft, setTargetLeft] = useState([]);
   const [targetRight, setTargetRight] = useState([]);
   const [availableQueue, setAvailableQueue] = useState([]);
@@ -42,45 +45,51 @@ const SwapSession = ({ data, onBack }) => {
   // Initialize and shuffle reactions
   useEffect(() => {
     if (data && data.reactions) {
-      setReactions(shuffleArray([...data.reactions]));
-      setCurrentIndex(0);
+      const initialQueue = shuffleArray([...data.reactions]).map(r => ({ ...r, needed: 1, attempts: 0 }));
+      setQueue(initialQueue);
+      setTotalQuestions(initialQueue.length);
+      setCompletedCount(0);
       setScore(0);
       setIsFinished(false);
     }
   }, [data]);
 
-  // Setup the current question
+  // Setup the current question when the top of the queue changes
   useEffect(() => {
-    if (reactions.length === 0 || currentIndex >= reactions.length) return;
+    if (queue.length === 0) return;
 
-    const currentReaction = reactions[currentIndex];
-    
-    // Extract left and right sides
-    const parts = currentReaction.formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
-    const leftStr = parts[0] || '';
-    const rightStr = parts[1] || '';
+    const currentReaction = queue[0];
+    const key = `${currentReaction.id}-${currentReaction.attempts}-${currentReaction.needed}`;
 
-    const leftCompounds = splitToCompounds(leftStr);
-    const rightCompounds = splitToCompounds(rightStr);
+    if (key !== currentQuestionKey) {
+      setCurrentQuestionKey(key);
+      
+      const parts = currentReaction.formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
+      const leftStr = parts[0] || '';
+      const rightStr = parts[1] || '';
 
-    setTargetLeft(leftCompounds);
-    setTargetRight(rightCompounds);
+      const leftCompounds = splitToCompounds(leftStr);
+      const rightCompounds = splitToCompounds(rightStr);
 
-    // Create a pool of all compounds to be sorted
-    const allCompounds = [...leftCompounds, ...rightCompounds].map((formula, index) => ({
-      id: `comp-${index}`,
-      formula
-    }));
+      setTargetLeft(leftCompounds);
+      setTargetRight(rightCompounds);
 
-    setAvailableQueue(shuffleArray(allCompounds));
-    setSelectedSlots(new Array(leftCompounds.length + rightCompounds.length).fill(null));
-    
-    setFeedbackStatus(null);
-  }, [currentIndex, reactions]);
+      // Create a pool of all compounds to be sorted
+      const allCompounds = [...leftCompounds, ...rightCompounds].map((formula, index) => ({
+        id: `comp-${index}-${Date.now()}`,
+        formula
+      }));
+
+      setAvailableQueue(shuffleArray(allCompounds));
+      setSelectedSlots(new Array(leftCompounds.length + rightCompounds.length).fill(null));
+      
+      setFeedbackStatus(null);
+    }
+  }, [queue, currentQuestionKey]);
 
   // Handle clicking a compound in the available queue
   const handleSelectFromQueue = (compound) => {
-    if (feedbackStatus !== null) return; // Lock if already submitted
+    if (feedbackStatus !== null) return; 
 
     const firstEmptyIndex = selectedSlots.findIndex(slot => slot === null);
     if (firstEmptyIndex !== -1) {
@@ -94,7 +103,7 @@ const SwapSession = ({ data, onBack }) => {
 
   // Handle clicking a compound that is already in the ordered slots
   const handleDeselectFromSlots = (index) => {
-    if (feedbackStatus !== null) return; // Lock if already submitted
+    if (feedbackStatus !== null) return; 
     
     const compoundToReturn = selectedSlots[index];
     if (compoundToReturn) {
@@ -110,15 +119,17 @@ const SwapSession = ({ data, onBack }) => {
     const userLeft = selectedSlots.slice(0, targetLeft.length).map(c => c.formula);
     const userRight = selectedSlots.slice(targetLeft.length).map(c => c.formula);
 
-    // Since A + B -> C + D is chemically the same as B + A -> D + C, 
-    // we check if the arrays contain the same elements, regardless of order.
     const isLeftCorrect = [...userLeft].sort().join(',') === [...targetLeft].sort().join(',');
     const isRightCorrect = [...userRight].sort().join(',') === [...targetRight].sort().join(',');
+
+    const currentReaction = queue[0];
 
     if (isLeftCorrect && isRightCorrect) {
       setFeedbackStatus('success');
       message.success('Correct!');
-      setScore(prev => prev + 1);
+      if (currentReaction.attempts === 0) {
+        setScore(prev => prev + 1);
+      }
     } else {
       setFeedbackStatus('error');
       message.error('Incorrect order.');
@@ -126,24 +137,45 @@ const SwapSession = ({ data, onBack }) => {
   };
 
   const handleNextQuestion = () => {
-    if (currentIndex < reactions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+    let newQueue = [...queue];
+    let processedQ = { ...newQueue.shift() }; 
+    processedQ.attempts += 1;
+
+    if (feedbackStatus === 'success') {
+      processedQ.needed -= 1;
     } else {
+      processedQ.needed = 2; // Penalty logic: Must answer correctly 2 times to clear
+    }
+
+    if (processedQ.needed > 0) {
+      // Re-insert 2 places back in the queue
+      const insertIndex = Math.min(2, newQueue.length);
+      newQueue.splice(insertIndex, 0, processedQ);
+    } else {
+      setCompletedCount(prev => prev + 1);
+    }
+
+    if (newQueue.length === 0) {
       setIsFinished(true);
+    } else {
+      setQueue(newQueue);
     }
   };
 
   // ---------------- Render Result Screen ----------------
   if (isFinished) {
-    const finalScore = Math.max(0, Math.round((score / reactions.length) * 100));
+    const finalScore = Math.max(0, Math.round((score / totalQuestions) * 100));
     return (
       <SessionResult 
         score={finalScore}
-        resultMessage={`"${data?.title || 'Chemistry'}": You ordered ${score} out of ${reactions.length} reactions correctly!`}
+        resultMessage={`"${data?.title || 'Chemistry'}": You ordered ${score} out of ${totalQuestions} reactions right on the first try!`}
         onBack={onBack}
         onRestart={() => {
-          setReactions(shuffleArray([...data.reactions]));
-          setCurrentIndex(0);
+          const initialQueue = shuffleArray([...data.reactions]).map(r => ({ ...r, needed: 1, attempts: 0 }));
+          setQueue(initialQueue);
+          setTotalQuestions(initialQueue.length);
+          setCompletedCount(0);
+          setScore(0);
           setIsFinished(false);
         }}
         practiceId={data.id} 
@@ -152,13 +184,12 @@ const SwapSession = ({ data, onBack }) => {
     );
   }
 
-  const currentReaction = reactions[currentIndex];
+  const currentReaction = queue[0];
   if (!currentReaction) return null;
 
   const isAllFilled = selectedSlots.every(slot => slot !== null);
-  const progressPercent = Math.round((currentIndex / reactions.length) * 100);
+  const progressPercent = Math.round((completedCount / totalQuestions) * 100);
 
-  // Formatting the arrow based on condition
   const arrowFormula = currentReaction.condition && currentReaction.condition.trim() !== "" 
     ? `\\xrightarrow{\\text{${currentReaction.condition}}}` 
     : `\\rightarrow`;
@@ -171,7 +202,7 @@ const SwapSession = ({ data, onBack }) => {
         </Button>
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
           <Flex vertical align="center">
-            <Text strong style={{ color: 'white' }}>Reaction {currentIndex + 1} / {reactions.length}</Text>
+            <Text strong style={{ color: 'white' }}>Learned: {completedCount} / {totalQuestions}</Text>
             <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
           </Flex>
         </div>
@@ -182,6 +213,11 @@ const SwapSession = ({ data, onBack }) => {
         <Title level={4} style={{ marginBottom: '8px', color: '#1f2937' }}>
           {currentReaction.name}
         </Title>
+        {currentReaction.attempts > 0 && (
+          <Text type="danger" style={{ display: 'block', marginBottom: '8px' }}>
+            (Review)
+          </Text>
+        )}
 
         {/* --- User's Attempted Order Area --- */}
         <div 
@@ -260,7 +296,6 @@ const SwapSession = ({ data, onBack }) => {
         {/* --- Correct Answer Display (Only shows on Error) --- */}
         {feedbackStatus === 'error' && (
           <div className="mb-8 p-6 rounded-2xl bg-green-50 border-2 border-green-300 shadow-sm animate-fade-in">
-            
             <Flex justify="center" align="center" wrap="wrap" gap="small">
               {/* Correct Reactants */}
               <Flex gap="small" align="center" wrap="wrap">
@@ -327,7 +362,6 @@ const SwapSession = ({ data, onBack }) => {
           <>
             <div className="w-full h-px bg-gray-200 mb-8"></div>
             <div>
-              
               <div className="flex flex-wrap justify-center gap-4 min-h-[80px]">
                 {availableQueue.map((compound) => (
                   <Button
