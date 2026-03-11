@@ -3,6 +3,7 @@ import { Card, Table, Tag, Typography } from 'antd'; // Removed Button
 // You can remove the PlayCircle import if you aren't using it elsewhere
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { Trophy } from 'lucide-react';
 import { getUserMissions } from '../../firebase/missionService';
 
 const { Title } = Typography;
@@ -79,7 +80,6 @@ const ProfileMissions = ({ currentUser }) => {
       dataIndex: 'name', 
       key: 'name', 
       render: (text, record) => {
-        // Calculate percentage string and round to nearest whole integer
         const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
           ? Math.round(Number(record.percentage)) 
           : record.percentage;
@@ -103,7 +103,24 @@ const ProfileMissions = ({ currentUser }) => {
           </div>
         );
       }
-    }
+    },
+    {
+  title: 'Coins',
+  key: 'coins',
+  align: 'right',
+  render: (_, record) => (
+    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '6px' }}>
+      
+      <Typography.Text strong style={{ color: '#faad14' }}>
+        {record.earning_coins || 0}
+      </Typography.Text>
+      <Typography.Text strong style={{ color: '#faad14' }}>
+        / {record.max_coins || 0}
+      </Typography.Text>
+      <Trophy size={16} style={{ color: '#faad14' }} />
+    </div>
+  )
+}
   ];
 
   return (

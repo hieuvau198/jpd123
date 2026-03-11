@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Popconfirm, Tag } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Trash2, Target } from 'lucide-react';
+import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
@@ -159,11 +159,14 @@ const UserManager = () => {
           <Tag color='green'>{record.grade}</Tag>
         </div>
         {/* Add this line below to display personal_coins */}
-        <div style={{ marginTop: 4 }}>
-          <Typography.Text type="secondary" size="small">
-            Coins: <span style={{ color: '#faad14', fontWeight: 'bold' }}>{record.personal_coins || 0}</span>
-          </Typography.Text>
-        </div>
+        <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+  <Trophy size={16} style={{ color: '#faad14' }} />
+  <Typography.Text type="secondary">
+    <span style={{ color: '#faad14', fontWeight: 'bold' }}>
+      {record.personal_coins || 0}
+    </span>
+  </Typography.Text>
+</div>
       </div>
     )
   },

@@ -80,7 +80,7 @@ const RecalculateCoinsButton = ({ missions, onRefresh }) => {
         icon={<Calculator size={16} />} 
         onClick={() => setIsModalVisible(true)}
       >
-        Recalculate Coins
+        Update
       </Button>
 
       <Modal

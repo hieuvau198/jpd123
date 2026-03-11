@@ -40,7 +40,7 @@ const UserMissionsModal = ({
     )
   },
   {
-    title: 'Progress Bar',
+    title: 'Progress',
     key: 'progress',
     width: 150,
     render: (_, record) => (
@@ -63,21 +63,20 @@ const UserMissionsModal = ({
 
   return (
     <Modal 
-      title={`Missions for ${user?.name}`} 
+      title={`${user?.name}`} 
       open={visible} 
       onCancel={onCancel} 
       width={900}
       footer={null}
     >
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
-        <Text type="secondary">Manage assignments and track progress.</Text>
         <div style={{ display: 'flex', gap: '8px' }}>
           {/* Add the Recalculate button here */}
           <RecalculateCoinsButton 
             missions={missions} 
             onRefresh={onRefresh} 
           />
-          <Button type="primary" onClick={onAssignNew}>Assign New Mission</Button>
+          <Button type="primary" onClick={onAssignNew}>New</Button>
         </div>
       </div>
       <Table columns={columns} dataSource={missions} rowKey="id" loading={loading} size="small" />
