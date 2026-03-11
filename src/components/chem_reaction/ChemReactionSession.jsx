@@ -7,6 +7,7 @@ import DefinitionSession from './modes/DefinitionSession';
 import MissingSession from './modes/MissingSession';
 import MatchingSession from './modes/MatchingSession';
 import MCSession from './modes/MCSession';
+import SwapSession from './modes/SwapSession';
 
 const { Title, Text } = Typography;
 
@@ -23,6 +24,8 @@ const ChemReactionSession = ({ data, onHome }) => {
         return <MatchingSession data={data} onBack={() => setCurrentMode(null)} />;
       case 'mc':
         return <MCSession data={data} onBack={() => setCurrentMode(null)} />;
+      case 'swap':
+        return <SwapSession data={data} onBack={() => setCurrentMode(null)} />;
       default:
         return null;
     }
@@ -90,6 +93,17 @@ const ChemReactionSession = ({ data, onHome }) => {
           <ListChecks size={48} color="#eb2f96" className="mx-auto mb-4" />
           <Title level={4} style={{ color: '#eb2f96' }}>Multiple Choice</Title>
           <Text type="secondary" style={{color: '#ccc'}}>Test your knowledge with multiple choice questions.</Text>
+        </Card>
+
+        {/* MC Mode */}
+        <Card 
+          hoverable 
+          onClick={() => setCurrentMode('swap')}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#eb2f96', backgroundColor: 'rgba(255,255,255,0.05)' }}
+        >
+          <ListChecks size={48} color="#eb2f96" className="mx-auto mb-4" />
+          <Title level={4} style={{ color: '#eb2f96' }}>Swap</Title>
+          <Text type="secondary" style={{color: '#ccc'}}>Test your knowledge with swap questions.</Text>
         </Card>
       </div>
     </div>
