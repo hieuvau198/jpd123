@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col, Button } from 'antd';
-// Imported ShieldCheck for Admin icon
-import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User, ShieldCheck, FlaskConical } from 'lucide-react';
+// Added Beaker icon
+import { BookOpen, FileQuestion, Wrench, Settings, Mic, Shield, Swords, User, ShieldCheck, FlaskConical, Beaker } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -22,49 +22,15 @@ const Home = () => {
     }
   }, []);
 
-  const handleAuthNavigation = () => {
-    if (!loggedInUser) {
-      navigate('/login');
-    } else if (loggedInUser.role === 'Admin') {
-      navigate('/admin'); // Or wherever your admin dashboard is located
-    } else {
-      navigate('/profile');
-    }
-  };
-
-  const getButtonConfig = () => {
-    if (!loggedInUser) {
-      return { label: 'Login', icon: <User size={16} /> };
-    } else if (loggedInUser.role === 'Admin') {
-      return { label: 'Admin', icon: <ShieldCheck size={16} /> };
-    } else {
-      return { label: 'Profile', icon: <User size={16} /> };
-    }
-  };
-
-  const btnConfig = getButtonConfig();
-
   return (
     <div style={{ maxWidth: 1000, margin: '40px auto', padding: 20, position: 'relative' }}>
       
-      {/* Dynamic Login/Profile/Admin Button */}
-      {/* <div style={{ position: 'absolute', top: 20, right: 20, zIndex: 10 }}>
-        <Button 
-          type="primary" 
-          onClick={handleAuthNavigation}
-          style={{ display: 'flex', alignItems: 'center', gap: 5 }}
-        >
-          {btnConfig.icon} {btnConfig.label}
-        </Button>
-      </div> */}
-
-      {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 50, marginTop: 40 }}>
         <Title level={1}>🗿🗿🗿</Title>
       </div>
 
       <Row gutter={[24, 24]} justify="center">
-        {/* Flashcards */}
+        {/* Words */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/flashcards" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
@@ -77,7 +43,7 @@ const Home = () => {
           </Link>
         </Col>
 
-        {/* Quizzes */}
+        {/* Grammar */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/quizzes" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
@@ -90,7 +56,7 @@ const Home = () => {
           </Link>
         </Col>
 
-        {/* Repairs */}
+        {/* Repair */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/repairs" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
@@ -129,7 +95,7 @@ const Home = () => {
           </Link>
         </Col>
 
-        {/* Defense (New Feature) */}
+        {/* Defense */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/challenge" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12, borderColor: '#ff4d4f' }}>
@@ -141,11 +107,10 @@ const Home = () => {
             </Card>
           </Link>
         </Col>
-
-
       </Row>
 
       <Row gutter={[24, 24]} justify="center" className='mt-20'>
+        {/* Chem Quiz */}
         <Col xs={24} sm={8} md={6}>
           <Link to="/chem-quiz" style={{ textDecoration: 'none' }}>
             <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
@@ -154,6 +119,19 @@ const Home = () => {
               </div>
               <Title level={3} style={{ color: '#13c2c2' }}>Chem Quiz</Title>
               <Text type="secondary">Alcohol is not good for you</Text>
+            </Card>
+          </Link>
+        </Col>
+
+        {/* NEW: Chem Reaction */}
+        <Col xs={24} sm={8} md={6}>
+          <Link to="/chem-reaction" style={{ textDecoration: 'none' }}>
+            <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 12 }}>
+              <div style={{ marginBottom: 20 }}>
+                <Beaker size={48} color="#fa8c16" />
+              </div>
+              <Title level={3} style={{ color: '#fa8c16' }}>Chem Reaction</Title>
+              <Text type="secondary">Master chemical equations</Text>
             </Card>
           </Link>
         </Col>

@@ -1,3 +1,4 @@
+// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css'; 
@@ -23,6 +24,10 @@ import PhoneticDetail from './pages/PhoneticDetail';
 import ChemQuizList from './pages/ChemQuizList';
 import ChemQuizDetail from './pages/ChemQuizDetail';
 
+// --- NEW CHEM REACTION IMPORTS ---
+import ChemReactionList from './pages/ChemReactionList';
+import ChemReactionDetail from './pages/ChemReactionDetail';
+
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
 import UserManager from './components/admin/UserManager/UserManager';
@@ -30,49 +35,42 @@ import UserManager from './components/admin/UserManager/UserManager';
 export default function App() {
   return (
     <main>
-      {/* The NavBar will now sit on top of all routes */}
       <NavBar />
       
       <Routes>
-        {/* Home Page */}
         <Route path="/" element={<Home />} />
 
-        {/* Auth & Profile Routes (New) */}
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         
-        {/* Admin Route */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<UserManager />} /> 
         
-        {/* Flashcard Routes */}
         <Route path="/flashcards" element={<FlashcardList />} />
         <Route path="/flashcard/:id" element={<FlashcardDetail />} />
 
-        {/* Quiz Routes */}
         <Route path="/quizzes" element={<QuizList />} />
         <Route path="/quiz/:id" element={<QuizDetail />} />
 
-        {/* Repair Routes */}
         <Route path="/repairs" element={<RepairList />} />
         <Route path="/repair/:id" element={<RepairDetail />} />
 
-        {/* Speak Routes */}
         <Route path="/speaks" element={<SpeakList />} />
         <Route path="/speak/:id" element={<SpeakDetail />} />
 
         <Route path="/phonetic" element={<PhoneticList />} />
         <Route path="/phonetic/:id" element={<PhoneticDetail />} />
 
-        {/* Defense Routes */}
         <Route path="/challenge" element={<DefenseList />} />
         <Route path="/challenge/:id" element={<DefenseDetail />} />
 
-        {/* Chemistry Quiz Routes */}
         <Route path="/chem-quiz" element={<ChemQuizList />} />
         <Route path="/chem-quiz/:id" element={<ChemQuizDetail />} />
 
-        {/* Fallback */}
+        {/* --- NEW CHEM REACTION ROUTES --- */}
+        <Route path="/chem-reaction" element={<ChemReactionList />} />
+        <Route path="/chem-reaction/:id" element={<ChemReactionDetail />} />
+
         <Route path="*" element={<Home />} />
       </Routes>
     </main>
