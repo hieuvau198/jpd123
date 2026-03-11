@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, List, Avatar, Spin } from 'antd';
-import { Trophy, Flame } from 'lucide-react';
+import { Card, Typography, List, Avatar, Spin, Button } from 'antd';
+import { Trophy, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getTopUsersByCoins } from '../firebase/userService';
 
 const { Title, Text } = Typography;
@@ -19,11 +19,15 @@ const formatDisplayName = (fullName) => {
 const HallOfFame = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setLoadingLeaderboard(true);
-      const topUsers = await getTopUsersByCoins(5); // Fetch top 5 students
+      const topUsers = await getTopUsersByCoins(15); // Fetch top 15 students
       setLeaderboard(topUsers);
       setLoadingLeaderboard(false);
     };
@@ -31,19 +35,31 @@ const HallOfFame = () => {
     fetchLeaderboard();
   }, []);
 
-  const renderRankBadge = (index) => {
-    if (index === 0) return <span style={{ fontSize: '28px', textShadow: '0 0 10px gold' }}>🥇</span>;
-    if (index === 1) return <span style={{ fontSize: '28px', textShadow: '0 0 10px silver' }}>🥈</span>;
-    if (index === 2) return <span style={{ fontSize: '28px', textShadow: '0 0 10px #cd7f32' }}>🥉</span>;
+  const renderRankBadge = (globalIndex) => {
+    if (globalIndex === 0) return <span style={{ fontSize: '28px', textShadow: '0 0 10px gold' }}>🥇</span>;
+    if (globalIndex === 1) return <span style={{ fontSize: '28px', textShadow: '0 0 10px silver' }}>🥈</span>;
+    if (globalIndex === 2) return <span style={{ fontSize: '28px', textShadow: '0 0 10px #cd7f32' }}>🥉</span>;
     return (
       <div style={{ 
         width: 30, height: 30, borderRadius: '50%', backgroundColor: '#f0f2f5', 
         display: 'flex', alignItems: 'center', justifyContent: 'center', 
         fontWeight: 'bold', color: '#595959', fontSize: '16px', border: '2px solid #d9d9d9'
       }}>
-        {index + 1}
+        {globalIndex + 1}
       </div>
     );
+  };
+
+  // Pagination logic
+  const displayedUsers = leaderboard.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const totalPages = Math.ceil(leaderboard.length / itemsPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -78,58 +94,85 @@ const HallOfFame = () => {
             <p style={{ marginTop: 10, color: '#8c8c8c' }}>Gathering the champions...</p>
           </div>
         ) : (
-          <List
-            itemLayout="horizontal"
-            dataSource={leaderboard}
-            renderItem={(user, index) => (
-              <List.Item 
-                style={{ 
-                  borderBottom: 'none', 
-                  padding: '12px 16px',
-                  background: index === 0 ? 'linear-gradient(90deg, #fffbe6, #fff1b8)' : 'transparent',
-                  borderRadius: 12,
-                  marginBottom: 8,
-                  transition: 'transform 0.2s',
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      {renderRankBadge(index)}
-                      <Avatar 
-                        size={46} 
-                        style={{ 
-                          backgroundColor: index === 0 ? '#faad14' : '#1890ff',
-                          border: index === 0 ? '2px solid #ffe58f' : 'none'
-                        }}
-                      >
-                        {user.name?.charAt(0).toUpperCase() || '?'}
-                      </Avatar>
+          <>
+            <List
+              itemLayout="horizontal"
+              dataSource={displayedUsers}
+              renderItem={(user, index) => {
+                const globalIndex = currentPage * itemsPerPage + index; // Calculate actual rank (0-14)
+                
+                return (
+                  <List.Item 
+                    style={{ 
+                      borderBottom: 'none', 
+                      padding: '12px 16px',
+                      background: globalIndex === 0 ? 'linear-gradient(90deg, #fffbe6, #fff1b8)' : 'transparent',
+                      borderRadius: 12,
+                      marginBottom: 8,
+                      transition: 'transform 0.2s',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    <List.Item.Meta
+                      avatar={
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          {renderRankBadge(globalIndex)}
+                          <Avatar 
+                            size={46} 
+                            style={{ 
+                              backgroundColor: globalIndex === 0 ? '#faad14' : '#1890ff',
+                              border: globalIndex === 0 ? '2px solid #ffe58f' : 'none'
+                            }}
+                          >
+                            {user.name?.charAt(0).toUpperCase() || '?'}
+                          </Avatar>
+                        </div>
+                      }
+                      title={
+                        <Text strong style={{ fontSize: '16px', color: globalIndex === 0 ? '#d48806' : '#262626' }}>
+                          {formatDisplayName(user.name)}
+                        </Text>
+                      }
+                      description={
+                        <Text style={{ color: '#595959', fontWeight: '500' }}>
+                          <Flame size={14} color="#ff4d4f" style={{ marginRight: 4, verticalAlign: 'middle' }} />
+                          Level {Math.floor((user.personal_coins || 0) / 100) + 1}
+                        </Text>
+                      }
+                    />
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#fa8c16' }}>
+                        {user.personal_coins || 0}
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#8c8c8c' }}>Coins 🪙</div>
                     </div>
-                  }
-                  title={
-                    <Text strong style={{ fontSize: '16px', color: index === 0 ? '#d48806' : '#262626' }}>
-                      {formatDisplayName(user.name)}
-                    </Text>
-                  }
-                  description={
-                    <Text style={{ color: '#595959', fontWeight: '500' }}>
-                      <Flame size={14} color="#ff4d4f" style={{ marginRight: 4, verticalAlign: 'middle' }} />
-                      Level {Math.floor((user.personal_coins || 0) / 100) + 1}
-                    </Text>
-                  }
+                  </List.Item>
+                );
+              }}
+            />
+            
+            {/* Pagination Controls */}
+            {leaderboard.length > itemsPerPage && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginTop: 16 }}>
+                <Button 
+                  shape="circle" 
+                  icon={<ChevronLeft size={18} />} 
+                  onClick={handlePrevPage} 
+                  disabled={currentPage === 0}
                 />
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#fa8c16' }}>
-                    {user.personal_coins || 0}
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#8c8c8c' }}>Coins 🪙</div>
-                </div>
-              </List.Item>
+                <Text style={{ color: '#8c8c8c', fontWeight: 500 }}>
+                  {currentPage + 1}/{totalPages}
+                </Text>
+                <Button 
+                  shape="circle" 
+                  icon={<ChevronRight size={18} />} 
+                  onClick={handleNextPage} 
+                  disabled={currentPage >= totalPages - 1}
+                />
+              </div>
             )}
-          />
+          </>
         )}
       </Card>
     </>
