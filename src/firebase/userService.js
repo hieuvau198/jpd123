@@ -1,6 +1,6 @@
 // src/firebase/userService.js
 import { db } from './firebase-config';
-import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where, orderBy, limit } from 'firebase/firestore'; // Added orderBy and limit
 
 const COLLECTION_NAME = 'users';
 
@@ -82,5 +82,26 @@ export const loginUser = async (username, password, role) => {
   } catch (error) {
     console.error("Login error:", error);
     throw error;
+  }
+};
+
+export const getTopUsersByCoins = async (limitCount = 5) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      // Assuming you might want to filter by role='student', uncomment the next line if so
+      // where("role", "==", "student"),
+      orderBy("personal_coins", "desc"),
+      limit(limitCount)
+    );
+    const querySnapshot = await getDocs(q);
+    const topUsers = [];
+    querySnapshot.forEach((doc) => {
+      topUsers.push({ id: doc.id, ...doc.data() });
+    });
+    return topUsers;
+  } catch (error) {
+    console.error("Error fetching top users:", error);
+    return [];
   }
 };
