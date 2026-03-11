@@ -31,7 +31,7 @@ const generateQuestions = (data) => {
               if (elements.length > 0) {
                   const el = elements[Math.floor(Math.random() * elements.length)];
                   answer = reaction.valency[el].toString();
-                  questionText = `What is the valency of ${el} in this reaction?`;
+                  questionText = `Hóa trị của ${el} trong phản ứng này?`;
                   chosenType = 'valency';
                   prefix = reaction.formula;
                   success = true;
@@ -44,7 +44,7 @@ const generateQuestions = (data) => {
                   answer = match[1].replace(/[{}]/g, '');
                   prefix = reaction.formula.substring(0, match.index);
                   suffix = reaction.formula.substring(match.index + match[0].length);
-                  questionText = `Fill in the missing subscript:`;
+                  questionText = `Điền Hệ số dưới bị thiếu:`;
                   chosenType = 'subscript';
                   success = true;
               }
@@ -58,7 +58,7 @@ const generateQuestions = (data) => {
                   const globalIndex = match.index + indexOfDigit;
                   prefix = reaction.formula.substring(0, globalIndex);
                   suffix = reaction.formula.substring(globalIndex + match[1].length);
-                  questionText = `Fill in the missing coefficient:`;
+                  questionText = `Điền Hệ số bị thiếu:`;
                   chosenType = 'coefficient';
                   success = true;
               }
@@ -72,7 +72,7 @@ const generateQuestions = (data) => {
                       answer = el;
                       prefix = reaction.formula.substring(0, match.index);
                       suffix = reaction.formula.substring(match.index + match[0].length);
-                      questionText = `Fill in the missing element:`;
+                      questionText = `Điền nguyên tố bị thiếu:`;
                       chosenType = 'element';
                       success = true;
                   }
@@ -89,7 +89,7 @@ const generateQuestions = (data) => {
                   if (match) {
                       prefix = reaction.formula.substring(0, match.index);
                       suffix = reaction.formula.substring(match.index + match[0].length);
-                      questionText = `Fill in the missing compound:`;
+                      questionText = `Điền hợp chất bị thiếu:`;
                       chosenType = 'compound';
                       success = true;
                   }
@@ -198,21 +198,6 @@ const MissingSession = ({ data, onBack }) => {
     setIsFinished(false);
   };
 
-  // Determine styling for inline inputs
-  const getInputStyles = () => {
-    let base = "text-center font-bold bg-black/50 text-white border-2 border-dashed border-white/50 focus:border-yellow-300 focus:bg-black/80 hover:bg-black/60 transition-all mx-1 ";
-    if (isCorrect && hasAnswered) base += "!border-green-400 !text-green-400 ";
-    if (!isCorrect && hasAnswered) base += "!border-red-400 !text-red-400 ";
-
-    switch(currentQuestion?.type) {
-      case 'subscript': return base + "w-12 h-8 text-sm translate-y-3";
-      case 'coefficient': return base + "w-14 h-12 text-xl";
-      case 'element': return base + "w-16 h-12 text-xl";
-      case 'compound': return base + "w-28 h-12 text-xl";
-      default: return base + "w-20 h-12 text-xl";
-    }
-  };
-
   if (isFinished) {
     return (
       <SessionResult 
@@ -237,7 +222,7 @@ const MissingSession = ({ data, onBack }) => {
           Exit Mode
         </Button>
         <Text className="text-white text-lg font-semibold">
-          Completed: {completedCount} / {totalQuestions}
+          {completedCount} / {totalQuestions}
         </Text>
       </div>
 
@@ -262,20 +247,13 @@ const MissingSession = ({ data, onBack }) => {
             </div>
           </div>
         ) : (
-          // Inline flex layout for missing formulas
+          // Inline flex layout for missing formulas with a placeholder
           <div className="bg-black/30 py-6 px-4 rounded-xl mb-8 flex flex-wrap items-center justify-center gap-y-4">
             {currentQuestion.prefix && (
               <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.prefix} /></span>
             )}
             
-            <Input 
-              autoFocus
-              value={userAnswer}
-              onChange={(e) => setUserAnswer(e.target.value)}
-              onPressEnter={!hasAnswered ? handleSubmit : handleNext}
-              className={getInputStyles()}
-              disabled={hasAnswered}
-            />
+            <span className="text-2xl sm:text-3xl text-yellow-300 font-bold mx-2">_</span>
             
             {currentQuestion.suffix && (
               <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.suffix} /></span>
@@ -287,19 +265,20 @@ const MissingSession = ({ data, onBack }) => {
           {currentQuestion.questionText}
         </Text>
 
-        {isNonFormulaType && !hasAnswered && (
+        <div className="flex flex-col items-center">
           <Space.Compact style={{ width: '100%', maxWidth: '400px', marginBottom: '24px' }}>
             <Input 
               size="large"
               autoFocus
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
-              onPressEnter={handleSubmit}
+              onPressEnter={!hasAnswered ? handleSubmit : handleNext}
               placeholder="Type your answer here..."
               style={{ textAlign: 'center', fontSize: '18px' }}
+              disabled={hasAnswered}
             />
           </Space.Compact>
-        )}
+        </div>
 
         {!hasAnswered ? (
           <div className="flex justify-center">
@@ -328,7 +307,6 @@ const MissingSession = ({ data, onBack }) => {
                 <Text className="text-white text-lg">
                   The correct answer was: <span className="text-yellow-300 font-bold">{currentQuestion.answer}</span>
                 </Text>
-                <Text className="text-red-300 text-sm">Penalty added! This question will return soon.</Text>
               </div>
             )}
             <Button size="large" type="primary" onClick={handleNext} className="mt-4 px-12 h-12 text-lg">
@@ -340,7 +318,7 @@ const MissingSession = ({ data, onBack }) => {
       
       {currentQuestion.reaction.description && (
         <Card className="mt-8 bg-white/5 border-white/10 text-white/80 backdrop-blur-sm">
-          <Text className="text-blue-300 font-semibold block mb-2">Did you know?</Text>
+          <Text className="text-blue-300 font-semibold block mb-2">Bạn có biết?</Text>
           <Text className="text-white/80">{currentQuestion.reaction.description}</Text>
         </Card>
       )}
