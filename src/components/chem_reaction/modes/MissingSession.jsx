@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Input, Typography, Progress, Card, Space, message } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Typography, Progress, Card, message } from 'antd';
 import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -123,10 +123,12 @@ const MissingSession = ({ data, onBack }) => {
   const [completedCount, setCompletedCount] = useState(0);
   
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [userAnswer, setUserAnswer] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (data) {
@@ -137,15 +139,28 @@ const MissingSession = ({ data, onBack }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setInputValue('');
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.focus();
+    }, 100);
+  }, [currentQuestion]);
+
   const progressPercent = Math.round((completedCount / totalQuestions) * 100) || 0;
 
+  const handleFocus = () => {
+    if (inputRef.current && !hasAnswered) {
+      inputRef.current.focus();
+    }
+  };
+
   const handleSubmit = () => {
-    if (!userAnswer.trim()) {
+    if (!inputValue.trim()) {
       message.warning('Please enter an answer!');
       return;
     }
 
-    const normalizedUser = userAnswer.replace(/\s+/g, '').toLowerCase();
+    const normalizedUser = inputValue.replace(/\s+/g, '').toLowerCase();
     const normalizedAnswer = currentQuestion.answer.replace(/\s+/g, '').toLowerCase();
 
     setIsCorrect(normalizedUser === normalizedAnswer);
@@ -160,17 +175,13 @@ const MissingSession = ({ data, onBack }) => {
       answeredQuestion.correctCountNeeded -= 1;
       
       if (answeredQuestion.correctCountNeeded <= 0) {
-        // Question fully mastered
         setCompletedCount(prev => prev + 1);
       } else {
-        // Was previously wrong, needs one more correct answer. Reinsert.
         const insertIndex = Math.min(2, newQueue.length);
         newQueue.splice(insertIndex, 0, answeredQuestion);
       }
     } else {
-      // Answered wrong! Set penalty to require 2 correct answers
       answeredQuestion.correctCountNeeded = 2;
-      // Re-insert after at most 2 other questions
       const insertIndex = Math.min(2, newQueue.length);
       newQueue.splice(insertIndex, 0, answeredQuestion);
     }
@@ -180,7 +191,7 @@ const MissingSession = ({ data, onBack }) => {
     } else {
       setQueue(newQueue);
       setCurrentQuestion(newQueue[0]);
-      setUserAnswer('');
+      setInputValue('');
       setHasAnswered(false);
       setIsCorrect(false);
     }
@@ -192,7 +203,7 @@ const MissingSession = ({ data, onBack }) => {
     setTotalQuestions(initialQuestions.length);
     setCurrentQuestion(initialQuestions[0]);
     setCompletedCount(0);
-    setUserAnswer('');
+    setInputValue('');
     setHasAnswered(false);
     setIsCorrect(false);
     setIsFinished(false);
@@ -215,8 +226,73 @@ const MissingSession = ({ data, onBack }) => {
 
   const isNonFormulaType = ['valency', 'condition'].includes(currentQuestion.type);
 
+  const renderMissingCharacters = () => {
+    const answerStr = currentQuestion.answer.toString();
+    const chars = answerStr.split('');
+    
+    return (
+      <div className="flex items-center gap-1 mx-2" onClick={handleFocus} style={{ cursor: 'text' }}>
+        {chars.map((char, index) => {
+          const userChar = inputValue[index] || "";
+          
+          let color = '#fde047'; // Default yellow-300 matching inline math
+          if (hasAnswered) {
+             if (isCorrect) color = '#4ade80'; // green-400
+             else color = '#f87171'; // red-400
+          }
+
+          return (
+            <div key={index} className="flex flex-col items-center justify-end" style={{ width: '24px', height: '40px' }}>
+              <Text style={{ 
+                  fontSize: '24px', 
+                  color: userChar || (hasAnswered && !isCorrect) ? color : '#9ca3af',
+                  fontWeight: 'bold',
+                  lineHeight: '1',
+                  fontFamily: 'monospace'
+              }}>
+                  {(hasAnswered && !isCorrect) ? char : (userChar || "_")}
+              </Text>
+              <div style={{ 
+                  width: '100%', 
+                  height: '3px', 
+                  background: userChar || (hasAnswered && !isCorrect) ? color : '#9ca3af',
+                  borderRadius: '2px',
+                  marginTop: '4px'
+              }} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col">
+      <input
+        ref={inputRef}
+        type="text"
+        value={inputValue}
+        onChange={(e) => {
+            if (hasAnswered) return;
+            const val = e.target.value;
+            if (val.length <= (currentQuestion?.answer?.length || 0)) {
+                setInputValue(val);
+            }
+        }}
+        onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+                if (!hasAnswered) {
+                    handleSubmit();
+                } else {
+                    handleNext();
+                }
+            }
+        }}
+        disabled={hasAnswered}
+        autoComplete="off"
+        style={{ opacity: 0, position: 'absolute', top: -1000, pointerEvents: 'none' }}
+      />
+
       <div className="flex items-center justify-between mb-6">
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
           Exit Mode
@@ -234,26 +310,27 @@ const MissingSession = ({ data, onBack }) => {
         className="mb-8"
       />
 
-      <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md">
+      <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md" onClick={handleFocus}>
         <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
           {currentQuestion.reaction.name}
         </Title>
 
         {isNonFormulaType ? (
-          // Full equation display for valency/condition questions where inline doesn't make sense
           <div className="bg-black/30 py-6 px-4 rounded-xl mb-8 overflow-x-auto">
             <div className="text-2xl sm:text-3xl text-yellow-300">
               <BlockMath>{currentQuestion.prefix}</BlockMath>
             </div>
+            <div className="mt-6 flex justify-center">
+              {renderMissingCharacters()}
+            </div>
           </div>
         ) : (
-          // Inline flex layout for missing formulas with a placeholder
           <div className="bg-black/30 py-6 px-4 rounded-xl mb-8 flex flex-wrap items-center justify-center gap-y-4">
             {currentQuestion.prefix && (
               <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.prefix} /></span>
             )}
             
-            <span className="text-2xl sm:text-3xl text-yellow-300 font-bold mx-2">_</span>
+            {renderMissingCharacters()}
             
             {currentQuestion.suffix && (
               <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.suffix} /></span>
@@ -261,55 +338,27 @@ const MissingSession = ({ data, onBack }) => {
           </div>
         )}
 
-        <Text className="block text-xl mb-6 text-blue-200">
-          {currentQuestion.questionText}
-        </Text>
-
-        <div className="flex flex-col items-center">
-          <Space.Compact style={{ width: '100%', maxWidth: '400px', marginBottom: '24px' }}>
-            <Input 
-              size="large"
-              autoFocus
-              value={userAnswer}
-              onChange={(e) => setUserAnswer(e.target.value)}
-              onPressEnter={!hasAnswered ? handleSubmit : handleNext}
-              placeholder="Type your answer here..."
-              style={{ textAlign: 'center', fontSize: '18px' }}
-              disabled={hasAnswered}
-            />
-          </Space.Compact>
-        </div>
-
         {!hasAnswered ? (
-          <div className="flex justify-center">
-            <Button size="large" type="primary" onClick={handleSubmit} className="px-12 h-12 text-lg">
+          <div className="flex justify-center mt-6">
+            <Button size="large" type="primary" onClick={(e) => { e.stopPropagation(); handleSubmit(); }} className="px-12 h-12 text-lg">
               Check
             </Button>
           </div>
         ) : (
-          <div className="animate-fade-in flex flex-col items-center">
+          <div className="animate-fade-in flex flex-col items-center mt-6">
             {isCorrect ? (
               <div className="flex flex-col items-center text-green-400 mb-4 gap-2">
-                <div className="flex items-center gap-2 text-2xl font-bold">
-                  <CheckCircle size={32} /> Correct!
-                </div>
-                {currentQuestion.correctCountNeeded === 0 ? (
-                  <Text className="text-green-300">Question Mastered!</Text>
-                ) : (
-                  <Text className="text-yellow-300 text-sm">You need to answer this correctly {currentQuestion.correctCountNeeded} more time(s) to clear the penalty.</Text>
-                )}
+                
               </div>
             ) : (
               <div className="flex flex-col items-center text-red-400 mb-4 gap-2">
-                <div className="flex items-center gap-2 text-2xl font-bold mb-2">
-                  <XCircle size={32} /> Incorrect!
+                
+                <div className="text-xl sm:text-2xl text-yellow-300 bg-black/30 py-3 px-4 rounded-lg mt-2 w-full overflow-x-auto">
+                   <BlockMath>{currentQuestion.reaction.formula}</BlockMath>
                 </div>
-                <Text className="text-white text-lg">
-                  The correct answer was: <span className="text-yellow-300 font-bold">{currentQuestion.answer}</span>
-                </Text>
               </div>
             )}
-            <Button size="large" type="primary" onClick={handleNext} className="mt-4 px-12 h-12 text-lg">
+            <Button size="large" type="primary" onClick={(e) => { e.stopPropagation(); handleNext(); }} className="mt-4 px-12 h-12 text-lg">
               {queue.length > 0 ? 'Next Question' : 'Finish Session'}
             </Button>
           </div>
