@@ -55,55 +55,50 @@ const ChemReactionSession = ({ data, onHome }) => {
         <Card 
           hoverable 
           onClick={() => setCurrentMode('definition')}
-          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#1890ff', backgroundColor: 'rgba(255,255,255,0.05)' }}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#1890ff', backgroundColor: '#ffffff' }}
         >
           <BookOpen size={48} color="#1890ff" className="mx-auto mb-4" />
           <Title level={4} style={{ color: '#1890ff' }}>Definition</Title>
-          <Text type="secondary" style={{color: '#ccc'}}>Review the chemical reactions and formulas.</Text>
         </Card>
 
         {/* Missing Mode */}
         <Card 
           hoverable 
           onClick={() => setCurrentMode('missing')}
-          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#52c41a', backgroundColor: 'rgba(255,255,255,0.05)' }}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#52c41a', backgroundColor: '#ffffff' }}
         >
           <HelpCircle size={48} color="#52c41a" className="mx-auto mb-4" />
           <Title level={4} style={{ color: '#52c41a' }}>Missing</Title>
-          <Text type="secondary" style={{color: '#ccc'}}>Fill in the missing reactants or products.</Text>
         </Card>
 
         {/* Matching Mode */}
         <Card 
           hoverable 
           onClick={() => setCurrentMode('matching')}
-          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#722ed1', backgroundColor: 'rgba(255,255,255,0.05)' }}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#722ed1', backgroundColor: '#ffffff' }}
         >
           <GitMerge size={48} color="#722ed1" className="mx-auto mb-4" />
           <Title level={4} style={{ color: '#722ed1' }}>Matching</Title>
-          <Text type="secondary" style={{color: '#ccc'}}>Match reactants to their corresponding products.</Text>
         </Card>
 
         {/* MC Mode */}
         <Card 
           hoverable 
           onClick={() => setCurrentMode('mc')}
-          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#eb2f96', backgroundColor: 'rgba(255,255,255,0.05)' }}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#eb2f96', backgroundColor: '#ffffff' }}
         >
           <ListChecks size={48} color="#eb2f96" className="mx-auto mb-4" />
           <Title level={4} style={{ color: '#eb2f96' }}>Multiple Choice</Title>
-          <Text type="secondary" style={{color: '#ccc'}}>Test your knowledge with multiple choice questions.</Text>
         </Card>
 
-        {/* MC Mode */}
+        {/* Swap Mode */}
         <Card 
           hoverable 
           onClick={() => setCurrentMode('swap')}
-          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#eb2f96', backgroundColor: 'rgba(255,255,255,0.05)' }}
+          style={{ borderRadius: 12, textAlign: 'center', borderColor: '#fa8c16', backgroundColor: '#ffffff' }}
         >
-          <ListChecks size={48} color="#eb2f96" className="mx-auto mb-4" />
-          <Title level={4} style={{ color: '#eb2f96' }}>Swap</Title>
-          <Text type="secondary" style={{color: '#ccc'}}>Test your knowledge with swap questions.</Text>
+          <ListChecks size={48} color="#fa8c16" className="mx-auto mb-4" />
+          <Title level={4} style={{ color: '#fa8c16' }}>Swap</Title>
         </Card>
       </div>
     </div>

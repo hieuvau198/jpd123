@@ -10,9 +10,10 @@ import { getAllRepairs } from '../../../firebase/repairService';
 import { getAllSpeaks } from '../../../firebase/speakService';
 import { getAllDefenses } from '../../../firebase/defenseService';
 import { getAllChemistry } from '../../../firebase/chemistryService';
+import { getAllChemReactions } from '../../../firebase/chemReactionService';
 
 // 1. Map services to dynamically call them
-const services = { Flashcard: getAllFlashcards, Quiz: getAllQuizzes, 'Chem Quiz': getAllChemistry, Phonetic: getAllPhonetics, Repair: getAllRepairs, Speak: getAllSpeaks, Defense: getAllDefenses };
+const services = { Flashcard: getAllFlashcards, Quiz: getAllQuizzes, 'Chem Quiz': getAllChemistry, Phonetic: getAllPhonetics, Repair: getAllRepairs, Speak: getAllSpeaks, Defense: getAllDefenses, 'Chem Reaction': getAllChemReactions };
 const removeAccents = (str) => (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 export default function MissionFormModal({ visible, onCancel, onSave, editingRecord, loading }) {

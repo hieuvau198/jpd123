@@ -61,7 +61,8 @@ const ProfileMissions = ({ currentUser }) => {
       'Repair': '/repair',       
       'Speak': '/speak',         
       'Defense': '/challenge',
-      'Chem Quiz': '/chem-quiz'
+      'Chem Quiz': '/chem-quiz',
+      'Chem Reaction': '/chem-reaction'
     };
     
     const basePath = routeMap[mission.type];

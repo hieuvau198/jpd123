@@ -38,7 +38,15 @@ const generateQuestions = (data) => {
               }
           } else if (t === 'subscript') {
               const regex = /_(\d|\{\d+\})/g;
-              const matches = [...reaction.formula.matchAll(regex)];
+              let matches = [...reaction.formula.matchAll(regex)];
+              
+              // NEW: Filter out any subscript that is at the end of the reaction
+              // If there's no '+' or arrow after the subscript, it belongs to the final element.
+              matches = matches.filter(match => {
+                  const suffixAfterMatch = reaction.formula.substring(match.index + match[0].length);
+                  return /(?:\+|\\rightarrow|\\xrightarrow)/.test(suffixAfterMatch);
+              });
+
               if (matches.length > 0) {
                   const match = matches[Math.floor(Math.random() * matches.length)];
                   answer = match[1].replace(/[{}]/g, '');
@@ -327,7 +335,7 @@ const MissingSession = ({ data, onBack }) => {
 
       <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md" onClick={handleFocus}>
         <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
-          {currentQuestion.reaction.name}
+          {currentQuestion.questionText}
         </Title>
 
         {isNonFormulaType ? (
