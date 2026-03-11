@@ -181,7 +181,7 @@ const SessionResult = ({
       >
         <Result
           status="success"
-          title={missionResult?.isCompleted ? "🎉 Thưởng Nhiệm Vụ! 🎉" : "🚀 Mission Progress Updated! 🚀"}
+          title={missionResult?.isCompleted ? "🎉 Thưởng Nhiệm Vụ! 🎉" : "🚀 Thưởng Nhiệm Vụ! 🚀"}
           subTitle={
             <div style={{ marginTop: 20 }}>
               {/* NEW: Display gained points side-by-side with coins */}

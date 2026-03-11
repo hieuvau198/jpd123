@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs, Divider } from 'antd'; 
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical } from 'lucide-react';
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical, Beaker } from 'lucide-react';
 
 // Removed AdminLogin import
 import GenericManager from './GenericManager';
@@ -10,11 +10,19 @@ import FlashcardManager from './FlashcardManager';
 import DefenseManager from './DefenseManager';
 import PhoneticManager from './PhoneticManager'; 
 import ChemistryManager from './ChemistryManager';
+import ChemReactionManager from './ChemReactionManager';
 
 import { getAllChemistry, getChemistryByTag, saveChemistrySet, deleteChemistrySet } from '../../firebase/chemistryService';
 import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
 import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../../firebase/repairService';
 import { getAllSpeaks, saveSpeakSet, deleteSpeakSet } from '../../firebase/speakService';
+import { 
+  getAllChemReactions, 
+  getChemReactionsByTag, 
+  saveChemReactionSet, 
+  deleteChemReactionSet 
+} from '../../firebase/chemReactionService';
+
 
 const { Title } = Typography;
 
@@ -51,19 +59,48 @@ const AdminDashboard = () => {
 
       {/* Chemistry Section Card */}
       <Divider />
-      <Title level={2} style={{ margin: '0 0 20px 0' }}>Chemistry Management</Title>
-      <Card>
-        <ChemistryManager 
-          icon={<FlaskConical color="#13c2c2" size={24} />} 
-          color="cyan" 
-          uploadText="Import Chemistry Sets (JSON)" 
-          uploadColor="#13c2c2"
-          fetchFn={getAllChemistry} 
-          fetchByTagFn={getChemistryByTag}
-          saveFn={saveChemistrySet} 
-          deleteFn={deleteChemistrySet}
-        />
-      </Card>
+      <Card 
+  
+  style={{ marginBottom: 20 }}
+>
+  <Tabs
+    defaultActiveKey="1"
+    items={[
+      {
+        key: '1',
+        label: 'Chemistry Quizzes',
+        children: (
+          <ChemistryManager 
+            icon={<FlaskConical color="#722ed1" />}
+            color="#f9f0ff"
+            uploadText="Upload Chem Quiz JSON"
+            uploadColor="#722ed1"
+            fetchFn={getAllChemistry}
+            fetchByTagFn={getChemistryByTag}
+            saveFn={saveChemistrySet}
+            deleteFn={deleteChemistrySet}
+          />
+        ),
+      },
+      {
+        key: '2',
+        label: 'Chemical Reactions',
+        children: (
+          <ChemReactionManager 
+            icon={<Beaker color="#eb2f96" />}
+            color="#fff0f6"
+            uploadText="Upload Chem Reaction JSON"
+            uploadColor="#eb2f96"
+            fetchFn={getAllChemReactions}
+            fetchByTagFn={getChemReactionsByTag}
+            saveFn={saveChemReactionSet}
+            deleteFn={deleteChemReactionSet}
+          />
+        ),
+      },
+    ]}
+  />
+</Card>
     </div>
   );
 };
