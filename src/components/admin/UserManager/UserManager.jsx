@@ -158,6 +158,12 @@ const UserManager = () => {
           <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
           <Tag color='green'>{record.grade}</Tag>
         </div>
+        {/* Add this line below to display personal_coins */}
+        <div style={{ marginTop: 4 }}>
+          <Typography.Text type="secondary" size="small">
+            Coins: <span style={{ color: '#faad14', fontWeight: 'bold' }}>{record.personal_coins || 0}</span>
+          </Typography.Text>
+        </div>
       </div>
     )
   },

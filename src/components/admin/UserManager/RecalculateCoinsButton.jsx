@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, Modal, message } from 'antd';
 import { Calculator } from 'lucide-react';
 import { updateMission, getAllMissions } from '../../../firebase/missionService';
+import { updateUser } from '../../../firebase/userService';
 
 const RecalculateCoinsButton = ({ missions, onRefresh }) => {
   const [loading, setLoading] = useState(false);
