@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, Table, Button, Tag, Popconfirm, Typography, Progress } from 'antd';
 import { Edit, Trash2 } from 'lucide-react';
-import dayjs from 'dayjs';
+import RecalculateCoinsButton from './RecalculateCoinsButton'; // <-- Import the new component
 
 const { Text } = Typography;
 
 const UserMissionsModal = ({ 
-  visible, onCancel, user, missions, loading, onAssignNew, onEdit, onDelete 
+  visible, onCancel, user, missions, loading, onAssignNew, onEdit, onDelete, onRefresh 
 }) => {
   
   const columns = [
@@ -71,7 +71,14 @@ const UserMissionsModal = ({
     >
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
         <Text type="secondary">Manage assignments and track progress.</Text>
-        <Button type="primary" onClick={onAssignNew}>Assign New Mission</Button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {/* Add the Recalculate button here */}
+          <RecalculateCoinsButton 
+            missions={missions} 
+            onRefresh={onRefresh} 
+          />
+          <Button type="primary" onClick={onAssignNew}>Assign New Mission</Button>
+        </div>
       </div>
       <Table columns={columns} dataSource={missions} rowKey="id" loading={loading} size="small" />
     </Modal>

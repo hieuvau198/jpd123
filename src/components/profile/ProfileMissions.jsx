@@ -81,7 +81,7 @@ const ProfileMissions = ({ currentUser }) => {
       render: (text, record) => {
         // Calculate percentage string and round to nearest whole integer
         const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
-          ? Math.round(Number(record.percentage) * 100) 
+          ? Math.round(Number(record.percentage)) 
           : record.percentage;
 
         return (

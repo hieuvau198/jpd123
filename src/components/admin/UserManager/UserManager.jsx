@@ -236,6 +236,7 @@ const UserManager = () => {
         onAssignNew={() => handleShowMissionForm()}
         onEdit={handleShowMissionForm}
         onDelete={handleDeleteMission}
+        onRefresh={() => loadUserMissions(selectedUser.id)} // <-- Add this prop
       />
 
       <MissionFormModal 
