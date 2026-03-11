@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Alert, Flex } from 'antd';
 import { UploadCloud, Trash2, RefreshCw, Filter, Eye, CheckCircle, Brain } from 'lucide-react';
-import tagsData from '../../data/system/tags.json';
+// Changed from tags.json to chem_tags.json
+import tagsData from '../../data/system/chem_tags.json';
 
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
