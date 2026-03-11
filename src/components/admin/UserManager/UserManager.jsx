@@ -151,18 +151,12 @@ const UserManager = () => {
     title: 'User',
     dataIndex: 'name',
     key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
     render: (_, record) => (
       <div>
         <Typography.Text strong>{record.name}</Typography.Text>
-
         <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
-          <Tag color={record.role === "Admin" ? "red" : "blue"} style={{ fontSize: 11 }}>
-            {record.role}
-          </Tag>
-          <Tag color='green' style={{ fontSize: 11 }}>
-            {record.grade}
-          </Tag>
+          <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
+          <Tag color='green'>{record.grade}</Tag>
         </div>
       </div>
     )

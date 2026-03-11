@@ -10,56 +10,52 @@ const RecalculateCoinsButton = ({ missions, onRefresh }) => {
 
   // Extracted the core logic so it can accept any array of missions
   const performRecalculation = async (missionsToUpdate) => {
-    setLoading(true);
-    let updatedCount = 0;
+  setLoading(true);
+  try {
+    // 1. Group missions by User ID
+    const missionsByUser = missionsToUpdate.reduce((acc, m) => {
+      if (!m.userId) return acc;
+      if (!acc[m.userId]) acc[m.userId] = [];
+      acc[m.userId].push(m);
+      return acc;
+    }, {});
 
-    try {
-      for (const mission of missionsToUpdate) {
-        let needsUpdate = false;
-        const updates = {};
+    for (const userId in missionsByUser) {
+      let userTotalCoins = 0;
+      const userMissions = missionsByUser[userId];
 
-        // 1. Correct percentage if mission is completed
+      for (const mission of userMissions) {
         let currentPercentage = mission.percentage || 0;
-        if (mission.status === 'Đã chinh phục' && currentPercentage !== 100) {
-          currentPercentage = 100;
-          updates.percentage = 100;
-          needsUpdate = true;
-        }
+        if (mission.status === 'Đã chinh phục') currentPercentage = 100;
 
-        // 2. Recalculate Max Coins (target_questions * 10)
         const targetQuestions = mission.targetQuestions || 0;
         const correctMaxCoins = targetQuestions * 10;
-        if (mission.max_coins !== correctMaxCoins) {
-          updates.max_coins = correctMaxCoins;
-          needsUpdate = true;
-        }
-
-        // 3. Recalculate Earning Coins ((max_coins * percentage) / 100)
         const correctEarningCoins = Math.floor((correctMaxCoins * currentPercentage) / 100);
-        if (mission.earning_coins !== correctEarningCoins) {
-          updates.earning_coins = correctEarningCoins;
-          needsUpdate = true;
-        }
 
-        // Only fire an update if something actually changed
-        if (needsUpdate) {
-          await updateMission(mission.id, updates);
-          updatedCount++;
+        // Update mission if data is stale
+        if (mission.max_coins !== correctMaxCoins || mission.earning_coins !== correctEarningCoins) {
+          await updateMission(mission.id, {
+            max_coins: correctMaxCoins,
+            earning_coins: correctEarningCoins,
+            percentage: currentPercentage
+          });
         }
+        userTotalCoins += correctEarningCoins;
       }
 
-      message.success(`Recalculation complete. Updated ${updatedCount} missions.`);
-      if (updatedCount > 0 && onRefresh) {
-        onRefresh();
-      }
-    } catch (error) {
-      console.error("Error recalculating coins:", error);
-      message.error("Failed to recalculate coins.");
-    } finally {
-      setLoading(false);
-      setIsModalVisible(false); // Close modal when done
+      // Sync the sum of all mission earnings to the User record
+      await updateUser(userId, { personal_coins: userTotalCoins });
     }
-  };
+
+    message.success("Recalculation and User balances updated.");
+    if (onRefresh) onRefresh();
+  } catch (error) {
+    console.error(error);
+    message.error("Failed to recalculate.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleRecalculateCurrent = () => {
     performRecalculation(missions);
