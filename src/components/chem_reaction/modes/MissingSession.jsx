@@ -129,6 +129,7 @@ const MissingSession = ({ data, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
 
   const inputRef = useRef(null);
+  const handleNextRef = useRef(null);
 
   useEffect(() => {
     if (data) {
@@ -198,6 +199,23 @@ const MissingSession = ({ data, onBack }) => {
     }
   };
 
+  // Keep a fresh reference to handleNext for the setTimeout
+  useEffect(() => {
+    handleNextRef.current = handleNext;
+  });
+
+  // Auto-advance when the user answers correctly
+  useEffect(() => {
+    if (hasAnswered && isCorrect) {
+      const timer = setTimeout(() => {
+        if (handleNextRef.current) {
+          handleNextRef.current();
+        }
+      }, 800); // 800ms delay to show the success color before moving
+      return () => clearTimeout(timer);
+    }
+  }, [hasAnswered, isCorrect]);
+
   const handleRestart = () => {
     const initialQuestions = generateQuestions(data);
     setQueue(initialQuestions);
@@ -246,9 +264,9 @@ const MissingSession = ({ data, onBack }) => {
           }
 
           return (
-            <div key={index} className="flex flex-col items-center justify-end" style={{ width: '24px', height: '40px' }}>
+            <div key={index} className="flex flex-col items-center justify-end" style={{ width: '32px', height: '44px' }}>
               <Text style={{ 
-                  fontSize: '24px', 
+                  fontSize: '32px', // Increased font size
                   color: userChar || (hasAnswered && !isCorrect) ? color : '#9ca3af',
                   fontWeight: 'bold',
                   lineHeight: '1',
@@ -258,10 +276,10 @@ const MissingSession = ({ data, onBack }) => {
               </Text>
               <div style={{ 
                   width: '100%', 
-                  height: '3px', 
+                  height: '4px', 
                   background: userChar || (hasAnswered && !isCorrect) ? color : '#9ca3af',
                   borderRadius: '2px',
-                  marginTop: '4px'
+                  marginTop: '6px'
               }} />
             </div>
           );
@@ -288,8 +306,8 @@ const MissingSession = ({ data, onBack }) => {
             if (e.key === 'Enter') {
                 if (!hasAnswered) {
                     handleSubmit();
-                } else {
-                    handleNext();
+                } else if (!isCorrect) {
+                    handleNext(); // Only allow manual trigger if incorrect, correct is auto-handled
                 }
             }
         }}
@@ -306,7 +324,6 @@ const MissingSession = ({ data, onBack }) => {
           {completedCount} / {totalQuestions}
         </Text>
       </div>
-
 
       <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md" onClick={handleFocus}>
         <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
@@ -346,7 +363,7 @@ const MissingSession = ({ data, onBack }) => {
           <div className="animate-fade-in flex flex-col items-center mt-6">
             {isCorrect ? (
               <div className="flex flex-col items-center text-green-400 mb-4 gap-2">
-                
+                 <span className="text-xl font-semibold">Correct! Moving to next...</span>
               </div>
             ) : (
               <div className="flex flex-col items-center text-red-400 mb-4 gap-2">
@@ -356,13 +373,14 @@ const MissingSession = ({ data, onBack }) => {
                 </div>
               </div>
             )}
-            <Button size="large" type="primary" onClick={(e) => { e.stopPropagation(); handleNext(); }} className="mt-4 px-12 h-12 text-lg">
-              {queue.length > 0 ? 'Next Question' : 'Finish Session'}
-            </Button>
+            {!isCorrect && (
+              <Button size="large" type="primary" onClick={(e) => { e.stopPropagation(); handleNext(); }} className="mt-4 px-12 h-12 text-lg">
+                {queue.length > 0 ? 'Next Question' : 'Finish Session'}
+              </Button>
+            )}
           </div>
         )}
       </div>
-      
       
     </div>
   );
