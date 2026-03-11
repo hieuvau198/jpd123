@@ -161,7 +161,8 @@ const MissingSession = ({ data, onBack }) => {
     }
 
     const normalizedUser = inputValue.replace(/\s+/g, '').toLowerCase();
-    const normalizedAnswer = currentQuestion.answer.replace(/\s+/g, '').toLowerCase();
+    // Strip _, {, }, and ^ from the correct answer before comparing
+    const normalizedAnswer = currentQuestion.answer.toString().replace(/[_\{\}\^\s]+/g, '').toLowerCase();
 
     setIsCorrect(normalizedUser === normalizedAnswer);
     setHasAnswered(true);
@@ -225,10 +226,13 @@ const MissingSession = ({ data, onBack }) => {
   if (!currentQuestion) return <div className="p-8 text-center text-white">Loading questions...</div>;
 
   const isNonFormulaType = ['valency', 'condition'].includes(currentQuestion.type);
+  
+  // Create a clean version of the answer without LaTeX formatting characters for display and input limit
+  const displayAnswer = currentQuestion.answer.toString().replace(/[_\{\}\^]/g, '');
 
   const renderMissingCharacters = () => {
-    const answerStr = currentQuestion.answer.toString();
-    const chars = answerStr.split('');
+    // Use the clean displayAnswer instead of the raw answer string
+    const chars = displayAnswer.split('');
     
     return (
       <div className="flex items-center gap-1 mx-2" onClick={handleFocus} style={{ cursor: 'text' }}>
@@ -275,7 +279,8 @@ const MissingSession = ({ data, onBack }) => {
         onChange={(e) => {
             if (hasAnswered) return;
             const val = e.target.value;
-            if (val.length <= (currentQuestion?.answer?.length || 0)) {
+            // Use displayAnswer.length to limit input length instead of raw answer length
+            if (val.length <= displayAnswer.length) {
                 setInputValue(val);
             }
         }}
@@ -302,13 +307,6 @@ const MissingSession = ({ data, onBack }) => {
         </Text>
       </div>
 
-      <Progress 
-        percent={progressPercent} 
-        showInfo={false} 
-        strokeColor="#52c41a" 
-        trailColor="rgba(255,255,255,0.2)"
-        className="mb-8"
-      />
 
       <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md" onClick={handleFocus}>
         <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
@@ -365,12 +363,7 @@ const MissingSession = ({ data, onBack }) => {
         )}
       </div>
       
-      {currentQuestion.reaction.description && (
-        <Card className="mt-8 bg-white/5 border-white/10 text-white/80 backdrop-blur-sm">
-          <Text className="text-blue-300 font-semibold block mb-2">Bạn có biết?</Text>
-          <Text className="text-white/80">{currentQuestion.reaction.description}</Text>
-        </Card>
-      )}
+      
     </div>
   );
 };
