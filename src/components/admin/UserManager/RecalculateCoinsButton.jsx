@@ -1,18 +1,20 @@
 // src/components/admin/UserManager/RecalculateCoinsButton.jsx
 import React, { useState } from 'react';
-import { Button, Popconfirm, message } from 'antd';
+import { Button, Modal, message } from 'antd';
 import { Calculator } from 'lucide-react';
-import { updateMission } from '../../../firebase/missionService';
+import { updateMission, getAllMissions } from '../../../firebase/missionService';
 
 const RecalculateCoinsButton = ({ missions, onRefresh }) => {
   const [loading, setLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleRecalculate = async () => {
+  // Extracted the core logic so it can accept any array of missions
+  const performRecalculation = async (missionsToUpdate) => {
     setLoading(true);
     let updatedCount = 0;
 
     try {
-      for (const mission of missions) {
+      for (const mission of missionsToUpdate) {
         let needsUpdate = false;
         const updates = {};
 
@@ -55,21 +57,74 @@ const RecalculateCoinsButton = ({ missions, onRefresh }) => {
       message.error("Failed to recalculate coins.");
     } finally {
       setLoading(false);
+      setIsModalVisible(false); // Close modal when done
+    }
+  };
+
+  const handleRecalculateCurrent = () => {
+    performRecalculation(missions);
+  };
+
+  const handleRecalculateAll = async () => {
+    setLoading(true);
+    try {
+      const allMissions = await getAllMissions();
+      await performRecalculation(allMissions);
+    } catch (error) {
+      console.error("Failed to fetch all missions:", error);
+      message.error("Failed to fetch all missions.");
+      setLoading(false);
     }
   };
 
   return (
-    <Popconfirm
-      title="Recalculate Coins"
-      description="Are you sure you want to recalculate coins for all missions shown here?"
-      onConfirm={handleRecalculate}
-      okText="Yes"
-      cancelText="No"
-    >
-      <Button icon={<Calculator size={16} />} loading={loading}>
+    <>
+      <Button 
+        icon={<Calculator size={16} />} 
+        onClick={() => setIsModalVisible(true)}
+      >
         Recalculate Coins
       </Button>
-    </Popconfirm>
+
+      <Modal
+        title="Recalculate Coins"
+        open={isModalVisible}
+        onCancel={() => !loading && setIsModalVisible(false)}
+        closable={!loading}
+        maskClosable={!loading}
+        footer={[
+          <Button 
+            key="cancel" 
+            disabled={loading} 
+            onClick={() => setIsModalVisible(false)}
+          >
+            Cancel
+          </Button>,
+          <Button 
+            key="current" 
+            type="primary" 
+            loading={loading} 
+            onClick={handleRecalculateCurrent}
+          >
+            Only This Student
+          </Button>,
+          <Button 
+            key="all" 
+            type="primary" 
+            danger 
+            loading={loading} 
+            onClick={handleRecalculateAll}
+          >
+            All Students
+          </Button>,
+        ]}
+      >
+        <p>Do you want to recalculate coins for just this student's missions, or for all missions across all students in the system?</p>
+        <p style={{ color: '#faad14', fontSize: '13px', marginTop: '10px' }}>
+          <strong>Note:</strong> Recalculating all students might take some time depending on the total number of missions.
+        </p>
+      </Modal>
+    </>
   );
 };
 

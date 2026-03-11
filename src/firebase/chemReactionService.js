@@ -106,16 +106,3 @@ export const getChemReactionById = async (id) => {
   }
 };
 
-export const getAllMissions = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
-    const missions = [];
-    querySnapshot.forEach((doc) => {
-      missions.push({ id: doc.id, ...doc.data() });
-    });
-    return missions;
-  } catch (error) {
-    console.error("Error fetching all missions:", error);
-    return [];
-  }
-};
