@@ -37,8 +37,8 @@ const PracticeCard = ({ practice, onClick }) => {
               {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
             </div>
             <span className="text-xs font-medium uppercase tracking-wide">
-              {practice.questions ? practice.questions.length : 0} questions
-            </span>
+  {(practice.questions?.length || practice.reactions?.length || 0)} questions
+</span>
           </div>
 
           {practice.tags && practice.tags.length > 0 && (
