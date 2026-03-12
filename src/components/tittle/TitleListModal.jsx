@@ -38,7 +38,7 @@ const TitleListModal = ({ visible, onClose }) => {
       open={visible}
       onCancel={onClose}
       footer={null}
-      bodyStyle={{ padding: '0', maxHeight: '60vh', overflowY: 'auto' }}
+      styles={{ body: { padding: '0', maxHeight: '60vh', overflowY: 'auto' } }}
     >
       <List
         dataSource={titlesData}

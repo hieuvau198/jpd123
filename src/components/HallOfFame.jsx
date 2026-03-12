@@ -101,7 +101,7 @@ const HallOfFame = () => {
           boxShadow: '0 10px 25px rgba(24, 144, 255, 0.15)',
           border: '1px solid #d6e4ff'
         }}
-        bodyStyle={{ padding: '24px 16px' }}
+        styles={{ body: { padding: '24px 16px' } }}
       >
         {loadingLeaderboard ? (
           <div style={{ textAlign: 'center', padding: '40px 0' }}>

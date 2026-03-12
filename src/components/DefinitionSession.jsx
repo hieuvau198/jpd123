@@ -102,7 +102,7 @@ const DefinitionSession = ({ data, onHome }) => {
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 20px' }}>
-      <Card bordered={false} bodyStyle={{ padding: 0 }}>
+      <Card variant={false} styles={{ body: { padding: 0 } }}>
         <Header 
             mode="Definition" 
             currentIndex={currentIndex} 

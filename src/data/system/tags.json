@@ -8,10 +8,6 @@
     "name": "Advance"
   },
   {
-    "id": "english-3",
-    "name": "English 3"
-  },
-  {
     "id": "english-4",
     "name": "English 4"
   },
@@ -50,21 +46,5 @@
   {
     "id": "english-c1",
     "name": "C1"
-  },
-  {
-    "id": "vocab",
-    "name": "Vocabulary"
-  },
-  {
-    "id": "grammar",
-    "name": "Grammar"
-  },
-  {
-    "id": "math",
-    "name": "Math"
-  },
-  {
-    "id": "other",
-    "name": "Other"
   }
 ]

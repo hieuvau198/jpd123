@@ -82,9 +82,9 @@ const ViewSession = ({ data, onHome, onBack }) => {
   const currentCard = queue[currentIndex];
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: '40px 20px' }}>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: '40px 20px', marginTop: 16 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button ghost icon={<Home size={16}/>} onClick={onBack} style={{ color: '#555' }}>Exit</Button>
+        <Button icon={<ArrowLeft size={16}/>} onClick={onBack} ></Button>
         <Text strong>{currentIndex + 1} / {queue.length}</Text>
       </Flex>
 

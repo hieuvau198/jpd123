@@ -178,7 +178,7 @@ const TypingSession = ({ data, onHome, onBack }) => {
   const inputPlaceholder = direction === 'vi_en' ? "Type English..." : "Type Vietnamese...";
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20, marginTop: 12 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
          <Button icon={<ArrowLeft size={20}/>} onClick={onBack} />
          <Text strong>{currentIndex + 1} / {queue.length}</Text>

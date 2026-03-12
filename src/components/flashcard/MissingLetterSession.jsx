@@ -250,7 +250,7 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20, marginTop: 40 }}>
       <input
         ref={inputRef}
         type="text"
@@ -263,7 +263,7 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
       />
 
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button icon={<ArrowLeft size={16} />} onClick={onBack}>Back</Button>
+        <Button icon={<ArrowLeft size={16} />} onClick={onBack}></Button>
         <div style={{ width: '60%', margin: '0 10px' }}>
              <Progress percent={progressPercent} showInfo={false} size="small" />
         </div>

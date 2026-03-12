@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Space, Badge } from 'antd';
-import { Home, Volume2, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import { Home, Volume2, ArrowRight, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
@@ -137,9 +137,9 @@ const SpellingBeeSession = ({ data, onBack }) => {
   const currentCard = queue[currentIndex];
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20, marginTop: 40 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button icon={<Home size={16} />} onClick={onBack}>Exit</Button>
+        <Button icon={<ArrowLeft size={16} />} onClick={onBack}></Button>
         <Space>
            <Text strong>SPELLING BEE</Text>
            <Text type="secondary">|</Text>

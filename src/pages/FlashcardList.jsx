@@ -28,31 +28,22 @@ const FlashcardList = () => {
   }, [selectedTag]);
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
+    <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
       {/* Header Section */}
       <div className="flex flex-col gap-6 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <button 
-              onClick={() => navigate('/')}
-              className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-all mb-2 -ml-2 w-fit"
-            >
-               <Home size={18}/>
-               <span className="font-medium">Back Home</span>
-            </button>
+            
             <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
               <Layers className="text-yellow-300" />
-              Flashcard Library
+              Words Library
             </h2>
           </div>
         </div>
 
         {/* Tag Filter Bar */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex items-center gap-2 text-white/80 mr-2">
-            <Filter size={20} />
-            <span className="text-sm font-medium whitespace-nowrap">Filter by:</span>
-          </div>
+          
 
           {availableTags.map((tag) => (
             <button

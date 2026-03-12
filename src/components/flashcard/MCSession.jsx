@@ -150,18 +150,18 @@ const MCSession = ({ data, onHome, onBack }) => {
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
       {/* Top Header Row */}
-      <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
+      <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
             <Flex vertical align="center">
-                <Text strong>Question {currentIndex + 1} / {questions.length}</Text>
+                <Text strong>{currentIndex + 1} / {questions.length}</Text>
                 <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
             </Flex>
         </div>
 
         <Button type="text" disabled>
-            Score: {currentScore}%
+            {currentScore}%
         </Button>
       </Flex>
 

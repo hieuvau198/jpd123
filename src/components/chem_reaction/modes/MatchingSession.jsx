@@ -181,7 +181,7 @@ const MatchingSession = ({ data, onBack }) => {
       <div style={{ 
           display: 'grid', 
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-          gap: 20 
+          gap: 12
       }}>
         {gameItems.map((item) => {
             const isSelected = selectedIds.includes(item.uid);
@@ -201,7 +201,7 @@ const MatchingSession = ({ data, onBack }) => {
                     bordered={false}
                     style={{ 
                         ...style,
-                        height: 160, 
+                        height: 140, 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
