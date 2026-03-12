@@ -10,6 +10,7 @@ import { getUserMissions, createMission, updateMission, deleteMission } from '..
 import UserModal from './UserModal';
 import UserMissionsModal from './UserMissionsModal';
 import MissionFormModal from './MissionFormModal';
+import UpdateUserIdsButton from './UpdateUserIdsButton'; // <-- IMPORT NEW COMPONENT
 
 const { Title } = Typography;
 
@@ -209,11 +210,17 @@ const UserManager = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin')}></Button>
-          
         </div>
-        <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>
-          New User
-        </Button>
+        
+        {/* Update the right side of the header to include both buttons */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          {/* Add the Migration Button here and pass loadUsers to refresh when done */}
+          <UpdateUserIdsButton onComplete={loadUsers} />
+          
+          <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>
+            New User
+          </Button>
+        </div>
       </div>
 
       <Card>

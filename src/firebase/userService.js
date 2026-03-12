@@ -24,8 +24,19 @@ export const createUser = async (userData) => {
       ...userData,
       createdAt: serverTimestamp(), // Firebase server time
     };
-    const docRef = await addDoc(collection(db, COLLECTION_NAME), payload);
-    return { success: true, id: docRef.id };
+    
+    // Check if username exists to use as ID
+    if (userData.username) {
+      const docId = userData.username.trim();
+      const docRef = doc(db, COLLECTION_NAME, docId);
+      // setDoc replaces addDoc to specify our own ID
+      await setDoc(docRef, payload);
+      return { success: true, id: docId };
+    } else {
+      // Fallback just in case username is somehow missing
+      const docRef = await addDoc(collection(db, COLLECTION_NAME), payload);
+      return { success: true, id: docRef.id };
+    }
   } catch (error) {
     console.error("Error creating user:", error);
     throw error;
