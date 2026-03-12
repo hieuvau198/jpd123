@@ -50,7 +50,7 @@ export default function MissionFormModal({ visible, onCancel, onSave, editingRec
   const handlePracticeChange = (val) => {
     const item = fetchedData.find(i => i.id === val);
     if (!item) return;
-    const total = item.questions?.length || item.flashcards?.length || item.items?.length || item.words?.length || item.data?.length || 10;
+    const total = item.questions?.length || item.flashcards?.length || item.items?.length || item.words?.length || item.data?.length || item.reactions?.length || 10;
     form.setFieldsValue({ name: item.name || item.title || item.id, totalQuestions: total, targetQuestions: Math.min(10, total) });
   };
 

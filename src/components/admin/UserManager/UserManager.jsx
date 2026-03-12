@@ -182,7 +182,6 @@ const UserManager = () => {
             icon={<Target size={14} />}
             onClick={() => openMissionsList(record)}
           >
-            Missions
           </Button>
         )}
 
