@@ -196,7 +196,7 @@ const MatchingSession = ({ data, onHome, onBack }) => {
 
       <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', // Reduced from 200px
           gap: 12
       }}>
         {gameItems.map((item) => {
