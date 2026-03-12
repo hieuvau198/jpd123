@@ -1,8 +1,8 @@
-// src/components/admin/UserManager.jsx
+// src/components/admin/UserManager/UserManager.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Card, Button, Table, message, Popconfirm, Tag, Input, Space } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy, Search } from 'lucide-react';
+import { Typography, Card, Button, Table, message, Popconfirm, Tag } from 'antd';
+import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
@@ -11,12 +11,12 @@ import UserModal from './UserModal';
 import UserMissionsModal from './UserMissionsModal';
 import MissionFormModal from './MissionFormModal';
 import UpdateUserIdsButton from './UpdateUserIdsButton'; 
+import UserFilter from './UserFilter'; // <-- Import the new filter component
 
 // Import grades from JSON
 import gradesData from '../../../data/system/grades.json';
 
 const { Title } = Typography;
-const { CheckableTag } = Tag;
 
 // Helper to remove Vietnamese diacritics for searching
 const normalizeString = (str) => {
@@ -37,9 +37,10 @@ const UserManager = () => {
   const [isUserModalVisible, setIsUserModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
 
-  // Filter & Search states
+  // Filter & Search & Sort states
   const [searchText, setSearchText] = useState('');
   const [selectedGrades, setSelectedGrades] = useState([]);
+  const [sortBy, setSortBy] = useState('date'); // <-- New state for sorting
 
   // Missions logic states
   const [selectedUser, setSelectedUser] = useState(null);
@@ -58,31 +59,36 @@ const UserManager = () => {
   const loadUsers = async () => {
     setLoading(true);
     const data = await getAllUsers();
-    data.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
     setUsers(data);
     setLoading(false);
   };
 
-  // --- Filter Logic ---
-  const handleGradeToggle = (grade, checked) => {
-    const nextSelectedTags = checked
-      ? [...selectedGrades, grade]
-      : selectedGrades.filter((t) => t !== grade);
-    setSelectedGrades(nextSelectedTags);
+  // --- Filter and Sort Logic ---
+  const getProcessedUsers = () => {
+    // 1. Filter
+    let processed = users.filter((user) => {
+      const matchesGrade = selectedGrades.length === 0 || selectedGrades.includes(user.grade);
+      const normalizedSearchText = normalizeString(searchText).toLowerCase();
+      const normalizedUserName = normalizeString(user.name).toLowerCase();
+      const matchesName = normalizedSearchText === '' || normalizedUserName.includes(normalizedSearchText);
+      return matchesGrade && matchesName;
+    });
+
+    // 2. Sort
+    processed.sort((a, b) => {
+      if (sortBy === 'name') {
+        return normalizeString(a.name || '').localeCompare(normalizeString(b.name || ''));
+      } else if (sortBy === 'coin') {
+        return (b.personal_coins || 0) - (a.personal_coins || 0);
+      } else { // default to 'date'
+        return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
+      }
+    });
+
+    return processed;
   };
 
-  const filteredUsers = users.filter((user) => {
-    // 1. Grade Filter Check
-    // If no grades selected, pass check. Otherwise, ensure user.grade is in selected list
-    const matchesGrade = selectedGrades.length === 0 || selectedGrades.includes(user.grade);
-
-    // 2. Name Filter Check (Vietnamese Normalization)
-    const normalizedSearchText = normalizeString(searchText).toLowerCase();
-    const normalizedUserName = normalizeString(user.name).toLowerCase();
-    const matchesName = normalizedSearchText === '' || normalizedUserName.includes(normalizedSearchText);
-
-    return matchesGrade && matchesName;
-  });
+  const processedUsers = getProcessedUsers();
 
   // --- User Handlers ---
   const handleShowUserModal = (record = null) => {
@@ -164,7 +170,6 @@ const UserManager = () => {
       const payload = {
         ...values,
         userId: selectedUser.id,
-        // Calculate earning_coins based on percentage
         earning_coins: Math.floor((percentage / 100) * maxCoins),
         startDate: values.startDate ? values.startDate.toISOString() : null,
         endDate: values.endDate ? values.endDate.toISOString() : null,
@@ -198,7 +203,6 @@ const UserManager = () => {
             <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
             <Tag color='green'>{record.grade}</Tag>
           </div>
-          {/* Display personal_coins */}
           <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
             <Trophy size={16} style={{ color: '#faad14' }} />
             <Typography.Text type="secondary">
@@ -260,52 +264,22 @@ const UserManager = () => {
         </div>
       </div>
 
-      {/* Filters & Search Section */}
-      <Card style={{ marginBottom: 20 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          
-          {/* Search Bar */}
-          <Input 
-            prefix={<Search size={16} style={{ color: '#bfbfbf' }} />}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            allowClear
-            style={{ maxWidth: 400 }}
-          />
+      {/* Extracted Filters & Sort Component */}
+      <UserFilter 
+        searchText={searchText}
+        setSearchText={setSearchText}
+        selectedGrades={selectedGrades}
+        setSelectedGrades={setSelectedGrades}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        gradesData={gradesData}
+      />
 
-          {/* Grade Tags Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            {gradesData.map((grade) => (
-              <CheckableTag
-                key={grade}
-                checked={selectedGrades.includes(grade)}
-                onChange={(checked) => handleGradeToggle(grade, checked)}
-                style={{
-                  border: '1px solid #d9d9d9',
-                  padding: '4px 12px',
-                  borderRadius: '16px',
-                  fontSize: '14px'
-                }}
-              >
-                {grade}
-              </CheckableTag>
-            ))}
-            
-            {/* Clear Filters Button */}
-            {selectedGrades.length > 0 && (
-              <Button type="link" size="small" onClick={() => setSelectedGrades([])}>
-                Clear
-              </Button>
-            )}
-          </div>
-        </div>
-      </Card>
-
-      {/* Table - Replaced 'users' with 'filteredUsers' */}
+      {/* Table */}
       <Card>
         <Table 
           columns={userColumns} 
-          dataSource={filteredUsers} 
+          dataSource={processedUsers} 
           rowKey="id" 
           loading={loading} 
           scroll={{ x: true }} 
