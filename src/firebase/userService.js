@@ -1,6 +1,7 @@
 // src/firebase/userService.js
 import { db } from './firebase-config';
-import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where, orderBy, limit } from 'firebase/firestore'; // Added orderBy and limit
+import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, query, where, orderBy, limit, setDoc } from 'firebase/firestore'; 
+import titlesData from '../data/system/titles.json'; // Import titles
 
 const COLLECTION_NAME = 'users';
 
@@ -20,19 +21,20 @@ export const getAllUsers = async () => {
 
 export const createUser = async (userData) => {
   try {
+    const defaultTitleInfo = titlesData[0]; // Gets {"title": "Noob", "minLevel": 1, ...}
+
     const payload = {
       ...userData,
-      level: 1,           // Default starting level
-      title: 'Noob',      // Default starting title
+      level: defaultTitleInfo.minLevel,           // First level in list
+      title: defaultTitleInfo.title,              // First title in list
       personal_coins: 0,
-      createdAt: serverTimestamp(), // Firebase server time
+      createdAt: serverTimestamp(), 
     };
     
     // Check if username exists to use as ID
     if (userData.username) {
       const docId = userData.username.trim();
       const docRef = doc(db, COLLECTION_NAME, docId);
-      // setDoc replaces addDoc to specify our own ID
       await setDoc(docRef, payload);
       return { success: true, id: docId };
     } else {
@@ -103,8 +105,6 @@ export const getTopUsersByCoins = async (limitCount = 5) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      // Assuming you might want to filter by role='student', uncomment the next line if so
-      // where("role", "==", "student"),
       orderBy("personal_coins", "desc"),
       limit(limitCount)
     );

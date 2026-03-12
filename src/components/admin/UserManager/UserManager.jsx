@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Popconfirm, Tag } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy } from 'lucide-react';
+import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy, Award } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 

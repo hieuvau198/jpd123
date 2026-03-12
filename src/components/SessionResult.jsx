@@ -3,6 +3,7 @@ import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress } from 'a
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
 import { updateUser } from '../firebase/userService'; 
+import titlesData from '../data/system/titles.json'; // Import titles
 
 const { Title, Text } = Typography;
 
@@ -56,15 +57,9 @@ const SessionResult = ({
           if (newPercentage > currentPercentage) {
             const isCompleted = newPercentage >= 100;
 
-            // 1. Get correct variables from the mission
             const maxCoins = pendingMission.max_coins || 0;
             const currentEarningCoins = pendingMission.earning_coins || 0;
-            
-            // 2. Calculate expected coins based on percentage
-            // Example: 500 * (55 / 100) = 275 coins
             const expectedCoins = Math.floor(maxCoins * (newPercentage / 100));
-            
-            // 3. Find out if we need to add new coins
             const newlyEarnedCoins = Math.max(0, expectedCoins - currentEarningCoins);
             const newTotalEarningCoins = currentEarningCoins + newlyEarnedCoins;
 
@@ -77,7 +72,6 @@ const SessionResult = ({
             if (isCompleted) {
               updatePayload.status = 'Đã chinh phục';
               updatePayload.completedAt = new Date();
-              // Ensure they get full max_coins if completed
               if (newTotalEarningCoins < maxCoins) {
                   updatePayload.earning_coins = maxCoins;
               }
@@ -87,14 +81,35 @@ const SessionResult = ({
 
             await updateMission(pendingMission.id, updatePayload);
 
-            // 4. Update the user's personal balance with the newly earned coins
+            let hasNewTitle = false;
+            let newTitle = user.title || titlesData[0].title;
+
+            // Update user's personal balance, level, and title
             if (newlyEarnedCoins > 0) {
                const currentPersonalCoins = user.personal_coins || 0;
                const newTotalCoins = currentPersonalCoins + newlyEarnedCoins;
                
-               await updateUser(user.id, { personal_coins: newTotalCoins });
+               // Calculate Level (Assumption: 100 coins = 1 level, tweak if needed)
+               const newLevel = Math.floor(newTotalCoins / 100) + 1;
+               
+               // Find matching Title from JSON based on level
+               const titleObj = titlesData.find(t => newLevel >= t.minLevel && newLevel <= t.maxLevel);
+               const calculatedTitle = titleObj ? titleObj.title : titlesData[0].title;
+
+               if (calculatedTitle !== user.title) {
+                 hasNewTitle = true;
+                 newTitle = calculatedTitle;
+               }
+
+               await updateUser(user.id, { 
+                 personal_coins: newTotalCoins,
+                 level: newLevel,
+                 title: newTitle
+               });
                
                user.personal_coins = newTotalCoins;
+               user.level = newLevel;
+               user.title = newTitle;
                localStorage.setItem(storageKey, JSON.stringify(user));
             }
             
@@ -104,7 +119,9 @@ const SessionResult = ({
               previousPercent: Math.round(currentPercentage),
               newPercent: Math.round(newPercentage),
               gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage),
-              newlyEarnedCoins: newlyEarnedCoins
+              newlyEarnedCoins: newlyEarnedCoins,
+              hasNewTitle,
+              newTitle
             });
             setShowMissionModal(true);
           }
@@ -123,7 +140,6 @@ const SessionResult = ({
     <Spin spinning={isCheckingMission} tip="Checking your mission progress..." size="large">
       <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
         
-        {/* Left Side: Score & Actions */}
         <Flex vertical align="center" gap="large">
           <img 
             src={rating.img} 
@@ -144,7 +160,6 @@ const SessionResult = ({
           </Flex>
         </Flex>
 
-        {/* Right Side: Ranking List */}
         <Flex vertical gap="middle" align="center">
           <Text strong style={{ fontSize: 20, display: 'block', marginBottom: 8 }}>Ranking Levels</Text>
           <Flex vertical gap="small" style={{ maxHeight: '600px', overflowY: 'auto', paddingRight: 10 }}>
@@ -170,7 +185,6 @@ const SessionResult = ({
         </Flex>
       </Flex>
 
-      {/* The Big Mission Result Modal */}
       <Modal
         open={showMissionModal}
         centered
@@ -184,7 +198,15 @@ const SessionResult = ({
           title={missionResult?.isCompleted ? "🎉 Thưởng Nhiệm Vụ! 🎉" : "🚀 Thưởng Nhiệm Vụ! 🚀"}
           subTitle={
             <div style={{ marginTop: 20 }}>
-              {/* NEW: Display gained points side-by-side with coins */}
+              {/* TITLE COMPLIMENT UI */}
+              {missionResult?.hasNewTitle && (
+                <div style={{ padding: '15px', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: '8px', marginBottom: '20px' }}>
+                  <Text style={{ fontSize: 20, display: 'block', color: '#faad14', fontWeight: 'bold' }}>
+                    🌟 Incredible! You've been promoted to Title: {missionResult.newTitle}! 🌟
+                  </Text>
+                </div>
+              )}
+
               {missionResult?.gainedPercent > 0 && (
                 <Text style={{ fontSize: 18, display: 'block', marginBottom: 10, color: '#52c41a', fontWeight: 'bold' }}>
                   📈 +{missionResult.gainedPercent} Points Gained!

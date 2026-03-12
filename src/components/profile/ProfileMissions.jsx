@@ -76,7 +76,7 @@ const ProfileMissions = ({ currentUser }) => {
   // 1. Removed the 'Action' column entirely
   const columns = [
     { 
-      title: 'Mission Name', 
+      title: 'Nhiệm Vụ', 
       dataIndex: 'name', 
       key: 'name', 
       render: (text, record) => {
@@ -105,7 +105,7 @@ const ProfileMissions = ({ currentUser }) => {
       }
     },
     {
-  title: 'Coins',
+  title: 'Coin',
   key: 'coins',
   align: 'right',
   render: (_, record) => (
@@ -126,7 +126,6 @@ const ProfileMissions = ({ currentUser }) => {
   return (
     <Card 
       style={{ flex: '2 1 600px', borderRadius: 12 }} 
-      title={<Title level={4} style={{ margin: 0 }}>My Missions</Title>}
     >
       <Table 
         columns={columns} 

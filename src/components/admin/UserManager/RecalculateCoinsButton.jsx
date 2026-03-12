@@ -4,59 +4,69 @@ import { Button, Modal, message } from 'antd';
 import { Calculator } from 'lucide-react';
 import { updateMission, getAllMissions } from '../../../firebase/missionService';
 import { updateUser } from '../../../firebase/userService';
+import titlesData from '../../../data/system/titles.json';
 
 const RecalculateCoinsButton = ({ missions, onRefresh }) => {
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Extracted the core logic so it can accept any array of missions
   const performRecalculation = async (missionsToUpdate) => {
-  setLoading(true);
-  try {
-    // 1. Group missions by User ID
-    const missionsByUser = missionsToUpdate.reduce((acc, m) => {
-      if (!m.userId) return acc;
-      if (!acc[m.userId]) acc[m.userId] = [];
-      acc[m.userId].push(m);
-      return acc;
-    }, {});
+    setLoading(true);
+    try {
+      // 1. Group missions by User ID
+      const missionsByUser = missionsToUpdate.reduce((acc, m) => {
+        if (!m.userId) return acc;
+        if (!acc[m.userId]) acc[m.userId] = [];
+        acc[m.userId].push(m);
+        return acc;
+      }, {});
 
-    for (const userId in missionsByUser) {
-      let userTotalCoins = 0;
-      const userMissions = missionsByUser[userId];
+      for (const userId in missionsByUser) {
+        let userTotalCoins = 0;
+        const userMissions = missionsByUser[userId];
 
-      for (const mission of userMissions) {
-        let currentPercentage = mission.percentage || 0;
-        if (mission.status === 'Đã chinh phục') currentPercentage = 100;
+        for (const mission of userMissions) {
+          let currentPercentage = mission.percentage || 0;
+          if (mission.status === 'Đã chinh phục') currentPercentage = 100;
 
-        const targetQuestions = mission.targetQuestions || 0;
-        const correctMaxCoins = targetQuestions * 10;
-        const correctEarningCoins = Math.floor((correctMaxCoins * currentPercentage) / 100);
+          const targetQuestions = mission.targetQuestions || 0;
+          const correctMaxCoins = targetQuestions * 10;
+          const correctEarningCoins = Math.floor((correctMaxCoins * currentPercentage) / 100);
 
-        // Update mission if data is stale
-        if (mission.max_coins !== correctMaxCoins || mission.earning_coins !== correctEarningCoins) {
-          await updateMission(mission.id, {
-            max_coins: correctMaxCoins,
-            earning_coins: correctEarningCoins,
-            percentage: currentPercentage
-          });
+          if (mission.max_coins !== correctMaxCoins || mission.earning_coins !== correctEarningCoins) {
+            await updateMission(mission.id, {
+              max_coins: correctMaxCoins,
+              earning_coins: correctEarningCoins,
+              percentage: currentPercentage
+            });
+          }
+          userTotalCoins += correctEarningCoins;
         }
-        userTotalCoins += correctEarningCoins;
+
+        // Calculate Level (Assumption: 100 coins = 1 level, tweak if needed)
+        const newLevel = Math.floor(userTotalCoins / 100) + 1;
+        
+        // Find matching Title from JSON based on level
+        const titleObj = titlesData.find(t => newLevel >= t.minLevel && newLevel <= t.maxLevel);
+        const newTitle = titleObj ? titleObj.title : titlesData[0].title;
+
+        // Sync the sum of all mission earnings, level, and title to the User record
+        await updateUser(userId, { 
+          personal_coins: userTotalCoins,
+          level: newLevel,
+          title: newTitle
+        });
       }
 
-      // Sync the sum of all mission earnings to the User record
-      await updateUser(userId, { personal_coins: userTotalCoins });
+      message.success("Recalculation and User balances updated.");
+      if (onRefresh) onRefresh();
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to recalculate.");
+    } finally {
+      setLoading(false);
     }
-
-    message.success("Recalculation and User balances updated.");
-    if (onRefresh) onRefresh();
-  } catch (error) {
-    console.error(error);
-    message.error("Failed to recalculate.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleRecalculateCurrent = () => {
     performRecalculation(missions);
