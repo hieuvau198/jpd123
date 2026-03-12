@@ -185,18 +185,15 @@ const MCSession = ({ data, onBack }) => {
   // ---------------- Render Mode Selection Screen ----------------
   if (!mode) {
     return (
-      <div className="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col items-center">
+      <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col items-center">
         <div className="w-full flex justify-start mb-6">
           <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-            Back
+            
           </Button>
         </div>
         
         <div className="bg-white/10 p-8 sm:p-12 rounded-2xl w-full text-center text-white border border-white/20">
-          <Title level={2} style={{ color: 'white', marginBottom: '8px' }}>Multiple Choice</Title>
-          <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', display: 'block', marginBottom: '40px' }}>
-            Choose a format for {data?.title}
-          </Text>
+          
           
           <Flex vertical gap="large" style={{ maxWidth: 400, margin: '0 auto' }}>
             <Button size="large" block style={{ height: 'auto', padding: '16px' }} onClick={() => handleModeSelect('name-formula')}>
@@ -229,13 +226,13 @@ const MCSession = ({ data, onBack }) => {
   const progressPercent = Math.round((completedCount / totalQuestions) * 100);
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-4xl mx-auto flex flex-col">
+    <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-4xl mx-auto flex flex-col">
       <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button icon={<ArrowLeft size={20} />} onClick={resetSession}>Modes</Button>
+        <Button icon={<ArrowLeft size={20} />} onClick={resetSession}></Button>
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
           <Flex vertical align="center">
-            <Text strong style={{ color: 'white' }}>Learned: {completedCount} / {totalQuestions}</Text>
+            <Text strong style={{ color: 'white' }}>{completedCount} / {totalQuestions}</Text>
             <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
           </Flex>
         </div>
@@ -252,11 +249,7 @@ const MCSession = ({ data, onBack }) => {
         bodyStyle={{ padding: '40px 24px' }}
       >
         <div className="text-center mb-10">
-          <Text type="secondary" style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: 1 }}>
-            {mode === 'name-formula' && 'Which formula belongs to:'}
-            {mode === 'formula-formula' && 'What are the products for:'}
-            {mode === 'formula-description' && 'What is the description of:'}
-          </Text>
+          
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', marginTop: 16, color: '#1f2937' }}>
             {renderContent(currentQuestion.question, currentQuestion.qType)}
           </div>

@@ -79,11 +79,11 @@ const DefinitionSession = ({ data, onBack }) => {
   const currentReaction = reactions[currentIndex];
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col items-center">
+    <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col items-center">
       {/* Header */}
       <div className="w-full flex justify-between mb-6 items-center">
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-          Back to Modes
+          
         </Button>
         <span className="text-white font-semibold">
           {currentIndex + 1} / {reactions.length}

@@ -1,7 +1,9 @@
+// src/components/HallOfFame.jsx
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, List, Avatar, Spin, Button } from 'antd';
-import { Trophy, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Card, Typography, List, Avatar, Spin, Button, Tooltip } from 'antd';
+import { Trophy, Flame, ChevronLeft, ChevronRight, Award } from 'lucide-react';
 import { getTopUsersByCoins } from '../firebase/userService';
+import TitleListModal from './tittle/TitleListModal'; // Import the new modal
 
 const { Title, Text } = Typography;
 
@@ -19,6 +21,7 @@ const formatDisplayName = (fullName) => {
 const HallOfFame = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true);
+  const [isTitleModalVisible, setIsTitleModalVisible] = useState(false); // Modal state
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -64,20 +67,32 @@ const HallOfFame = () => {
 
   return (
     <>
-      <Title
-        level={3}
-        style={{
-          marginBottom: 44,
-          color: "#262626",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8
-        }}
-      >
-        <Trophy size={24} style={{ color: "#fadb14" }} />
-        Hall of Fame
-      </Title>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 44, position: 'relative' }}>
+        <Title
+          level={3}
+          style={{
+            margin: 0,
+            color: "#262626",
+            display: "flex",
+            alignItems: "center",
+            gap: 8
+          }}
+        >
+          <Trophy size={24} style={{ color: "#fadb14" }} />
+          Hall of Fame
+        </Title>
+        
+        {/* Title List Button overlayed on the right */}
+        <Tooltip title="View Title Ranks">
+          <Button 
+            type="dashed" 
+            shape="circle"
+            icon={<Award size={18} color="#faad14" />} 
+            onClick={() => setIsTitleModalVisible(true)}
+            style={{ position: 'absolute', right: 0 }}
+          />
+        </Tooltip>
+      </div>
       
       <Card 
         style={{ 
@@ -175,6 +190,11 @@ const HallOfFame = () => {
           </>
         )}
       </Card>
+
+      <TitleListModal 
+        visible={isTitleModalVisible} 
+        onClose={() => setIsTitleModalVisible(false)} 
+      />
     </>
   );
 };

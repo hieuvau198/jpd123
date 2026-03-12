@@ -167,19 +167,14 @@ const MatchingSession = ({ data, onBack }) => {
   const progressPercent = Math.round((sectionIndex / totalSections) * 100);
 
   return (
-    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20 }}>
+    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20, marginTop:8 }}>
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
         
-        <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
-            <Flex vertical align="center">
-                <Text strong style={{ color: 'white' }}>Section {sectionIndex + 1} / {totalSections}</Text>
-                <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
-            </Flex>
-        </div>
+        
 
         <Button type="text" disabled style={{ color: 'white' }}>
-            {matchedIds.size / 2} / {gameItems.length / 2} pairs
+            {matchedIds.size / 2} / {gameItems.length / 2}
         </Button>
       </Flex>
 

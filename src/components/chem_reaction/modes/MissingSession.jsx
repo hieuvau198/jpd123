@@ -297,7 +297,7 @@ const MissingSession = ({ data, onBack }) => {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col">
+    <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col">
       <input
         ref={inputRef}
         type="text"
@@ -326,7 +326,7 @@ const MissingSession = ({ data, onBack }) => {
 
       <div className="flex items-center justify-between mb-6">
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-          Exit Mode
+          
         </Button>
         <Text className="text-white text-lg font-semibold">
           {completedCount} / {totalQuestions}

@@ -1,27 +1,59 @@
-import React from 'react';
-import { Card, Typography, Button, Divider } from 'antd';
-import { User, Coins, Trophy } from 'lucide-react';
+// src/components/profile/ProfileInfo.jsx
+import React, { useState } from 'react';
+import { Card, Typography, Button, Divider, Tag } from 'antd';
+import { User, Trophy, Award, BicepsFlexed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import TitleListModal from '../tittle/TitleListModal';
+import titlesData from '../../data/system/titles.json';
 
 const { Title, Text } = Typography;
 
 const ProfileInfo = ({ user }) => {
   const navigate = useNavigate();
+  const [isTitleModalVisible, setIsTitleModalVisible] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('userId'); // Fallback removal
-    localStorage.removeItem('userSession'); // Since Profile.jsx handles this session logic
-    navigate('/login');
-  };
+  // Calculate level and find matching title
+  const userLevel = Math.floor((user?.personal_coins || 0) / 100) + 1;
+  const userTitleObj = titlesData.find(t => userLevel >= t.minLevel && userLevel <= t.maxLevel);
+  const userTitle = userTitleObj ? userTitleObj.title : "Unknown Scholar";
 
   return (
     <Card style={{ flex: '1 1 300px', textAlign: 'center', borderRadius: 12, height: 'fit-content', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
       <User size={60} color="#52c41a" style={{ marginBottom: 10 }}/>
-      <Title level={3} style={{ marginTop: 0 }}> {user?.name || 'Student'}</Title>
-      <Text type="secondary" style={{ display: 'block', marginBottom: 20 }}>
-        Welcome back
-      </Text>
+      <Title level={3} style={{ marginTop: 0, marginBottom: 8 }}> {user?.name || 'Student'}</Title>
+      
+      {/* Beautiful Title Display */}
+      <Tag 
+        icon={<Award size={14} style={{ marginRight: 4, verticalAlign: 'middle' }} />} 
+        color="magenta-inverse" 
+        style={{ 
+          fontSize: '16px', 
+          padding: '4px 12px', 
+          borderRadius: '12px', 
+          marginBottom: 16,
+          marginRight: 12, 
+          display: 'inline-flex', 
+          alignItems: 'center',
+          boxShadow: '0 2px 6px rgba(250, 173, 20, 0.2)'
+        }}
+      >
+        {userTitle}
+      </Tag>
+
+      <Tag 
+        color="lime-inverse" 
+        style={{ 
+          fontSize: '16px', 
+          padding: '4px 12px', 
+          borderRadius: '12px', 
+          marginBottom: 16, 
+          display: 'inline-flex', 
+          alignItems: 'center',
+          boxShadow: '0 2px 6px rgba(250, 173, 20, 0.2)'
+        }}
+      >
+        Level {userLevel}
+      </Tag>
       
       {/* Beautiful Coins Display */}
       <div style={{
@@ -61,10 +93,15 @@ const ProfileInfo = ({ user }) => {
         <Button type="default" onClick={() => navigate('/')}>
           Home
         </Button>
-        <Button danger onClick={handleLogout}>
-          Logout
+        <Button type="primary" icon={<Award size={16} />} onClick={() => setIsTitleModalVisible(true)}>
+          Titles
         </Button>
       </div>
+
+      <TitleListModal 
+        visible={isTitleModalVisible} 
+        onClose={() => setIsTitleModalVisible(false)} 
+      />
     </Card>
   );
 };

@@ -195,14 +195,14 @@ const SwapSession = ({ data, onBack }) => {
     : `\\rightarrow`;
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-4xl mx-auto flex flex-col items-center">
+    <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-4xl mx-auto flex flex-col items-center">
       <div className="w-full flex justify-between items-center mb-6">
         <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-          Modes
+          
         </Button>
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
           <Flex vertical align="center">
-            <Text strong style={{ color: 'white' }}>Learned: {completedCount} / {totalQuestions}</Text>
+            <Text strong style={{ color: 'white' }}>{completedCount} / {totalQuestions}</Text>
             <Progress percent={progressPercent} showInfo={false} size="small" status="active" />
           </Flex>
         </div>

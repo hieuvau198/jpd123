@@ -36,14 +36,14 @@ const ChemReactionSession = ({ data, onHome }) => {
   }
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-5xl mx-auto">
+    <div className="mt-8 min-h-screen p-4 sm:p-8 max-w-5xl mx-auto">
       <div className="mb-8 flex items-center gap-4">
         <Button 
           icon={<ArrowLeft size={16} />} 
           onClick={onHome}
           className="flex items-center"
         >
-          Back
+          
         </Button>
         <Title level={2} style={{ margin: 0, color: 'white' }}>
           {data?.title || 'Chemistry Reaction Practice'}
