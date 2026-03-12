@@ -1,0 +1,15 @@
+[
+  { "title": "Noob", "minLevel": 1, "maxLevel": 10 },
+  { "title": "Farmer", "minLevel": 11, "maxLevel": 30 },
+  { "title": "Warrior", "minLevel": 31, "maxLevel": 60 },
+  { "title": "Master", "minLevel": 61, "maxLevel": 100 },
+  { "title": "Hero", "minLevel": 101, "maxLevel": 150 },
+  { "title": "King", "minLevel": 151, "maxLevel": 210 },
+  { "title": "Champion", "minLevel": 211, "maxLevel": 280 },
+  { "title": "Challenger", "minLevel": 281, "maxLevel": 370 },
+  { "title": "Destroyer", "minLevel": 371, "maxLevel": 470 },
+  { "title": "Legendary", "minLevel": 471, "maxLevel": 580 },
+  { "title": "Touch Grass", "minLevel": 581, "maxLevel": 600 },
+  { "title": "Donald Trump", "minLevel": 601, "maxLevel": 800 },
+  { "title": "Diddy", "minLevel": 801, "maxLevel": 999999 }
+]

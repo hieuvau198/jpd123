@@ -22,6 +22,9 @@ export const createUser = async (userData) => {
   try {
     const payload = {
       ...userData,
+      level: 1,           // Default starting level
+      title: 'Noob',      // Default starting title
+      personal_coins: 0,
       createdAt: serverTimestamp(), // Firebase server time
     };
     

@@ -202,6 +202,10 @@ const UserManager = () => {
           <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
             <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
             <Tag color='green'>{record.grade}</Tag>
+            {/* NEW: Display Title */}
+            <Tag color='purple' style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+               <Award size={12} /> {record.title || 'Noob'}
+            </Tag>
           </div>
           <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
             <Trophy size={16} style={{ color: '#faad14' }} />
