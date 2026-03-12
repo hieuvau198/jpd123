@@ -1,8 +1,8 @@
 // src/components/admin/ChemReactionManager.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Alert, Flex } from 'antd';
-import { UploadCloud, Trash2, RefreshCw, Filter, Eye } from 'lucide-react';
-// Changed from tags.json to chem_tags.json
+// Add Download to imports
+import { UploadCloud, Trash2, RefreshCw, Filter, Eye, Download } from 'lucide-react';
 import tagsData from '../../data/system/chem_tags.json';
 
 import 'katex/dist/katex.min.css';
@@ -64,6 +64,22 @@ const ChemReactionManager = ({ icon, color, uploadText, uploadColor, fetchFn, fe
     finally { setLoading(false); }
   };
 
+  // --- NEW DOWNLOAD FUNCTION ---
+  const handleDownload = (record) => {
+    const jsonString = JSON.stringify(record, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${record.id || 'reaction_source'}.json`;
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const renderMixedText = (text) => {
     if (!text || typeof text !== 'string') return text;
     if (!text.includes('$')) return <span>{text}</span>;
@@ -93,10 +109,12 @@ const ChemReactionManager = ({ icon, color, uploadText, uploadColor, fetchFn, fe
     {
       title: 'Action',
       key: 'action',
-      width: 100,
+      width: 140, // Expanded slightly for 3 buttons
       render: (_, record) => (
         <div style={{ display: 'flex', gap: 8 }}>
           <Button type="text" icon={<Eye size={16} />} onClick={() => { setPreviewData(record); setPreviewVisible(true); }} />
+          {/* NEW DOWNLOAD BUTTON */}
+          <Button type="text" icon={<Download size={16} />} onClick={() => handleDownload(record)} />
           <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
             <Button danger type="text" icon={<Trash2 size={16} />} />
           </Popconfirm>

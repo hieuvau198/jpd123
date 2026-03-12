@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Alert, Flex } from 'antd';
-import { UploadCloud, Trash2, RefreshCw, Filter, Eye, CheckCircle, Brain } from 'lucide-react';
-// Changed from tags.json to chem_tags.json
+// Add Download to the imports
+import { UploadCloud, Trash2, RefreshCw, Filter, Eye, CheckCircle, Brain, Download } from 'lucide-react';
 import tagsData from '../../data/system/chem_tags.json';
 
 import 'katex/dist/katex.min.css';
@@ -13,7 +13,6 @@ const { Option } = Select;
 const ChemistryManager = ({ icon, color, uploadText, uploadColor, fetchFn, fetchByTagFn, saveFn, deleteFn }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedTag, setSelectedTag] = useState('none');
   const processingFiles = useRef(0);
 
@@ -62,6 +61,22 @@ const ChemistryManager = ({ icon, color, uploadText, uploadColor, fetchFn, fetch
     finally { setLoading(false); }
   };
 
+  // --- NEW DOWNLOAD FUNCTION ---
+  const handleDownload = (record) => {
+    const jsonString = JSON.stringify(record, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${record.id || 'source'}.json`;
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const renderMixedText = (text) => {
     if (!text || typeof text !== 'string') return text;
     if (!text.includes('$')) return <span>{text}</span>;
@@ -91,10 +106,12 @@ const ChemistryManager = ({ icon, color, uploadText, uploadColor, fetchFn, fetch
     {
       title: 'Action',
       key: 'action',
-      width: 100,
+      width: 140, // Increased width to fit the 3 buttons safely
       render: (_, record) => (
         <div style={{ display: 'flex', gap: 8 }}>
           <Button type="text" icon={<Eye size={16} />} onClick={() => { setPreviewData(record); setPreviewVisible(true); }} />
+          {/* NEW DOWNLOAD BUTTON */}
+          <Button type="text" icon={<Download size={16} />} onClick={() => handleDownload(record)} />
           <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
             <Button danger type="text" icon={<Trash2 size={16} />} />
           </Popconfirm>
@@ -120,12 +137,12 @@ const ChemistryManager = ({ icon, color, uploadText, uploadColor, fetchFn, fetch
       </div>
       
       <div style={{ marginBottom: 20, padding: 20, border: '1px dashed #d9d9d9', borderRadius: 8, background: '#fafafa' }}>
-  <Upload.Dragger accept=".json,.txt" multiple={true} showUploadList={false} beforeUpload={handleImport}>
-    <p className="ant-upload-drag-icon"><UploadCloud size={32} color={uploadColor} /></p>
-    <p className="ant-upload-text">{uploadText}</p>
-    <p className="ant-upload-hint">Ignores if ID already exists.</p>
-  </Upload.Dragger>
-</div>
+        <Upload.Dragger accept=".json,.txt" multiple={true} showUploadList={false} beforeUpload={handleImport}>
+          <p className="ant-upload-drag-icon"><UploadCloud size={32} color={uploadColor} /></p>
+          <p className="ant-upload-text">{uploadText}</p>
+          <p className="ant-upload-hint">Ignores if ID already exists.</p>
+        </Upload.Dragger>
+      </div>
 
       <Table columns={columns} dataSource={data} rowKey="id" loading={loading} pagination={{ pageSize: 10 }} size="small" />
 
