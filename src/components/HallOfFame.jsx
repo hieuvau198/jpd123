@@ -1,9 +1,10 @@
 // src/components/HallOfFame.jsx
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, List, Avatar, Spin, Button, Tooltip } from 'antd';
-import { Trophy, Flame, ChevronLeft, ChevronRight, Award } from 'lucide-react';
+import { Card, Typography, List, Avatar, Spin, Button, Tooltip, Tag } from 'antd';
+import { Trophy, ChevronLeft, ChevronRight, Award } from 'lucide-react'; // Removed Flame
 import { getTopUsersByCoins } from '../firebase/userService';
-import TitleListModal from './tittle/TitleListModal'; // Import the new modal
+import TitleListModal from './tittle/TitleListModal';
+import titlesData from '../data/system/titles.json'; 
 
 const { Title, Text } = Typography;
 
@@ -12,16 +13,21 @@ const formatDisplayName = (fullName) => {
   if (!fullName) return 'Unknown Scholar';
   
   const parts = fullName.trim().split(/\s+/);
-  if (parts.length <= 1) return fullName; // If it's a single word, just return it
+  if (parts.length <= 1) return fullName; 
   
-  // Return last word + space + first word
   return `${parts[parts.length - 1]} ${parts[0]}`;
+};
+
+// Helper function to get title based on level
+const getUserTitle = (level) => {
+  const titleObj = titlesData.find(t => level >= t.minLevel && level <= t.maxLevel);
+  return titleObj ? titleObj.title : 'Unknown';
 };
 
 const HallOfFame = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true);
-  const [isTitleModalVisible, setIsTitleModalVisible] = useState(false); // Modal state
+  const [isTitleModalVisible, setIsTitleModalVisible] = useState(false); 
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -39,7 +45,7 @@ const HallOfFame = () => {
   }, []);
 
   const renderRankBadge = (globalIndex) => {
-    if (globalIndex === 0) return <span style={{ fontSize: '28px', textShadow: '0 0 10px gold' }}>🥇</span>;
+    if (globalIndex === 0) return <span style={{ fontSize: '28px', textShadow: '0 0 10px gold' }}>👑</span>;
     if (globalIndex === 1) return <span style={{ fontSize: '28px', textShadow: '0 0 10px silver' }}>🥈</span>;
     if (globalIndex === 2) return <span style={{ fontSize: '28px', textShadow: '0 0 10px #cd7f32' }}>🥉</span>;
     return (
@@ -114,14 +120,21 @@ const HallOfFame = () => {
               itemLayout="horizontal"
               dataSource={displayedUsers}
               renderItem={(user, index) => {
-                const globalIndex = currentPage * itemsPerPage + index; // Calculate actual rank (0-14)
+                const globalIndex = currentPage * itemsPerPage + index; 
+                // Calculate the user's level and title
+                const userLevel = Math.floor((user.personal_coins || 0) / 100) + 1;
+                const userTitle = getUserTitle(userLevel);
                 
                 return (
                   <List.Item 
                     style={{ 
                       borderBottom: 'none', 
                       padding: '12px 16px',
-                      background: globalIndex === 0 ? 'linear-gradient(90deg, #fffbe6, #fff1b8)' : 'transparent',
+                      background:
+  globalIndex === 0 ? 'linear-gradient(90deg, #fffbe6, #fff1b8)' :
+  globalIndex === 1 ? 'linear-gradient(90deg, #f6ffed, #d9f7be)' :
+  globalIndex === 2 ? 'linear-gradient(90deg, #fff1f0, #ffccc7)' :
+  'transparent',
                       borderRadius: 12,
                       marginBottom: 8,
                       transition: 'transform 0.2s',
@@ -136,7 +149,11 @@ const HallOfFame = () => {
                           <Avatar 
                             size={46} 
                             style={{ 
-                              backgroundColor: globalIndex === 0 ? '#faad14' : '#1890ff',
+                              backgroundColor:
+  globalIndex === 0 ? '#faad14' :
+  globalIndex === 1 ? '#52c41a' :
+  globalIndex === 2 ? '#ff4d4f' :
+  '#1890ff',
                               border: globalIndex === 0 ? '2px solid #ffe58f' : 'none'
                             }}
                           >
@@ -150,10 +167,14 @@ const HallOfFame = () => {
                         </Text>
                       }
                       description={
-                        <Text style={{ color: '#595959', fontWeight: '500' }}>
-                          <Flame size={14} color="#ff4d4f" style={{ marginRight: 4, verticalAlign: 'middle' }} />
-                          Level {Math.floor((user.personal_coins || 0) / 100) + 1}
-                        </Text>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px', marginTop: '4px' }}>
+                          <Tag color="gold" style={{ margin: 0, borderRadius: '12px', border: '1px solid #ffd666', fontWeight: 500 }}>
+                            {userTitle}
+                          </Tag>
+                          <Text style={{ color: '#595959', fontWeight: '500', fontSize: '12px' }}>
+                            Level {userLevel}
+                          </Text>
+                        </div>
                       }
                     />
                     <div style={{ textAlign: 'right' }}>

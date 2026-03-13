@@ -317,6 +317,7 @@ const UserManager = () => {
         onSave={handleSaveMission}
         editingRecord={editingMission}
         loading={missionLoading}
+        existingMissions={missions}
       />
     </div>
   );
