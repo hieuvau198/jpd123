@@ -86,16 +86,16 @@ const ProfileMissions = ({ currentUser }) => {
 
         return (
           <div>
-            <Typography.Text strong>
+            <Typography.Text strong style={{ fontSize: 'clamp(12px, 3vw, 16px)' }}>
               {truncateName(text || record.practiceId)}
             </Typography.Text>
             <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center' }}>
-              <Tag color="blue" style={{ fontSize: '11px' }}>
+              <Tag color="blue" style={{ fontSize: 'clamp(9px, 3vw, 11px)' }}>
                 {record.targetQuestions || 0} / {record.totalQuestions || 0}
               </Tag>
               <Tag 
                 color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
-                style={{ fontSize: '11px' }}
+                style={{ fontSize: 'clamp(9px, 3vw, 11px)' }}
               >
                 {record.status} {pctValue}%
               </Tag>
@@ -109,14 +109,27 @@ const ProfileMissions = ({ currentUser }) => {
   key: 'coins',
   align: 'right',
   render: (_, record) => (
-    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center',whiteSpace: 'nowrap' }}>
       
-      <Typography.Text strong style={{ color: '#faad14' }}>
-        {record.earning_coins || 0}
-      </Typography.Text>
-      <Typography.Text strong style={{ color: '#faad14' }}>
-        /{record.max_coins || 0}
-      </Typography.Text>
+      <Typography.Text 
+  strong 
+  style={{ 
+    color: '#faad14',
+    fontSize: 'clamp(10px, 3vw, 14px)'
+  }}
+>
+  {record.earning_coins || 0}
+</Typography.Text>
+
+<Typography.Text 
+  strong 
+  style={{ 
+    color: '#faad14',
+    fontSize: 'clamp(10px, 3vw, 14px)'
+  }}
+>
+  /{record.max_coins || 0}
+</Typography.Text>
     </div>
   )
 }

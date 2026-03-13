@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, InputNumber } from 'antd';
-import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck, CheckSquare } from 'lucide-react'; 
+// Added ArrowLeft to imports
+import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck, CheckSquare, ArrowLeft } from 'lucide-react'; 
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
 import TypingSession from './TypingSession';
@@ -49,40 +50,41 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
 
   if (setupMode) {
     return (
-      <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
-        <Title level={2}>{data.title}</Title>
-        <Text type="secondary" style={{ marginBottom: 20 }}>
-          This set has {data.questions.length} words. How many would you like to practice today?
-        </Text>
-        
-        <Flex gap="small" align="center" style={{ marginBottom: 30 }}>
-          <InputNumber 
-            min={1} 
-            max={data.questions.length} 
-            value={wordCount} 
-            onChange={(val) => setWordCount(val || 1)} 
-            size="large"
-          />
-          <Text>words</Text>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: 20, marginTop: 12 }}>
+        <Flex justify="flex-start" style={{ marginBottom: 20 }}>
+          <Button icon={<ArrowLeft size={20} />} onClick={onHome} />
         </Flex>
+        <Flex vertical align="center" justify="center" style={{ minHeight: '60vh' }}>
+          <Title level={2}>{data.title}</Title>
+          <Text type="secondary" style={{ marginBottom: 20 }}>
+            This set has {data.questions.length} words. How many would you like to practice today?
+          </Text>
+          
+          <Flex gap="small" align="center" style={{ marginBottom: 30 }}>
+            <InputNumber 
+              min={1} 
+              max={data.questions.length} 
+              value={wordCount} 
+              onChange={(val) => setWordCount(val || 1)} 
+              size="large"
+            />
+            <Text>words</Text>
+          </Flex>
 
-        <Button 
-          type="primary" 
-          size="large" 
-          onClick={() => {
-            const shuffled = shuffleArray([...data.questions]);
-            const selectedQuestions = shuffled.slice(0, wordCount);
-            setSessionData({ ...data, questions: selectedQuestions });
-            setSetupMode(false);
-          }}
-        >
-          Start Practice
-        </Button>
-
-        <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 20 }}>
-          Back to Home
-        </Button>
-      </Flex>
+          <Button 
+            type="primary" 
+            size="large" 
+            onClick={() => {
+              const shuffled = shuffleArray([...data.questions]);
+              const selectedQuestions = shuffled.slice(0, wordCount);
+              setSessionData({ ...data, questions: selectedQuestions });
+              setSetupMode(false);
+            }}
+          >
+            Start Practice
+          </Button>
+        </Flex>
+      </div>
     );
   }
 
@@ -96,52 +98,54 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   if (mode === 'mc') return <MCSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />; 
 
   return (
-    <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh',marginTop: 30 }}>
-      <Title level={2}>{sessionData.title}</Title>
-      
-      
-      <Flex wrap gap="large" justify="center">
-        <Card hoverable onClick={() => setMode('view')} style={{ width: 240, textAlign: 'center' }}>
-          <Layers size={48} style={{ marginBottom: 16, color: '#1890ff' }} />
-          <Title level={4}>Flashcard</Title>
-          <Text type="secondary">View and Listen.</Text>
-        </Card>
-        
-        <Card hoverable onClick={() => setMode('speak')} style={{ width: 240, textAlign: 'center' }}>
-          <Keyboard size={48} style={{ marginBottom: 16, color: '#52c41a' }} />
-          <Title level={4}>Typing</Title>
-          <Text type="secondary">Type the full answer.</Text>
-        </Card>
-
-        <Card hoverable onClick={() => setMode('missing')} style={{ width: 240, textAlign: 'center' }}>
-          <HelpCircle size={48} style={{ marginBottom: 16, color: '#faad14' }} />
-          <Title level={4}>Missing Letter</Title>
-          <Text type="secondary">Fill in the blank.</Text>
-        </Card>
-
-        <Card hoverable onClick={() => setMode('matching')} style={{ width: 240, textAlign: 'center' }}>
-          <Grid size={48} style={{ marginBottom: 16, color: '#722ed1' }} />
-          <Title level={4}>Matching</Title>
-          <Text type="secondary">Pair words & meanings.</Text>
-        </Card>
-
-        <Card hoverable onClick={() => setMode('spellingbee')} style={{ width: 240, textAlign: 'center' }}>
-          <SpellCheck size={48} style={{ marginBottom: 16, color: '#eb2f96' }} />
-          <Title level={4}>Spelling Bee</Title>
-          <Text type="secondary">Listen and spell the word.</Text>
-        </Card>
-
-        <Card hoverable onClick={() => setMode('mc')} style={{ width: 240, textAlign: 'center' }}>
-          <CheckSquare size={48} style={{ marginBottom: 16, color: '#13c2c2' }} />
-          <Title level={4}>Multiple Choice</Title>
-          <Text type="secondary">Choose the correct meaning.</Text>
-        </Card>
+    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20, marginTop: 12 }}>
+              
+<Flex justify="flex" style={{ marginBottom: 4, marginTop: 16 }}>
+        <Button icon={<ArrowLeft size={20} />} onClick={onHome} />
       </Flex>
+      
+      <Flex vertical align="center" justify="center" style={{ minHeight: '60vh' }}>
+        <Title level={2} style={{ marginBottom: 40 }}>{sessionData.title}</Title>
+        
+        <Flex wrap="wrap" gap="large" justify="center">
+          <Card hoverable onClick={() => setMode('view')} style={{ width: 240, textAlign: 'center' }}>
+            <Layers size={48} style={{ marginBottom: 16, color: '#1890ff' }} />
+            <Title level={4}>Flashcard</Title>
+            <Text type="secondary">View and Listen.</Text>
+          </Card>
+          
+          <Card hoverable onClick={() => setMode('speak')} style={{ width: 240, textAlign: 'center' }}>
+            <Keyboard size={48} style={{ marginBottom: 16, color: '#52c41a' }} />
+            <Title level={4}>Typing</Title>
+            <Text type="secondary">Type the full answer.</Text>
+          </Card>
 
-      <Button type="text" icon={<Home size={16} />} onClick={onHome} style={{ marginTop: 40 }}>
-        Home
-      </Button>
-    </Flex>
+          <Card hoverable onClick={() => setMode('missing')} style={{ width: 240, textAlign: 'center' }}>
+            <HelpCircle size={48} style={{ marginBottom: 16, color: '#faad14' }} />
+            <Title level={4}>Missing Letter</Title>
+            <Text type="secondary">Fill in the blank.</Text>
+          </Card>
+
+          <Card hoverable onClick={() => setMode('matching')} style={{ width: 240, textAlign: 'center' }}>
+            <Grid size={48} style={{ marginBottom: 16, color: '#722ed1' }} />
+            <Title level={4}>Matching</Title>
+            <Text type="secondary">Pair words & meanings.</Text>
+          </Card>
+
+          <Card hoverable onClick={() => setMode('spellingbee')} style={{ width: 240, textAlign: 'center' }}>
+            <SpellCheck size={48} style={{ marginBottom: 16, color: '#eb2f96' }} />
+            <Title level={4}>Spelling Bee</Title>
+            <Text type="secondary">Listen and spell the word.</Text>
+          </Card>
+
+          <Card hoverable onClick={() => setMode('mc')} style={{ width: 240, textAlign: 'center' }}>
+            <CheckSquare size={48} style={{ marginBottom: 16, color: '#13c2c2' }} />
+            <Title level={4}>Multiple Choice</Title>
+            <Text type="secondary">Choose the correct meaning.</Text>
+          </Card>
+        </Flex>
+      </Flex>
+    </div>
   );
 };
 

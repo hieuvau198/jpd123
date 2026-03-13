@@ -132,20 +132,20 @@ const TypingSession = ({ data, onHome, onBack }) => {
 
   if (!direction) {
     return (
-      <Flex vertical align="center" justify="center" style={{ padding: 40, minHeight: '80vh' }}>
+      <Flex vertical align="center" justify="center" style={{ padding: '20px', minHeight: '80vh' }}>
         <Title level={3} style={{ marginBottom: 30 }}>Select Mode</Title>
-        <Space direction="horizontal" size="large">
-          <Card hoverable onClick={() => setDirection('vi_en')} style={{ width: 300, textAlign: 'center' }}>
+        <Flex wrap="wrap" gap="large" justify="center" style={{ width: '100%' }}>
+          <Card hoverable onClick={() => setDirection('vi_en')} style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>
             <ArrowRightLeft size={32} style={{ marginBottom: 10 }} />
             <Title level={5}>VN → EN</Title>
             <Text>See Vietnamese, Type English</Text>
           </Card>
-          <Card hoverable onClick={() => setDirection('en_vi')} style={{ width: 300, textAlign: 'center' }}>
+          <Card hoverable onClick={() => setDirection('en_vi')} style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>
             <ArrowRightLeft size={32} style={{ marginBottom: 10 }} />
             <Title level={5}>EN → VN</Title>
             <Text>See English, Type Vietnamese</Text>
           </Card>
-        </Space>
+        </Flex>
         <Button onClick={onBack} style={{ marginTop: 30 }}>Cancel</Button>
       </Flex>
     );

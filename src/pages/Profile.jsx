@@ -19,7 +19,7 @@ const Profile = ({ currentUser }) => {
   }, [user, currentUser]);
 
   return (
-    <div style={{ padding: '40px 20px', maxWidth: 1100, margin: '0 auto' }}>
+    <div style={{ padding: '40px 20px', maxWidth: 1100, margin: '0 auto', marginTop: 20 }}>
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
         <ProfileInfo user={user} />
         <ProfileMissions currentUser={user} />
