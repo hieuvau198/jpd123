@@ -72,7 +72,7 @@ const UpdateUserIdsButton = ({ onComplete }) => {
         icon={<RefreshCw size={16} />} 
         loading={loading}
       >
-        Migrate IDs
+        IDs
       </Button>
     </Popconfirm>
   );

@@ -194,18 +194,7 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
         </div>
       ),
     },
-    {
-      title: 'Info',
-      key: 'info',
-      render: (_, record) => (
-        <>
-          {record.subject && <AntTag color={color}>{record.subject}</AntTag>}
-          {record.tags && record.tags.map((tag, i) => (
-            <AntTag key={i} style={{ marginTop: 4 }}>{tag}</AntTag>
-          ))}
-        </>
-      ),
-    },
+    
     {
       title: 'Action',
       key: 'action',
@@ -226,7 +215,7 @@ const DefenseManager = ({ icon, color, uploadText, uploadColor }) => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
         <Button type="primary" icon={<Plus size={16} />} onClick={openDefenseModal}>
-          Create Defense Level
+          Create
         </Button>
         <div style={{ display: 'flex', gap: 10 }}>
           {selectedRowKeys.length > 0 && (

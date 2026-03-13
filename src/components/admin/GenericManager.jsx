@@ -186,8 +186,8 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Filter size={16} color="#888" />
             <Select value={selectedTag} onChange={setSelectedTag} style={{ width: 200 }}>
-              <Option value="none">None (Select to view)</Option>
-              <Option value="all">All Items</Option>
+              <Option value="none">None</Option>
+              <Option value="all">All</Option>
               {tagsData.map(tag => (
                 <Option key={tag.id} value={tag.id}>{tag.name}</Option>
               ))}

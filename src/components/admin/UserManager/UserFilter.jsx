@@ -32,7 +32,6 @@ const UserFilter = ({
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             allowClear
-            placeholder="Search by name..."
             style={{ maxWidth: 400, flex: 1 }}
           />
 

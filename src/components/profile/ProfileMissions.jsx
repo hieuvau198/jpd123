@@ -109,15 +109,14 @@ const ProfileMissions = ({ currentUser }) => {
   key: 'coins',
   align: 'right',
   render: (_, record) => (
-    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '6px' }}>
+    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
       
       <Typography.Text strong style={{ color: '#faad14' }}>
         {record.earning_coins || 0}
       </Typography.Text>
       <Typography.Text strong style={{ color: '#faad14' }}>
-        / {record.max_coins || 0}
+        /{record.max_coins || 0}
       </Typography.Text>
-      <Trophy size={16} style={{ color: '#faad14' }} />
     </div>
   )
 }

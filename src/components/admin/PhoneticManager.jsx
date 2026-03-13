@@ -185,8 +185,8 @@ const PhoneticManager = ({ icon, color, uploadText, uploadColor }) => {
             onChange={setSelectedTag} 
             style={{ width: 200 }}
           >
-            <Option value="none">None (Select to view)</Option>
-            <Option value="all">All Phonetics</Option>
+            <Option value="none">None</Option>
+            <Option value="all">All</Option>
             {tagsData.map(tag => (
               <Option key={tag.id} value={tag.id}>{tag.name}</Option>
             ))}

@@ -257,7 +257,6 @@ const UserManager = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin')}></Button>
-          <Title level={4} style={{ margin: 0 }}>User Management</Title>
         </div>
         
         <div style={{ display: 'flex', gap: '10px' }}>
