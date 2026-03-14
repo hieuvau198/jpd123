@@ -48,27 +48,55 @@ export default function MissionFormModal({ visible, onCancel, onSave, editingRec
     const updates = {};
     let max = all.max_coins || 0;
     let pct = all.percentage || 0;
+    let earned = all.earning_coins || 0;
 
-    // If target questions change (bigger or smaller)
+    // 1. If Target Questions changed
     if (changed.targetQuestions !== undefined) {
       const newTarget = changed.targetQuestions;
       max = newTarget * 10;
       updates.max_coins = max;
 
-      // If editing and we increase the target, revert 'Đã chinh phục' to 'Đang làm'
       if (editingRecord) {
-        const oldTarget = editingRecord.targetQuestions || 0;
-        if (newTarget > oldTarget && all.status === 'Đã chinh phục') {
+        // Keep current earnings the same, but cap at the new max_coins
+        earned = Math.min(earned, max);
+        updates.earning_coins = earned;
+        
+        // Recalculate percentage based on retained earnings
+        pct = max > 0 ? Math.floor((earned / max) * 100) : 0;
+        updates.percentage = pct;
+        
+        // Auto-update status based on the new percentage
+        if (pct >= 100) {
+          updates.status = 'Đã chinh phục';
+        } else if (pct > 0) {
           updates.status = 'Đang làm';
+        } else {
+          updates.status = 'Chưa làm';
         }
+      } else {
+        // For entirely new missions, update earnings based on current percentage
+        earned = Math.floor((pct / 100) * max);
+        updates.earning_coins = earned;
       }
     }
 
-    // Always recalculate earning coins if target, percentage, or max_coins change
-    if ('targetQuestions' in changed || 'percentage' in changed || 'max_coins' in changed) {
-      updates.earning_coins = Math.floor((pct / 100) * max);
+    // 2. If Percentage changed manually
+    if (changed.percentage !== undefined) {
+      pct = changed.percentage;
+      earned = Math.floor((pct / 100) * max);
+      updates.earning_coins = earned;
+
+      // Auto-update status when percentage changes
+      if (pct >= 100) {
+        updates.status = 'Đã chinh phục';
+      } else if (pct > 0) {
+        updates.status = 'Đang làm';
+      } else {
+        updates.status = 'Chưa làm';
+      }
     }
 
+    // Apply the dynamically calculated updates to the form fields
     if (Object.keys(updates).length > 0) {
       form.setFieldsValue(updates);
     }

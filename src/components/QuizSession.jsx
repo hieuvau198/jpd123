@@ -34,6 +34,34 @@ const prepareSessionData = (originalData, limit = null) => {
   }));
 };
 
+// Hàm xử lý text: Chuyển đổi **text** thành <u>text</u> VÀ \n thành <br />
+const renderFormattedText = (text) => {
+  if (typeof text !== 'string') return text;
+  
+  // Tách chuỗi dựa trên pattern **...**
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  
+  return parts.map((part, index) => {
+    // Hàm phụ để xử lý ký tự \n thành thẻ ngắt dòng <br />
+    const processNewLines = (str) => {
+      return str.split('\n').map((line, i, arr) => (
+        <React.Fragment key={i}>
+          {line}
+          {i < arr.length - 1 && <br />}
+        </React.Fragment>
+      ));
+    };
+
+    // Các phần tử ở vị trí lẻ là các phần nằm trong ** ** -> bọc <u>
+    if (index % 2 === 1) {
+      return <u key={index}>{processNewLines(part)}</u>;
+    }
+    
+    // Các phần tử ở vị trí chẵn là text bình thường
+    return <React.Fragment key={index}>{processNewLines(part)}</React.Fragment>;
+  });
+};
+
 const QuizSession = ({ data, onHome, initialNumbers }) => {
   const rawQuestions = Array.isArray(data) ? data.flatMap(d => d.questions) : (data.questions || []);
   const rawCount = rawQuestions.length;
@@ -80,7 +108,6 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
     const cleanAnswer = String(currentQuestion.correctAnswer).trim();
 
     if (cleanOption === cleanAnswer) {
-      // FIX: Only add to score if they haven't failed THIS attempt AND it's not a retried question
       if (!hasFailedCurrent && !currentQuestion._retry) {
         setScore((prev) => prev + 1);
       }
@@ -89,7 +116,6 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
       setIsWrong(true);
       if (!hasFailedCurrent) {
         setHasFailedCurrent(true);
-        // We attach _retry: true to explicitly mark this question as ineligible for points later
         setQuestions(prev => [...prev, { ...currentQuestion, _retry: true }]);
       }
     }
@@ -192,12 +218,13 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
 
         {/* Question Area */}
         <div style={{ padding: 40 }}>
-        <Title 
-  level={3} 
-  style={{ whiteSpace: 'pre-wrap' }} // Add this line
->
-  {currentQuestion.question}
-</Title>
+          <Title 
+            level={3} 
+            style={{ whiteSpace: 'pre-wrap' }}
+          >
+            {/* Sử dụng hàm renderFormattedText tại đây */}
+            {renderFormattedText(currentQuestion.question)}
+          </Title>
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
             {currentQuestion.options.map((option, idx) => {
               const isSelected = selectedOption === option;
@@ -222,7 +249,8 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
                   style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
                 >
                   <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                     <span>{option}</span>
+                     {/* Sử dụng hàm renderFormattedText tại đây cho option nếu cần */}
+                     <span>{renderFormattedText(option)}</span>
                      {isSelected && isCorrect && <CheckCircle size={20} />}
                      {isSelected && !isCorrect && <XCircle size={20} />}
                   </Flex>
@@ -234,7 +262,8 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
           {isWrong && (
             <Alert
               message={<span style={{ fontWeight: 'bold' }}>INSIGHT</span>}
-              description={currentQuestion.explanation}
+              // Sử dụng hàm renderFormattedText tại đây cho explanation
+              description={renderFormattedText(currentQuestion.explanation)}
               type="info"
               showIcon
               icon={<Brain size={24} />}
