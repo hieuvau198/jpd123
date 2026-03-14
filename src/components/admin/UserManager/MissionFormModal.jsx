@@ -46,50 +46,53 @@ export default function MissionFormModal({ visible, onCancel, onSave, editingRec
   // 4. Handle Logic Updates (Target -> Max Coins -> Earning Coins -> Status)
   const handleValuesChange = (changed, all) => {
     const updates = {};
-    let max = all.max_coins || 0;
-    let pct = all.percentage || 0;
-    let earned = all.earning_coins || 0;
 
     // 1. If Target Questions changed
     if (changed.targetQuestions !== undefined) {
       const newTarget = changed.targetQuestions;
-      max = newTarget * 10;
-      updates.max_coins = max;
+      const newMaxCoins = newTarget * 10;
+      updates.max_coins = newMaxCoins;
 
       if (editingRecord) {
-        // Keep current earnings the same, but cap at the new max_coins
-        earned = Math.min(earned, max);
-        updates.earning_coins = earned;
+        // Earning coins remain the same, but capped at the new max_coins just in case target is decreased
+        const currentEarned = all.earning_coins || 0;
+        const boundedEarned = Math.min(currentEarned, newMaxCoins);
+        updates.earning_coins = boundedEarned;
         
-        // Recalculate percentage based on retained earnings
-        pct = max > 0 ? Math.floor((earned / max) * 100) : 0;
-        updates.percentage = pct;
+        // Calculate the new percentage based on the unchanged earning_coins and the new max_coins
+        let newPct = newMaxCoins > 0 ? Math.round((boundedEarned / newMaxCoins) * 100) : 0;
+        
+        // Ensure percentage stays strictly between 0 and 100
+        newPct = Math.max(0, Math.min(100, newPct));
+        updates.percentage = newPct;
         
         // Auto-update status based on the new percentage
-        if (pct >= 100) {
+        if (newPct >= 100) {
           updates.status = 'Đã chinh phục';
-        } else if (pct > 0) {
+        } else if (newPct > 0) {
           updates.status = 'Đang làm';
         } else {
           updates.status = 'Chưa làm';
         }
       } else {
         // For entirely new missions, update earnings based on current percentage
-        earned = Math.floor((pct / 100) * max);
-        updates.earning_coins = earned;
+        const currentPct = all.percentage || 0;
+        updates.earning_coins = Math.floor((currentPct / 100) * newMaxCoins);
       }
     }
 
     // 2. If Percentage changed manually
     if (changed.percentage !== undefined) {
-      pct = changed.percentage;
-      earned = Math.floor((pct / 100) * max);
-      updates.earning_coins = earned;
+      const currentPct = changed.percentage;
+      const currentMaxCoins = all.max_coins || 0;
+      
+      // Calculate earnings based on the manually typed percentage
+      updates.earning_coins = Math.floor((currentPct / 100) * currentMaxCoins);
 
       // Auto-update status when percentage changes
-      if (pct >= 100) {
+      if (currentPct >= 100) {
         updates.status = 'Đã chinh phục';
-      } else if (pct > 0) {
+      } else if (currentPct > 0) {
         updates.status = 'Đang làm';
       } else {
         updates.status = 'Chưa làm';
