@@ -7,11 +7,20 @@ import SessionResult from '../../SessionResult';
 
 const { Title, Text } = Typography;
 
-const generateQuestions = (data) => {
+const AVAILABLE_TYPES = [
+  { label: 'Element', value: 'element' },
+  { label: 'Compound', value: 'compound' },
+  { label: 'Coefficient', value: 'coefficient' },
+  { label: 'Subscript', value: 'subscript' },
+  { label: 'Valency', value: 'valency' },
+  { label: 'Condition', value: 'condition' }
+];
+
+const generateQuestions = (data, selectedTypes) => {
   if (!data?.reactions || data.reactions.length === 0) return [];
   
   const shuffled = [...data.reactions].sort(() => 0.5 - Math.random());
-  const types = ['element', 'compound', 'coefficient', 'subscript', 'valency'];
+  const typesToTry = selectedTypes && selectedTypes.length > 0 ? selectedTypes : ['element', 'compound', 'coefficient', 'subscript', 'valency'];
 
   return shuffled.map(reaction => {
       let prefix = "";
@@ -21,7 +30,7 @@ const generateQuestions = (data) => {
       let success = false;
       let chosenType = '';
 
-      const attempts = [...types].sort(() => 0.5 - Math.random());
+      const attempts = [...typesToTry].sort(() => 0.5 - Math.random());
 
       for (let t of attempts) {
           if (success) break;
@@ -40,8 +49,6 @@ const generateQuestions = (data) => {
               const regex = /_(\d|\{\d+\})/g;
               let matches = [...reaction.formula.matchAll(regex)];
               
-              // NEW: Filter out any subscript that is at the end of the reaction
-              // If there's no '+' or arrow after the subscript, it belongs to the final element.
               matches = matches.filter(match => {
                   const suffixAfterMatch = reaction.formula.substring(match.index + match[0].length);
                   return /(?:\+|\\rightarrow|\\xrightarrow)/.test(suffixAfterMatch);
@@ -102,14 +109,19 @@ const generateQuestions = (data) => {
                       success = true;
                   }
               }
+          } else if (t === 'condition') {
+              if (reaction.condition && reaction.condition.trim() !== '') {
+                  answer = reaction.condition;
+                  prefix = reaction.formula;
+                  questionText = `What is the condition for this reaction?`;
+                  chosenType = 'condition';
+                  success = true;
+              }
           }
       }
 
       if (!success) {
-          chosenType = 'condition'; 
-          questionText = `What is the condition for this reaction?`;
-          answer = reaction.condition || "none";
-          prefix = reaction.formula;
+          return null; // Skip if no valid question could be formed from the selected types
       }
 
       return {
@@ -122,10 +134,13 @@ const generateQuestions = (data) => {
           answer: answer.toString().trim(),
           correctCountNeeded: 1 // Baseline: 1 correct answer to pass
       };
-  });
+  }).filter(q => q !== null);
 };
 
 const MissingSession = ({ data, onBack }) => {
+  const [isConfiguring, setIsConfiguring] = useState(true);
+  const [selectedTypes, setSelectedTypes] = useState(['element', 'compound', 'coefficient', 'subscript', 'valency', 'condition']);
+
   const [queue, setQueue] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
@@ -140,13 +155,18 @@ const MissingSession = ({ data, onBack }) => {
   const handleNextRef = useRef(null);
 
   useEffect(() => {
-    if (data) {
-      const initialQuestions = generateQuestions(data);
+    if (data && !isConfiguring) {
+      const initialQuestions = generateQuestions(data, selectedTypes);
+      if (initialQuestions.length === 0) {
+        message.warning('No questions could be generated with the selected types. Please select other types.');
+        setIsConfiguring(true);
+        return;
+      }
       setQueue(initialQuestions);
       setTotalQuestions(initialQuestions.length);
       setCurrentQuestion(initialQuestions[0]);
     }
-  }, [data]);
+  }, [data, isConfiguring]);
 
   useEffect(() => {
     setInputValue('');
@@ -154,8 +174,6 @@ const MissingSession = ({ data, onBack }) => {
       if (inputRef.current) inputRef.current.focus();
     }, 100);
   }, [currentQuestion]);
-
-  const progressPercent = Math.round((completedCount / totalQuestions) * 100) || 0;
 
   const handleFocus = () => {
     if (inputRef.current && !hasAnswered) {
@@ -170,7 +188,6 @@ const MissingSession = ({ data, onBack }) => {
     }
 
     const normalizedUser = inputValue.replace(/\s+/g, '').toLowerCase();
-    // Strip _, {, }, and ^ from the correct answer before comparing
     const normalizedAnswer = currentQuestion.answer.toString().replace(/[_\{\}\^\s]+/g, '').toLowerCase();
 
     setIsCorrect(normalizedUser === normalizedAnswer);
@@ -207,34 +224,74 @@ const MissingSession = ({ data, onBack }) => {
     }
   };
 
-  // Keep a fresh reference to handleNext for the setTimeout
   useEffect(() => {
     handleNextRef.current = handleNext;
   });
 
-  // Auto-advance when the user answers correctly
   useEffect(() => {
     if (hasAnswered && isCorrect) {
       const timer = setTimeout(() => {
         if (handleNextRef.current) {
           handleNextRef.current();
         }
-      }, 800); // 800ms delay to show the success color before moving
+      }, 800); 
       return () => clearTimeout(timer);
     }
   }, [hasAnswered, isCorrect]);
 
   const handleRestart = () => {
-    const initialQuestions = generateQuestions(data);
-    setQueue(initialQuestions);
-    setTotalQuestions(initialQuestions.length);
-    setCurrentQuestion(initialQuestions[0]);
+    setIsConfiguring(true);
     setCompletedCount(0);
     setInputValue('');
     setHasAnswered(false);
     setIsCorrect(false);
     setIsFinished(false);
   };
+
+  const toggleType = (typeValue) => {
+    if (selectedTypes.includes(typeValue)) {
+      setSelectedTypes(selectedTypes.filter(t => t !== typeValue));
+    } else {
+      setSelectedTypes([...selectedTypes, typeValue]);
+    }
+  };
+
+  if (isConfiguring) {
+    return (
+      <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col">
+        <div className="flex items-center justify-between mb-6">
+          <Button icon={<ArrowLeft size={16} />} onClick={onBack}></Button>
+        </div>
+        <div className="bg-white/10 p-8 sm:p-12 rounded-3xl w-full text-center text-white border border-white/20 shadow-xl backdrop-blur-md">
+          <Title level={3} style={{ color: 'white', marginBottom: '8px' }}>Select Missing Parts</Title>
+          
+          <div className="flex flex-wrap gap-4 justify-center my-8">
+            {AVAILABLE_TYPES.map(type => (
+              <Button
+                key={type.value}
+                type={selectedTypes.includes(type.value) ? 'primary' : 'default'}
+                size="large"
+                onClick={() => toggleType(type.value)}
+                className={!selectedTypes.includes(type.value) ? 'text-gray-800' : ''}
+              >
+                {type.label}
+              </Button>
+            ))}
+          </div>
+          
+          <Button
+            size="large"
+            type="secondary"
+            disabled={selectedTypes.length === 0}
+            onClick={() => setIsConfiguring(false)}
+            className="px-12 h-12 text-lg"
+          >
+            Start Practice
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (isFinished) {
     return (
@@ -252,12 +309,9 @@ const MissingSession = ({ data, onBack }) => {
   if (!currentQuestion) return <div className="p-8 text-center text-white">Loading questions...</div>;
 
   const isNonFormulaType = ['valency', 'condition'].includes(currentQuestion.type);
-  
-  // Create a clean version of the answer without LaTeX formatting characters for display and input limit
   const displayAnswer = currentQuestion.answer.toString().replace(/[_\{\}\^]/g, '');
 
   const renderMissingCharacters = () => {
-    // Use the clean displayAnswer instead of the raw answer string
     const chars = displayAnswer.split('');
     
     return (
@@ -265,16 +319,16 @@ const MissingSession = ({ data, onBack }) => {
         {chars.map((char, index) => {
           const userChar = inputValue[index] || "";
           
-          let color = '#fde047'; // Default yellow-300 matching inline math
+          let color = '#fde047'; 
           if (hasAnswered) {
-             if (isCorrect) color = '#4ade80'; // green-400
-             else color = '#f87171'; // red-400
+             if (isCorrect) color = '#4ade80'; 
+             else color = '#f87171'; 
           }
 
           return (
             <div key={index} className="flex flex-col items-center justify-end" style={{ width: '32px', height: '44px' }}>
               <Text style={{ 
-                  fontSize: '32px', // Increased font size
+                  fontSize: '32px',
                   color: userChar || (hasAnswered && !isCorrect) ? color : '#9ca3af',
                   fontWeight: 'bold',
                   lineHeight: '1',
@@ -305,7 +359,6 @@ const MissingSession = ({ data, onBack }) => {
         onChange={(e) => {
             if (hasAnswered) return;
             const val = e.target.value;
-            // Use displayAnswer.length to limit input length instead of raw answer length
             if (val.length <= displayAnswer.length) {
                 setInputValue(val);
             }
@@ -315,7 +368,7 @@ const MissingSession = ({ data, onBack }) => {
                 if (!hasAnswered) {
                     handleSubmit();
                 } else if (!isCorrect) {
-                    handleNext(); // Only allow manual trigger if incorrect, correct is auto-handled
+                    handleNext();
                 }
             }
         }}
@@ -325,8 +378,8 @@ const MissingSession = ({ data, onBack }) => {
       />
 
       <div className="flex items-center justify-between mb-6">
-        <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-          
+        <Button icon={<ArrowLeft size={16} />} onClick={() => setIsConfiguring(true)}>
+          Back to Config
         </Button>
         <Text className="text-white text-lg font-semibold">
           {completedCount} / {totalQuestions}
@@ -375,7 +428,6 @@ const MissingSession = ({ data, onBack }) => {
               </div>
             ) : (
               <div className="flex flex-col items-center text-red-400 mb-4 gap-2">
-                
                 <div className="text-xl sm:text-2xl text-yellow-300 bg-black/30 py-3 px-4 rounded-lg mt-2 w-full overflow-x-auto">
                    <BlockMath>{currentQuestion.reaction.formula}</BlockMath>
                 </div>

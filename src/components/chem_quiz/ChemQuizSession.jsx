@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Flex, Alert } from 'antd'; // Removed 'Result'
+import { Button, Typography, Flex, Alert } from 'antd';
 import { CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
-import SessionResult from '../SessionResult'; // Import SessionResult
+import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
 
 const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
   const [queue, setQueue] = useState([]);
   const [score, setScore] = useState(0);
-  const [totalAttempted, setTotalAttempted] = useState(0); // Real original question count
+  const [totalAttempted, setTotalAttempted] = useState(0);
   const [finished, setFinished] = useState(false);
   
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
-    // Initialize the queue
+    // Initialize the queue and shuffle questions randomly
     const questions = Array.isArray(data) ? data.flatMap(d => d.questions) : (data.questions || []);
-    const initialQuestions = initialNumbers ? questions.slice(0, initialNumbers) : questions;
+    const shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
+    const initialQuestions = initialNumbers ? shuffledQuestions.slice(0, initialNumbers) : shuffledQuestions;
+    
     setQueue(initialQuestions);
     setTotalAttempted(initialQuestions.length);
   }, [data, initialNumbers]);
@@ -37,7 +39,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
   const correctAnswer = currentQuestion?.correctAnswer || currentQuestion?.answer;
 
   const handleSelectAnswer = (opt) => {
-    if (isAnswered) return; // Prevent changing answer
+    if (isAnswered) return; 
     setSelectedAnswer(opt);
     setIsAnswered(true);
   };
@@ -48,7 +50,6 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
     const answeredQuestion = newQueue.shift();
 
     if (!isCorrect) {
-      // Re-insert 2 times: after 3 questions and after 6 questions (or end of queue)
       const firstInsertIndex = Math.min(3, newQueue.length);
       newQueue.splice(firstInsertIndex, 0, { ...answeredQuestion, _isRetry: true });
       
@@ -56,7 +57,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
       newQueue.splice(secondInsertIndex, 0, { ...answeredQuestion, _isRetry: true });
     } else {
       if (!answeredQuestion._isRetry) {
-        setScore(prev => prev + 1); // Only score on first try
+        setScore(prev => prev + 1); 
       }
     }
 
@@ -71,7 +72,9 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
 
   const handleRestart = () => {
     const questions = Array.isArray(data) ? data.flatMap(d => d.questions) : (data.questions || []);
-    const initialQs = initialNumbers ? questions.slice(0, initialNumbers) : questions;
+    const shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
+    const initialQs = initialNumbers ? shuffledQuestions.slice(0, initialNumbers) : shuffledQuestions;
+    
     setQueue(initialQs);
     setTotalAttempted(initialQs.length);
     setScore(0);
@@ -102,7 +105,6 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
     <div className="max-w-3xl mx-4 sm:mx-auto p-4 sm:p-8 mt-20 bg-white rounded-xl shadow-md pb-24">
       <div className="flex justify-between items-center mb-6">
          <h2 className="text-xl font-bold text-gray-800">{data.title || 'Chemistry Quiz'}</h2>
-         {/* Show remaining questions in queue */}
          <span className="text-gray-500 font-medium">{queue.length}</span>
       </div>
       
@@ -152,7 +154,6 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
         })}
       </Flex>
 
-      {/* Explanation and Next Button Area */}
       {isAnswered && (
         <div className="mt-6">
           {String(selectedAnswer).trim() !== String(correctAnswer).trim() && currentQuestion.explanation && (

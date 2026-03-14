@@ -120,6 +120,9 @@ const MCSession = ({ data, onBack }) => {
       setScore((prev) => prev + 1);
     }
 
+    // Set delay: 1200ms if correct, 5000ms (5 seconds) if wrong
+    const delay = isCorrect ? 1200 : 5000;
+
     setTimeout(() => {
       let newQueue = [...queue];
       let processedQ = { ...newQueue.shift() }; // Remove from front
@@ -146,7 +149,7 @@ const MCSession = ({ data, onBack }) => {
       if (newQueue.length === 0) {
         setIsFinished(true);
       }
-    }, 1200);
+    }, delay);
   };
 
   const resetSession = () => {
