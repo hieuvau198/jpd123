@@ -123,7 +123,16 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
 
       <Flex vertical gap="middle">
         {currentQuestion.options?.map((opt, idx) => {
-          let buttonStyle = { height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem' };
+          // ADDED: whiteSpace, wordBreak, and slightly adjusted padding for multiline text
+          let buttonStyle = { 
+            height: 'auto', 
+            padding: '16px 20px', 
+            textAlign: 'left', 
+            justifyContent: 'flex-start', 
+            fontSize: '1.1rem',
+            whiteSpace: 'normal', 
+            wordBreak: 'break-word'
+          };
           
           if (isAnswered) {
             const isThisCorrect = String(opt).trim() === String(correctAnswer).trim();
@@ -144,10 +153,18 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
               style={buttonStyle}
               onClick={() => handleSelectAnswer(opt)}
             >
-              <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                 <span>{renderMixedText(opt)}</span>
-                 {isAnswered && String(opt).trim() === String(correctAnswer).trim() && <CheckCircle size={20} />}
-                 {isAnswered && String(opt).trim() === String(selectedAnswer).trim() && String(opt).trim() !== String(correctAnswer).trim() && <XCircle size={20} />}
+              {/* ADDED: gap: '12px' so the text and icon don't touch */}
+              <Flex justify="space-between" align="center" style={{ width: '100%', gap: '12px' }}>
+                 {/* ADDED: flex: 1 so text takes up the remaining space properly */}
+                 <span style={{ flex: 1, textAlign: 'left' }}>{renderMixedText(opt)}</span>
+                 
+                 {/* ADDED: flexShrink: 0 to icons to ensure they don't get squished by long text */}
+                 {isAnswered && String(opt).trim() === String(correctAnswer).trim() && (
+                    <CheckCircle size={20} style={{ flexShrink: 0 }} />
+                 )}
+                 {isAnswered && String(opt).trim() === String(selectedAnswer).trim() && String(opt).trim() !== String(correctAnswer).trim() && (
+                    <XCircle size={20} style={{ flexShrink: 0 }} />
+                 )}
               </Flex>
             </Button>
           );
