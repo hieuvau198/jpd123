@@ -28,11 +28,28 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
 
   const renderMixedText = (text) => {
     if (!text || typeof text !== 'string') return text;
-    if (!text.includes('$')) return <span>{text}</span>;
-    const parts = text.split(/\$(.*?)\$/g);
-    return parts.map((part, index) => (
-      index % 2 === 1 ? <InlineMath key={index} math={part} /> : <span key={index}>{part}</span>
-    ));
+    
+    // First, handle the LaTeX split ($...$)
+    const mathParts = text.split(/\$(.*?)\$/g);
+    
+    return mathParts.map((part, index) => {
+      // If it's a LaTeX part (odd index)
+      if (index % 2 === 1) {
+        return <InlineMath key={index} math={part} />;
+      }
+      
+      // If it's a regular text part, handle the \n characters
+      if (part.includes('\n')) {
+        return part.split('\n').map((line, lineIdx, array) => (
+          <React.Fragment key={`${index}-${lineIdx}`}>
+            {line}
+            {lineIdx < array.length - 1 && <br />}
+          </React.Fragment>
+        ));
+      }
+      
+      return <span key={index}>{part}</span>;
+    });
   };
 
   const currentQuestion = queue[0];
