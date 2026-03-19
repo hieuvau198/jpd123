@@ -27,6 +27,7 @@ import ChemQuizDetail from './pages/ChemQuizDetail';
 // --- NEW CHEM REACTION IMPORTS ---
 import ChemReactionList from './pages/ChemReactionList';
 import ChemReactionDetail from './pages/ChemReactionDetail';
+import OtherQuizList from './pages/OtherQuizList';
 
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
@@ -67,9 +68,10 @@ export default function App() {
         <Route path="/chem-quiz" element={<ChemQuizList />} />
         <Route path="/chem-quiz/:id" element={<ChemQuizDetail />} />
 
-        {/* --- NEW CHEM REACTION ROUTES --- */}
+          
         <Route path="/chem-reaction" element={<ChemReactionList />} />
         <Route path="/chem-reaction/:id" element={<ChemReactionDetail />} />
+        <Route path="/other-quizzes" element={<OtherQuizList />} />
 
         <Route path="*" element={<Home />} />
       </Routes>

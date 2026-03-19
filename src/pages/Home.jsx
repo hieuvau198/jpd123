@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col } from 'antd';
 import { 
   BookOpen, FileQuestion, Wrench, Mic, Swords, 
-  FlaskConical, Beaker, Sparkles 
+  FlaskConical, Beaker, Sparkles, Puzzle // <-- Added Puzzle icon
 } from 'lucide-react';
-import HallOfFame from '../components/HallOfFame'; // Adjust the import path if needed
+import HallOfFame from '../components/HallOfFame'; 
 
 const { Title } = Typography;
 
@@ -15,7 +15,6 @@ const Home = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   useEffect(() => {
-    // 1. Load User Session
     try {
       const storedUser = JSON.parse(localStorage.getItem('userSession'));
       if (storedUser) {
@@ -34,8 +33,6 @@ const Home = () => {
       </div>
 
       <Row gutter={[32, 32]}>
-        
-        {/* Left Column: Activities Grid (Takes up 16/24 columns on large screens) */}
         <Col xs={24} lg={16}>
           <Title level={3} style={{ marginBottom: 20, color: '#262626' }}>
             <Sparkles size={24} style={{ marginRight: 8, verticalAlign: 'middle', color: '#faad14' }} />
@@ -59,6 +56,8 @@ const Home = () => {
                 </Card>
               </Link>
             </Col>
+
+            
 
             <Col xs={24} sm={12} md={8}>
               <Link to="/repairs" style={{ textDecoration: 'none' }}>
@@ -113,6 +112,16 @@ const Home = () => {
                 </Card>
               </Link>
             </Col>
+
+            <Col xs={24} sm={12} md={8}>
+              <Link to="/other-quizzes" style={{ textDecoration: 'none' }}>
+                <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 16, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                  <Puzzle size={48} color="#fa541c" style={{ marginBottom: 16 }} />
+                  <Title level={3} style={{ color: '#fa541c', margin: 0 }}>Other</Title>
+                </Card>
+              </Link>
+            </Col>
+
           </Row>
         </Col>
 
