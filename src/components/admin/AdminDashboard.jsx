@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs, Divider } from 'antd'; 
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical, Beaker } from 'lucide-react';
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical, Beaker, HelpCircle } from 'lucide-react';
 
-// Removed AdminLogin import
 import GenericManager from './GenericManager';
 import FlashcardManager from './FlashcardManager';
 import DefenseManager from './DefenseManager';
@@ -16,22 +15,16 @@ import { getAllChemistry, getChemistryByTag, saveChemistrySet, deleteChemistrySe
 import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
 import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../../firebase/repairService';
 import { getAllSpeaks, saveSpeakSet, deleteSpeakSet } from '../../firebase/speakService';
-import { 
-  getAllChemReactions, 
-  getChemReactionsByTag, 
-  saveChemReactionSet, 
-  deleteChemReactionSet 
-} from '../../firebase/chemReactionService';
+import { getAllChemReactions, getChemReactionsByTag, saveChemReactionSet, deleteChemReactionSet } from '../../firebase/chemReactionService';
 
+// --- NEW IMPORT FOR OTHER QUIZZES ---
+import { getAllOtherQuizzes, getOtherQuizzesByTag, saveOtherQuizSet, deleteOtherQuizSet } from '../../firebase/otherQuizService';
 
 const { Title } = Typography;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  // Removed isAuthenticated state
   const [activeTab, setActiveTab] = useState('flashcard');
-
-  // Removed the if (!isAuthenticated) check
 
   const tabItems = [
     { key: 'flashcard', label: 'Flashcards', children: <FlashcardManager icon={<FileJson color="#faad14" size={24} />} color="blue" uploadText="Import Flashcards (JSON)" uploadColor="#1890ff" /> },
@@ -59,48 +52,61 @@ const AdminDashboard = () => {
 
       {/* Chemistry Section Card */}
       <Divider />
-      <Card 
-  
-  style={{ marginBottom: 20 }}
->
-  <Tabs
-    defaultActiveKey="1"
-    items={[
-      {
-        key: '1',
-        label: 'Chemistry Quizzes',
-        children: (
-          <ChemistryManager 
-            icon={<FlaskConical color="#722ed1" />}
-            color="#f9f0ff"
-            uploadText="Upload Chem Quiz JSON"
-            uploadColor="#722ed1"
-            fetchFn={getAllChemistry}
-            fetchByTagFn={getChemistryByTag}
-            saveFn={saveChemistrySet}
-            deleteFn={deleteChemistrySet}
-          />
-        ),
-      },
-      {
-        key: '2',
-        label: 'Chemical Reactions',
-        children: (
-          <ChemReactionManager 
-            icon={<Beaker color="#eb2f96" />}
-            color="#fff0f6"
-            uploadText="Upload Chem Reaction JSON"
-            uploadColor="#eb2f96"
-            fetchFn={getAllChemReactions}
-            fetchByTagFn={getChemReactionsByTag}
-            saveFn={saveChemReactionSet}
-            deleteFn={deleteChemReactionSet}
-          />
-        ),
-      },
-    ]}
-  />
-</Card>
+      <Card style={{ marginBottom: 20 }}>
+        <Tabs
+          defaultActiveKey="1"
+          items={[
+            {
+              key: '1',
+              label: 'Chemistry Quizzes',
+              children: (
+                <ChemistryManager 
+                  icon={<FlaskConical color="#722ed1" />}
+                  color="#f9f0ff"
+                  uploadText="Upload Chem Quiz JSON"
+                  uploadColor="#722ed1"
+                  fetchFn={getAllChemistry}
+                  fetchByTagFn={getChemistryByTag}
+                  saveFn={saveChemistrySet}
+                  deleteFn={deleteChemistrySet}
+                />
+              ),
+            },
+            {
+              key: '2',
+              label: 'Chemical Reactions',
+              children: (
+                <ChemReactionManager 
+                  icon={<Beaker color="#eb2f96" />}
+                  color="#fff0f6"
+                  uploadText="Upload Chem Reaction JSON"
+                  uploadColor="#eb2f96"
+                  fetchFn={getAllChemReactions}
+                  fetchByTagFn={getChemReactionsByTag}
+                  saveFn={saveChemReactionSet}
+                  deleteFn={deleteChemReactionSet}
+                />
+              ),
+            },
+          ]}
+        />
+      </Card>
+
+      {/* NEW OTHER QUIZZES SECTION */}
+      <Divider />
+      <Card style={{ marginBottom: 20 }} >
+        <GenericManager 
+          type="quiz" // Notice: Kept as "quiz" so the Preview Modal continues to work smoothly 
+          icon={<HelpCircle color="#fa8c16" size={24} />}
+          color="orange"
+          uploadText="Upload Other Quiz JSON"
+          uploadColor="#fa8c16"
+          fetchFn={getAllOtherQuizzes}
+          fetchByTagFn={getOtherQuizzesByTag}
+          saveFn={saveOtherQuizSet}
+          deleteFn={deleteOtherQuizSet}
+        />
+      </Card>
     </div>
   );
 };

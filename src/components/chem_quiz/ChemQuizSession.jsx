@@ -29,16 +29,13 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
   const renderMixedText = (text) => {
     if (!text || typeof text !== 'string') return text;
     
-    // First, handle the LaTeX split ($...$)
     const mathParts = text.split(/\$(.*?)\$/g);
     
     return mathParts.map((part, index) => {
-      // If it's a LaTeX part (odd index)
       if (index % 2 === 1) {
         return <InlineMath key={index} math={part} />;
       }
       
-      // If it's a regular text part, handle the \n characters
       if (part.includes('\n')) {
         return part.split('\n').map((line, lineIdx, array) => (
           <React.Fragment key={`${index}-${lineIdx}`}>
