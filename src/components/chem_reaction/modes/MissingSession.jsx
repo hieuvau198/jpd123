@@ -16,6 +16,43 @@ const AVAILABLE_TYPES = [
   { label: 'Condition', value: 'condition' }
 ];
 
+// Component bảo vệ BlockMath: Tránh crash nếu KaTeX gặp lỗi cú pháp
+const SafeBlockMath = ({ math }) => {
+  if (!math) return null;
+  let safeMath = math.toString();
+  // Vá lỗi dangling underscore/caret khiến KaTeX crash
+  if (safeMath.trim().startsWith('_') || safeMath.trim().startsWith('^')) {
+    safeMath = '{}' + safeMath;
+  }
+  if (safeMath.trim().endsWith('_') || safeMath.trim().endsWith('^')) {
+    safeMath = safeMath + '{}';
+  }
+  return (
+    <BlockMath 
+      math={safeMath} 
+      renderError={(error) => <span className="text-red-400 font-mono whitespace-pre-wrap">{math}</span>}
+    />
+  );
+};
+
+// Component bảo vệ InlineMath: Tránh crash nếu KaTeX gặp lỗi cú pháp
+const SafeInlineMath = ({ math }) => {
+  if (!math) return null;
+  let safeMath = math.toString();
+  if (safeMath.trim().startsWith('_') || safeMath.trim().startsWith('^')) {
+    safeMath = '{}' + safeMath;
+  }
+  if (safeMath.trim().endsWith('_') || safeMath.trim().endsWith('^')) {
+    safeMath = safeMath + '{}';
+  }
+  return (
+    <InlineMath 
+      math={safeMath} 
+      renderError={(error) => <span className="text-red-400 font-mono whitespace-pre-wrap">{math}</span>}
+    />
+  );
+};
+
 const generateQuestions = (data, selectedTypes) => {
   if (!data?.reactions || data.reactions.length === 0) return [];
   
@@ -39,11 +76,14 @@ const generateQuestions = (data, selectedTypes) => {
               const elements = Object.keys(reaction.valency || {});
               if (elements.length > 0) {
                   const el = elements[Math.floor(Math.random() * elements.length)];
-                  answer = reaction.valency[el].toString();
-                  questionText = `Hóa trị của ${el} trong phản ứng này?`;
-                  chosenType = 'valency';
-                  prefix = reaction.formula;
-                  success = true;
+                  // Sửa lỗi JSON chứa valency = null (vd: Phản ứng 16)
+                  if (reaction.valency[el] !== null && reaction.valency[el] !== undefined) {
+                      answer = reaction.valency[el].toString();
+                      questionText = `Hóa trị của ${el} trong phản ứng này?`;
+                      chosenType = 'valency';
+                      prefix = reaction.formula;
+                      success = true;
+                  }
               }
           } else if (t === 'subscript') {
               const regex = /_(\d|\{\d+\})/g;
@@ -93,8 +133,14 @@ const generateQuestions = (data, selectedTypes) => {
                   }
               }
           } else if (t === 'compound') {
-              const parts = reaction.formula.split(/(?:\+|\\rightarrow|\\xrightarrow\{.*?\})/);
+              // Sửa lỗi split làm gãy ngoặc {} lồng nhau của KaTeX (vd: \xrightarrow{\text{acid}})
+              let tempFormula = reaction.formula;
+              tempFormula = tempFormula.replace(/\\xrightarrow\{([^{}]|\{[^{}]*\})*\}/g, ' ===ARROW=== ');
+              tempFormula = tempFormula.replace(/\\rightarrow/g, ' ===ARROW=== ');
+              
+              const parts = tempFormula.split(/(?:\+|===ARROW===)/);
               const compounds = parts.map(p => p.replace(/\\uparrow/g, '').replace(/\\downarrow/g, '').trim()).filter(p => p.length > 0 && p !== '\\Delta');
+              
               if (compounds.length > 0) {
                   const selected = compounds[Math.floor(Math.random() * compounds.length)];
                   answer = selected;
@@ -121,7 +167,7 @@ const generateQuestions = (data, selectedTypes) => {
       }
 
       if (!success) {
-          return null; // Skip if no valid question could be formed from the selected types
+          return null; 
       }
 
       return {
@@ -132,7 +178,7 @@ const generateQuestions = (data, selectedTypes) => {
           prefix,
           suffix,
           answer: answer.toString().trim(),
-          correctCountNeeded: 1 // Baseline: 1 correct answer to pass
+          correctCountNeeded: 1 
       };
   }).filter(q => q !== null);
 };
@@ -394,7 +440,8 @@ const MissingSession = ({ data, onBack }) => {
         {isNonFormulaType ? (
           <div className="bg-black/30 py-6 px-4 rounded-xl mb-8 overflow-x-auto">
             <div className="text-2xl sm:text-3xl text-yellow-300">
-              <BlockMath>{currentQuestion.prefix}</BlockMath>
+              {/* Áp dụng SafeBlockMath */}
+              <SafeBlockMath math={currentQuestion.prefix} />
             </div>
             <div className="mt-6 flex justify-center">
               {renderMissingCharacters()}
@@ -402,14 +449,19 @@ const MissingSession = ({ data, onBack }) => {
           </div>
         ) : (
           <div className="bg-black/30 py-6 px-4 rounded-xl mb-8 flex flex-wrap items-center justify-center gap-y-4">
+            {/* Áp dụng SafeInlineMath cho prefix và suffix */}
             {currentQuestion.prefix && (
-              <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.prefix} /></span>
+              <span className="text-2xl sm:text-3xl text-yellow-300">
+                <SafeInlineMath math={currentQuestion.prefix} />
+              </span>
             )}
             
             {renderMissingCharacters()}
             
             {currentQuestion.suffix && (
-              <span className="text-2xl sm:text-3xl text-yellow-300"><InlineMath math={currentQuestion.suffix} /></span>
+              <span className="text-2xl sm:text-3xl text-yellow-300">
+                <SafeInlineMath math={currentQuestion.suffix} />
+              </span>
             )}
           </div>
         )}
@@ -429,7 +481,7 @@ const MissingSession = ({ data, onBack }) => {
             ) : (
               <div className="flex flex-col items-center text-red-400 mb-4 gap-2">
                 <div className="text-xl sm:text-2xl text-yellow-300 bg-black/30 py-3 px-4 rounded-lg mt-2 w-full overflow-x-auto">
-                   <BlockMath>{currentQuestion.reaction.formula}</BlockMath>
+                   <SafeBlockMath math={currentQuestion.reaction.formula} />
                 </div>
               </div>
             )}
@@ -441,7 +493,6 @@ const MissingSession = ({ data, onBack }) => {
           </div>
         )}
       </div>
-      
     </div>
   );
 };

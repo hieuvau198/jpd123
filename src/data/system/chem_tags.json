@@ -3,5 +3,10 @@
   { "id": "chemistry-9", "name": "Chemistry 9" },
   { "id": "chemistry-10", "name": "Chemistry 10" },
   { "id": "chemistry-11", "name": "Chemistry 11" },
-  { "id": "chemistry-12", "name": "Chemistry 12" }
+  { "id": "chemistry-12", "name": "Chemistry 12" },
+  { "id": "math-8", "name": "Math 8" },
+  { "id": "math-9", "name": "Math 9" },
+  { "id": "math-10", "name": "Math 10" },
+  { "id": "math-11", "name": "Math 11" },
+  { "id": "math-12", "name": "Math 12" }
 ]
