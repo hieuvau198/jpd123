@@ -35,7 +35,7 @@ const OtherQuizList = () => {
   }, [selectedTag]);
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
+    <div className="mt-4 min-h-screen p-4 sm:p-8 max-w-7xl mx-auto">
       {/* Header Section */}
       <div className="flex flex-col gap-6 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -45,7 +45,7 @@ const OtherQuizList = () => {
               className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-all mb-2 -ml-2 w-fit"
             >
                <Home size={18}/>
-               <span className="font-medium">Back Home</span>
+               <span className="font-medium">Home</span>
             </button>
             <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
               <Library className="text-orange-400" />
@@ -58,7 +58,7 @@ const OtherQuizList = () => {
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
           <div className="flex items-center gap-2 text-white/80 mr-2">
             <Filter size={20} />
-            <span className="text-sm font-medium whitespace-nowrap">Filter by:</span>
+            <span className="text-sm font-medium whitespace-nowrap">Select:</span>
           </div>
 
           {availableTags.map((tag) => (
@@ -97,7 +97,7 @@ const OtherQuizList = () => {
             ))
           ) : (
             <div className="col-span-full text-center py-12 text-white/60">
-              No quizzes found for this category.
+              No data found for this category.
             </div>
           )}
         </div>

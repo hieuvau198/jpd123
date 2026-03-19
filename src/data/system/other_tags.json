@@ -1,10 +1,10 @@
 [
   {
-    "id": "english-core",
-    "name": "Core"
+    "id": "history",
+    "name": "History"
   },
   {
-    "id": "english-advance",
-    "name": "Advance"
+    "id": "geography",
+    "name": "Geography"
   }
 ]
