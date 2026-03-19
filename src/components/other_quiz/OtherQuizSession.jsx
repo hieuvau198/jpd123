@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Home, Brain, ArrowRight } from 'lucide-react';
-import { Card, Button, Typography, Progress, Alert, Flex, Space, Row, Col } from 'antd';
+import { Card, Button, Typography, Progress, Alert, Flex, Space, Row, Col, Tag } from 'antd';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
@@ -172,21 +172,20 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
     const intervals = [10, 20, 30, 40, 50].filter(n => n < rawCount);
     return (
       <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: 20 }}>
-        <Card style={{ width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <Title level={3}>Select number of questions</Title>
-          <Text>This practice has {rawCount} questions. How many would you like to answer?</Text>
-          <Flex justify="center" gap="middle" wrap="wrap" style={{ marginTop: 24 }}>
+        <Card style={{ width: '100%', maxWidth: 540, textAlign: 'center', borderRadius: 16, boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }} bordered={false}>
+          <Title level={3} style={{ marginBottom: 8 }}>Practice Length</Title>
+          <Flex justify="center" gap="middle" wrap="wrap" style={{ marginTop: 32, marginBottom: 32 }}>
             {intervals.map(num => (
-              <Button key={num} size="large" onClick={() => handleStart(num)}>
+              <Button key={num} size="large" shape="round" onClick={() => handleStart(num)}>
                 {num} Questions
               </Button>
             ))}
-            <Button size="large" type="primary" onClick={() => handleStart(rawCount)}>
+            <Button size="large" type="primary" shape="round" style={{ background: '#141414', borderColor: '#141414' }} onClick={() => handleStart(rawCount)}>
               All ({rawCount})
             </Button>
           </Flex>
-          <div style={{ marginTop: 24 }}>
-            <Button icon={<Home size={16}/>} onClick={onHome}>Back</Button>
+          <div>
+            <Button type="text" icon={<Home size={18}/>} onClick={onHome}>Back to Home</Button>
           </div>
         </Card>
       </Flex>
@@ -194,7 +193,7 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
   }
 
   if (!queue && queue.length === 0 && !isFinished) {
-    return <div style={{ padding: 40, color: 'white' }}><h2>Error: No questions found.</h2></div>;
+    return <div style={{ padding: 40, textAlign: 'center' }}><Title level={3}>Error: No questions found.</Title></div>;
   }
 
   if (isFinished) {
@@ -206,7 +205,7 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
         onBack={onHome}
         onRestart={restart}
         practiceId={data.id}      
-        practiceType="Quiz" // Keep it as Quiz if you want it to trigger the mission logic           
+        practiceType="Quiz" 
         backText="Home"
         restartText="Restart"
         resultMessage="You have successfully completed the practice session!"
@@ -217,54 +216,79 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
   const progressPercent = Math.round((completedCount / totalQuestions) * 100);
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 20px' }}>
-      <Card variant="borderless" styles={{ body: { padding: 0 } }}>
-        <Flex justify="space-between" align="center" style={{ padding: '16px 24px', borderBottom: '1px solid #f0f0f0' }}>
-          <Button type="text" icon={<Home size={16} />} onClick={onHome}>EXIT</Button>
-          <Space>
-             {!currentQuestion._firstTry && <Text type="warning" strong>REVISION ({currentQuestion._timesToCorrect} left)</Text>}
-             <Text strong>{completedCount} / {totalQuestions}</Text>
+    <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 20px' }}>
+      <Card 
+        bordered={false} 
+        style={{ borderRadius: 16, boxShadow: '0 10px 30px rgba(0,0,0,0.05)', overflow: 'hidden' }} 
+        styles={{ body: { padding: 0 } }}
+      >
+        <Flex justify="space-between" align="center" style={{ padding: '20px 32px', backgroundColor: '#fafafa', borderBottom: '1px solid #f0f0f0' }}>
+          <Button type="text" icon={<Home size={18} />} onClick={onHome} style={{ color: '#595959', fontWeight: 500 }}>EXIT</Button>
+          <Space size="large">
+             {!currentQuestion._firstTry && (
+               <Tag color="warning" style={{ borderRadius: 12, padding: '2px 12px', fontSize: '0.9rem', fontWeight: 600 }}>
+                 REVISION ({currentQuestion._timesToCorrect} left)
+               </Tag>
+             )}
+             <Text strong style={{ fontSize: '1rem', color: '#262626' }}>{completedCount} / {totalQuestions}</Text>
           </Space>
         </Flex>
         
-        <Progress percent={progressPercent} showInfo={false} strokeColor="black" size="small" shape="square" style={{lineHeight: 0}} />
+        <Progress percent={progressPercent} showInfo={false} strokeColor="#141414" trailColor="#f0f0f0" size="small" shape="square" style={{ lineHeight: 0, margin: 0 }} />
 
-        <div style={{ padding: 40 }}>
-          <Title level={3} style={{ whiteSpace: 'pre-wrap' }}>
+        <div style={{ padding: '40px 48px' }}>
+          <Title level={4} style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6, color: '#1f1f1f', fontWeight: 600 }}>
             {renderFormattedText(currentQuestion.question)}
           </Title>
           
-          {/* Row and Col replace the old vertical flex logic for options and explanations */}
-          <Row gutter={[32, 32]} style={{ marginTop: 30 }}>
+          <Row gutter={[40, 40]} style={{ marginTop: 40 }}>
             {/* Options Column */}
             <Col xs={24} lg={isWrong ? 14 : 24}>
-              <Flex vertical gap="middle">
+              <Flex vertical gap="16px">
                 {currentQuestion.options.map((option, idx) => {
                   const isSelected = selectedOption === option;
                   const isCorrect = option === currentQuestion.correctAnswer;
                   
-                  let status = 'default';
-                  if (isSelected && isCorrect) status = 'primary';
-                  if (isSelected && !isCorrect) status = 'danger';
-                  
-                  const customStyle = {};
-                  if (isSelected && isCorrect) { customStyle.backgroundColor = 'black'; customStyle.color = 'white'; customStyle.borderColor = 'black'; }
-                  if (isSelected && !isCorrect) { customStyle.color = '#ff4d4f'; customStyle.borderColor = '#ff4d4f'; }
-                  if (isWrong && isCorrect) { customStyle.borderColor = 'black'; customStyle.borderWidth = 2; }
+                  // Base Styles for options
+                  let customStyle = {
+                    height: 'auto',
+                    minHeight: '64px',
+                    padding: '16px 24px',
+                    textAlign: 'left',
+                    fontSize: '1.05rem',
+                    borderRadius: '12px',
+                    transition: 'all 0.2s ease',
+                    whiteSpace: 'normal',
+                    lineHeight: 1.5,
+                    boxShadow: '0 2px 0 rgba(0,0,0,0.015)'
+                  };
+
+                  // Dynamic Styles based on correctness and selection
+                  if (isSelected && isCorrect) {
+                    customStyle = { ...customStyle, backgroundColor: '#141414', color: '#ffffff', borderColor: '#141414' };
+                  } else if (isSelected && !isCorrect) {
+                    customStyle = { ...customStyle, backgroundColor: '#fff1f0', color: '#cf1322', borderColor: '#ffa39e' };
+                  } else if (isWrong && isCorrect) {
+                    customStyle = { ...customStyle, backgroundColor: '#f6ffed', color: '#389e0d', borderColor: '#b7eb8f', borderWidth: 2 };
+                  } else if (isWrong || (selectedOption && isCorrect)) {
+                    customStyle = { ...customStyle, backgroundColor: '#fcfcfc', color: '#bfbfbf', borderColor: '#f0f0f0', boxShadow: 'none' };
+                  } else {
+                    customStyle = { ...customStyle, backgroundColor: '#ffffff', color: '#262626' };
+                  }
 
                   return (
                     <Button
                       key={idx}
-                      size="large"
                       block
                       onClick={() => handleOptionClick(option)}
                       disabled={isWrong || (selectedOption && isCorrect)}
-                      style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
+                      style={customStyle}
                     >
-                      <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                         <span>{renderFormattedText(option)}</span>
-                         {isSelected && isCorrect && <CheckCircle size={20} />}
-                         {isSelected && !isCorrect && <XCircle size={20} />}
+                      <Flex justify="space-between" align="center" style={{ width: '100%', gap: '16px' }}>
+                         <span style={{ flex: 1 }}>{renderFormattedText(option)}</span>
+                         {isSelected && isCorrect && <CheckCircle size={22} />}
+                         {isSelected && !isCorrect && <XCircle size={22} />}
+                         {isWrong && isCorrect && !isSelected && <CheckCircle size={22} color="#52c41a" />}
                       </Flex>
                     </Button>
                   );
@@ -276,19 +300,26 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
             {isWrong && (
               <Col xs={24} lg={10}>
                 <Alert
-                  message={<span style={{ fontWeight: 'bold' }}>Explain: </span>}
+                  message={<span style={{ fontWeight: '600', fontSize: '1.1rem', color: '#1f1f1f' }}>Explanation</span>}
                   description={
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                      <div>{renderFormattedText(currentQuestion.explanation)}</div>
-                      <Button type="primary" style={{ background: 'black', alignSelf: 'flex-start' }} onClick={() => processNextStep(false)}>
-                        NEXT <ArrowRight size={16} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '12px' }}>
+                      <div style={{ color: '#434343', fontSize: '1rem', lineHeight: 1.6 }}>
+                        {renderFormattedText(currentQuestion.explanation)}
+                      </div>
+                      <Button 
+                        type="primary" 
+                        size="large"
+                        style={{ background: '#141414', borderColor: '#141414', alignSelf: 'flex-start', borderRadius: '8px', padding: '0 24px' }} 
+                        onClick={() => processNextStep(false)}
+                      >
+                        Continue <ArrowRight size={18} />
                       </Button>
                     </div>
                   }
                   type="info"
                   showIcon
-                  icon={<Brain size={24} />}
-                  style={{ borderColor: 'black', background: '#f8f9fa', height: '100%' }}
+                  icon={<Brain size={28} color="#141414" style={{ marginTop: '4px' }} />}
+                  style={{ borderRadius: '16px', border: '1px solid #e8e8e8', background: '#fbfbfb', padding: '24px', height: '100%' }}
                 />
               </Col>
             )}
