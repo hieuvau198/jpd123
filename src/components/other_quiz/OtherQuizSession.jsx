@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Home, Brain, ArrowRight } from 'lucide-react';
-import { Card, Button, Typography, Progress, Alert, Flex, Space } from 'antd';
+import { Card, Button, Typography, Progress, Alert, Flex, Space, Row, Col } from 'antd';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
@@ -234,54 +234,65 @@ const OtherQuizSession = ({ data, onHome, initialNumbers }) => {
             {renderFormattedText(currentQuestion.question)}
           </Title>
           
-          <Flex vertical gap="middle" style={{ marginTop: 30 }}>
-            {currentQuestion.options.map((option, idx) => {
-              const isSelected = selectedOption === option;
-              const isCorrect = option === currentQuestion.correctAnswer;
-              
-              let status = 'default';
-              if (isSelected && isCorrect) status = 'primary';
-              if (isSelected && !isCorrect) status = 'danger';
-              
-              const customStyle = {};
-              if (isSelected && isCorrect) { customStyle.backgroundColor = 'black'; customStyle.color = 'white'; customStyle.borderColor = 'black'; }
-              if (isSelected && !isCorrect) { customStyle.color = '#ff4d4f'; customStyle.borderColor = '#ff4d4f'; }
-              if (isWrong && isCorrect) { customStyle.borderColor = 'black'; customStyle.borderWidth = 2; }
+          {/* Row and Col replace the old vertical flex logic for options and explanations */}
+          <Row gutter={[32, 32]} style={{ marginTop: 30 }}>
+            {/* Options Column */}
+            <Col xs={24} lg={isWrong ? 14 : 24}>
+              <Flex vertical gap="middle">
+                {currentQuestion.options.map((option, idx) => {
+                  const isSelected = selectedOption === option;
+                  const isCorrect = option === currentQuestion.correctAnswer;
+                  
+                  let status = 'default';
+                  if (isSelected && isCorrect) status = 'primary';
+                  if (isSelected && !isCorrect) status = 'danger';
+                  
+                  const customStyle = {};
+                  if (isSelected && isCorrect) { customStyle.backgroundColor = 'black'; customStyle.color = 'white'; customStyle.borderColor = 'black'; }
+                  if (isSelected && !isCorrect) { customStyle.color = '#ff4d4f'; customStyle.borderColor = '#ff4d4f'; }
+                  if (isWrong && isCorrect) { customStyle.borderColor = 'black'; customStyle.borderWidth = 2; }
 
-              return (
-                <Button
-                  key={idx}
-                  size="large"
-                  block
-                  onClick={() => handleOptionClick(option)}
-                  disabled={isWrong || (selectedOption && isCorrect)}
-                  style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
-                >
-                  <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                     <span>{renderFormattedText(option)}</span>
-                     {isSelected && isCorrect && <CheckCircle size={20} />}
-                     {isSelected && !isCorrect && <XCircle size={20} />}
-                  </Flex>
-                </Button>
-              );
-            })}
-          </Flex>
+                  return (
+                    <Button
+                      key={idx}
+                      size="large"
+                      block
+                      onClick={() => handleOptionClick(option)}
+                      disabled={isWrong || (selectedOption && isCorrect)}
+                      style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
+                    >
+                      <Flex justify="space-between" align="center" style={{ width: '100%' }}>
+                         <span>{renderFormattedText(option)}</span>
+                         {isSelected && isCorrect && <CheckCircle size={20} />}
+                         {isSelected && !isCorrect && <XCircle size={20} />}
+                      </Flex>
+                    </Button>
+                  );
+                })}
+              </Flex>
+            </Col>
 
-          {isWrong && (
-            <Alert
-              message={<span style={{ fontWeight: 'bold' }}>Explain: </span>}
-              description={renderFormattedText(currentQuestion.explanation)}
-              type="info"
-              showIcon
-              icon={<Brain size={24} />}
-              style={{ marginTop: 30, borderColor: 'black', background: '#f8f9fa' }}
-              action={
-                <Button type="primary" style={{ background: 'black' }} onClick={() => processNextStep(false)}>
-                  NEXT <ArrowRight size={16} />
-                </Button>
-              }
-            />
-          )}
+            {/* Explanation Column */}
+            {isWrong && (
+              <Col xs={24} lg={10}>
+                <Alert
+                  message={<span style={{ fontWeight: 'bold' }}>Explain: </span>}
+                  description={
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div>{renderFormattedText(currentQuestion.explanation)}</div>
+                      <Button type="primary" style={{ background: 'black', alignSelf: 'flex-start' }} onClick={() => processNextStep(false)}>
+                        NEXT <ArrowRight size={16} />
+                      </Button>
+                    </div>
+                  }
+                  type="info"
+                  showIcon
+                  icon={<Brain size={24} />}
+                  style={{ borderColor: 'black', background: '#f8f9fa', height: '100%' }}
+                />
+              </Col>
+            )}
+          </Row>
         </div>
       </Card>
     </div>
