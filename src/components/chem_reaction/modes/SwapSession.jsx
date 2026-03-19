@@ -64,7 +64,7 @@ const SwapSession = ({ data, onBack }) => {
     if (key !== currentQuestionKey) {
       setCurrentQuestionKey(key);
       
-      const parts = currentReaction.formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
+const parts = currentReaction.formula.split(/\\x?rightarrow(?:\{(?:[^{}]|\{[^{}]*\})*\})?|\\rightleftharpoons/);
       const leftStr = parts[0] || '';
       const rightStr = parts[1] || '';
 
