@@ -133,6 +133,12 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
             <BlockMath math={currentQuestion.formula} />
           </div>
         )}
+        {currentQuestion.svgCode && (
+  <div 
+    className="flex justify-center my-4"
+    dangerouslySetInnerHTML={{ __html: currentQuestion.svgCode }} 
+  />
+)}
       </div>
 
       <Flex vertical gap="middle">
