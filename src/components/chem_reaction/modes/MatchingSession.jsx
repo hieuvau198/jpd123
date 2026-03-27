@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Typography, Flex, Progress } from 'antd';
+import { Card, Button, Typography, Flex } from 'antd';
 import { ArrowLeft } from 'lucide-react';
 import SessionResult from '../../SessionResult'; // Adjust the path if necessary
 
@@ -25,16 +25,40 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-// Helper to split the chemical formula into left (Reactants) and right (Products) sides
+// Robust helper to split complex chemical formulas (Handles nested LaTeX braces like \text{})
 const splitFormula = (formula) => {
-  if (!formula) return { left: '', right: '' };
+  if (!formula) return { left: '', right: '', arrow: '\\rightarrow' };
+
+  // Find the start of the arrow command
+  const arrowMatch = formula.match(/(\\xrightarrow|\\rightarrow|\\rightleftharpoons)/);
+  if (!arrowMatch) return { left: formula, right: '', arrow: '\\rightarrow' };
+
+  const arrowCmd = arrowMatch[0];
+  const arrowIndex = arrowMatch.index;
+
+  let left = formula.substring(0, arrowIndex).trim();
+  let rightStr = formula.substring(arrowIndex);
   
-  // Splits by typical LaTeX reaction arrows: \rightarrow, \xrightarrow{...}, or \rightleftharpoons
-  const parts = formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
-  
+  let arrowFull = arrowCmd;
+  let right = rightStr.substring(arrowCmd.length);
+
+  // If it's xrightarrow, intelligently parse until the closing brace
+  if (arrowCmd === '\\xrightarrow' && right.startsWith('{')) {
+    let braceCount = 0;
+    let i = 0;
+    for (; i < right.length; i++) {
+      if (right[i] === '{') braceCount++;
+      if (right[i] === '}') braceCount--;
+      if (braceCount === 0) break;
+    }
+    arrowFull += right.substring(0, i + 1);
+    right = right.substring(i + 1);
+  }
+
   return {
-    left: parts[0] ? parts[0].trim() : '',
-    right: parts[1] ? parts[1].trim() : formula 
+    left: left,
+    right: right.trim() || formula,
+    arrow: arrowFull
   };
 };
 
@@ -163,25 +187,27 @@ const MatchingSession = ({ data, onBack }) => {
     );
   }
 
-  const totalSections = Math.ceil(allReactions.length / SECTION_SIZE);
-  const progressPercent = Math.round((sectionIndex / totalSections) * 100);
+  // Helper function to render content gracefully
+  const renderContent = (content) => {
+    if (!content) return "";
+    return <InlineMath math={content} errorColor="#cc0000" />;
+  };
 
   return (
-    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20, marginTop:8 }}>
+    <div className="mt-8" style={{ maxWidth: 1000, margin: '0 auto', padding: 20 }}>
+      {/* Header controls */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 30 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
-        
-        
-
         <Button type="text" disabled style={{ color: 'white' }}>
             {matchedIds.size / 2} / {gameItems.length / 2}
         </Button>
       </Flex>
 
+      {/* Grid container */}
       <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', // Reduced from 200px
-          gap: 12
+          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+          gap: 16 // Slightly increased gap for visual breathing room
       }}>
         {gameItems.map((item) => {
             const isSelected = selectedIds.includes(item.uid);
@@ -201,28 +227,36 @@ const MatchingSession = ({ data, onBack }) => {
                     bordered={false}
                     style={{ 
                         ...style,
-                        height: 140, 
+                        minHeight: 140, // Changed from fixed height to minHeight to allow growth
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
                         textAlign: 'center',
                         background: item.bgColor,
-                        border: isSelected ? '3px solid #000' : 'none',
+                        border: isSelected ? '3px solid #000' : '3px solid transparent', // Prevent layout shift on border
                         transform: isSelected ? 'scale(1.05)' : 'scale(1)',
                         transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', 
                         cursor: isMatched ? 'default' : 'pointer',
                         borderRadius: 16,
                         boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                     }}
-                    bodyStyle={{ padding: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    bodyStyle={{ 
+                        padding: 12, 
+                        width: '100%', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        overflowWrap: 'anywhere' // Ensure long strings break if necessary
+                    }}
                 >
                     <div style={{ 
-                        fontSize: '1.4rem', // Slightly larger font for formulas
+                        fontSize: '1.2rem', // Adjusted for better fit of long formulas
                         color: '#333',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        lineHeight: 1.4, // Improved readability for multiline formulas
+                        width: '100%'
                     }}>
-                        {/* Render using KaTeX InlineMath */}
-                        <InlineMath math={item.content || ""} />
+                        {renderContent(item.content)}
                     </div>
                 </Card>
             );

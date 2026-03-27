@@ -19,16 +19,40 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-// Helper to split the chemical formula and capture the arrow + condition
+// Robust helper to split complex chemical formulas (Handles nested LaTeX braces like \text{})
 const splitFormula = (formula) => {
   if (!formula) return { left: '', right: '', arrow: '\\rightarrow' };
-  const match = formula.match(/(\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow)/);
-  const arrow = match ? match[0] : '\\rightarrow';
-  const parts = formula.split(/\\x?rightarrow(?:\{[^}]*\})?|\\rightleftharpoons|\\rightarrow/);
+
+  // Find the start of the arrow command
+  const arrowMatch = formula.match(/(\\xrightarrow|\\rightarrow|\\rightleftharpoons)/);
+  if (!arrowMatch) return { left: formula, right: '', arrow: '\\rightarrow' };
+
+  const arrowCmd = arrowMatch[0];
+  const arrowIndex = arrowMatch.index;
+
+  let left = formula.substring(0, arrowIndex).trim();
+  let rightStr = formula.substring(arrowIndex);
+  
+  let arrowFull = arrowCmd;
+  let right = rightStr.substring(arrowCmd.length);
+
+  // If it's xrightarrow, intelligently parse until the closing brace
+  if (arrowCmd === '\\xrightarrow' && right.startsWith('{')) {
+    let braceCount = 0;
+    let i = 0;
+    for (; i < right.length; i++) {
+      if (right[i] === '{') braceCount++;
+      if (right[i] === '}') braceCount--;
+      if (braceCount === 0) break;
+    }
+    arrowFull += right.substring(0, i + 1);
+    right = right.substring(i + 1);
+  }
+
   return {
-    left: parts[0] ? parts[0].trim() : '',
-    right: parts[1] ? parts[1].trim() : formula,
-    arrow
+    left: left,
+    right: right.trim() || formula,
+    arrow: arrowFull
   };
 };
 
@@ -43,6 +67,7 @@ const MCSession = ({ data, onBack }) => {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false); // Prevents double clicking
 
   // Generate questions when a mode is selected
   useEffect(() => {
@@ -56,6 +81,8 @@ const MCSession = ({ data, onBack }) => {
         let aType = 'text';
 
         const { left, right, arrow } = splitFormula(reaction.formula);
+        // Fallback for description if it doesn't exist
+        const descriptionOrName = reaction.description || reaction.name;
 
         if (mode === 'name-formula') {
           questionText = reaction.name;
@@ -64,7 +91,6 @@ const MCSession = ({ data, onBack }) => {
           qType = 'text';
           aType = 'formula';
         } else if (mode === 'formula-formula') {
-          // Display the reactants + arrow at the end of the question
           questionText = `${left} \\space ${arrow} \\text{ ?}`;
           correctOption = right;
           allWrongOptionsData = data.reactions.map(r => splitFormula(r.formula).right);
@@ -72,14 +98,15 @@ const MCSession = ({ data, onBack }) => {
           aType = 'formula';
         } else if (mode === 'formula-description') {
           questionText = reaction.formula;
-          correctOption = reaction.description;
-          allWrongOptionsData = data.reactions.map(r => r.description);
+          correctOption = descriptionOrName;
+          allWrongOptionsData = data.reactions.map(r => r.description || r.name);
           qType = 'formula';
           aType = 'text';
         }
 
-        const wrongOptionsPool = allWrongOptionsData.filter(opt => opt !== correctOption);
-        const selectedWrongOptions = shuffleArray(wrongOptionsPool).slice(0, 3);
+        // Ensure distinct wrong options
+        const uniqueWrongOptions = [...new Set(allWrongOptionsData)].filter(opt => opt !== correctOption);
+        const selectedWrongOptions = shuffleArray(uniqueWrongOptions).slice(0, 3);
         const options = shuffleArray([correctOption, ...selectedWrongOptions]);
 
         return {
@@ -92,7 +119,6 @@ const MCSession = ({ data, onBack }) => {
         };
       });
 
-      // Initialize the queue: each question needs 1 correct answer to pass initially.
       const initialQueue = shuffleArray(generatedQuestions).map(q => ({ ...q, needed: 1, attempts: 0 }));
       setQueue(initialQueue);
       setTotalQuestions(initialQueue.length);
@@ -100,6 +126,7 @@ const MCSession = ({ data, onBack }) => {
       setScore(0);
       setIsFinished(false);
       setSelectedAnswer(null);
+      setIsProcessing(false);
     }
   }, [mode, data]);
 
@@ -108,34 +135,32 @@ const MCSession = ({ data, onBack }) => {
   };
 
   const handleAnswer = (option) => {
-    if (selectedAnswer !== null || queue.length === 0) return;
+    if (selectedAnswer !== null || queue.length === 0 || isProcessing) return;
 
+    setIsProcessing(true);
     setSelectedAnswer(option);
     
     const currentQ = queue[0];
     const isCorrect = option === currentQ.correct;
     
-    // Only grant score if they got it right on their very first attempt
     if (isCorrect && currentQ.attempts === 0) {
       setScore((prev) => prev + 1);
     }
 
-    // Set delay: 1200ms if correct, 5000ms (5 seconds) if wrong
-    const delay = isCorrect ? 1200 : 5000;
+    const delay = isCorrect ? 1200 : 3500; // Reduced wrong delay slightly for better UX
 
     setTimeout(() => {
       let newQueue = [...queue];
-      let processedQ = { ...newQueue.shift() }; // Remove from front
+      let processedQ = { ...newQueue.shift() };
       processedQ.attempts += 1;
 
       if (isCorrect) {
         processedQ.needed -= 1;
       } else {
-        processedQ.needed = 2; // Penalty: requires 2 correct answers to clear
+        processedQ.needed = 2; 
       }
 
       if (processedQ.needed > 0) {
-        // Push the question back into the queue at most 2 slots away
         const insertIndex = Math.min(2, newQueue.length);
         newQueue.splice(insertIndex, 0, processedQ);
       } else {
@@ -144,8 +169,8 @@ const MCSession = ({ data, onBack }) => {
 
       setQueue(newQueue);
       setSelectedAnswer(null);
+      setIsProcessing(false);
 
-      // Finish when the queue is totally empty
       if (newQueue.length === 0) {
         setIsFinished(true);
       }
@@ -160,12 +185,14 @@ const MCSession = ({ data, onBack }) => {
     setScore(0);
     setSelectedAnswer(null);
     setIsFinished(false);
+    setIsProcessing(false);
   };
 
   const renderContent = (content, type) => {
     if (!content) return "";
     if (type === 'formula') {
-      return <InlineMath math={content} />;
+      // Added errorColor to gracefully handle any malformed LaTeX strings
+      return <InlineMath math={content} errorColor="#cc0000" />;
     }
     return <span>{content}</span>;
   };
@@ -190,14 +217,10 @@ const MCSession = ({ data, onBack }) => {
     return (
       <div className="mt-12 min-h-screen p-4 sm:p-8 max-w-3xl mx-auto flex flex-col items-center">
         <div className="w-full flex justify-start mb-6">
-          <Button icon={<ArrowLeft size={16} />} onClick={onBack}>
-            
-          </Button>
+          <Button icon={<ArrowLeft size={16} />} onClick={onBack}></Button>
         </div>
         
         <div className="bg-white/10 p-8 sm:p-12 rounded-2xl w-full text-center text-white border border-white/20">
-          
-          
           <Flex vertical gap="large" style={{ maxWidth: 400, margin: '0 auto' }}>
             <Button size="large" block style={{ height: 'auto', padding: '16px' }} onClick={() => handleModeSelect('name-formula')}>
               <Flex align="center" justify="center" gap="middle" style={{ fontSize: '1.2rem', width: '100%' }}>
@@ -240,7 +263,7 @@ const MCSession = ({ data, onBack }) => {
           </Flex>
         </div>
         
-        <div style={{ width: 80 }} /> {/* Spacer to balance flex */}
+        <div style={{ width: 80 }} /> 
       </Flex>
 
       <Card 
@@ -251,8 +274,7 @@ const MCSession = ({ data, onBack }) => {
         }}
         bodyStyle={{ padding: '40px 24px' }}
       >
-        <div className="text-center mb-10">
-          
+        <div className="text-center mb-10 overflow-x-auto">
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', marginTop: 16, color: '#1f2937' }}>
             {renderContent(currentQuestion.question, currentQuestion.qType)}
           </div>
@@ -278,10 +300,10 @@ const MCSession = ({ data, onBack }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              border: '2px solid #d9d9d9'
+              border: '2px solid #d9d9d9',
+              transition: 'all 0.3s ease'
             };
 
-            // Apply colors if an answer has been selected
             if (selectedAnswer !== null) {
               if (isCorrect) {
                 btnStyle.backgroundColor = '#f6ffed';
@@ -300,7 +322,7 @@ const MCSession = ({ data, onBack }) => {
                   block 
                   style={btnStyle}
                   onClick={() => handleAnswer(option)}
-                  disabled={selectedAnswer !== null}
+                  disabled={selectedAnswer !== null || isProcessing}
                 >
                   {renderContent(option, currentQuestion.aType)}
                 </Button>
