@@ -220,7 +220,7 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
         <div style={{ padding: 40 }}>
           <Title 
             level={3} 
-            style={{ whiteSpace: 'pre-wrap' }}
+            style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
           >
             {/* Sử dụng hàm renderFormattedText tại đây */}
             {renderFormattedText(currentQuestion.question)}
@@ -246,13 +246,26 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
                   block
                   onClick={() => handleOptionClick(option)}
                   disabled={isWrong || (selectedOption && isCorrect)}
-                  style={{ height: 'auto', padding: '20px', textAlign: 'left', justifyContent: 'flex-start', fontSize: '1.1rem', ...customStyle }}
+                  style={{ 
+                    height: 'auto', 
+                    padding: '20px', 
+                    textAlign: 'left', 
+                    justifyContent: 'flex-start', 
+                    fontSize: '1.1rem', 
+                    whiteSpace: 'normal',      // Allows the text to wrap to the next line
+                    wordBreak: 'break-word',   // Breaks long words if necessary
+                    ...customStyle 
+                  }}
                 >
-                  <Flex justify="space-between" align="center" style={{ width: '100%' }}>
-                     {/* Sử dụng hàm renderFormattedText tại đây cho option nếu cần */}
-                     <span>{renderFormattedText(option)}</span>
-                     {isSelected && isCorrect && <CheckCircle size={20} />}
-                     {isSelected && !isCorrect && <XCircle size={20} />}
+                  <Flex justify="space-between" align="center" style={{ width: '100%', gap: '10px' }}>
+                     {/* Added flex: 1 to ensure text wraps properly and doesn't push the icon out */}
+                     <span style={{ flex: 1 }}>{renderFormattedText(option)}</span>
+                     
+                     {/* Wrapped icons in a fixed-width container to prevent them from shrinking */}
+                     <div style={{ flexShrink: 0, display: 'flex' }}>
+                       {isSelected && isCorrect && <CheckCircle size={20} />}
+                       {isSelected && !isCorrect && <XCircle size={20} />}
+                     </div>
                   </Flex>
                 </Button>
               );
