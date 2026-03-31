@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Tag, Space, Popconfirm } from 'antd';
-import { ArrowLeft, Plus, Edit, Trash2, Users } from 'lucide-react';
-// Note: Ensure createGroup, updateGroup, and deleteGroup are implemented in your userService!
+import { ArrowLeft, Plus, Edit, Trash2, ClipboardList } from 'lucide-react'; // Added ClipboardList
 import { getAllGroups, createGroup, updateGroup, deleteGroup, getAllUsers } from '../../../firebase/userService'; 
+import { getUserMissions, deleteMission, createMission } from '../../../firebase/missionService'; // Added mission imports
 import GroupModal from './GroupModal';
+import GroupMissionModal from './GroupMissionModal'; // Import new modal
 
 const { Title } = Typography;
 
@@ -18,6 +19,10 @@ const GroupManager = () => {
   
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
+
+  // State for group mission assignment
+  const [isMissionModalVisible, setIsMissionModalVisible] = useState(false);
+  const [selectedGroupForMission, setSelectedGroupForMission] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -76,6 +81,54 @@ const GroupManager = () => {
     }
   };
 
+  const handleAssignMission = async (values) => {
+    setLoading(true);
+    try {
+      const studentIds = selectedGroupForMission.studentIds || [];
+      
+      if (studentIds.length === 0) {
+        message.warning("This group has no members.");
+        setLoading(false);
+        return;
+      }
+
+      // Format the mission data correctly
+      const missionData = {
+        ...values,
+        startDate: values.startDate ? values.startDate.toISOString() : null,
+        endDate: values.endDate ? values.endDate.toISOString() : null,
+      };
+
+      let assignedCount = 0;
+
+      for (const studentId of studentIds) {
+        // 1. Fetch current missions for this specific student (force cache refresh)
+        const studentMissions = await getUserMissions(studentId, true);
+        
+        // 2. Check for duplicate practiceId to override/remove
+        const duplicateMissions = studentMissions.filter(m => m.practiceId === missionData.practiceId);
+        
+        // 3. Delete duplicates
+        for (const dup of duplicateMissions) {
+          await deleteMission(dup.id, studentId);
+        }
+
+        // 4. Assign the new mission
+        await createMission({ ...missionData, userId: studentId });
+        assignedCount++;
+      }
+
+      message.success(`Mission successfully assigned to ${assignedCount} students!`);
+      setIsMissionModalVisible(false);
+      setSelectedGroupForMission(null);
+    } catch (error) {
+      console.error("Error assigning group mission:", error);
+      message.error("Failed to assign mission to the group.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const columns = [
     {
       title: 'Group Name',
@@ -114,10 +167,21 @@ const GroupManager = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
+          {/* Assign Mission Button */}
+          <Button 
+            type="default" 
+            icon={<ClipboardList size={16} />} 
+            onClick={() => {
+              setSelectedGroupForMission(record);
+              setIsMissionModalVisible(true);
+            }}
+            title="Assign Mission to Group"
+          />
           <Button 
             type="default" 
             icon={<Edit size={16} />} 
             onClick={() => handleShowModal(record)} 
+            title="Edit Group"
           />
           <Popconfirm
             title="Delete this group?"
@@ -126,7 +190,7 @@ const GroupManager = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="primary" danger icon={<Trash2 size={16} />} />
+            <Button type="primary" danger icon={<Trash2 size={16} />} title="Delete Group" />
           </Popconfirm>
         </Space>
       )
@@ -163,6 +227,17 @@ const GroupManager = () => {
         onSave={handleSaveGroup}
         editingRecord={editingGroup}
         users={users}
+        loading={loading}
+      />
+
+      {/* Group Mission Assignment Modal */}
+      <GroupMissionModal 
+        visible={isMissionModalVisible}
+        onCancel={() => {
+          setIsMissionModalVisible(false);
+          setSelectedGroupForMission(null);
+        }}
+        onSave={handleAssignMission}
         loading={loading}
       />
     </div>
