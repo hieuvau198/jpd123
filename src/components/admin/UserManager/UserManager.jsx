@@ -1,8 +1,8 @@
 // src/components/admin/UserManager/UserManager.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Card, Button, Table, message, Popconfirm, Tag } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Trash2, Target, Trophy, Award } from 'lucide-react';
+import { Typography, Card, Button, Table, message, Tag } from 'antd';
+import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
@@ -11,7 +11,7 @@ import UserModal from './UserModal';
 import UserMissionsModal from './UserMissionsModal';
 import MissionFormModal from './MissionFormModal';
 import UpdateUserIdsButton from './UpdateUserIdsButton'; 
-import UserFilter from './UserFilter'; // <-- Import the new filter component
+import UserFilter from './UserFilter';
 
 // Import grades from JSON
 import gradesData from '../../../data/system/grades.json';
@@ -40,7 +40,7 @@ const UserManager = () => {
   // Filter & Search & Sort states
   const [searchText, setSearchText] = useState('');
   const [selectedGrades, setSelectedGrades] = useState([]);
-  const [sortBy, setSortBy] = useState('date'); // <-- New state for sorting
+  const [sortBy, setSortBy] = useState('date'); 
 
   // Missions logic states
   const [selectedUser, setSelectedUser] = useState(null);
@@ -65,9 +65,14 @@ const UserManager = () => {
 
   // --- Filter and Sort Logic ---
   const getProcessedUsers = () => {
+    // No load all by default: Return empty if no grades are selected and no search active
+    if (selectedGrades.length === 0 && !searchText) {
+      return [];
+    }
+
     // 1. Filter
     let processed = users.filter((user) => {
-      const matchesGrade = selectedGrades.length === 0 || selectedGrades.includes(user.grade);
+      const matchesGrade = selectedGrades.length === 0 ? true : (selectedGrades.includes('All') || selectedGrades.includes(user.grade));
       const normalizedSearchText = normalizeString(searchText).toLowerCase();
       const normalizedUserName = normalizeString(user.name).toLowerCase();
       const matchesName = normalizedSearchText === '' || normalizedUserName.includes(normalizedSearchText);
@@ -80,7 +85,7 @@ const UserManager = () => {
         return normalizeString(a.name || '').localeCompare(normalizeString(b.name || ''));
       } else if (sortBy === 'coin') {
         return (b.personal_coins || 0) - (a.personal_coins || 0);
-      } else { // default to 'date'
+      } else { 
         return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
       }
     });
@@ -197,58 +202,44 @@ const UserManager = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_, record) => (
-        <div>
-          <Typography.Text strong>{record.name}</Typography.Text>
-          <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
-            <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
-            <Tag color='green'>{record.grade}</Tag>
-            {/* NEW: Display Title */}
-            <Tag color='purple' style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-               <Award size={12} /> {record.title || 'Noob'}
-            </Tag>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div>
+            <Typography.Text strong>{record.name}</Typography.Text>
+            <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
+              <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
+              <Tag color='green'>{record.grade}</Tag>
+              <Tag color='purple' style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                 <Award size={12} /> {record.title || 'Noob'}
+              </Tag>
+            </div>
+            <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Trophy size={16} style={{ color: '#faad14' }} />
+              <Typography.Text type="secondary">
+                <span style={{ color: '#faad14', fontWeight: 'bold' }}>
+                  {record.personal_coins || 0}
+                </span>
+              </Typography.Text>
+            </div>
           </div>
-          <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Trophy size={16} style={{ color: '#faad14' }} />
-            <Typography.Text type="secondary">
-              <span style={{ color: '#faad14', fontWeight: 'bold' }}>
-                {record.personal_coins || 0}
-              </span>
-            </Typography.Text>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {record.role === 'Student' && (
+              <Button
+                type="primary"
+                size="small"
+                icon={<Target size={14} />}
+                onClick={() => openMissionsList(record)}
+              />
+            )}
+            <Button
+              type="default"
+              size="small"
+              icon={<Edit size={16} />}
+              onClick={() => handleShowUserModal(record)}
+            />
           </div>
         </div>
       )
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {record.role === 'Student' && (
-            <Button
-              type="primary"
-              size="small"
-              icon={<Target size={14} />}
-              onClick={() => openMissionsList(record)}
-            >
-            </Button>
-          )}
-
-          <Button
-            type="text"
-            icon={<Edit size={16} />}
-            onClick={() => handleShowUserModal(record)}
-          />
-
-          <Popconfirm
-            title="Delete this user?"
-            onConfirm={() => handleDeleteUser(record.id)}
-            okText="Yes"
-          >
-            <Button type="text" danger icon={<Trash2 size={16} />} />
-          </Popconfirm>
-        </div>
-      ),
-    },
+    }
   ];
 
   return (
@@ -267,7 +258,6 @@ const UserManager = () => {
         </div>
       </div>
 
-      {/* Extracted Filters & Sort Component */}
       <UserFilter 
         searchText={searchText}
         setSearchText={setSearchText}
@@ -278,7 +268,6 @@ const UserManager = () => {
         gradesData={gradesData}
       />
 
-      {/* Table */}
       <Card>
         <Table 
           columns={userColumns} 
@@ -290,11 +279,11 @@ const UserManager = () => {
         />
       </Card>
 
-      {/* Child Modal Components */}
       <UserModal 
         visible={isUserModalVisible}
         onCancel={() => setIsUserModalVisible(false)}
         onSave={handleSaveUser}
+        onDelete={handleDeleteUser}
         editingRecord={editingUser}
         loading={loading}
       />

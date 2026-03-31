@@ -15,9 +15,14 @@ const UserFilter = ({
   gradesData
 }) => {
   const handleGradeToggle = (grade, checked) => {
-    const nextSelectedTags = checked
-      ? [...selectedGrades, grade]
-      : selectedGrades.filter((t) => t !== grade);
+    let nextSelectedTags;
+    if (grade === 'All') {
+      nextSelectedTags = checked ? ['All'] : [];
+    } else {
+      nextSelectedTags = checked
+        ? [...selectedGrades.filter(g => g !== 'All'), grade]
+        : selectedGrades.filter((t) => t !== grade);
+    }
     setSelectedGrades(nextSelectedTags);
   };
 
@@ -50,6 +55,20 @@ const UserFilter = ({
 
         {/* Grade Tags Filter */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <CheckableTag
+            key="All"
+            checked={selectedGrades.includes('All')}
+            onChange={(checked) => handleGradeToggle('All', checked)}
+            style={{
+              border: '1px solid #d9d9d9',
+              padding: '4px 12px',
+              borderRadius: '16px',
+              fontSize: '14px'
+            }}
+          >
+            All
+          </CheckableTag>
+
           {gradesData.map((grade) => (
             <CheckableTag
               key={grade}
