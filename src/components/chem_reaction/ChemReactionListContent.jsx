@@ -11,13 +11,20 @@ const ChemReactionListContent = () => {
   const [loading, setLoading] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams(); 
-  const selectedTag = searchParams.get('tag') || 'all'; 
+  // Change: Remove the default 'all' fallback. It defaults to null.
+  const selectedTag = searchParams.get('tag'); 
   
   const navigate = useNavigate();
-  const availableTags = [{ id: 'all', name: 'All' }, ...chemTags];
+  const availableTags = [ ...chemTags];
 
   useEffect(() => {
     const fetch = async () => {
+      // Change: If no tag is selected, don't fetch anything to prevent big data request
+      if (!selectedTag) {
+        setData([]);
+        return;
+      }
+
       setLoading(true);
       const res = await getChemReactionsByTag(selectedTag === 'all' ? null : selectedTag);
       setData(res || []);
@@ -60,6 +67,10 @@ const ChemReactionListContent = () => {
       {loading ? (
         <div className="flex justify-center items-center h-64">
            <Loader2 className="w-12 h-12 text-white animate-spin opacity-80" />
+        </div>
+      ) : !selectedTag ? (
+        <div className="flex justify-center items-center h-64 text-white/60 text-lg">
+          Please select a category above to load reactions.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

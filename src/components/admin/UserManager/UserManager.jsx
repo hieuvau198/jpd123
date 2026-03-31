@@ -52,9 +52,13 @@ const UserManager = () => {
   const [isMissionFormVisible, setIsMissionFormVisible] = useState(false);
   const [editingMission, setEditingMission] = useState(null);
 
+  // Change: Do not load all users on component mount to prevent big data request
   useEffect(() => {
-    loadUsers();
-  }, []);
+    // Only fetch users from Firebase when the admin actually starts searching or filtering
+    if ((selectedGrades.length > 0 || searchText) && users.length === 0) {
+      loadUsers();
+    }
+  }, [selectedGrades, searchText]);
 
   const loadUsers = async () => {
     setLoading(true);

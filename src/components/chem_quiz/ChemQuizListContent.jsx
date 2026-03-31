@@ -10,18 +10,23 @@ const ChemQuizListContent = () => {
   const [loading, setLoading] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams(); 
-  // Default to 'all' if no tag is selected
-  const selectedTag = searchParams.get('tag') || 'all'; 
+  // Change: Remove the default 'all' fallback. It defaults to null.
+  const selectedTag = searchParams.get('tag'); 
   
   const navigate = useNavigate();
 
   // Prepend "All" option to the tags list
-  const availableTags = [{ id: 'all', name: 'All' }, ...chemTags];
+  const availableTags = [ ...chemTags];
 
   useEffect(() => {
     const fetch = async () => {
+      // Change: If no tag is selected, don't fetch anything to prevent big data request
+      if (!selectedTag) {
+        setData([]);
+        return;
+      }
+
       setLoading(true);
-      // Assuming getChemistryByTag can handle 'all' (or modify backend to fetch all if passing 'all' / null)
       const res = await getChemistryByTag(selectedTag === 'all' ? null : selectedTag);
       setData(res || []);
       setLoading(false);
@@ -49,10 +54,7 @@ const ChemQuizListContent = () => {
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex items-center gap-2 text-white/80 mr-2">
-            <Filter size={20} />
-            <span className="text-sm font-medium whitespace-nowrap">Filter by:</span>
-          </div>
+          
 
           {availableTags.map((tag) => (
             <button
@@ -72,6 +74,10 @@ const ChemQuizListContent = () => {
       {loading ? (
         <div className="flex justify-center items-center h-64">
            <Loader2 className="w-12 h-12 text-white animate-spin opacity-80" />
+        </div>
+      ) : !selectedTag ? (
+        <div className="flex justify-center items-center h-64 text-white/60 text-lg">
+          Please select a category above to load quizzes.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
