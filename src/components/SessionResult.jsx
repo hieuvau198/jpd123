@@ -1,10 +1,10 @@
 // src/components/SessionResult.jsx
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress } from 'antd';
+import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress, Tag } from 'antd';
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
 import { updateUser } from '../firebase/userService'; 
-import { updateUserHistory } from '../firebase/historyService'; // <-- Add this import
+import { updateUserHistory } from '../firebase/historyService';
 import titlesData from '../data/system/titles.json';
 
 const { Title, Text } = Typography;
@@ -18,43 +18,20 @@ const SessionResult = ({
   resultMessage,
   practiceId,     
   practiceType,
-  practiceName    // <-- Add this new prop
+  practiceName
 }) => {
   const rating = getRatingInfo(score);
   
   const [isCheckingMission, setIsCheckingMission] = useState(false);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [missionResult, setMissionResult] = useState(null);
+  const [practiceCoinsEarned, setPracticeCoinsEarned] = useState(0);
 
-  // --- NEW: Update History Effect ---
+  // Consolidated Effect to handle both History Coins & Mission Coins without race conditions
   useEffect(() => {
-    const updateHistory = async () => {
+    const processResults = async () => {
       if (!practiceId || !practiceType) return;
       
-      const storageKey = localStorage.getItem('userSession') ? 'userSession' : 'user';
-      const userStr = localStorage.getItem(storageKey);
-      if (!userStr) return; // Only save history if logged in
-      
-      const user = JSON.parse(userStr);
-
-      await updateUserHistory(user.id, {
-        id: practiceId,
-        name: practiceName || `${practiceType} Practice`,
-        type: practiceType,
-        score: score
-      });
-    };
-
-    updateHistory();
-  }, [practiceId, practiceType, practiceName, score]);
-  // ---------------------------------
-
-  useEffect(() => {
-    const checkAndCompleteMission = async () => {
-      if (!practiceId || !['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz'].includes(practiceType)) {
-        return;
-      }
-
       setIsCheckingMission(true);
 
       try {
@@ -65,105 +42,137 @@ const SessionResult = ({
           setIsCheckingMission(false);
           return;
         }
-        const user = JSON.parse(userStr);
+        let user = JSON.parse(userStr);
 
-        const missions = await getUserMissions(user.id, true); 
-
-        const pendingMission = missions.find(m => {
-          const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
-          const isPending = m.status !== 'Đã chinh phục'; 
-          
-          return matchesId && isPending;
+        // 1. Process History & Practice Coins
+        const historyResult = await updateUserHistory(user.id, {
+          id: practiceId,
+          name: practiceName || `${practiceType} Practice`,
+          type: practiceType,
+          score: score
         });
 
-        if (pendingMission) {
-          const newPercentage = score;
-          const currentPercentage = pendingMission.percentage || 0;
-          
-          if (newPercentage > currentPercentage) {
-            const isCompleted = newPercentage >= 100;
+        let historyEarned = 0;
+        if (historyResult && historyResult.newlyEarnedCoins > 0) {
+          historyEarned = historyResult.newlyEarnedCoins;
+          setPracticeCoinsEarned(historyEarned);
+        }
 
-            const maxCoins = pendingMission.max_coins || 0;
-            const currentEarningCoins = pendingMission.earning_coins || 0;
-            const expectedCoins = Math.floor(maxCoins * (newPercentage / 100));
-            const newlyEarnedCoins = Math.max(0, expectedCoins - currentEarningCoins);
-            const newTotalEarningCoins = currentEarningCoins + newlyEarnedCoins;
+        // 2. Process Mission Coins
+        let missionEarned = 0;
+        let missionResultData = null;
+        let updatePayload = null;
+        let pendingMission = null;
 
-            const updatePayload = {
-              percentage: newPercentage,
-              earning_coins: newTotalEarningCoins,
-              userId: user.id 
-            };
+        if (['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz'].includes(practiceType)) {
+          const missions = await getUserMissions(user.id, true); 
+          pendingMission = missions.find(m => {
+            const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
+            const isPending = m.status !== 'Đã chinh phục'; 
+            return matchesId && isPending;
+          });
 
-            if (isCompleted) {
-              updatePayload.status = 'Đã chinh phục';
-              updatePayload.completedAt = new Date();
-              if (newTotalEarningCoins < maxCoins) {
-                  updatePayload.earning_coins = maxCoins;
-              }
-            } else {
-              updatePayload.status = 'Đang thực hiện'; 
-            }
-
-            await updateMission(pendingMission.id, updatePayload);
-
-            let hasNewTitle = false;
-            let newTitle = user.title || titlesData[0].title;
-
-            // Update user's personal balance, level, and title
-            if (newlyEarnedCoins > 0) {
-               const currentPersonalCoins = user.personal_coins || 0;
-               const newTotalCoins = currentPersonalCoins + newlyEarnedCoins;
-               
-               // Calculate Level (Assumption: 100 coins = 1 level, tweak if needed)
-               const newLevel = Math.floor(newTotalCoins / 100) + 1;
-               
-               // Find matching Title from JSON based on level
-               const titleObj = titlesData.find(t => newLevel >= t.minLevel && newLevel <= t.maxLevel);
-               const calculatedTitle = titleObj ? titleObj.title : titlesData[0].title;
-
-               if (calculatedTitle !== user.title) {
-                 hasNewTitle = true;
-                 newTitle = calculatedTitle;
-               }
-
-               await updateUser(user.id, { 
-                 personal_coins: newTotalCoins,
-                 level: newLevel,
-                 title: newTitle
-               });
-               
-               user.personal_coins = newTotalCoins;
-               user.level = newLevel;
-               user.title = newTitle;
-               localStorage.setItem(storageKey, JSON.stringify(user));
-            }
+          if (pendingMission) {
+            const newPercentage = score;
+            const currentPercentage = pendingMission.percentage || 0;
             
-            setMissionResult({
-              isCompleted,
-              missionName: pendingMission.title || 'this mission', 
-              previousPercent: Math.round(currentPercentage),
-              newPercent: Math.round(newPercentage),
-              gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage),
-              newlyEarnedCoins: newlyEarnedCoins,
-              hasNewTitle,
-              newTitle
-            });
-            setShowMissionModal(true);
+            if (newPercentage > currentPercentage) {
+              const isCompleted = newPercentage >= 100;
+              const maxCoins = pendingMission.max_coins || 0;
+              const currentEarningCoins = pendingMission.earning_coins || 0;
+              const expectedCoins = Math.floor(maxCoins * (newPercentage / 100));
+              const newlyEarnedCoins = Math.max(0, expectedCoins - currentEarningCoins);
+              
+              missionEarned = newlyEarnedCoins;
+              const newTotalEarningCoins = currentEarningCoins + newlyEarnedCoins;
+
+              updatePayload = {
+                percentage: newPercentage,
+                earning_coins: newTotalEarningCoins,
+                userId: user.id 
+              };
+
+              if (isCompleted) {
+                updatePayload.status = 'Đã chinh phục';
+                updatePayload.completedAt = new Date();
+                if (newTotalEarningCoins < maxCoins) {
+                    updatePayload.earning_coins = maxCoins;
+                }
+              } else {
+                updatePayload.status = 'Đang thực hiện'; 
+              }
+
+              missionResultData = {
+                isCompleted,
+                missionName: pendingMission.title || 'this mission', 
+                previousPercent: Math.round(currentPercentage),
+                newPercent: Math.round(newPercentage),
+                gainedPercent: Math.round(newPercentage) - Math.round(currentPercentage),
+                newlyEarnedCoins: newlyEarnedCoins,
+                hasNewTitle: false,
+                newTitle: user.title
+              };
+            }
           }
         }
+
+        // 3. Update User Total Coins (Combine history and mission coins)
+        const totalNewlyEarnedCoins = historyEarned + missionEarned;
+        
+        let hasNewTitle = false;
+        let newTitle = user.title || titlesData[0].title;
+
+        if (totalNewlyEarnedCoins > 0) {
+           const currentPersonalCoins = user.personal_coins || 0;
+           const newTotalCoins = currentPersonalCoins + totalNewlyEarnedCoins;
+           
+           // Calculate Level (Assumption: 100 coins = 1 level)
+           const newLevel = Math.floor(newTotalCoins / 100) + 1;
+           
+           // Find matching Title
+           const titleObj = titlesData.find(t => newLevel >= t.minLevel && newLevel <= t.maxLevel);
+           const calculatedTitle = titleObj ? titleObj.title : titlesData[0].title;
+
+           if (calculatedTitle !== user.title) {
+             hasNewTitle = true;
+             newTitle = calculatedTitle;
+             if (missionResultData) {
+                missionResultData.hasNewTitle = true;
+                missionResultData.newTitle = newTitle;
+             }
+           }
+
+           await updateUser(user.id, { 
+             personal_coins: newTotalCoins,
+             level: newLevel,
+             title: newTitle
+           });
+           
+           user.personal_coins = newTotalCoins;
+           user.level = newLevel;
+           user.title = newTitle;
+           localStorage.setItem(storageKey, JSON.stringify(user));
+        }
+
+        // 4. Update Mission Doc & Trigger Modal if applicable
+        if (pendingMission && updatePayload) {
+          await updateMission(pendingMission.id, updatePayload);
+          setMissionResult(missionResultData);
+          setShowMissionModal(true);
+        }
+
       } catch (error) {
-        console.error("Error checking/updating mission:", error);
+        console.error("Error processing session results:", error);
       } finally {
         setIsCheckingMission(false);
       }
     };
 
-    checkAndCompleteMission();
-  }, [practiceId, practiceType, score]);
+    processResults();
+  }, [practiceId, practiceType, practiceName, score]);
 
   return (
-    <Spin spinning={isCheckingMission} tip="Checking your mission progress..." size="large">
+    <Spin spinning={isCheckingMission} tip="Saving your progress..." size="large">
       <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
         
         <Flex vertical align="center" gap="large">
@@ -174,6 +183,12 @@ const SessionResult = ({
           />
           <Title level={2} style={{ margin: 0 }}> {rating.title}: {score}/100</Title>        
           
+          {practiceCoinsEarned > 0 && (
+            <Tag color="gold" style={{ fontSize: 18, padding: '5px 15px', marginTop: 5, borderRadius: 20 }}>
+              💰 +{practiceCoinsEarned} Coins Earned!
+            </Tag>
+          )}
+
           {resultMessage && (
             <Text style={{ fontSize: 18, marginTop: 10, textAlign: 'center', maxWidth: 400, color: '#555' }}>
               {resultMessage}
@@ -241,7 +256,7 @@ const SessionResult = ({
 
               {missionResult?.newlyEarnedCoins > 0 && (
                 <Text style={{ fontSize: 18, display: 'block', marginBottom: 20, color: '#faad14', fontWeight: 'bold' }}>
-                  💰 You earned {missionResult.newlyEarnedCoins} coins!
+                  💰 You earned {missionResult.newlyEarnedCoins} coins from this mission!
                 </Text>
               )}
 

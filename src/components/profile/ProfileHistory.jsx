@@ -50,6 +50,16 @@ const ProfileHistory = ({ user }) => {
       },
     },
     {
+      title: 'Coins Earned',
+      dataIndex: 'earnedCoins',
+      key: 'earnedCoins',
+      render: (coins) => (
+        <span style={{ color: '#faad14', fontWeight: 'bold' }}>
+          {coins || 0} 💰
+        </span>
+      ),
+    },
+    {
       title: 'Attempts',
       dataIndex: 'attempts',
       key: 'attempts',
