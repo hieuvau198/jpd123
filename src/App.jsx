@@ -33,6 +33,7 @@ import OtherQuizDetail from './pages/OtherQuizDetail';
 import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
 import UserManager from './components/admin/UserManager/UserManager';
+import GroupManager from './components/admin/GroupManager/GroupManager';
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
         
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<UserManager />} /> 
+        <Route path="/admin/groups" element={<GroupManager />} />
         
         <Route path="/flashcards" element={<FlashcardList />} />
         <Route path="/flashcard/:id" element={<FlashcardDetail />} />

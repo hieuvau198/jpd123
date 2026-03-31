@@ -200,3 +200,49 @@ export const getTopUsersByCoins = async (limitCount = 5) => {
     return [];
   }
 };
+
+export const createGroup = async (groupData) => {
+  try {
+    const payload = {
+      ...groupData,
+      studentIds: groupData.studentIds || [],
+      createdAt: serverTimestamp(),
+    };
+    
+    // Add new group document to the 'groups' collection
+    const docRef = await addDoc(collection(db, GROUPS_COLLECTION), payload);
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error("Error creating group:", error);
+    throw error;
+  }
+};
+
+export const updateGroup = async (id, groupData) => {
+  try {
+    const groupRef = doc(db, GROUPS_COLLECTION, id);
+    
+    const payload = { ...groupData };
+    // Ensure studentIds is an array if provided
+    if (payload.studentIds === undefined) {
+       payload.studentIds = []; 
+    }
+
+    await updateDoc(groupRef, payload);
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating group:", error);
+    throw error;
+  }
+};
+
+export const deleteGroup = async (id) => {
+  try {
+    const groupRef = doc(db, GROUPS_COLLECTION, id);
+    await deleteDoc(groupRef);
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting group:", error);
+    throw error;
+  }
+};

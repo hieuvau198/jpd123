@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Tag } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award } from 'lucide-react';
+import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award, Users } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser, getAllGroups } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
@@ -274,6 +274,9 @@ useEffect(() => {
         </div>
         
         <div style={{ display: 'flex', gap: '10px' }}>
+          <Button icon={<Users size={16} />} onClick={() => navigate('/admin/groups')}>
+            Manage Groups
+          </Button>
           <UpdateUserIdsButton onComplete={loadUsers} />
           <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>
             New User
