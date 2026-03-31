@@ -49,22 +49,41 @@ const generateQuestions = (data) => {
   const shuffled = [...data.reactions].sort(() => 0.5 - Math.random());
 
   return shuffled.map(reaction => {
-      // Randomly pick coefficient or element. We will fallback to element if coefficient has no matches.
       let type = Math.random() > 0.5 ? 'coefficient' : 'element';
       let segments = [];
       let inputs = [];
       let success = false;
       let questionText = "";
 
+      // Protect contents inside specific LaTeX commands to prevent unclosed brace parse errors
+      // e.g. prevents matching 'C' inside \xrightarrow{t^o < 250^oC}
+      const ignoredRanges = [];
+      const ignoreBlocks = /\\(?:xrightarrow|xleftarrow|text|math[a-zA-Z]*)\s*\{[^}]*\}/g;
+      let matchBlock;
+      while ((matchBlock = ignoreBlocks.exec(reaction.formula)) !== null) {
+          ignoredRanges.push({ start: matchBlock.index, end: matchBlock.index + matchBlock[0].length });
+      }
+      const cmdRegex = /\\[a-zA-Z]+/g;
+      while ((matchBlock = cmdRegex.exec(reaction.formula)) !== null) {
+          ignoredRanges.push({ start: matchBlock.index, end: matchBlock.index + matchBlock[0].length });
+      }
+
       if (type === 'coefficient') {
-          const regex = /(?:^|\s|\+|\\rightarrow|\\xrightarrow\{[^}]*\})\s*(\d+)(?=[A-Z])/g;
-          const matches = [...reaction.formula.matchAll(regex)];
+          const regex = /(?:^|\s|\+|\\rightarrow|\\xrightarrow\{[^}]*\}|\\rightleftharpoons)\s*(\d+)(?=[A-Z\\])/g;
+          const allMatches = [...reaction.formula.matchAll(regex)];
           
-          if (matches.length > 0) {
+          const validMatches = allMatches.filter(match => {
+              const numStr = match[1];
+              const numIndex = match.index + match[0].lastIndexOf(numStr);
+              // Ensure the number is not inside an ignored block (like temperature)
+              return !ignoredRanges.some(range => numIndex >= range.start && numIndex < range.end);
+          });
+          
+          if (validMatches.length > 0) {
               questionText = `Fill in all missing coefficients:`;
               let lastIndex = 0;
               
-              matches.forEach(match => {
+              validMatches.forEach(match => {
                   const numStr = match[1];
                   const matchStart = match.index + match[0].lastIndexOf(numStr);
                   
@@ -86,11 +105,23 @@ const generateQuestions = (data) => {
       // Fallback or explicit element choice
       if (type === 'element' || !success) {
           const elRegex = /[A-Z][a-z]?/g;
-          const matches = [...reaction.formula.matchAll(elRegex)];
+          const allMatches = [...reaction.formula.matchAll(elRegex)];
           
-          if (matches.length > 0) {
-              // Pick up to 3 random element matches, but ensure they are sorted by index for splitting
-              const shuffledMatches = matches.sort(() => 0.5 - Math.random()).slice(0, 3).sort((a, b) => a.index - b.index);
+          const validMatches = allMatches.filter(match => {
+              // Ensure the element is part of the actual chemical formula
+              return !ignoredRanges.some(range => match.index >= range.start && match.index < range.end);
+          });
+          
+          if (validMatches.length > 0) {
+              // Calculate compound count to limit missing elements
+              const parts = reaction.formula.split(/\+|\s=\s|\\(?:rightarrow|rightleftharpoons)|\\x(?:right|left)arrow(?:\{[^}]*\})?/);
+              const compoundCount = parts.filter(p => p.trim().length > 0).length;
+              
+              // Only allow missing up to half the compounds
+              const maxMissing = Math.max(1, Math.floor(compoundCount / 2));
+              const numToMiss = Math.min(maxMissing, validMatches.length);
+              
+              const shuffledMatches = validMatches.sort(() => 0.5 - Math.random()).slice(0, numToMiss).sort((a, b) => a.index - b.index);
               
               questionText = `Fill in the missing elements:`;
               type = 'element';
