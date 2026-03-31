@@ -137,6 +137,7 @@ const MCSession = ({ data, onHome, onBack }) => {
         onRestart={initGame}
         practiceId={data.id} // Pass the flashcard ID
         practiceType="Flashcard"      // Tell it this is a flashcard
+        practiceName={data.title} // Add this line
       />
     );
   }

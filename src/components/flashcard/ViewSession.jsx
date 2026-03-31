@@ -69,12 +69,13 @@ const ViewSession = ({ data, onHome, onBack }) => {
   if (currentIndex >= queue.length) {
     return (
       <SessionResult 
-        score={1} // Viewing flashcards is practice, so automatic perfect score
+        score={0.1} // Viewing flashcards is practice, so automatic perfect score
         onBack={onBack} 
         onRestart={() => {
            setQueue(shuffleArray([...data.questions]));
            setCurrentIndex(0);
         }} 
+        practiceName={data.title} // Add this line
       />
     );
   }

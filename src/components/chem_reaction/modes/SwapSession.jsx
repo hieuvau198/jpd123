@@ -180,6 +180,7 @@ const parts = currentReaction.formula.split(/\\x?rightarrow(?:\{(?:[^{}]|\{[^{}]
         }}
         practiceId={data.id} 
         practiceType="Chem Swap"
+        practiceName={data.title} // Add this line
       />
     );
   }

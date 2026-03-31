@@ -34,15 +34,12 @@ const prepareSessionData = (originalData, limit = null) => {
   }));
 };
 
-// Hàm xử lý text: Chuyển đổi **text** thành <u>text</u> VÀ \n thành <br />
 const renderFormattedText = (text) => {
   if (typeof text !== 'string') return text;
   
-  // Tách chuỗi dựa trên pattern **...**
   const parts = text.split(/\*\*(.*?)\*\*/g);
   
   return parts.map((part, index) => {
-    // Hàm phụ để xử lý ký tự \n thành thẻ ngắt dòng <br />
     const processNewLines = (str) => {
       return str.split('\n').map((line, i, arr) => (
         <React.Fragment key={i}>
@@ -52,12 +49,10 @@ const renderFormattedText = (text) => {
       ));
     };
 
-    // Các phần tử ở vị trí lẻ là các phần nằm trong ** ** -> bọc <u>
     if (index % 2 === 1) {
       return <u key={index}>{processNewLines(part)}</u>;
     }
     
-    // Các phần tử ở vị trí chẵn là text bình thường
     return <React.Fragment key={index}>{processNewLines(part)}</React.Fragment>;
   });
 };
@@ -66,12 +61,9 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
   const rawQuestions = Array.isArray(data) ? data.flatMap(d => d.questions) : (data.questions || []);
   const rawCount = rawQuestions.length;
 
-  // --- ALL HOOKS MUST BE AT THE TOP ---
-  const [limit, setLimit] = useState(initialNumbers || (rawCount <= 30 ? rawCount : null));
-  const [hasStarted, setHasStarted] = useState(rawCount <= 30 || initialNumbers !== null);
-
-  const [questions, setQuestions] = useState(() => hasStarted ? prepareSessionData(data, limit) : []);
-  const [totalQuestions, setTotalQuestions] = useState(() => hasStarted ? questions.length : 0);
+  const [limit, setLimit] = useState(initialNumbers || rawCount);
+  const [questions, setQuestions] = useState(() => prepareSessionData(data, limit));
+  const [totalQuestions, setTotalQuestions] = useState(() => questions.length);
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0); 
@@ -80,12 +72,11 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
   const [isWrong, setIsWrong] = useState(false);
   const [hasFailedCurrent, setHasFailedCurrent] = useState(false);
 
-  // We define currentQuestion here so the useEffect can use it safely
   const currentQuestion = questions[currentIndex];
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!hasStarted || isFinished || isWrong || (selectedOption && currentQuestion && selectedOption === currentQuestion.correctAnswer)) return;
+      if (isFinished || isWrong || (selectedOption && currentQuestion && selectedOption === currentQuestion.correctAnswer)) return;
       
       const key = e.key.toLowerCase();
       const indexMap = { '1': 0, '2': 1, '3': 2, '4': 3 };
@@ -98,7 +89,7 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [hasStarted, currentIndex, isFinished, isWrong, selectedOption, currentQuestion]);
+  }, [currentIndex, isFinished, isWrong, selectedOption, currentQuestion]);
 
   const handleOptionClick = (option) => {
     if (isWrong) return; 
@@ -132,14 +123,6 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
     }
   };
 
-  const handleStart = (selectedLimit) => {
-    const prepped = prepareSessionData(data, selectedLimit);
-    setLimit(selectedLimit);
-    setQuestions(prepped);
-    setTotalQuestions(prepped.length);
-    setHasStarted(true);
-  };
-
   const restart = () => {
     const prepped = prepareSessionData(data, limit);
     setQuestions(prepped);
@@ -150,32 +133,6 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
     setIsWrong(false);
     setHasFailedCurrent(false);
   };
-
-  // --- EARLY RETURNS ---
-  if (!hasStarted) {
-    const intervals = [10, 20, 30, 40, 50].filter(n => n < rawCount);
-    return (
-      <Flex justify="center" align="center" style={{ minHeight: '80vh', padding: 20 }}>
-        <Card style={{ width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <Title level={3}>Select number of questions</Title>
-          <Text>This quiz has {rawCount} questions. How many would you like to answer?</Text>
-          <Flex justify="center" gap="middle" wrap="wrap" style={{ marginTop: 24 }}>
-            {intervals.map(num => (
-              <Button key={num} size="large" onClick={() => handleStart(num)}>
-                {num} Questions
-              </Button>
-            ))}
-            <Button size="large" type="primary" onClick={() => handleStart(rawCount)}>
-              All ({rawCount})
-            </Button>
-          </Flex>
-          <div style={{ marginTop: 24 }}>
-            <Button icon={<Home size={16}/>} onClick={onHome}>Back</Button>
-          </div>
-        </Card>
-      </Flex>
-    );
-  }
 
   if (!questions || questions.length === 0) {
     return <div style={{ padding: 40, color: 'white' }}><h2>Error: No questions found.</h2></div>;
@@ -198,13 +155,11 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
     );
   }
 
-  // --- MAIN RENDER ---
   const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 20px' }}>
       <Card variant="borderless" styles={{ body: { padding: 0 } }}>
-        {/* Header */}
         <Flex justify="space-between" align="center" style={{ padding: '16px 24px', borderBottom: '1px solid #f0f0f0' }}>
           <Button type="text" icon={<Home size={16} />} onClick={onHome}>EXIT</Button>
           <Space>
@@ -213,16 +168,13 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
           </Space>
         </Flex>
         
-        {/* Progress Bar */}
         <Progress percent={progressPercent} showInfo={false} strokeColor="black" size="small" shape="square" style={{lineHeight: 0}} />
 
-        {/* Question Area */}
         <div style={{ padding: 40 }}>
           <Title 
             level={3} 
             style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
           >
-            {/* Sử dụng hàm renderFormattedText tại đây */}
             {renderFormattedText(currentQuestion.question)}
           </Title>
           <Flex vertical gap="middle" style={{ marginTop: 30 }}>
@@ -252,16 +204,14 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
                     textAlign: 'left', 
                     justifyContent: 'flex-start', 
                     fontSize: '1.1rem', 
-                    whiteSpace: 'normal',      // Allows the text to wrap to the next line
-                    wordBreak: 'break-word',   // Breaks long words if necessary
+                    whiteSpace: 'normal',
+                    wordBreak: 'break-word',
                     ...customStyle 
                   }}
                 >
                   <Flex justify="space-between" align="center" style={{ width: '100%', gap: '10px' }}>
-                     {/* Added flex: 1 to ensure text wraps properly and doesn't push the icon out */}
                      <span style={{ flex: 1 }}>{renderFormattedText(option)}</span>
                      
-                     {/* Wrapped icons in a fixed-width container to prevent them from shrinking */}
                      <div style={{ flexShrink: 0, display: 'flex' }}>
                        {isSelected && isCorrect && <CheckCircle size={20} />}
                        {isSelected && !isCorrect && <XCircle size={20} />}
@@ -275,7 +225,6 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
           {isWrong && (
             <Alert
               message={<span style={{ fontWeight: 'bold' }}>INSIGHT</span>}
-              // Sử dụng hàm renderFormattedText tại đây cho explanation
               description={renderFormattedText(currentQuestion.explanation)}
               type="info"
               showIcon

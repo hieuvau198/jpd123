@@ -279,6 +279,7 @@ const MissingSession = ({ data, onBack }) => {
         practiceId={data?.id}
         practiceType="Chem Reaction"
         resultMessage={`Great job! You fully completed all ${totalQuestions} missing parts!`}
+        practiceName={data.title} // Add this line
       />
     );
   }

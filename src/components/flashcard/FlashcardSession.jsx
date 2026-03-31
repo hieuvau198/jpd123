@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Typography, Flex, InputNumber } from 'antd';
-// Added ArrowLeft to imports
+import { Card, Button, Typography, Flex } from 'antd';
 import { Home, Layers, Keyboard, HelpCircle, Grid, SpellCheck, CheckSquare, ArrowLeft } from 'lucide-react'; 
 import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
@@ -23,71 +22,24 @@ const shuffleArray = (array) => {
 // Accept initialNumbers as a prop
 const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   const [mode, setMode] = useState(null); 
-  
-  const [setupMode, setSetupMode] = useState(false);
   const [sessionData, setSessionData] = useState(null);
-  const [wordCount, setWordCount] = useState(30);
 
   useEffect(() => {
     if (data && data.questions) {
       if (initialNumbers && !isNaN(initialNumbers) && initialNumbers > 0) {
-        // Automatically skip setup and choose random words if initialNumbers is valid
+        // Automatically choose random words if initialNumbers is valid
         const limit = Math.min(initialNumbers, data.questions.length);
         const shuffled = shuffleArray([...data.questions]);
         const selectedQuestions = shuffled.slice(0, limit);
         setSessionData({ ...data, questions: selectedQuestions });
-      } else if (data.questions.length > 30) {
-        // Fallback to manual setup mode
-        setWordCount(30); 
-        setSetupMode(true);
       } else {
+        // Use all words directly
         setSessionData(data); 
       }
     }
   }, [data, initialNumbers]);
 
   if (!data) return null;
-
-  if (setupMode) {
-    return (
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: 20, marginTop: 12 }}>
-        <Flex justify="flex-start" style={{ marginBottom: 20 }}>
-          <Button icon={<ArrowLeft size={20} />} onClick={onHome} />
-        </Flex>
-        <Flex vertical align="center" justify="center" style={{ minHeight: '60vh' }}>
-          <Title level={2}>{data.title}</Title>
-          <Text type="secondary" style={{ marginBottom: 20 }}>
-            This set has {data.questions.length} words. How many would you like to practice today?
-          </Text>
-          
-          <Flex gap="small" align="center" style={{ marginBottom: 30 }}>
-            <InputNumber 
-              min={1} 
-              max={data.questions.length} 
-              value={wordCount} 
-              onChange={(val) => setWordCount(val || 1)} 
-              size="large"
-            />
-            <Text>words</Text>
-          </Flex>
-
-          <Button 
-            type="primary" 
-            size="large" 
-            onClick={() => {
-              const shuffled = shuffleArray([...data.questions]);
-              const selectedQuestions = shuffled.slice(0, wordCount);
-              setSessionData({ ...data, questions: selectedQuestions });
-              setSetupMode(false);
-            }}
-          >
-            Start Practice
-          </Button>
-        </Flex>
-      </div>
-    );
-  }
-
   if (!sessionData) return null;
 
   if (mode === 'view') return <ViewSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
@@ -100,7 +52,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   return (
     <div style={{ maxWidth: 1000, margin: '0 auto', padding: 20, marginTop: 12 }}>
               
-<Flex justify="flex" style={{ marginBottom: 4, marginTop: 16 }}>
+      <Flex justify="flex" style={{ marginBottom: 4, marginTop: 16 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={onHome} />
       </Flex>
       

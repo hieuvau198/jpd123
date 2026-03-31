@@ -183,6 +183,7 @@ const MatchingSession = ({ data, onBack }) => {
         }}
         practiceId={data.id} 
         practiceType="Chem Quiz" // Aligns with your mission tracking
+        practiceName={data.title} // Add this line
       />
     );
   }

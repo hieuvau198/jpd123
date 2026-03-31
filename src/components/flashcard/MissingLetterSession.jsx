@@ -189,7 +189,8 @@ const MissingLetterSession = ({ data, onHome, onBack }) => {
            setWrongIds(new Set());
         }} 
         practiceId={data.id} 
-        practiceType="Flashcard"      
+        practiceType="Flashcard"
+        practiceName={data.title} // Add this line      
       />
     );
   }

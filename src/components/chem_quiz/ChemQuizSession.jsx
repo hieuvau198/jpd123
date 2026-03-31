@@ -109,6 +109,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
         resultMessage={`You answered ${score} out of ${totalAttempted} correctly on the first try!`}
         practiceId={practiceId}
         practiceType="Chem Quiz"
+        practiceName={data.title} // Add this line
       />
     );
   }

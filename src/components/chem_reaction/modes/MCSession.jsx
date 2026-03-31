@@ -208,6 +208,7 @@ const MCSession = ({ data, onBack }) => {
         onRestart={resetSession}
         practiceId={data?.id} 
         practiceType="Chem Quiz"
+        practiceName={data.title} // Add this line
       />
     );
   }
