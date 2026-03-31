@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Tag } from 'antd';
 import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award } from 'lucide-react';
-import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
+import { getAllUsers, createUser, updateUser, deleteUser, getAllGroups } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
 // Import child components
@@ -51,6 +51,15 @@ const UserManager = () => {
   // Mission Form states
   const [isMissionFormVisible, setIsMissionFormVisible] = useState(false);
   const [editingMission, setEditingMission] = useState(null);
+  const [groups, setGroups] = useState([]);
+
+  const fetchGroups = async () => {
+  const data = await getAllGroups();
+  setGroups(data);
+};
+useEffect(() => {
+  fetchGroups();
+}, []);
 
   // Change: Do not load all users on component mount to prevent big data request
   useEffect(() => {
@@ -101,41 +110,51 @@ const UserManager = () => {
 
   // --- User Handlers ---
   const handleShowUserModal = (record = null) => {
-    setEditingUser(record);
-    setIsUserModalVisible(true);
-  };
+  if (record) {
+    // Determine which groups currently contain this user ID
+    const userGroupIds = groups
+      .filter(g => g.studentIds && g.studentIds.includes(record.id))
+      .map(g => g.id);
+    setEditingUser({ ...record, groupIds: userGroupIds });
+  } else {
+    setEditingUser(null);
+  }
+  setIsUserModalVisible(true);
+};
 
   const handleSaveUser = async (values) => {
-    setLoading(true);
-    try {
-      if (editingUser) {
-        await updateUser(editingUser.id, values);
-        message.success("User updated successfully");
-      } else {
-        await createUser(values);
-        message.success("User created successfully");
-      }
-      setIsUserModalVisible(false);
-      loadUsers();
-    } catch (error) {
-      message.error("Error saving user");
-    } finally {
-      setLoading(false);
+  setLoading(true);
+  try {
+    if (editingUser) {
+      await updateUser(editingUser.id, values);
+      message.success("User updated successfully");
+    } else {
+      await createUser(values);
+      message.success("User created successfully");
     }
-  };
+    setIsUserModalVisible(false);
+    loadUsers();
+    fetchGroups(); // Refresh groups state
+  } catch (error) {
+    message.error("Error saving user");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDeleteUser = async (id) => {
-    setLoading(true);
-    try {
-      await deleteUser(id);
-      message.success("User deleted successfully");
-      loadUsers();
-    } catch (error) {
-      message.error("Error deleting user");
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    await deleteUser(id);
+    message.success("User deleted successfully");
+    loadUsers();
+    fetchGroups(); // Refresh groups state
+  } catch (error) {
+    message.error("Error deleting user");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // --- Mission List Handlers ---
   const openMissionsList = async (user) => {
@@ -284,13 +303,14 @@ const UserManager = () => {
       </Card>
 
       <UserModal 
-        visible={isUserModalVisible}
-        onCancel={() => setIsUserModalVisible(false)}
-        onSave={handleSaveUser}
-        onDelete={handleDeleteUser}
-        editingRecord={editingUser}
-        loading={loading}
-      />
+  visible={isUserModalVisible}
+  onCancel={() => setIsUserModalVisible(false)}
+  onSave={handleSaveUser}
+  onDelete={handleDeleteUser}
+  editingRecord={editingUser}
+  loading={loading}
+  groups={groups} // Add this prop
+/>
 
       <UserMissionsModal 
         visible={isMissionsModalVisible}

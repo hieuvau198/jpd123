@@ -36,7 +36,7 @@ const generateUsername = (fullName, grade) => {
   return `${formattedGrade}${formattedName}`;
 };
 
-const UserModal = ({ visible, onCancel, onSave, onDelete, editingRecord, loading }) => {
+const UserModal = ({ visible, onCancel, onSave, onDelete, editingRecord, loading, groups = [] }) => {
   const [form] = Form.useForm();
 
   // Generate grades "Lớp 1" to "Lớp 12"
@@ -133,6 +133,14 @@ const UserModal = ({ visible, onCancel, onSave, onDelete, editingRecord, loading
               </Button>
             </Popconfirm>
           )}
+
+          <Form.Item name="groupIds" label="Assign to Groups">
+        <Select mode="multiple" placeholder="Select groups" allowClear>
+          {groups.map(group => (
+            <Option key={group.id} value={group.id}>{group.name || group.id}</Option>
+          ))}
+        </Select>
+      </Form.Item>
 
         <Button type="primary" htmlType="submit" loading={loading} block>
           {editingRecord ? "Update" : "Create"}
