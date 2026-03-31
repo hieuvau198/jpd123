@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ProfileInfo from '../components/profile/ProfileInfo';
 import ProfileMissions from '../components/profile/ProfileMissions';
+import ProfileHistory from '../components/profile/ProfileHistory'; // <-- Add this import
 
 const Profile = ({ currentUser }) => {
   const [user, setUser] = useState(currentUser);
@@ -24,6 +25,12 @@ const Profile = ({ currentUser }) => {
         <ProfileInfo user={user} />
         <ProfileMissions currentUser={user} />
       </div>
+      
+      {/* --- ADD THIS DIV BLOCK FOR THE HISTORY --- */}
+      <div style={{ display: 'flex', marginTop: '20px' }}>
+        <ProfileHistory user={user} />
+      </div>
+      {/* ------------------------------------------ */}
     </div>
   );
 };

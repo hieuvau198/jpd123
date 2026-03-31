@@ -1,9 +1,11 @@
+// src/components/SessionResult.jsx
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress } from 'antd';
 import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
 import { updateUser } from '../firebase/userService'; 
-import titlesData from '../data/system/titles.json'; // Import titles
+import { updateUserHistory } from '../firebase/historyService'; // <-- Add this import
+import titlesData from '../data/system/titles.json';
 
 const { Title, Text } = Typography;
 
@@ -15,13 +17,37 @@ const SessionResult = ({
   restartText = "Play Again", 
   resultMessage,
   practiceId,     
-  practiceType    
+  practiceType,
+  practiceName    // <-- Add this new prop
 }) => {
   const rating = getRatingInfo(score);
   
   const [isCheckingMission, setIsCheckingMission] = useState(false);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [missionResult, setMissionResult] = useState(null);
+
+  // --- NEW: Update History Effect ---
+  useEffect(() => {
+    const updateHistory = async () => {
+      if (!practiceId || !practiceType) return;
+      
+      const storageKey = localStorage.getItem('userSession') ? 'userSession' : 'user';
+      const userStr = localStorage.getItem(storageKey);
+      if (!userStr) return; // Only save history if logged in
+      
+      const user = JSON.parse(userStr);
+
+      await updateUserHistory(user.id, {
+        id: practiceId,
+        name: practiceName || `${practiceType} Practice`,
+        type: practiceType,
+        score: score
+      });
+    };
+
+    updateHistory();
+  }, [practiceId, practiceType, practiceName, score]);
+  // ---------------------------------
 
   useEffect(() => {
     const checkAndCompleteMission = async () => {
