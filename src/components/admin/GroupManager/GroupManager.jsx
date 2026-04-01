@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Tag, Space, Popconfirm } from 'antd';
-// Add Printer to the lucide-react imports
+// Combined lucide-react imports
 import { ArrowLeft, Plus, Edit, Trash2, ClipboardList, Printer } from 'lucide-react'; 
 import { getAllGroups, createGroup, updateGroup, deleteGroup, getAllUsers } from '../../../firebase/userService'; 
 import { getUserMissions, deleteMission, createMission } from '../../../firebase/missionService'; 
@@ -81,7 +81,7 @@ const GroupManager = () => {
     }
   };
 
-  // --- NEW PRINT FUNCTION ---
+  // --- PRINT FUNCTION ---
   const handlePrintGroup = (group) => {
     const studentIds = group.studentIds || [];
     if (studentIds.length === 0) {
@@ -123,7 +123,6 @@ const GroupManager = () => {
     `;
 
     groupStudents.forEach(student => {
-      // Adjust these field names based on your actual user document structure in Firestore
       const name = student.name || 'N/A';
       const username = student.username || student.email || 'N/A'; 
       const password = student.password || 'N/A'; 
@@ -154,10 +153,54 @@ const GroupManager = () => {
       printWindow.close();
     }, 250);
   };
-  // --------------------------
 
+  // --- RESTORED ASSIGN MISSION FUNCTION ---
   const handleAssignMission = async (values) => {
-    // ... [Keep your existing handleAssignMission logic unchanged] ...
+    setLoading(true);
+    try {
+      const studentIds = selectedGroupForMission.studentIds || [];
+      
+      if (studentIds.length === 0) {
+        message.warning("This group has no members.");
+        setLoading(false);
+        return;
+      }
+
+      // Format the mission data correctly
+      const missionData = {
+        ...values,
+        startDate: values.startDate ? values.startDate.toISOString() : null,
+        endDate: values.endDate ? values.endDate.toISOString() : null,
+      };
+
+      let assignedCount = 0;
+
+      for (const studentId of studentIds) {
+        // 1. Fetch current missions for this specific student (force cache refresh)
+        const studentMissions = await getUserMissions(studentId, true);
+        
+        // 2. Check for duplicate practiceId to override/remove
+        const duplicateMissions = studentMissions.filter(m => m.practiceId === missionData.practiceId);
+        
+        // 3. Delete duplicates
+        for (const dup of duplicateMissions) {
+          await deleteMission(dup.id, studentId);
+        }
+
+        // 4. Assign the new mission
+        await createMission({ ...missionData, userId: studentId });
+        assignedCount++;
+      }
+
+      message.success(`Mission successfully assigned to ${assignedCount} students!`);
+      setIsMissionModalVisible(false);
+      setSelectedGroupForMission(null);
+    } catch (error) {
+      console.error("Error assigning group mission:", error);
+      message.error("Failed to assign mission to the group.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const columns = [
@@ -198,7 +241,6 @@ const GroupManager = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
-          {/* New Print Button */}
           <Button 
             type="default" 
             icon={<Printer size={16} />} 
@@ -236,7 +278,6 @@ const GroupManager = () => {
 
   return (
     <div style={{ maxWidth: 1200, margin: '40px auto', padding: 20 }}>
-      {/* ... [Rest of your return block stays exactly the same] ... */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin/users')}></Button>
