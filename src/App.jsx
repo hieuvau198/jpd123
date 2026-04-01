@@ -5,6 +5,7 @@ import './App.css';
 
 // Import the new NavBar
 import NavBar from './components/layout/NavBar';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 
 // Components
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -41,43 +42,56 @@ export default function App() {
       <NavBar />
       
       <Routes>
-        <Route path="/" element={<Home />} />
-
+        {/* PUBLIC ROUTE
+          The login page MUST be public so unauthenticated users have a place to go. 
+        */}
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
         
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<UserManager />} /> 
-        <Route path="/admin/groups" element={<GroupManager />} />
+        {/* PROTECTED ROUTES */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         
-        <Route path="/flashcards" element={<FlashcardList />} />
-        <Route path="/flashcard/:id" element={<FlashcardDetail />} />
+        {/* Admin */}
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute><UserManager /></ProtectedRoute>} /> 
+        <Route path="/admin/groups" element={<ProtectedRoute><GroupManager /></ProtectedRoute>} />
+        
+        {/* Flashcards */}
+        <Route path="/flashcards" element={<ProtectedRoute><FlashcardList /></ProtectedRoute>} />
+        <Route path="/flashcard/:id" element={<ProtectedRoute><FlashcardDetail /></ProtectedRoute>} />
 
-        <Route path="/quizzes" element={<QuizList />} />
-        <Route path="/quiz/:id" element={<QuizDetail />} />
+        {/* Quizzes */}
+        <Route path="/quizzes" element={<ProtectedRoute><QuizList /></ProtectedRoute>} />
+        <Route path="/quiz/:id" element={<ProtectedRoute><QuizDetail /></ProtectedRoute>} />
 
-        <Route path="/repairs" element={<RepairList />} />
-        <Route path="/repair/:id" element={<RepairDetail />} />
+        {/* Repairs */}
+        <Route path="/repairs" element={<ProtectedRoute><RepairList /></ProtectedRoute>} />
+        <Route path="/repair/:id" element={<ProtectedRoute><RepairDetail /></ProtectedRoute>} />
 
-        <Route path="/speaks" element={<SpeakList />} />
-        <Route path="/speak/:id" element={<SpeakDetail />} />
+        {/* Speaking */}
+        <Route path="/speaks" element={<ProtectedRoute><SpeakList /></ProtectedRoute>} />
+        <Route path="/speak/:id" element={<ProtectedRoute><SpeakDetail /></ProtectedRoute>} />
 
-        <Route path="/phonetic" element={<PhoneticList />} />
-        <Route path="/phonetic/:id" element={<PhoneticDetail />} />
+        {/* Phonetics */}
+        <Route path="/phonetic" element={<ProtectedRoute><PhoneticList /></ProtectedRoute>} />
+        <Route path="/phonetic/:id" element={<ProtectedRoute><PhoneticDetail /></ProtectedRoute>} />
 
-        <Route path="/challenge" element={<DefenseList />} />
-        <Route path="/challenge/:id" element={<DefenseDetail />} />
+        {/* Challenges/Defense */}
+        <Route path="/challenge" element={<ProtectedRoute><DefenseList /></ProtectedRoute>} />
+        <Route path="/challenge/:id" element={<ProtectedRoute><DefenseDetail /></ProtectedRoute>} />
 
-        <Route path="/chem-quiz" element={<ChemQuizList />} />
-        <Route path="/chem-quiz/:id" element={<ChemQuizDetail />} />
+        {/* Chemistry */}
+        <Route path="/chem-quiz" element={<ProtectedRoute><ChemQuizList /></ProtectedRoute>} />
+        <Route path="/chem-quiz/:id" element={<ProtectedRoute><ChemQuizDetail /></ProtectedRoute>} />
+        <Route path="/chem-reaction" element={<ProtectedRoute><ChemReactionList /></ProtectedRoute>} />
+        <Route path="/chem-reaction/:id" element={<ProtectedRoute><ChemReactionDetail /></ProtectedRoute>} />
+        
+        {/* Other Quizzes */}
+        <Route path="/other-quizzes" element={<ProtectedRoute><OtherQuizList /></ProtectedRoute>} />
+        <Route path="/other-quiz/:id" element={<ProtectedRoute><OtherQuizDetail /></ProtectedRoute>} />
 
-
-        <Route path="/chem-reaction" element={<ChemReactionList />} />
-        <Route path="/chem-reaction/:id" element={<ChemReactionDetail />} />
-        <Route path="/other-quizzes" element={<OtherQuizList />} />
-        <Route path="/other-quiz/:id" element={<OtherQuizDetail />} />
-
-        <Route path="*" element={<Home />} />
+        {/* Catch-all 404 route - also protected */}
+        <Route path="*" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       </Routes>
     </main>
   );
