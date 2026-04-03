@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Table, message, Tag } from 'antd';
-import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award, Users } from 'lucide-react';
+// Added History icon import here:
+import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award, Users, History } from 'lucide-react';
 import { getAllUsers, createUser, updateUser, deleteUser, getAllGroups } from '../../../firebase/userService';
 import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
 
@@ -276,6 +277,10 @@ useEffect(() => {
         <div style={{ display: 'flex', gap: '10px' }}>
           <Button icon={<Users size={16} />} onClick={() => navigate('/admin/groups')}>
             Manage Groups
+          </Button>
+          {/* Add the new User History Button here */}
+          <Button icon={<History size={16} />} onClick={() => navigate('/admin/user-history')}>
+            User History
           </Button>
           <UpdateUserIdsButton onComplete={loadUsers} />
           <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>

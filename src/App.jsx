@@ -35,6 +35,7 @@ import DefenseList from './pages/DefenseList';
 import DefenseDetail from './pages/DefenseDetail';
 import UserManager from './components/admin/UserManager/UserManager';
 import GroupManager from './components/admin/GroupManager/GroupManager';
+import UserHistoryPage from './components/admin/UserHistory/UserHistoryPage';
 
 export default function App() {
   return (
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute><UserManager /></ProtectedRoute>} /> 
         <Route path="/admin/groups" element={<ProtectedRoute><GroupManager /></ProtectedRoute>} />
+        <Route path="/admin/user-history" element={<ProtectedRoute><UserHistoryPage /></ProtectedRoute>} />
         
         {/* Flashcards */}
         <Route path="/flashcards" element={<ProtectedRoute><FlashcardList /></ProtectedRoute>} />

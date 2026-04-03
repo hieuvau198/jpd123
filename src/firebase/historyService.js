@@ -1,6 +1,21 @@
 // src/firebase/historyService.js
 import { db } from './firebase-config';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
+
+// Fetch the history for all users
+export const getAllHistories = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'history'));
+    const historiesMap = {};
+    querySnapshot.forEach((doc) => {
+      historiesMap[doc.id] = doc.data().practices || {};
+    });
+    return historiesMap;
+  } catch (error) {
+    console.error("Error fetching all histories:", error);
+    return {};
+  }
+};
 
 // Fetch the history for a specific user
 export const getUserHistory = async (userId) => {
