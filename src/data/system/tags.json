@@ -1,5 +1,9 @@
 [
   {
+    "id": "english-kids",
+    "name": "Kids"
+  },
+  {
     "id": "english-core",
     "name": "Core"
   },
