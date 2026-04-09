@@ -109,7 +109,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
         resultMessage={`You answered ${score} out of ${totalAttempted} correctly on the first try!`}
         practiceId={practiceId}
         practiceType="Chem Quiz"
-        practiceName={data.title} // Add this line
+        practiceName={data.title}
       />
     );
   }
@@ -122,6 +122,17 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
          <h2 className="text-xl font-bold text-gray-800">{data.title || 'Chemistry Quiz'}</h2>
          <span className="text-gray-500 font-medium">{queue.length}</span>
       </div>
+
+      {/* EXPLANATION MOVED HERE AND CONDITION UPDATED */}
+      {isAnswered && currentQuestion.explanation && (
+        <Alert
+          
+          description={<div className="text-base">{renderMixedText(currentQuestion.explanation)}</div>}
+          type="info"
+          showIcon
+          className="mb-6"
+        />
+      )}
       
       <div className="mb-8 p-6 border border-gray-100 rounded-lg bg-gray-50">
         <Title level={4} style={{ marginTop: 0 }}>
@@ -135,16 +146,15 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
           </div>
         )}
         {currentQuestion.svgCode && (
-  <div 
-    className="flex justify-center my-4"
-    dangerouslySetInnerHTML={{ __html: currentQuestion.svgCode }} 
-  />
-)}
+          <div 
+            className="flex justify-center my-4"
+            dangerouslySetInnerHTML={{ __html: currentQuestion.svgCode }} 
+          />
+        )}
       </div>
 
       <Flex vertical gap="middle">
         {currentQuestion.options?.map((opt, idx) => {
-          // ADDED: whiteSpace, wordBreak, and slightly adjusted padding for multiline text
           let buttonStyle = { 
             height: 'auto', 
             padding: '16px 20px', 
@@ -174,12 +184,9 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
               style={buttonStyle}
               onClick={() => handleSelectAnswer(opt)}
             >
-              {/* ADDED: gap: '12px' so the text and icon don't touch */}
               <Flex justify="space-between" align="center" style={{ width: '100%', gap: '12px' }}>
-                 {/* ADDED: flex: 1 so text takes up the remaining space properly */}
                  <span style={{ flex: 1, textAlign: 'left' }}>{renderMixedText(opt)}</span>
                  
-                 {/* ADDED: flexShrink: 0 to icons to ensure they don't get squished by long text */}
                  {isAnswered && String(opt).trim() === String(correctAnswer).trim() && (
                     <CheckCircle size={20} style={{ flexShrink: 0 }} />
                  )}
@@ -194,16 +201,7 @@ const ChemQuizSession = ({ data, onHome, initialNumbers, practiceId }) => {
 
       {isAnswered && (
         <div className="mt-6">
-          {String(selectedAnswer).trim() !== String(correctAnswer).trim() && currentQuestion.explanation && (
-            <Alert
-              message="Explanation"
-              description={<div className="text-base">{renderMixedText(currentQuestion.explanation)}</div>}
-              type="info"
-              showIcon
-              className="mb-6"
-            />
-          )}
-          
+          {/* NEXT BUTTON REMAINS HERE */}
           <Flex justify="end">
             <Button 
               type="primary" 
