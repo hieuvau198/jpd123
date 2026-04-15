@@ -136,6 +136,17 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
          <span className="text-gray-500 font-medium">{currentIndex + 1} / {questions.length}</span>
       </div>
       
+      {/* EXPLANATION MOVED HERE AND CONDITION UPDATED */}
+      {isAnswered && currentQuestion.explanation && (
+        <Alert
+          message="Insight"
+          description={<div className="text-base">{renderFormattedText(currentQuestion.explanation)}</div>}
+          type="info"
+          showIcon
+          className="mb-6"
+        />
+      )}
+
       <div className="mb-8 p-6 border border-gray-100 rounded-lg bg-gray-50">
         <Title level={4} style={{ marginTop: 0 }}>
            {currentQuestion._retry && <Text type="danger" style={{marginRight: 8}}>[Retry]</Text>}
@@ -199,18 +210,9 @@ const QuizSession = ({ data, onHome, initialNumbers }) => {
         })}
       </Flex>
 
+      {/* BOTTOM SECTION WITH ONLY THE NEXT BUTTON */}
       {isAnswered && (
         <div className="mt-6">
-          {String(selectedOption).trim() !== String(correctAnswer).trim() && currentQuestion.explanation && (
-            <Alert
-              message="Insight"
-              description={<div className="text-base">{renderFormattedText(currentQuestion.explanation)}</div>}
-              type="info"
-              showIcon
-              className="mb-6"
-            />
-          )}
-          
           <Flex justify="end">
             <Button 
               type="primary" 
