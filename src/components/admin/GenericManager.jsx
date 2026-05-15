@@ -163,13 +163,13 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
     {
       title: 'Action',
       key: 'action',
-      width: 140, // Increased width for the extra button
+      width: 140,
       render: (_, record) => (
         <div style={{ display: 'flex', gap: 8 }}>
-          {(type === 'quiz' || type === 'chemistry') && (
+          {/* UPDATED CONDITION HERE */}
+          {(type === 'quiz' || type === 'chemistry' || type === 'document') && (
             <Button type="text" icon={<Eye size={16} />} onClick={() => handlePreview(record)} />
           )}
-          {/* NEW DOWNLOAD BUTTON */}
           <Button type="text" icon={<Download size={16} />} onClick={() => handleDownload(record)} />
           <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
             <Button danger type="text" icon={<Trash2 size={16} />} />
@@ -227,6 +227,26 @@ const GenericManager = ({ type, icon, color, uploadText, uploadColor, fetchFn, f
         width={800}
         styles={{ body: { maxHeight: '75vh', overflowY: 'auto', padding: '20px', background: '#fff' } }}
       >
+        {/* NEW RENDER BLOCK FOR DOCUMENTS */}
+        {previewData && type === 'document' && (
+          <div>
+            <div style={{ marginBottom: 20 }}>
+               {previewData.subject && <AntTag color="blue" style={{ fontSize: '1.1em', padding: '4px 10px' }}>{previewData.subject}</AntTag>}
+            </div>
+            {previewData.content && previewData.content.map((part, index) => (
+              <div key={index} style={{ marginBottom: 20, padding: '20px', border: '1px solid #f0f0f0', borderRadius: 8, background: '#fafafa' }}>
+                <Title level={5} style={{ marginTop: 0, color: '#1890ff' }}>{part.name}</Title>
+                <div style={{ marginBottom: 10 }}>
+                  <Text strong>Purpose:</Text> <Text>{part.purpose}</Text>
+                </div>
+                <div>
+                  <Text strong>Description:</Text>
+                  <p style={{ marginTop: 4, whiteSpace: 'pre-wrap' }}>{part.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         {previewData && (type === 'quiz' || type === 'chemistry') && (() => {
           const rawQuestions = Array.isArray(previewData) ? previewData.flatMap(d => d.questions) : (previewData.questions || []);
           if (!rawQuestions || rawQuestions.length === 0) return <p>No questions found in this source.</p>;

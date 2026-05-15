@@ -37,6 +37,9 @@ import UserManager from './components/admin/UserManager/UserManager';
 import GroupManager from './components/admin/GroupManager/GroupManager';
 import UserHistoryPage from './components/admin/UserHistory/UserHistoryPage';
 
+import DocumentList from './pages/DocumentList';
+import DocumentDetail from './pages/DocumentDetail';
+
 export default function App() {
   return (
     <main>
@@ -87,6 +90,9 @@ export default function App() {
         <Route path="/chem-quiz/:id" element={<ProtectedRoute><ChemQuizDetail /></ProtectedRoute>} />
         <Route path="/chem-reaction" element={<ProtectedRoute><ChemReactionList /></ProtectedRoute>} />
         <Route path="/chem-reaction/:id" element={<ProtectedRoute><ChemReactionDetail /></ProtectedRoute>} />
+
+        <Route path="/documents" element={<DocumentList />} />
+        <Route path="/documents/:id" element={<DocumentDetail />} />
         
         {/* Other Quizzes */}
         <Route path="/other-quizzes" element={<ProtectedRoute><OtherQuizList /></ProtectedRoute>} />

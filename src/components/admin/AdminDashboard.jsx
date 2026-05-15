@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Card, Button, Tabs, Divider } from 'antd'; 
-import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical, Beaker, HelpCircle } from 'lucide-react';
+import { Home, FileJson, FileQuestion, Wrench, Mic, Shield, Volume2, Users, FlaskConical, Beaker, HelpCircle, FileText } from 'lucide-react';
 
 import GenericManager from './GenericManager';
 import FlashcardManager from './FlashcardManager';
@@ -16,6 +16,7 @@ import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../.
 import { getAllRepairs, saveRepairSet, deleteRepairSet } from '../../firebase/repairService';
 import { getAllSpeaks, saveSpeakSet, deleteSpeakSet } from '../../firebase/speakService';
 import { getAllChemReactions, getChemReactionsByTag, saveChemReactionSet, deleteChemReactionSet } from '../../firebase/chemReactionService';
+import { getAllDocuments, getDocumentsByTag, saveDocumentSet, deleteDocumentSet } from '../../firebase/documentService';
 
 // --- NEW IMPORT FOR OTHER QUIZZES ---
 import { getAllOtherQuizzes, getOtherQuizzesByTag, saveOtherQuizSet, deleteOtherQuizSet } from '../../firebase/otherQuizService';
@@ -89,6 +90,21 @@ const AdminDashboard = () => {
               ),
             },
           ]}
+        />
+      </Card>
+
+      <Divider />
+      <Card style={{ marginBottom: 20 }} >
+        <GenericManager 
+          type="document" 
+          icon={<FileText color="#1890ff" size={24} />}
+          color="blue"
+          uploadText="Upload Document JSON"
+          uploadColor="#1890ff"
+          fetchFn={getAllDocuments}
+          fetchByTagFn={getDocumentsByTag}
+          saveFn={saveDocumentSet}
+          deleteFn={deleteDocumentSet}
         />
       </Card>
 

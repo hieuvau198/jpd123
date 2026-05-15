@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, Typography, Row, Col } from 'antd';
 import { 
   BookOpen, FileQuestion, Wrench, Mic, Swords, 
-  FlaskConical, Beaker, Sparkles, Puzzle // <-- Added Puzzle icon
+  FlaskConical, Beaker, Sparkles, Puzzle,
+  FileText
 } from 'lucide-react';
 import HallOfFame from '../components/HallOfFame'; 
 
@@ -109,6 +110,15 @@ const Home = () => {
                 <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 16, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                   <Beaker size={48} color="#fa8c16" style={{ marginBottom: 16 }} />
                   <Title level={3} style={{ color: '#fa8c16', margin: 0 }}>Reactions</Title>
+                </Card>
+              </Link>
+            </Col>
+
+            <Col xs={24} sm={12} md={8}>
+              <Link to="/documents" style={{ textDecoration: 'none' }}>
+                <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 16, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                  <FileText size={48} color="#1cebfa" style={{ marginBottom: 16 }} />
+                  <Title level={3} style={{ color: '#1cebfa', margin: 0 }}>Documents</Title>
                 </Card>
               </Link>
             </Col>
