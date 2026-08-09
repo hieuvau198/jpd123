@@ -35,24 +35,47 @@ const MCSession = ({ data, onHome, onBack }) => {
     };
   }, [data]);
 
+  // NEW LOGIC: 5-second auto-fail timer
+  useEffect(() => {
+    // Only run if the game is active and waiting for an answer
+    if (questions.length === 0 || isFinished || selectedAnswer !== null) return;
+
+    const timeoutTimer = setTimeout(() => {
+      handleAnswerClick(null); // passing null simulates a timeout/wrong answer
+    }, 5000);
+
+    return () => clearTimeout(timeoutTimer);
+  }, [currentIndex, questions.length, isFinished, selectedAnswer]);
+
   const initGame = () => {
     const allQuestions = data.questions;
     
-    // Generate the multiple choice questions
+    // Generate the multiple choice questions (50/50 bidirectional logic)
     const mcQuestions = shuffleArray([...allQuestions]).map(q => {
-      const correctAnswer = q.answer;
-      // Get all other answers from the set
+      const isVietToEng = Math.random() > 0.5; 
+      
+      // Assign display question and correct answer based on random flip
+      const displayQuestion = isVietToEng ? q.answer : q.question;
+      const correctAnswer = isVietToEng ? q.question : q.answer;
+
+      // Get all other answers from the set matching the current type
       const otherAnswers = allQuestions
         .filter(sq => sq.id !== q.id)
-        .map(sq => sq.answer);
+        .map(sq => isVietToEng ? sq.question : sq.answer);
       
       // Randomly pick up to 3 wrong answers
       const wrongAnswers = shuffleArray(otherAnswers).slice(0, 3);
       
-      // Combine and shuffle the options so the correct answer isn't always first
+      // Combine and shuffle the options
       const options = shuffleArray([correctAnswer, ...wrongAnswers]);
       
-      return { ...q, options, correctAttemptsNeeded: 1 };
+      return { 
+        ...q, 
+        displayQuestion, 
+        correctAnswer, 
+        options, 
+        correctAttemptsNeeded: 1 
+      };
     });
     
     setQuestions(mcQuestions);
@@ -62,15 +85,13 @@ const MCSession = ({ data, onHome, onBack }) => {
     setSelectedAnswer(null);
   };
 
-  const handleNext = (isCorrectParam) => {
+  const handleNext = (isCorrect) => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
 
     const currentQ = questions[currentIndex];
-    const isCorrect = typeof isCorrectParam === 'boolean' ? isCorrectParam : selectedAnswer === currentQ.answer;
-
     let updatedQ = { ...currentQ };
     let needsRequeue = false;
 
@@ -109,18 +130,23 @@ const MCSession = ({ data, onHome, onBack }) => {
   const handleAnswerClick = (ans) => {
     if (selectedAnswer !== null) return; // Prevent clicking multiple times
     
-    setSelectedAnswer(ans);
-    const currentQ = questions[currentIndex];
+    // If ans is null, they timed out, assign a placeholder to trigger UI updates
+    setSelectedAnswer(ans || '__TIMEOUT__'); 
     
-    if (ans === currentQ.answer) {
-      // Auto-advance if correct
-      timerRef.current = setTimeout(() => {
-        handleNext(true);
-      }, 1000);
-    } else {
+    const currentQ = questions[currentIndex];
+    const isCorrect = ans === currentQ.correctAnswer;
+    
+    if (!isCorrect) {
       // Record wrong answer
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
+
+    // NEW LOGIC: 1s delay if correct, 5s delay if wrong/timeout
+    const delay = isCorrect ? 1000 : 5000;
+    
+    timerRef.current = setTimeout(() => {
+      handleNext(isCorrect);
+    }, delay);
   };
 
   if (questions.length === 0) return null;
@@ -135,9 +161,9 @@ const MCSession = ({ data, onHome, onBack }) => {
         resultMessage={`"${data?.title || 'current'}": MC ${totalUniqueQuestions} words!`}
         onBack={onBack}
         onRestart={initGame}
-        practiceId={data.id} // Pass the flashcard ID
-        practiceType="Flashcard"      // Tell it this is a flashcard
-        practiceName={data.title} // Add this line
+        practiceId={data.id} 
+        practiceType="Flashcard"      
+        practiceName={data.title} 
       />
     );
   }
@@ -166,19 +192,7 @@ const MCSession = ({ data, onHome, onBack }) => {
         </Button>
       </Flex>
 
-      {/* Next Button Container */}
-      <Flex justify="center" align="center" style={{ minHeight: 50, marginBottom: 20 }}>
-        {selectedAnswer !== null && selectedAnswer !== currentQ.answer && (
-          <Button type="primary" danger size="large" onClick={() => handleNext(false)}>
-            Next Question
-          </Button>
-        )}
-        {selectedAnswer !== null && selectedAnswer === currentQ.answer && (
-          <Button type="primary" style={{ backgroundColor: '#52c41a' }} size="large" onClick={() => handleNext(true)}>
-            Correct! Next Question
-          </Button>
-        )}
-      </Flex>
+      {/* Manual "Next" buttons have been completely removed from here */}
 
       {/* Question Card */}
       <Card 
@@ -190,7 +204,7 @@ const MCSession = ({ data, onHome, onBack }) => {
           boxShadow: '0 4px 12px rgba(0,0,0,0.05)' 
         }}
       >
-        <Title level={2}>{currentQ.question}</Title>
+        <Title level={2}>{currentQ.displayQuestion}</Title>
       </Card>
 
       {/* 2x2 Grid Layout for Options */}
@@ -207,7 +221,7 @@ const MCSession = ({ data, onHome, onBack }) => {
           let textColor = '#333';
 
           if (selectedAnswer !== null) {
-            if (opt === currentQ.answer) {
+            if (opt === currentQ.correctAnswer) {
               bgColor = '#f6ffed';
               borderColor = '#b7eb8f';
               textColor = '#52c41a';
