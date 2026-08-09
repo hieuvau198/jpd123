@@ -35,7 +35,7 @@ const MCSession = ({ data, onHome, onBack }) => {
     };
   }, [data]);
 
-  // NEW LOGIC: 5-second auto-fail timer
+  // 5-second auto-fail timer
   useEffect(() => {
     // Only run if the game is active and waiting for an answer
     if (questions.length === 0 || isFinished || selectedAnswer !== null) return;
@@ -49,36 +49,49 @@ const MCSession = ({ data, onHome, onBack }) => {
 
   const initGame = () => {
     const allQuestions = data.questions;
+    let combinedQuestions = [];
     
-    // Generate the multiple choice questions (50/50 bidirectional logic)
-    const mcQuestions = shuffleArray([...allQuestions]).map(q => {
-      const isVietToEng = Math.random() > 0.5; 
+    // Generate TWO questions for every word (Bidirectional)
+    allQuestions.forEach(q => {
       
-      // Assign display question and correct answer based on random flip
-      const displayQuestion = isVietToEng ? q.answer : q.question;
-      const correctAnswer = isVietToEng ? q.question : q.answer;
-
-      // Get all other answers from the set matching the current type
-      const otherAnswers = allQuestions
+      // --- Type 1: Show Question (English), Guess Answer (Vietnamese) ---
+      const type1OtherAnswers = allQuestions
         .filter(sq => sq.id !== q.id)
-        .map(sq => isVietToEng ? sq.question : sq.answer);
+        .map(sq => sq.answer);
       
-      // Randomly pick up to 3 wrong answers
-      const wrongAnswers = shuffleArray(otherAnswers).slice(0, 3);
+      const type1WrongAnswers = shuffleArray(type1OtherAnswers).slice(0, 3);
+      const type1Options = shuffleArray([q.answer, ...type1WrongAnswers]);
       
-      // Combine and shuffle the options
-      const options = shuffleArray([correctAnswer, ...wrongAnswers]);
-      
-      return { 
+      combinedQuestions.push({ 
         ...q, 
-        displayQuestion, 
-        correctAnswer, 
-        options, 
+        uniqueSessionId: `${q.id || q.question}_type1`, // Unique ID for key tracking
+        displayQuestion: q.question, 
+        correctAnswer: q.answer, 
+        options: type1Options, 
         correctAttemptsNeeded: 1 
-      };
+      });
+
+      // --- Type 2: Show Answer (Vietnamese), Guess Question (English) ---
+      const type2OtherAnswers = allQuestions
+        .filter(sq => sq.id !== q.id)
+        .map(sq => sq.question);
+      
+      const type2WrongAnswers = shuffleArray(type2OtherAnswers).slice(0, 3);
+      const type2Options = shuffleArray([q.question, ...type2WrongAnswers]);
+      
+      combinedQuestions.push({ 
+        ...q, 
+        uniqueSessionId: `${q.id || q.question}_type2`, 
+        displayQuestion: q.answer, 
+        correctAnswer: q.question, 
+        options: type2Options, 
+        correctAttemptsNeeded: 1 
+      });
+
     });
     
-    setQuestions(mcQuestions);
+    // Shuffle the combined list so Type 1 and Type 2 questions are fully mixed
+    setQuestions(shuffleArray(combinedQuestions));
     setCurrentIndex(0);
     setWrongIds(new Set());
     setIsFinished(false);
@@ -137,11 +150,11 @@ const MCSession = ({ data, onHome, onBack }) => {
     const isCorrect = ans === currentQ.correctAnswer;
     
     if (!isCorrect) {
-      // Record wrong answer
+      // Record wrong answer (This records the base ID, so if they fail either direction, the word counts as wrong for scoring)
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
 
-    // NEW LOGIC: 1s delay if correct, 5s delay if wrong/timeout
+    // 1s delay if correct, 5s delay if wrong/timeout
     const delay = isCorrect ? 1000 : 5000;
     
     timerRef.current = setTimeout(() => {
@@ -191,8 +204,6 @@ const MCSession = ({ data, onHome, onBack }) => {
             {currentScore}%
         </Button>
       </Flex>
-
-      {/* Manual "Next" buttons have been completely removed from here */}
 
       {/* Question Card */}
       <Card 
