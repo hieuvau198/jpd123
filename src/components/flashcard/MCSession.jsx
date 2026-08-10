@@ -20,6 +20,9 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   
+  // Track hidden options for the new disappearing logic
+  const [hiddenOptions, setHiddenOptions] = useState([]);
+  
   // Track unique IDs of questions the user got wrong for scoring
   const [wrongIds, setWrongIds] = useState(new Set());
   
@@ -35,17 +38,37 @@ const MCSession = ({ data, onHome, onBack }) => {
     };
   }, [data]);
 
-  // 5-second auto-fail timer
+  // Reset hidden options when the question changes
   useEffect(() => {
-    // Only run if the game is active and waiting for an answer
+    setHiddenOptions([]);
+  }, [currentIndex]);
+
+  // Disappearing answers logic: every 5 seconds, remove a wrong option.
+  // If 2 options are removed (10 seconds), fail the question.
+  useEffect(() => {
     if (questions.length === 0 || isFinished || selectedAnswer !== null) return;
 
-    const timeoutTimer = setTimeout(() => {
+    // Fail the question if 2 wrong answers have already disappeared
+    if (hiddenOptions.length >= 2) {
       handleAnswerClick(null); // passing null simulates a timeout/wrong answer
+      return;
+    }
+
+    const currentQ = questions[currentIndex];
+
+    const disappearTimer = setTimeout(() => {
+      const availableWrongOptions = currentQ.options.filter(
+        (opt) => opt !== currentQ.correctAnswer && !hiddenOptions.includes(opt)
+      );
+
+      if (availableWrongOptions.length > 0) {
+        const randomIdx = Math.floor(Math.random() * availableWrongOptions.length);
+        setHiddenOptions((prev) => [...prev, availableWrongOptions[randomIdx]]);
+      }
     }, 5000);
 
-    return () => clearTimeout(timeoutTimer);
-  }, [currentIndex, questions.length, isFinished, selectedAnswer]);
+    return () => clearTimeout(disappearTimer);
+  }, [currentIndex, questions.length, isFinished, selectedAnswer, hiddenOptions]);
 
   const initGame = () => {
     const allQuestions = data.questions;
@@ -96,6 +119,7 @@ const MCSession = ({ data, onHome, onBack }) => {
     setWrongIds(new Set());
     setIsFinished(false);
     setSelectedAnswer(null);
+    setHiddenOptions([]);
   };
 
   const handleNext = (isCorrect) => {
@@ -188,7 +212,11 @@ const MCSession = ({ data, onHome, onBack }) => {
   const currentScore = data?.questions?.length ? Math.max(0, Math.round(((data.questions.length - wrongIds.size) / data.questions.length) * 100)) : 0;
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+    <div 
+      translate="no" 
+      className="notranslate" 
+      style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}
+    >
       {/* Top Header Row */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
@@ -230,6 +258,8 @@ const MCSession = ({ data, onHome, onBack }) => {
           let bgColor = '#fff';
           let borderColor = '#d9d9d9';
           let textColor = '#333';
+          
+          const isHidden = hiddenOptions.includes(opt);
 
           if (selectedAnswer !== null) {
             if (opt === currentQ.correctAnswer) {
@@ -246,16 +276,21 @@ const MCSession = ({ data, onHome, onBack }) => {
           return (
             <Card 
               key={idx}
-              hoverable={selectedAnswer === null}
-              onClick={() => handleAnswerClick(opt)}
+              hoverable={selectedAnswer === null && !isHidden}
+              onClick={() => {
+                if (!isHidden) handleAnswerClick(opt);
+              }}
               style={{ 
-                cursor: selectedAnswer === null ? 'pointer' : 'default',
+                cursor: selectedAnswer === null && !isHidden ? 'pointer' : 'default',
                 backgroundColor: bgColor,
                 borderColor: borderColor,
-                transition: 'all 0.3s ease',
+                transition: 'all 0.4s ease',
                 borderRadius: 12,
                 height: '100%',
-                minHeight: '120px'
+                minHeight: '120px',
+                opacity: isHidden ? 0 : 1,
+                transform: isHidden ? 'scale(0.95)' : 'scale(1)',
+                pointerEvents: isHidden ? 'none' : 'auto'
               }}
               bodyStyle={{ 
                 padding: '20px', 
