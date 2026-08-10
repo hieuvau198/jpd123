@@ -20,9 +20,6 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   
-  // Track hidden options for the disappearing logic
-  const [hiddenOptions, setHiddenOptions] = useState([]);
-  
   // Track unique IDs of questions the user got wrong for scoring
   const [wrongIds, setWrongIds] = useState(new Set());
   
@@ -37,35 +34,6 @@ const MCSession = ({ data, onHome, onBack }) => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [data]);
-
-  // Reset hidden options when the question changes
-  useEffect(() => {
-    setHiddenOptions([]);
-  }, [currentIndex]);
-
-  // Disappearing answers logic: every 4 seconds, remove a wrong option.
-  useEffect(() => {
-    // Only run if the game is active, no answer is selected yet
-    if (questions.length === 0 || isFinished || selectedAnswer !== null) return;
-
-    // Stop if we have already hidden 3 wrong answers (only 1 option left)
-    if (hiddenOptions.length >= 3) return;
-
-    const currentQ = questions[currentIndex];
-
-    const disappearTimer = setTimeout(() => {
-      const availableWrongOptions = currentQ.options.filter(
-        (opt) => opt !== currentQ.correctAnswer && !hiddenOptions.includes(opt)
-      );
-
-      if (availableWrongOptions.length > 0) {
-        const randomIdx = Math.floor(Math.random() * availableWrongOptions.length);
-        setHiddenOptions((prev) => [...prev, availableWrongOptions[randomIdx]]);
-      }
-    }, 4000); // 4 seconds interval
-
-    return () => clearTimeout(disappearTimer);
-  }, [currentIndex, questions.length, isFinished, selectedAnswer, hiddenOptions]);
 
   const initGame = () => {
     const allQuestions = data.questions;
@@ -116,7 +84,6 @@ const MCSession = ({ data, onHome, onBack }) => {
     setWrongIds(new Set());
     setIsFinished(false);
     setSelectedAnswer(null);
-    setHiddenOptions([]);
   };
 
   const handleNext = (isCorrect) => {
@@ -167,21 +134,18 @@ const MCSession = ({ data, onHome, onBack }) => {
     setSelectedAnswer(ans); 
     
     const currentQ = questions[currentIndex];
-    const isActualCorrect = ans === currentQ.correctAnswer;
+    const isCorrect = ans === currentQ.correctAnswer;
     
-    // Penalize: If 2 or more options disappeared (took 8+ seconds), it's counted as WRONG even if they clicked the right one.
-    const isScoredCorrect = isActualCorrect && hiddenOptions.length < 2;
-    
-    if (!isScoredCorrect) {
+    if (!isCorrect) {
       // Record wrong answer (This records the base ID, so if they fail either direction, the word counts as wrong for scoring)
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
 
-    // 1s delay if scored correct, 5s delay if wrong (or penalized for being too slow)
-    const delay = isScoredCorrect ? 1000 : 5000;
+    // 1s delay if correct, 5s delay if wrong
+    const delay = isCorrect ? 1000 : 5000;
     
     timerRef.current = setTimeout(() => {
-      handleNext(isScoredCorrect); // Use isScoredCorrect so they are forced to do it again if they took too long
+      handleNext(isCorrect);
     }, delay);
   };
 
@@ -258,10 +222,7 @@ const MCSession = ({ data, onHome, onBack }) => {
           let borderColor = '#d9d9d9';
           let textColor = '#333';
           
-          const isHidden = hiddenOptions.includes(opt);
-
           if (selectedAnswer !== null) {
-            // They will still see the physical correctness of their answer visually
             if (opt === currentQ.correctAnswer) {
               bgColor = '#f6ffed';
               borderColor = '#b7eb8f';
@@ -276,21 +237,16 @@ const MCSession = ({ data, onHome, onBack }) => {
           return (
             <Card 
               key={idx}
-              hoverable={selectedAnswer === null && !isHidden}
-              onClick={() => {
-                if (!isHidden) handleAnswerClick(opt);
-              }}
+              hoverable={selectedAnswer === null}
+              onClick={() => handleAnswerClick(opt)}
               style={{ 
-                cursor: selectedAnswer === null && !isHidden ? 'pointer' : 'default',
+                cursor: selectedAnswer === null ? 'pointer' : 'default',
                 backgroundColor: bgColor,
                 borderColor: borderColor,
-                transition: 'all 0.4s ease',
+                transition: 'all 0.3s ease',
                 borderRadius: 12,
                 height: '100%',
-                minHeight: '120px',
-                opacity: isHidden ? 0 : 1,
-                transform: isHidden ? 'scale(0.95)' : 'scale(1)',
-                pointerEvents: isHidden ? 'none' : 'auto'
+                minHeight: '120px'
               }}
               bodyStyle={{ 
                 padding: '20px', 
