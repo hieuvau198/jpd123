@@ -20,7 +20,7 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   
-  // Track hidden options for the new disappearing logic
+  // Track hidden options for the disappearing logic
   const [hiddenOptions, setHiddenOptions] = useState([]);
   
   // Track unique IDs of questions the user got wrong for scoring
@@ -43,16 +43,13 @@ const MCSession = ({ data, onHome, onBack }) => {
     setHiddenOptions([]);
   }, [currentIndex]);
 
-  // Disappearing answers logic: every 5 seconds, remove a wrong option.
-  // If 2 options are removed (10 seconds), fail the question.
+  // Disappearing answers logic: every 4 seconds, remove a wrong option.
   useEffect(() => {
+    // Only run if the game is active, no answer is selected yet
     if (questions.length === 0 || isFinished || selectedAnswer !== null) return;
 
-    // Fail the question if 2 wrong answers have already disappeared
-    if (hiddenOptions.length >= 2) {
-      handleAnswerClick(null); // passing null simulates a timeout/wrong answer
-      return;
-    }
+    // Stop if we have already hidden 3 wrong answers (only 1 option left)
+    if (hiddenOptions.length >= 3) return;
 
     const currentQ = questions[currentIndex];
 
@@ -65,7 +62,7 @@ const MCSession = ({ data, onHome, onBack }) => {
         const randomIdx = Math.floor(Math.random() * availableWrongOptions.length);
         setHiddenOptions((prev) => [...prev, availableWrongOptions[randomIdx]]);
       }
-    }, 5000);
+    }, 4000); // 4 seconds interval
 
     return () => clearTimeout(disappearTimer);
   }, [currentIndex, questions.length, isFinished, selectedAnswer, hiddenOptions]);
@@ -167,22 +164,24 @@ const MCSession = ({ data, onHome, onBack }) => {
   const handleAnswerClick = (ans) => {
     if (selectedAnswer !== null) return; // Prevent clicking multiple times
     
-    // If ans is null, they timed out, assign a placeholder to trigger UI updates
-    setSelectedAnswer(ans || '__TIMEOUT__'); 
+    setSelectedAnswer(ans); 
     
     const currentQ = questions[currentIndex];
-    const isCorrect = ans === currentQ.correctAnswer;
+    const isActualCorrect = ans === currentQ.correctAnswer;
     
-    if (!isCorrect) {
+    // Penalize: If 2 or more options disappeared (took 8+ seconds), it's counted as WRONG even if they clicked the right one.
+    const isScoredCorrect = isActualCorrect && hiddenOptions.length < 2;
+    
+    if (!isScoredCorrect) {
       // Record wrong answer (This records the base ID, so if they fail either direction, the word counts as wrong for scoring)
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
 
-    // 1s delay if correct, 5s delay if wrong/timeout
-    const delay = isCorrect ? 1000 : 5000;
+    // 1s delay if scored correct, 5s delay if wrong (or penalized for being too slow)
+    const delay = isScoredCorrect ? 1000 : 5000;
     
     timerRef.current = setTimeout(() => {
-      handleNext(isCorrect);
+      handleNext(isScoredCorrect); // Use isScoredCorrect so they are forced to do it again if they took too long
     }, delay);
   };
 
@@ -262,6 +261,7 @@ const MCSession = ({ data, onHome, onBack }) => {
           const isHidden = hiddenOptions.includes(opt);
 
           if (selectedAnswer !== null) {
+            // They will still see the physical correctness of their answer visually
             if (opt === currentQ.correctAnswer) {
               bgColor = '#f6ffed';
               borderColor = '#b7eb8f';
