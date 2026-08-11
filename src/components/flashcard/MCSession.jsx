@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Progress } from 'antd';
 import { ArrowLeft } from 'lucide-react';
 import SessionResult from '../SessionResult';
+import TypeBMCSession from './TypeBMCSession'; // <-- Imported Type B logic
 
 const { Title, Text } = Typography;
 
@@ -15,6 +16,9 @@ const shuffleArray = (array) => {
 };
 
 const MCSession = ({ data, onHome, onBack }) => {
+  // Check if dataset is type-b (checking the parent data object or the first question)
+  const isTypeB = data?.type === 'type-b' || data?.questions?.[0]?.type === 'type-b';
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
@@ -26,14 +30,19 @@ const MCSession = ({ data, onHome, onBack }) => {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    if (data && data.questions) {
+    if (data && data.questions && !isTypeB) {
       initGame();
     }
     // Cleanup timer on unmount
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [data]);
+  }, [data, isTypeB]);
+
+  // If type B is detected, route entirely to the new component
+  if (isTypeB) {
+    return <TypeBMCSession data={data} onHome={onHome} onBack={onBack} />;
+  }
 
   const initGame = () => {
     const allQuestions = data.questions;
