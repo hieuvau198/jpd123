@@ -86,7 +86,7 @@ export const saveFlashcardSet = async (data) => {
     if (docSnap.exists()) {
       return { success: false, message: 'ID already exists' };
     }
-    const payload = { ...data, type: 'flashcard' };
+    const payload = { ...data, type: data.type || 'flashcard' };
     await setDoc(docRef, payload);
     
     // Data changed, invalidate the cache so fresh data is fetched next time
