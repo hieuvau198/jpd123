@@ -26,7 +26,7 @@ export const getAllFlashcards = async () => {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
     const flashcards = [];
     querySnapshot.forEach((doc) => {
-      const data = { ...doc.data(), id: doc.id, type: 'flashcard' };
+      const data = { type: 'flashcard', ...doc.data(), id: doc.id };
       flashcards.push(data);
       cache.byId[doc.id] = data; // Also cache individual items for quick lookup
     });
@@ -47,7 +47,7 @@ export const getFlashcardsByTag = async (tag) => {
     const querySnapshot = await getDocs(q);
     const flashcards = [];
     querySnapshot.forEach((doc) => {
-      const data = { ...doc.data(), id: doc.id, type: 'flashcard' };
+      const data = { type: 'flashcard', ...doc.data(), id: doc.id };
       flashcards.push(data);
       cache.byId[doc.id] = data; // Also cache individual items so Detail page loads instantly
     });
@@ -67,7 +67,7 @@ export const getFlashcardById = async (id) => {
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const data = { ...docSnap.data(), id: docSnap.id, type: 'flashcard' };
+      const data = { type: 'flashcard', ...docSnap.data(), id: docSnap.id };
       cache.byId[id] = data; // Save to cache
       return data;
     }
