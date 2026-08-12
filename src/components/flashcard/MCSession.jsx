@@ -17,7 +17,7 @@ const shuffleArray = (array) => {
 
 const MCSession = ({ data, onHome, onBack }) => {
   // Check if dataset is type-b (checking the parent data object or the first question)
-  const isTypeB = data?.type === 'type-b' || data?.questions?.[0]?.type === 'type-b';
+  const isTypeB = data?.type === 'flashcard-b' || data?.questions?.[0]?.type === 'type-b';
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
