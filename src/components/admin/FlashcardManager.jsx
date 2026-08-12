@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select } from 'antd';
-import { UploadCloud, Trash2, RefreshCw, Filter } from 'lucide-react';
+import { Upload, Button, Table, message, Popconfirm, Tag as AntTag, Typography, Select, Modal, Input, Space } from 'antd';
+import { UploadCloud, Trash2, RefreshCw, Filter, Download, Eye } from 'lucide-react';
 import { getAllFlashcards, getFlashcardsByTag, saveFlashcardSet, deleteFlashcardSet } from '../../firebase/flashcardService';
 import tagsData from '../../data/system/tags.json';
 
 const { Text } = Typography;
 const { Option } = Select;
+const { TextArea } = Input;
 
 const FlashcardManager = ({ icon, color, uploadText, uploadColor }) => {
   const [data, setData] = useState([]);
@@ -13,6 +14,11 @@ const FlashcardManager = ({ icon, color, uploadText, uploadColor }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedTag, setSelectedTag] = useState('none');
   const processingFiles = useRef(0);
+
+  // View / Edit Modal State
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [jsonContent, setJsonContent] = useState('');
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -92,6 +98,50 @@ const FlashcardManager = ({ icon, color, uploadText, uploadColor }) => {
     }
   };
 
+  // --- New Handlers for View/Edit & Download ---
+
+  const handleDownload = (record) => {
+    const dataStr = JSON.stringify(record, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `flashcard_${record.id}.json`;
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleView = (record) => {
+    setEditingId(record.id);
+    setJsonContent(JSON.stringify(record, null, 2));
+    setIsModalVisible(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const parsedJson = JSON.parse(jsonContent);
+      if (!parsedJson.id) throw new Error("JSON must contain an 'id' field.");
+      
+      setLoading(true);
+      const result = await saveFlashcardSet(parsedJson);
+      if (result.success) {
+        message.success("Flashcard updated successfully!");
+        setIsModalVisible(false);
+        loadData();
+      } else {
+        message.error(`Failed to update: ${result.message}`);
+      }
+    } catch (err) {
+      message.error(`Invalid JSON format: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const columns = [
     {
       title: 'Title',
@@ -124,11 +174,15 @@ const FlashcardManager = ({ icon, color, uploadText, uploadColor }) => {
     {
       title: 'Action',
       key: 'action',
-      width: 80,
+      width: 140,
       render: (_, record) => (
-        <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
-          <Button danger type="text" icon={<Trash2 size={16} />} />
-        </Popconfirm>
+        <Space size="small">
+          <Button type="text" title="View/Edit JSON" icon={<Eye size={16} />} onClick={() => handleView(record)} />
+          <Button type="text" title="Download JSON" icon={<Download size={16} />} onClick={() => handleDownload(record)} />
+          <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
+            <Button danger type="text" title="Delete" icon={<Trash2 size={16} />} />
+          </Popconfirm>
+        </Space>
       ),
     },
   ];
@@ -184,6 +238,26 @@ const FlashcardManager = ({ icon, color, uploadText, uploadColor }) => {
         pagination={{ pageSize: 10 }}
         size="small"
       />
+
+      {/* JSON View/Edit Modal */}
+      <Modal
+        title={`View & Edit JSON - ${editingId}`}
+        open={isModalVisible}
+        onOk={handleSaveEdit}
+        onCancel={() => setIsModalVisible(false)}
+        okText="Save Changes"
+        cancelText="Cancel"
+        width={800}
+        confirmLoading={loading}
+      >
+        <TextArea
+          rows={20}
+          value={jsonContent}
+          onChange={(e) => setJsonContent(e.target.value)}
+          spellCheck={false}
+          style={{ fontFamily: 'monospace', fontSize: '14px' }}
+        />
+      </Modal>
     </div>
   );
 };
