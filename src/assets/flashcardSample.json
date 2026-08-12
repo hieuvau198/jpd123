@@ -1,0 +1,44 @@
+{
+  "id": "flashcard-english-5-unit-1",
+  "tags": [
+    "english-5",
+    "unit1",
+    "vocab"
+  ],
+  "type": "flashcard",
+  "title": "Tiếng Anh Lớp 5 - Unit 1",
+  "subject": "english",
+  "description": "Từ vựng Unit 1: All about me",
+  "questions": [
+    {
+      "id": 1,
+      "question": "countryside",
+      "speak": "countryside",
+      "answer": "miền quê, nông thôn"
+    },
+    {
+      "id": 2,
+      "question": "city",
+      "speak": "city",
+      "answer": "thành phố"
+    },
+    {
+      "id": 3,
+      "question": "town",
+      "speak": "town",
+      "answer": "thị trấn"
+    },
+    {
+      "id": 4,
+      "question": "village",
+      "speak": "village",
+      "answer": "làng, thôn"
+    },
+    {
+      "id": 5,
+      "question": "suburb",
+      "speak": "suburb",
+      "answer": "ngoại ô"
+    }
+]
+}

@@ -26,6 +26,22 @@ const FlashcardDetail = () => {
       try {
         setLoading(true);
         const res = await getFlashcardById(id);
+        
+        // --- DATA NORMALIZATION FOR TYPE 'flashcard-b' ---
+        if (res && res.type === 'flashcard-b' && res.words) {
+          // Map the 'words' array into the standard 'questions' format 
+          // so FlashcardSession doesn't break.
+          res.questions = res.words.map((item, index) => ({
+            id: index + 1,
+            question: item.word,
+            speak: item.word,
+            // Combine definitions into a single readable answer string
+            answer: item.defs ? item.defs.map(d => d.m).join(', ') : '',
+            // Spread the original item so components can access phrases/sentences if needed
+            ...item 
+          }));
+        }
+
         setData(res);
       } catch (error) {
         console.error("Error fetching flashcard:", error);

@@ -1,0 +1,38 @@
+{
+  "title": "Từ Vựng A1 - Phần 11",
+  "id": "english-word-a1-11",
+  "tags": ["A1"],
+"type":"flashcard-b",
+  "words": [
+    {
+      "word": "pool",
+      "defs": [
+        {"pos": "Danh từ (n)", "m": "hồ bơi", "wm": ["bãi biển", "bồn tắm", "hồ nước mặn"]}
+      ],
+      "phrases": [
+        {"text": "swimming pool", "m": "hồ bơi", "wm": ["bãi tắm", "hồ câu cá", "bồn sục"]},
+        {"text": "pool party", "m": "tiệc hồ bơi", "wm": ["tiệc bãi biển", "tiệc nướng", "tiệc sinh nhật"]}
+      ],
+      "sentences": [
+        {"text": "We swim in the pool.", "m": "Chúng tôi bơi trong hồ.", "wm": ["Chúng tôi bơi ở biển.", "Chúng tôi tắm trong bồn.", "Chúng tôi lặn dưới hồ."]},
+        {"text": "The pool is deep.", "m": "Hồ bơi thì sâu.", "wm": ["Hồ bơi thì cạn.", "Hồ bơi thì lạnh.", "Hồ bơi thì rộng."]}
+      ],
+      "misspell": ["pol", "poole", "puol"]
+    },
+    {
+      "word": "station",
+      "defs": [
+        {"pos": "Danh từ (n)", "m": "nhà ga, trạm", "wm": ["bến cảng", "sân bay", "bãi đỗ xe"]}
+      ],
+      "phrases": [
+        {"text": "train station", "m": "ga xe lửa", "wm": ["trạm xe buýt", "bến phà", "trạm thu phí"]},
+        {"text": "bus station", "m": "bến xe buýt", "wm": ["bến xe điện", "trạm xăng", "ga tàu điện ngầm"]}
+      ],
+      "sentences": [
+        {"text": "I am at the station.", "m": "Tôi đang ở nhà ga.", "wm": ["Tôi đang ở bến cảng.", "Tôi đang trên tàu.", "Tôi đang ở sân bay."]},
+        {"text": "The station is crowded.", "m": "Nhà ga rất đông đúc.", "wm": ["Nhà ga rất vắng vẻ.", "Nhà ga rất ồn ào.", "Nhà ga rất bẩn."]}
+      ],
+      "misspell": ["stasion", "statien", "staton"]
+    }
+  ]
+}
