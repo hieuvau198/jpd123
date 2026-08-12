@@ -33,11 +33,35 @@ const MCSession = ({ data, onHome, onBack }) => {
     if (data && data.questions && !isTypeB) {
       initGame();
     }
-    // Cleanup timer on unmount
+    // Cleanup timer and speech on unmount
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      window.speechSynthesis.cancel(); // Stop reading if the user leaves the page
     };
   }, [data, isTypeB]);
+
+  // --- NEW FEATURE: Auto Read Out Loud ---
+  useEffect(() => {
+    if (questions.length > 0 && !isFinished) {
+      const currentQ = questions[currentIndex];
+      
+      // Cancel any currently playing speech to avoid overlap
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
+      
+      // Smart language detection based on our type mapping
+      // Type 1 displays English (guess Vietnamese), Type 2 displays Vietnamese (guess English)
+      if (currentQ.uniqueSessionId.includes('type1')) {
+        utterance.lang = 'en-US'; // Read in English
+      } else {
+        utterance.lang = 'vi-VN'; // Read in Vietnamese
+      }
+
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [currentIndex, questions, isFinished]);
+  // ----------------------------------------
 
   // If type B is detected, route entirely to the new component
   if (isTypeB) {
@@ -191,7 +215,10 @@ const MCSession = ({ data, onHome, onBack }) => {
     >
       {/* Top Header Row */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
-        <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
+        <Button icon={<ArrowLeft size={20} />} onClick={() => {
+            window.speechSynthesis.cancel();
+            onBack();
+        }} />
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
             <Flex vertical align="center">
@@ -216,6 +243,20 @@ const MCSession = ({ data, onHome, onBack }) => {
         }}
       >
         <Title level={2}>{currentQ.displayQuestion}</Title>
+        
+        {/* Re-read button if they want to hear it again */}
+        <Button 
+          type="dashed" 
+          onClick={() => {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
+            utterance.lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
+            window.speechSynthesis.speak(utterance);
+          }}
+          style={{ marginTop: 10 }}
+        >
+          Read Aloud 🔊
+        </Button>
       </Card>
 
       {/* 2x2 Grid Layout for Options */}
