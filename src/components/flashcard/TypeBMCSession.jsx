@@ -1,7 +1,7 @@
 // src/components/flashcard/TypeBMCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Progress } from 'antd';
-import { ArrowLeft } from 'lucide-react';
+import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
+import { ArrowLeft, Settings } from 'lucide-react';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
@@ -22,8 +22,44 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [wrongIds, setWrongIds] = useState(new Set());
   const timerRef = useRef(null);
-
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
+
+  // --- VOICE SETTINGS STATE ---
+  const [voices, setVoices] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
+  const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+
+  // --- LOAD VOICES ---
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }, []);
+
+  // --- ROBUST SPEAK FUNCTION ---
+  const speakText = (text, lang) => {
+    if (!text) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+
+    const isEn = lang.includes('en');
+    const targetURI = isEn ? localStorage.getItem('enVoiceURI') : localStorage.getItem('viVoiceURI');
+
+    if (targetURI && voices.length > 0) {
+      const selectedVoice = voices.find(v => v.voiceURI === targetURI);
+      if (selectedVoice) utterance.voice = selectedVoice;
+    } else if (voices.length > 0) {
+      const matchedVoice = voices.find(v => v.lang.includes(lang.split('-')[0]));
+      if (matchedVoice) utterance.voice = matchedVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   useEffect(() => {
     if (data && data.questions) {
@@ -31,35 +67,28 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      window.speechSynthesis.cancel(); // Stop reading if the user leaves the page
+      window.speechSynthesis.cancel();
     };
   }, [data]);
 
-  // --- NEW FEATURE: Auto Read Out Loud ---
+  // Auto Read Out Loud
   useEffect(() => {
     if (questions.length > 0 && !isFinished) {
       const currentQ = questions[currentIndex];
-      
-      window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
-      utterance.lang = currentQ.qLang || 'en-US';
-      window.speechSynthesis.speak(utterance);
+      speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US');
     }
-  }, [currentIndex, questions, isFinished]);
-  // ----------------------------------------
+  }, [currentIndex, questions, isFinished, voices]);
 
   const initGame = () => {
     const allCards = data.questions;
 
     let defs = [];
-    let reverseDefs = []; // Phase: Đưa nghĩa, chọn từ gốc
+    let reverseDefs = []; 
     let phrases = [];
     let sentences = [];
     let misspells = [];
 
     allCards.forEach((card, cIdx) => {
-      // Phase 1: Definitions (Đưa từ, chọn nghĩa)
       if (card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         defs.push({
@@ -73,7 +102,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           aLang: 'vi-VN'
         });
 
-        // Phase: Reverse (Đưa nghĩa, chọn từ gốc)
         const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
         const distractors = shuffleArray(otherWords).slice(0, 3);
         
@@ -89,7 +117,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         });
       }
 
-      // Phase 2: Phrases
       if (card.phrases && card.phrases.length > 0) {
         const p = shuffleArray(card.phrases)[0];
         phrases.push({
@@ -104,7 +131,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         });
       }
 
-      // Phase 3: Sentences
       if (card.sentences && card.sentences.length > 0) {
         const s = shuffleArray(card.sentences)[0];
         sentences.push({
@@ -119,13 +145,12 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         });
       }
 
-      // Phase 4: Misspell (Từ sai chính tả)
       if (card.misspell && card.misspell.length > 0 && card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         misspells.push({
           id: `${card.word}_misspell_${cIdx}`,
           phase: 'Misspell',
-          displayQuestion: def.m, // Show definition, guess original word
+          displayQuestion: def.m, 
           correctAnswer: card.word,
           options: shuffleArray([card.word, ...card.misspell.slice(0, 3)]),
           correctAttemptsNeeded: 1,
@@ -202,14 +227,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       setWrongIds(prev => new Set(prev).add(currentQ.id));
     }
 
-    // --- SPEAK CORRECT ANSWER ---
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(currentQ.correctAnswer);
-    utterance.lang = currentQ.aLang || 'vi-VN';
-    window.speechSynthesis.speak(utterance);
-    // ----------------------------
+    // Speak Correct Answer using robust function
+    speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
 
-    const delay = isCorrect ? 2000 : 5000;
+    const delay = isCorrect ? 1000 : 5000;
     
     timerRef.current = setTimeout(() => {
       handleNext(isCorrect);
@@ -238,11 +259,48 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const currentScore = totalUniqueQuestions > 0 ? Math.max(0, Math.round(((totalUniqueQuestions - wrongIds.size) / totalUniqueQuestions) * 100)) : 0;
 
   return (
-    <div 
-      translate="no" 
-      className="notranslate" 
-      style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}
-    >
+    <div translate="no" className="notranslate" style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+      
+      {/* Settings Modal */}
+      <Modal 
+        title="Voice Settings" 
+        open={showSettings} 
+        onOk={() => setShowSettings(false)} 
+        onCancel={() => setShowSettings(false)}
+        footer={[
+          <Button key="ok" type="primary" onClick={() => setShowSettings(false)}>Done</Button>
+        ]}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <Text strong>English Voice:</Text>
+          <Select 
+            value={enVoiceURI} 
+            onChange={val => { setEnVoiceURI(val); localStorage.setItem('enVoiceURI', val); }} 
+            style={{ width: '100%', marginTop: 8 }}
+            showSearch
+          >
+            <Select.Option value="">-- Auto Detect (Default) --</Select.Option>
+            {voices.map(v => (
+              <Select.Option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</Select.Option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <Text strong>Vietnamese Voice:</Text>
+          <Select 
+            value={viVoiceURI} 
+            onChange={val => { setViVoiceURI(val); localStorage.setItem('viVoiceURI', val); }} 
+            style={{ width: '100%', marginTop: 8 }}
+            showSearch
+          >
+            <Select.Option value="">-- Auto Detect (Default) --</Select.Option>
+            {voices.map(v => (
+              <Select.Option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</Select.Option>
+            ))}
+          </Select>
+        </div>
+      </Modal>
+
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={() => {
             window.speechSynthesis.cancel();
@@ -259,9 +317,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
             </Flex>
         </div>
 
-        <Button type="text" disabled>
-            {currentScore}%
-        </Button>
+        <Flex gap="small">
+          <Button type="text" disabled>{currentScore}%</Button>
+          <Button icon={<Settings size={18} />} onClick={() => setShowSettings(true)} title="Voice Settings" />
+        </Flex>
       </Flex>
 
       <Card 
@@ -275,42 +334,24 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       >
         <Title level={2}>{currentQ.displayQuestion}</Title>
         
-        {/* Nút Read Aloud giống MCSession */}
         <Button 
           type="dashed" 
-          onClick={() => {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
-            utterance.lang = currentQ.qLang || 'en-US';
-            window.speechSynthesis.speak(utterance);
-          }}
+          onClick={() => speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US')}
           style={{ marginTop: 10 }}
         >
           Read Aloud 
         </Button>
       </Card>
 
-      <div 
-        style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(2, 1fr)', 
-          gap: '20px' 
-        }}
-      >
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
         {currentQ.options.map((opt, idx) => {
-          let bgColor = '#fff';
-          let borderColor = '#d9d9d9';
-          let textColor = '#333';
+          let bgColor = '#fff', borderColor = '#d9d9d9', textColor = '#333';
           
           if (selectedAnswer !== null) {
             if (opt === currentQ.correctAnswer) {
-              bgColor = '#f6ffed';
-              borderColor = '#b7eb8f';
-              textColor = '#52c41a';
+              bgColor = '#f6ffed'; borderColor = '#b7eb8f'; textColor = '#52c41a';
             } else if (opt === selectedAnswer) {
-              bgColor = '#fff2f0';
-              borderColor = '#ffccc7';
-              textColor = '#f5222d';
+              bgColor = '#fff2f0'; borderColor = '#ffccc7'; textColor = '#f5222d';
             }
           }
 
@@ -321,20 +362,12 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
               onClick={() => handleAnswerClick(opt)}
               style={{ 
                 cursor: selectedAnswer === null ? 'pointer' : 'default',
-                backgroundColor: bgColor,
-                borderColor: borderColor,
-                transition: 'all 0.3s ease',
-                borderRadius: 12,
-                height: '100%',
-                minHeight: '120px'
+                backgroundColor: bgColor, borderColor: borderColor, transition: 'all 0.3s ease',
+                borderRadius: 12, height: '100%', minHeight: '120px'
               }}
               bodyStyle={{ 
-                padding: '20px', 
-                height: '100%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                textAlign: 'center'
+                padding: '20px', height: '100%', display: 'flex', alignItems: 'center', 
+                justifyContent: 'center', textAlign: 'center'
               }}
             >
               <Text strong style={{ fontSize: '1.1rem', color: textColor }}>{opt}</Text>

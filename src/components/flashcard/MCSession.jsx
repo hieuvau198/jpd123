@@ -1,7 +1,7 @@
 // src/components/flashcard/MCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Progress } from 'antd';
-import { ArrowLeft } from 'lucide-react';
+import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
+import { ArrowLeft, Settings } from 'lucide-react';
 import SessionResult from '../SessionResult';
 import TypeBMCSession from './TypeBMCSession';
 
@@ -17,51 +17,73 @@ const shuffleArray = (array) => {
 };
 
 const MCSession = ({ data, onHome, onBack }) => {
-  // Check if dataset is type-b
   const isTypeB = data?.type === 'flashcard-b' || data?.questions?.[0]?.type === 'type-b';
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  
-  // Track unique IDs of questions the user got wrong for scoring
   const [wrongIds, setWrongIds] = useState(new Set());
   
+  // --- VOICE SETTINGS STATE ---
+  const [voices, setVoices] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
+  const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+
   const timerRef = useRef(null);
+
+  // --- LOAD VOICES ---
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }, []);
+
+  // --- ROBUST SPEAK FUNCTION ---
+  const speakText = (text, lang) => {
+    if (!text) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+
+    const isEn = lang.includes('en');
+    const targetURI = isEn ? localStorage.getItem('enVoiceURI') : localStorage.getItem('viVoiceURI');
+
+    if (targetURI && voices.length > 0) {
+      // User has explicitly selected a voice
+      const selectedVoice = voices.find(v => v.voiceURI === targetURI);
+      if (selectedVoice) utterance.voice = selectedVoice;
+    } else if (voices.length > 0) {
+      // Auto-assign best match to prevent OS default fallback bug
+      const matchedVoice = voices.find(v => v.lang.includes(lang.split('-')[0]));
+      if (matchedVoice) utterance.voice = matchedVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   useEffect(() => {
     if (data && data.questions && !isTypeB) {
       initGame();
     }
-    // Cleanup timer and speech on unmount
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      window.speechSynthesis.cancel(); // Stop reading if the user leaves the page
+      window.speechSynthesis.cancel();
     };
   }, [data, isTypeB]);
 
-  // --- NEW FEATURE: Auto Read Out Loud ---
+  // Auto Read Out Loud
   useEffect(() => {
     if (questions.length > 0 && !isFinished) {
       const currentQ = questions[currentIndex];
-      
-      // Cancel any currently playing speech to avoid overlap
-      window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
-      
-      // Smart language detection based on our type mapping
-      if (currentQ.uniqueSessionId.includes('type1')) {
-        utterance.lang = 'en-US'; // Read in English
-      } else {
-        utterance.lang = 'vi-VN'; // Read in Vietnamese
-      }
-      
-      window.speechSynthesis.speak(utterance);
+      const lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
+      speakText(currentQ.displayQuestion, lang);
     }
-  }, [currentIndex, questions, isFinished]);
-  // ----------------------------------------
+  }, [currentIndex, questions, isFinished, voices]);
 
   if (isTypeB) {
     return <TypeBMCSession data={data} onHome={onHome} onBack={onBack} />;
@@ -71,14 +93,8 @@ const MCSession = ({ data, onHome, onBack }) => {
     const allQuestions = data.questions;
     let combinedQuestions = [];
     
-    // Generate TWO questions for every word (Bidirectional)
     allQuestions.forEach(q => {
-      
-      // --- Type 1: Show Question (English), Guess Answer (Vietnamese) ---
-      const type1OtherAnswers = allQuestions
-        .filter(sq => sq.id !== q.id)
-        .map(sq => sq.answer);
-      
+      const type1OtherAnswers = allQuestions.filter(sq => sq.id !== q.id).map(sq => sq.answer);
       const type1WrongAnswers = shuffleArray(type1OtherAnswers).slice(0, 3);
       const type1Options = shuffleArray([q.answer, ...type1WrongAnswers]);
       
@@ -91,11 +107,7 @@ const MCSession = ({ data, onHome, onBack }) => {
         correctAttemptsNeeded: 1
       });
 
-      // --- Type 2: Show Answer (Vietnamese), Guess Question (English) ---
-      const type2OtherAnswers = allQuestions
-        .filter(sq => sq.id !== q.id)
-        .map(sq => sq.question);
-      
+      const type2OtherAnswers = allQuestions.filter(sq => sq.id !== q.id).map(sq => sq.question);
       const type2WrongAnswers = shuffleArray(type2OtherAnswers).slice(0, 3);
       const type2Options = shuffleArray([q.question, ...type2WrongAnswers]);
       
@@ -109,7 +121,6 @@ const MCSession = ({ data, onHome, onBack }) => {
       });
     });
     
-    // Shuffle the combined list
     setQuestions(shuffleArray(combinedQuestions));
     setCurrentIndex(0);
     setWrongIds(new Set());
@@ -157,7 +168,7 @@ const MCSession = ({ data, onHome, onBack }) => {
   };
 
   const handleAnswerClick = (ans) => {
-    if (selectedAnswer !== null) return; // Prevent clicking multiple times
+    if (selectedAnswer !== null) return;
     
     setSelectedAnswer(ans);
     
@@ -168,17 +179,11 @@ const MCSession = ({ data, onHome, onBack }) => {
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
 
-    // --- SPEAK CORRECT ANSWER ---
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(currentQ.correctAnswer);
-    // Type 1: display is en-US, answer is vi-VN. Type 2: display is vi-VN, answer is en-US
-    utterance.lang = currentQ.uniqueSessionId.includes('type1') ? 'vi-VN' : 'en-US';
-    window.speechSynthesis.speak(utterance);
-    // ----------------------------
+    // Speak Correct Answer using robust function
+    const ansLang = currentQ.uniqueSessionId.includes('type1') ? 'vi-VN' : 'en-US';
+    speakText(currentQ.correctAnswer, ansLang);
 
-    // 2s delay if correct, 5s delay if wrong
-    const delay = isCorrect ? 2000 : 5000;
-    
+    const delay = isCorrect ? 1000 : 5000;
     timerRef.current = setTimeout(() => {
       handleNext(isCorrect);
     }, delay);
@@ -207,11 +212,48 @@ const MCSession = ({ data, onHome, onBack }) => {
   const currentScore = data?.questions?.length ? Math.max(0, Math.round(((data.questions.length - wrongIds.size) / data.questions.length) * 100)) : 0;
 
   return (
-    <div 
-      translate="no" 
-      className="notranslate" 
-      style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}
-    >
+    <div translate="no" className="notranslate" style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+      
+      {/* Settings Modal */}
+      <Modal 
+        title="Voice Settings" 
+        open={showSettings} 
+        onOk={() => setShowSettings(false)} 
+        onCancel={() => setShowSettings(false)}
+        footer={[
+          <Button key="ok" type="primary" onClick={() => setShowSettings(false)}>Done</Button>
+        ]}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <Text strong>English Voice:</Text>
+          <Select 
+            value={enVoiceURI} 
+            onChange={val => { setEnVoiceURI(val); localStorage.setItem('enVoiceURI', val); }} 
+            style={{ width: '100%', marginTop: 8 }}
+            showSearch
+          >
+            <Select.Option value="">-- Auto Detect (Default) --</Select.Option>
+            {voices.map(v => (
+              <Select.Option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</Select.Option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <Text strong>Vietnamese Voice:</Text>
+          <Select 
+            value={viVoiceURI} 
+            onChange={val => { setViVoiceURI(val); localStorage.setItem('viVoiceURI', val); }} 
+            style={{ width: '100%', marginTop: 8 }}
+            showSearch
+          >
+            <Select.Option value="">-- Auto Detect (Default) --</Select.Option>
+            {voices.map(v => (
+              <Select.Option key={v.voiceURI} value={v.voiceURI}>{v.name} ({v.lang})</Select.Option>
+            ))}
+          </Select>
+        </div>
+      </Modal>
+
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
         <Button icon={<ArrowLeft size={20} />} onClick={() => {
             window.speechSynthesis.cancel();
@@ -225,9 +267,10 @@ const MCSession = ({ data, onHome, onBack }) => {
             </Flex>
         </div>
 
-        <Button type="text" disabled>
-            {currentScore}%
-        </Button>
+        <Flex gap="small">
+          <Button type="text" disabled>{currentScore}%</Button>
+          <Button icon={<Settings size={18} />} onClick={() => setShowSettings(true)} title="Voice Settings" />
+        </Flex>
       </Flex>
 
       <Card 
@@ -244,10 +287,8 @@ const MCSession = ({ data, onHome, onBack }) => {
         <Button 
           type="dashed" 
           onClick={() => {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
-            utterance.lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
-            window.speechSynthesis.speak(utterance);
+            const lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
+            speakText(currentQ.displayQuestion, lang);
           }}
           style={{ marginTop: 10 }}
         >
@@ -255,27 +296,14 @@ const MCSession = ({ data, onHome, onBack }) => {
         </Button>
       </Card>
 
-      <div 
-        style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(2, 1fr)', 
-          gap: '20px' 
-        }}
-      >
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
         {currentQ.options.map((opt, idx) => {
-          let bgColor = '#fff';
-          let borderColor = '#d9d9d9';
-          let textColor = '#333';
-          
+          let bgColor = '#fff', borderColor = '#d9d9d9', textColor = '#333';
           if (selectedAnswer !== null) {
             if (opt === currentQ.correctAnswer) {
-              bgColor = '#f6ffed';
-              borderColor = '#b7eb8f';
-              textColor = '#52c41a';
+              bgColor = '#f6ffed'; borderColor = '#b7eb8f'; textColor = '#52c41a';
             } else if (opt === selectedAnswer) {
-              bgColor = '#fff2f0';
-              borderColor = '#ffccc7';
-              textColor = '#f5222d';
+              bgColor = '#fff2f0'; borderColor = '#ffccc7'; textColor = '#f5222d';
             }
           }
 
@@ -286,20 +314,12 @@ const MCSession = ({ data, onHome, onBack }) => {
               onClick={() => handleAnswerClick(opt)}
               style={{ 
                 cursor: selectedAnswer === null ? 'pointer' : 'default',
-                backgroundColor: bgColor,
-                borderColor: borderColor,
-                transition: 'all 0.3s ease',
-                borderRadius: 12,
-                height: '100%',
-                minHeight: '120px'
+                backgroundColor: bgColor, borderColor: borderColor, transition: 'all 0.3s ease',
+                borderRadius: 12, height: '100%', minHeight: '120px'
               }}
               bodyStyle={{ 
-                padding: '20px', 
-                height: '100%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                textAlign: 'center'
+                padding: '20px', height: '100%', display: 'flex', alignItems: 'center', 
+                justifyContent: 'center', textAlign: 'center'
               }}
             >
               <Text strong style={{ fontSize: '1.1rem', color: textColor }}>{opt}</Text>
