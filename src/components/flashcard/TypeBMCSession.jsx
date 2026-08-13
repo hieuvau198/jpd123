@@ -23,7 +23,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [wrongIds, setWrongIds] = useState(new Set());
   const timerRef = useRef(null);
 
-  // Track total questions for accurate scoring
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
 
   useEffect(() => {
@@ -32,8 +31,23 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      window.speechSynthesis.cancel(); // Stop reading if the user leaves the page
     };
   }, [data]);
+
+  // --- NEW FEATURE: Auto Read Out Loud ---
+  useEffect(() => {
+    if (questions.length > 0 && !isFinished) {
+      const currentQ = questions[currentIndex];
+      
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
+      utterance.lang = currentQ.qLang || 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [currentIndex, questions, isFinished]);
+  // ----------------------------------------
 
   const initGame = () => {
     const allCards = data.questions;
@@ -54,11 +68,12 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           displayQuestion: card.word,
           correctAnswer: def.m,
           options: shuffleArray([def.m, ...def.wm.slice(0, 3)]),
-          correctAttemptsNeeded: 1
+          correctAttemptsNeeded: 1,
+          qLang: 'en-US',
+          aLang: 'vi-VN'
         });
 
-        // Phase MỚI: Reverse (Đưa nghĩa, chọn từ gốc)
-        // Lấy 3 từ sai ngẫu nhiên từ danh sách các từ hiện có
+        // Phase: Reverse (Đưa nghĩa, chọn từ gốc)
         const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
         const distractors = shuffleArray(otherWords).slice(0, 3);
         
@@ -68,11 +83,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           displayQuestion: def.m,
           correctAnswer: card.word,
           options: shuffleArray([card.word, ...distractors]),
-          correctAttemptsNeeded: 1
+          correctAttemptsNeeded: 1,
+          qLang: 'vi-VN',
+          aLang: 'en-US'
         });
       }
 
-      // Phase 2: Phrases (Chỉ lấy 1 phrase duy nhất)
+      // Phase 2: Phrases
       if (card.phrases && card.phrases.length > 0) {
         const p = shuffleArray(card.phrases)[0];
         phrases.push({
@@ -81,11 +98,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           displayQuestion: p.text,
           correctAnswer: p.m,
           options: shuffleArray([p.m, ...p.wm.slice(0, 3)]),
-          correctAttemptsNeeded: 1
+          correctAttemptsNeeded: 1,
+          qLang: 'en-US',
+          aLang: 'vi-VN'
         });
       }
 
-      // Phase 3: Sentences (Chỉ lấy 1 sentence duy nhất)
+      // Phase 3: Sentences
       if (card.sentences && card.sentences.length > 0) {
         const s = shuffleArray(card.sentences)[0];
         sentences.push({
@@ -94,7 +113,9 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           displayQuestion: s.text,
           correctAnswer: s.m,
           options: shuffleArray([s.m, ...s.wm.slice(0, 3)]),
-          correctAttemptsNeeded: 1
+          correctAttemptsNeeded: 1,
+          qLang: 'en-US',
+          aLang: 'vi-VN'
         });
       }
 
@@ -107,12 +128,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           displayQuestion: def.m, // Show definition, guess original word
           correctAnswer: card.word,
           options: shuffleArray([card.word, ...card.misspell.slice(0, 3)]),
-          correctAttemptsNeeded: 1
+          correctAttemptsNeeded: 1,
+          qLang: 'vi-VN',
+          aLang: 'en-US'
         });
       }
     });
 
-    // Combine into final ordered queue (mix the items inside each phase)
     const combinedQuestions = [
       ...shuffleArray(defs),
       ...shuffleArray(reverseDefs),
@@ -180,6 +202,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       setWrongIds(prev => new Set(prev).add(currentQ.id));
     }
 
+    // --- SPEAK CORRECT ANSWER ---
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(currentQ.correctAnswer);
+    utterance.lang = currentQ.aLang || 'vi-VN';
+    window.speechSynthesis.speak(utterance);
+    // ----------------------------
+
     const delay = isCorrect ? 1000 : 5000;
     
     timerRef.current = setTimeout(() => {
@@ -214,9 +243,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       className="notranslate" 
       style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}
     >
-      {/* Top Header Row */}
       <Flex justify="space-between" align="center" style={{ marginBottom: 20, marginTop: 40 }}>
-        <Button icon={<ArrowLeft size={20} />} onClick={onBack} />
+        <Button icon={<ArrowLeft size={20} />} onClick={() => {
+            window.speechSynthesis.cancel();
+            onBack();
+        }} />
         
         <div style={{ flex: 1, maxWidth: 300, margin: '0 20px' }}>
             <Flex vertical align="center">
@@ -233,7 +264,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         </Button>
       </Flex>
 
-      {/* Question Card */}
       <Card 
         style={{ 
           textAlign: 'center', 
@@ -244,9 +274,22 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         }}
       >
         <Title level={2}>{currentQ.displayQuestion}</Title>
+        
+        {/* Nút Read Aloud giống MCSession */}
+        <Button 
+          type="dashed" 
+          onClick={() => {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(currentQ.displayQuestion);
+            utterance.lang = currentQ.qLang || 'en-US';
+            window.speechSynthesis.speak(utterance);
+          }}
+          style={{ marginTop: 10 }}
+        >
+          Read Aloud 
+        </Button>
       </Card>
 
-      {/* Options Grid */}
       <div 
         style={{ 
           display: 'grid', 
