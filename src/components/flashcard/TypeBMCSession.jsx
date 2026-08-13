@@ -209,7 +209,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     window.speechSynthesis.speak(utterance);
     // ----------------------------
 
-    const delay = isCorrect ? 1000 : 5000;
+    const delay = isCorrect ? 2000 : 5000;
     
     timerRef.current = setTimeout(() => {
       handleNext(isCorrect);

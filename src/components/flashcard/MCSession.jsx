@@ -176,8 +176,8 @@ const MCSession = ({ data, onHome, onBack }) => {
     window.speechSynthesis.speak(utterance);
     // ----------------------------
 
-    // 1s delay if correct, 5s delay if wrong
-    const delay = isCorrect ? 1000 : 5000;
+    // 2s delay if correct, 5s delay if wrong
+    const delay = isCorrect ? 2000 : 5000;
     
     timerRef.current = setTimeout(() => {
       handleNext(isCorrect);
