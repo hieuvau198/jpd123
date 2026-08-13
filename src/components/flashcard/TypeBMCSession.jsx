@@ -1,6 +1,6 @@
 // src/components/flashcard/TypeBMCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
+import { Card, Button, Typography, Flex, Progress, Modal, Select, Switch } from 'antd';
 import { ArrowLeft, Settings, Lightbulb } from 'lucide-react';
 import SessionResult from '../SessionResult';
 
@@ -30,6 +30,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
   const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+  
+  // Auto-speak toggles
+  const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
+  const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
 
   // Reset hint when question changes
   useEffect(() => {
@@ -79,11 +83,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   // Auto Read Out Loud
   useEffect(() => {
-    if (questions.length > 0 && !isFinished) {
+    if (questions.length > 0 && !isFinished && autoSpeakQuestion) {
       const currentQ = questions[currentIndex];
       speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US');
     }
-  }, [currentIndex, questions, isFinished, voices]);
+  }, [currentIndex, questions, isFinished, voices, autoSpeakQuestion]);
 
   const initGame = () => {
     const allCards = data.questions;
@@ -238,8 +242,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       setWrongIds(prev => new Set(prev).add(currentQ.id));
     }
 
-    // Speak Correct Answer using robust function
-    speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
+    // Speak Correct Answer if enabled
+    if (autoSpeakAnswer) {
+      speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
+    }
 
     const delay = isCorrect ? 1000 : 5000;
     
@@ -274,7 +280,12 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       
       {/* Settings Modal */}
       <Modal 
-        title="Voice Settings" 
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Settings size={20} />
+            <span>Voice & Audio Settings</span>
+          </div>
+        } 
         open={showSettings} 
         onOk={() => setShowSettings(false)} 
         onCancel={() => setShowSettings(false)}
@@ -282,7 +293,24 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           <Button key="ok" type="primary" onClick={() => setShowSettings(false)}>Done</Button>
         ]}
       >
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <Text strong>Auto-Speak Question</Text>
+            <Switch 
+              checked={autoSpeakQuestion} 
+              onChange={(checked) => { setAutoSpeakQuestion(checked); localStorage.setItem('autoSpeakQuestion', checked); }} 
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text strong>Auto-Speak Correct Answer</Text>
+            <Switch 
+              checked={autoSpeakAnswer} 
+              onChange={(checked) => { setAutoSpeakAnswer(checked); localStorage.setItem('autoSpeakAnswer', checked); }} 
+            />
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 16, marginBottom: 16 }}>
           <Text strong>English Voice:</Text>
           <Select 
             value={enVoiceURI} 

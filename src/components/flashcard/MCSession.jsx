@@ -1,6 +1,6 @@
 // src/components/flashcard/MCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
+import { Card, Button, Typography, Flex, Progress, Modal, Select, Switch } from 'antd';
 import { ArrowLeft, Settings, Lightbulb } from 'lucide-react';
 import SessionResult from '../SessionResult';
 import TypeBMCSession from './TypeBMCSession';
@@ -31,6 +31,10 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
   const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+  
+  // Auto-speak toggles (default is true unless saved as 'false' in localStorage)
+  const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
+  const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
 
   const timerRef = useRef(null);
 
@@ -82,12 +86,12 @@ const MCSession = ({ data, onHome, onBack }) => {
 
   // Auto Read Out Loud
   useEffect(() => {
-    if (questions.length > 0 && !isFinished) {
+    if (questions.length > 0 && !isFinished && autoSpeakQuestion) {
       const currentQ = questions[currentIndex];
       const lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
       speakText(currentQ.displayQuestion, lang);
     }
-  }, [currentIndex, questions, isFinished, voices]);
+  }, [currentIndex, questions, isFinished, voices, autoSpeakQuestion]);
 
   if (isTypeB) {
     return <TypeBMCSession data={data} onHome={onHome} onBack={onBack} />;
@@ -183,9 +187,11 @@ const MCSession = ({ data, onHome, onBack }) => {
       setWrongIds(prev => new Set(prev).add(currentQ.id || currentQ.question));
     }
 
-    // Speak Correct Answer using robust function
-    const ansLang = currentQ.uniqueSessionId.includes('type1') ? 'vi-VN' : 'en-US';
-    speakText(currentQ.correctAnswer, ansLang);
+    // Speak Correct Answer if enabled
+    if (autoSpeakAnswer) {
+      const ansLang = currentQ.uniqueSessionId.includes('type1') ? 'vi-VN' : 'en-US';
+      speakText(currentQ.correctAnswer, ansLang);
+    }
 
     const delay = isCorrect ? 1000 : 5000;
     timerRef.current = setTimeout(() => {
@@ -220,7 +226,12 @@ const MCSession = ({ data, onHome, onBack }) => {
       
       {/* Settings Modal */}
       <Modal 
-        title="Voice Settings" 
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Settings size={20} />
+            <span>Voice & Audio Settings</span>
+          </div>
+        }
         open={showSettings} 
         onOk={() => setShowSettings(false)} 
         onCancel={() => setShowSettings(false)}
@@ -228,7 +239,24 @@ const MCSession = ({ data, onHome, onBack }) => {
           <Button key="ok" type="primary" onClick={() => setShowSettings(false)}>Done</Button>
         ]}
       >
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <Text strong>Auto-Speak Question</Text>
+            <Switch 
+              checked={autoSpeakQuestion} 
+              onChange={(checked) => { setAutoSpeakQuestion(checked); localStorage.setItem('autoSpeakQuestion', checked); }} 
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text strong>Auto-Speak Correct Answer</Text>
+            <Switch 
+              checked={autoSpeakAnswer} 
+              onChange={(checked) => { setAutoSpeakAnswer(checked); localStorage.setItem('autoSpeakAnswer', checked); }} 
+            />
+          </div>
+        </div>
+        
+        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 16, marginBottom: 16 }}>
           <Text strong>English Voice:</Text>
           <Select 
             value={enVoiceURI} 
