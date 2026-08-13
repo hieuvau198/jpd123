@@ -1,3 +1,4 @@
+// src/components/flashcard/TypeBMCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Progress } from 'antd';
 import { ArrowLeft } from 'lucide-react';
@@ -19,10 +20,9 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  
   const [wrongIds, setWrongIds] = useState(new Set());
   const timerRef = useRef(null);
-  
+
   // Track total questions for accurate scoring
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
 
@@ -37,14 +37,15 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   const initGame = () => {
     const allCards = data.questions;
-    
+
     let defs = [];
+    let reverseDefs = []; // Phase: Đưa nghĩa, chọn từ gốc
     let phrases = [];
     let sentences = [];
     let misspells = [];
 
     allCards.forEach((card, cIdx) => {
-      // Phase 1: Definitions
+      // Phase 1: Definitions (Đưa từ, chọn nghĩa)
       if (card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         defs.push({
@@ -55,37 +56,49 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([def.m, ...def.wm.slice(0, 3)]),
           correctAttemptsNeeded: 1
         });
+
+        // Phase MỚI: Reverse (Đưa nghĩa, chọn từ gốc)
+        // Lấy 3 từ sai ngẫu nhiên từ danh sách các từ hiện có
+        const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
+        const distractors = shuffleArray(otherWords).slice(0, 3);
+        
+        reverseDefs.push({
+          id: `${card.word}_reverse_${cIdx}`,
+          phase: 'Reverse',
+          displayQuestion: def.m,
+          correctAnswer: card.word,
+          options: shuffleArray([card.word, ...distractors]),
+          correctAttemptsNeeded: 1
+        });
       }
 
-      // Phase 2: Phrases
+      // Phase 2: Phrases (Chỉ lấy 1 phrase duy nhất)
       if (card.phrases && card.phrases.length > 0) {
-        card.phrases.forEach((p, pIdx) => {
-          phrases.push({
-            id: `${card.word}_phrase_${cIdx}_${pIdx}`,
-            phase: 'Phrase',
-            displayQuestion: p.text,
-            correctAnswer: p.m,
-            options: shuffleArray([p.m, ...p.wm.slice(0, 3)]),
-            correctAttemptsNeeded: 1
-          });
+        const p = shuffleArray(card.phrases)[0];
+        phrases.push({
+          id: `${card.word}_phrase_${cIdx}`,
+          phase: 'Phrase',
+          displayQuestion: p.text,
+          correctAnswer: p.m,
+          options: shuffleArray([p.m, ...p.wm.slice(0, 3)]),
+          correctAttemptsNeeded: 1
         });
       }
 
-      // Phase 3: Sentences
+      // Phase 3: Sentences (Chỉ lấy 1 sentence duy nhất)
       if (card.sentences && card.sentences.length > 0) {
-        card.sentences.forEach((s, sIdx) => {
-          sentences.push({
-            id: `${card.word}_sentence_${cIdx}_${sIdx}`,
-            phase: 'Sentence',
-            displayQuestion: s.text,
-            correctAnswer: s.m,
-            options: shuffleArray([s.m, ...s.wm.slice(0, 3)]),
-            correctAttemptsNeeded: 1
-          });
+        const s = shuffleArray(card.sentences)[0];
+        sentences.push({
+          id: `${card.word}_sentence_${cIdx}`,
+          phase: 'Sentence',
+          displayQuestion: s.text,
+          correctAnswer: s.m,
+          options: shuffleArray([s.m, ...s.wm.slice(0, 3)]),
+          correctAttemptsNeeded: 1
         });
       }
 
-      // Phase 4: Misspell
+      // Phase 4: Misspell (Từ sai chính tả)
       if (card.misspell && card.misspell.length > 0 && card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         misspells.push({
@@ -102,6 +115,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     // Combine into final ordered queue (mix the items inside each phase)
     const combinedQuestions = [
       ...shuffleArray(defs),
+      ...shuffleArray(reverseDefs),
       ...shuffleArray(phrases),
       ...shuffleArray(sentences),
       ...shuffleArray(misspells)
@@ -145,6 +159,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }
 
     const newLength = questions.length + (needsRequeue ? 1 : 0);
+
     if (currentIndex + 1 < newLength) {
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
@@ -156,7 +171,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const handleAnswerClick = (ans) => {
     if (selectedAnswer !== null) return;
     
-    setSelectedAnswer(ans); 
+    setSelectedAnswer(ans);
     
     const currentQ = questions[currentIndex];
     const isCorrect = ans === currentQ.correctAnswer;
@@ -224,7 +239,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           textAlign: 'center', 
           marginBottom: 30, 
           padding: '40px 20px', 
-          borderRadius: 16, 
+          borderRadius: 16,
           boxShadow: '0 4px 12px rgba(0,0,0,0.05)' 
         }}
       >
