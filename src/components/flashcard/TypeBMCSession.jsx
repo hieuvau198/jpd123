@@ -1,7 +1,7 @@
 // src/components/flashcard/TypeBMCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
-import { ArrowLeft, Settings } from 'lucide-react';
+import { ArrowLeft, Settings, Lightbulb } from 'lucide-react';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
@@ -21,6 +21,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [wrongIds, setWrongIds] = useState(new Set());
+  const [showHint, setShowHint] = useState(false);
   const timerRef = useRef(null);
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
 
@@ -29,6 +30,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
   const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+
+  // Reset hint when question changes
+  useEffect(() => {
+    setShowHint(false);
+  }, [currentIndex]);
 
   // --- LOAD VOICES ---
   useEffect(() => {
@@ -99,7 +105,8 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([def.m, ...def.wm.slice(0, 3)]),
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
-          aLang: 'vi-VN'
+          aLang: 'vi-VN',
+          hint: card.hint
         });
 
         const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
@@ -113,7 +120,8 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([card.word, ...distractors]),
           correctAttemptsNeeded: 1,
           qLang: 'vi-VN',
-          aLang: 'en-US'
+          aLang: 'en-US',
+          hint: card.hint
         });
       }
 
@@ -127,7 +135,8 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([p.m, ...p.wm.slice(0, 3)]),
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
-          aLang: 'vi-VN'
+          aLang: 'vi-VN',
+          hint: card.hint
         });
       }
 
@@ -141,7 +150,8 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([s.m, ...s.wm.slice(0, 3)]),
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
-          aLang: 'vi-VN'
+          aLang: 'vi-VN',
+          hint: card.hint
         });
       }
 
@@ -155,7 +165,8 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           options: shuffleArray([card.word, ...card.misspell.slice(0, 3)]),
           correctAttemptsNeeded: 1,
           qLang: 'vi-VN',
-          aLang: 'en-US'
+          aLang: 'en-US',
+          hint: card.hint
         });
       }
     });
@@ -334,13 +345,29 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       >
         <Title level={2}>{currentQ.displayQuestion}</Title>
         
-        <Button 
-          type="dashed" 
-          onClick={() => speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US')}
-          style={{ marginTop: 10 }}
-        >
-          Read Aloud 
-        </Button>
+        <Flex justify="center" gap="small" style={{ marginTop: 10 }}>
+          <Button 
+            type="dashed" 
+            onClick={() => speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US')}
+          >
+            Read Aloud 
+          </Button>
+          {currentQ.hint && (
+            <Button 
+              type="dashed" 
+              icon={<Lightbulb size={16} />} 
+              onClick={() => setShowHint(!showHint)}
+            >
+              Hint
+            </Button>
+          )}
+        </Flex>
+
+        {showHint && currentQ.hint && (
+          <div style={{ marginTop: 16, padding: '12px', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 8 }}>
+            <Text style={{ color: '#d48806', fontSize: '1rem' }}>💡 {currentQ.hint}</Text>
+          </div>
+        )}
       </Card>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>

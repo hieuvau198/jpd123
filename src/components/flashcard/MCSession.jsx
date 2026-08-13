@@ -1,7 +1,7 @@
 // src/components/flashcard/MCSession.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Flex, Progress, Modal, Select } from 'antd';
-import { ArrowLeft, Settings } from 'lucide-react';
+import { ArrowLeft, Settings, Lightbulb } from 'lucide-react';
 import SessionResult from '../SessionResult';
 import TypeBMCSession from './TypeBMCSession';
 
@@ -24,6 +24,7 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [wrongIds, setWrongIds] = useState(new Set());
+  const [showHint, setShowHint] = useState(false);
   
   // --- VOICE SETTINGS STATE ---
   const [voices, setVoices] = useState([]);
@@ -32,6 +33,11 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
 
   const timerRef = useRef(null);
+
+  // Reset hint when question changes
+  useEffect(() => {
+    setShowHint(false);
+  }, [currentIndex]);
 
   // --- LOAD VOICES ---
   useEffect(() => {
@@ -54,11 +60,9 @@ const MCSession = ({ data, onHome, onBack }) => {
     const targetURI = isEn ? localStorage.getItem('enVoiceURI') : localStorage.getItem('viVoiceURI');
 
     if (targetURI && voices.length > 0) {
-      // User has explicitly selected a voice
       const selectedVoice = voices.find(v => v.voiceURI === targetURI);
       if (selectedVoice) utterance.voice = selectedVoice;
     } else if (voices.length > 0) {
-      // Auto-assign best match to prevent OS default fallback bug
       const matchedVoice = voices.find(v => v.lang.includes(lang.split('-')[0]));
       if (matchedVoice) utterance.voice = matchedVoice;
     }
@@ -284,16 +288,32 @@ const MCSession = ({ data, onHome, onBack }) => {
       >
         <Title level={2}>{currentQ.displayQuestion}</Title>
         
-        <Button 
-          type="dashed" 
-          onClick={() => {
-            const lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
-            speakText(currentQ.displayQuestion, lang);
-          }}
-          style={{ marginTop: 10 }}
-        >
-          Read Aloud 
-        </Button>
+        <Flex justify="center" gap="small" style={{ marginTop: 10 }}>
+          <Button 
+            type="dashed" 
+            onClick={() => {
+              const lang = currentQ.uniqueSessionId.includes('type1') ? 'en-US' : 'vi-VN';
+              speakText(currentQ.displayQuestion, lang);
+            }}
+          >
+            Read Aloud 
+          </Button>
+          {currentQ.hint && (
+            <Button 
+              type="dashed" 
+              icon={<Lightbulb size={16} />} 
+              onClick={() => setShowHint(!showHint)}
+            >
+              Hint
+            </Button>
+          )}
+        </Flex>
+
+        {showHint && currentQ.hint && (
+          <div style={{ marginTop: 16, padding: '12px', background: '#fffbe6', border: '1px solid #ffe58f', borderRadius: 8 }}>
+            <Text style={{ color: '#d48806', fontSize: '1rem' }}>💡 {currentQ.hint}</Text>
+          </div>
+        )}
       </Card>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
