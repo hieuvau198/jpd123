@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, Button, Typography, Flex, Space, Badge } from 'antd';
-import { Home, Volume2, ArrowRight, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
+// src/components/flashcard/SpellingBeeSession.jsx
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Card } from 'antd';
 import SessionResult from '../SessionResult';
-
-const { Title, Text } = Typography;
+import SpellingBeeHeader from './spellingbee/SpellingBeeHeader';
+import SpellingBeeAudioButton from './spellingbee/SpellingBeeAudioButton';
+import SpellingBeeMC from './spellingbee/SpellingBeeMC';
+import SpellingBeeTyping from './spellingbee/SpellingBeeTyping';
+import SpellingBeeFeedback from './spellingbee/SpellingBeeFeedback';
 
 const shuffleArray = (array) => {
   const newArr = [...array];
@@ -17,79 +20,109 @@ const shuffleArray = (array) => {
 const SpellingBeeSession = ({ data, onBack }) => {
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Chế độ mặc định là 'mc' (Multiple Choice), người dùng có thể đổi sang 'typing'
+  const [inputMode, setInputMode] = useState('mc'); 
+  
   const [inputValue, setInputValue] = useState("");
-  const [feedback, setFeedback] = useState("neutral"); // 'neutral', 'correct', 'wrong'
+  const [selectedMCOption, setSelectedMCOption] = useState(null);
+  const [feedback, setFeedback] = useState("neutral"); // 'neutral' | 'correct' | 'wrong'
   const [listenCount, setListenCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
 
   const inputRef = useRef(null);
 
-  // Initialize queue
+  // Khởi tạo danh sách câu hỏi
   useEffect(() => {
     if (data && data.questions) {
       setQueue(shuffleArray([...data.questions]));
     }
   }, [data]);
 
-  // Focus input when moving to a new word
+  const currentCard = queue[currentIndex];
+
+  // Sinh 4 options cho chế độ Multiple Choice (1 từ đúng + 3 từ ngẫu nhiên khác trong bộ dữ liệu)
+  const mcOptions = useMemo(() => {
+    if (!currentCard || !data?.questions) return [];
+    
+    const correctWord = currentCard.question;
+    const otherWords = Array.from(
+      new Set(data.questions.map((q) => q.question).filter((w) => w && w !== correctWord))
+    );
+    const distractors = shuffleArray(otherWords).slice(0, 3);
+    return shuffleArray([correctWord, ...distractors]);
+  }, [currentCard, data]);
+
+  // Focus input khi chuyển qua chế độ typing
   useEffect(() => {
-    if (feedback === 'neutral' && inputRef.current && !isFinished) {
+    if (inputMode === 'typing' && feedback === 'neutral' && inputRef.current && !isFinished) {
       inputRef.current.focus();
     }
-  }, [currentIndex, feedback, isFinished]);
+  }, [currentIndex, feedback, isFinished, inputMode]);
 
   const handleSpeech = (text) => {
-    if (!text) return;
-    if ('speechSynthesis' in window) {
-      const synth = window.speechSynthesis;
-      if (synth.speaking) synth.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.85; // Slightly slower for spelling
-      synth.speak(utterance);
-    }
+    if (!text || !('speechSynthesis' in window)) return;
+    const synth = window.speechSynthesis;
+    if (synth.speaking) synth.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.85;
+    synth.speak(utterance);
   };
 
-  // Auto-speak on new question
+  // Tự động phát âm khi chuyển sang từ mới
   useEffect(() => {
-    if (queue.length > 0 && !isFinished && feedback === 'neutral') {
-      const targetWord = queue[currentIndex].question;
-      // Slight delay for better UX
+    if (queue.length > 0 && !isFinished && feedback === 'neutral' && currentCard) {
       const timer = setTimeout(() => {
-        handleSpeech(targetWord);
-        setListenCount(1); // 1st listen is the auto-play
-      }, 500);
+        handleSpeech(currentCard.question);
+        setListenCount(1);
+      }, 400);
       return () => clearTimeout(timer);
     }
   }, [currentIndex, queue, isFinished]);
 
   const playWordAgain = () => {
-    if (listenCount < 4) {
-      handleSpeech(queue[currentIndex].question);
+    if (listenCount < 4 && currentCard) {
+      handleSpeech(currentCard.question);
       setListenCount((prev) => prev + 1);
-      if (inputRef.current) inputRef.current.focus();
+      if (inputMode === 'typing' && inputRef.current) {
+        inputRef.current.focus();
+      }
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Xử lý chọn đáp án Multiple Choice
+  const handleSelectMCOption = (option) => {
+    if (feedback !== 'neutral' || selectedMCOption !== null) return;
+    setSelectedMCOption(option);
     
-    // If already answered, pushing Enter proceeds to next question
+    const target = (currentCard.question || '').toLowerCase().trim();
+    const isCorrect = (option || '').toLowerCase().trim() === target;
+
+    if (isCorrect) {
+      setFeedback('correct');
+      setScore((prev) => prev + 1);
+    } else {
+      setFeedback('wrong');
+    }
+  };
+
+  // Xử lý nộp bài Typing
+  const handleTypingSubmit = (e) => {
+    e.preventDefault();
     if (feedback !== 'neutral') {
       handleNext();
       return;
     }
-
     if (!inputValue.trim()) return;
 
-    const currentCard = queue[currentIndex];
     const target = currentCard.question.toLowerCase().trim();
     const input = inputValue.toLowerCase().trim();
 
     if (input === target) {
       setFeedback('correct');
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
     } else {
       setFeedback('wrong');
     }
@@ -99,6 +132,7 @@ const SpellingBeeSession = ({ data, onBack }) => {
     if (currentIndex + 1 < queue.length) {
       setCurrentIndex((prev) => prev + 1);
       setInputValue("");
+      setSelectedMCOption(null);
       setFeedback('neutral');
       setListenCount(0);
     } else {
@@ -112,123 +146,74 @@ const SpellingBeeSession = ({ data, onBack }) => {
     setScore(0);
     setIsFinished(false);
     setInputValue("");
+    setSelectedMCOption(null);
     setFeedback('neutral');
     setListenCount(0);
   };
 
-  // --- COMPLETED SCREEN ---
   if (isFinished) {
     const calculatedScore = Math.max(0, Math.round((score / queue.length) * 100));
-    
     return (
-      <SessionResult 
-        score={calculatedScore} 
+      <SessionResult
+        score={calculatedScore}
         resultMessage={`"${data?.title || 'current'}": Spell ${queue.length} words!`}
-        onBack={onBack} 
-        onRestart={restart} 
-        practiceId={data.id} // Pass the flashcard ID
-      practiceType="Flashcard"      // Tell it this is a flashcard
-      practiceName={data.title} // Add this line
+        onBack={onBack}
+        onRestart={restart}
+        practiceId={data.id}
+        practiceType="Flashcard"
+        practiceName={data.title}
       />
     );
   }
 
-  if (!queue.length) return null;
-
-  const currentCard = queue[currentIndex];
+  if (!queue.length || !currentCard) return null;
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20, marginTop: 40 }}>
-      <Flex justify="space-between" align="center" style={{ marginBottom: 20 }}>
-        <Button icon={<ArrowLeft size={16} />} onClick={onBack}></Button>
-        <Space>
-           <Text strong>SPELLING BEE</Text>
-           <Text type="secondary">|</Text>
-           <Text strong>{currentIndex + 1} / {queue.length}</Text>
-        </Space>
-      </Flex>
+    <div style={{ maxWidth: 650, margin: '0 auto', padding: 20, marginTop: 40 }}>
+      {/* Header với 2 nút chuyển chế độ Trắc nghiệm <-> Điền từ */}
+      <SpellingBeeHeader
+        onBack={onBack}
+        currentIndex={currentIndex}
+        total={queue.length}
+        inputMode={inputMode}
+        setInputMode={setInputMode}
+        disabled={feedback !== 'neutral'}
+      />
 
-      <Card style={{ textAlign: 'center', padding: '40px 20px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-        
-        <Flex justify="center" align="center" style={{ marginBottom: 30 }}>
-          <Badge count={4 - listenCount} showZero color={listenCount >= 4 ? '#ff4d4f' : '#1890ff'} offset={[-5, 5]}>
-            <Button 
-              type="primary" 
-              shape="circle" 
-              size="large"
-              icon={<Volume2 size={32} />} 
-              onClick={playWordAgain}
-              disabled={listenCount >= 4 || feedback !== 'neutral'}
-              style={{ width: 80, height: 80 }}
-            />
-          </Badge>
-        </Flex>
+      <Card style={{ textAlign: 'center', padding: '30px 20px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+        {/* Nút Audio nghe âm thanh */}
+        <SpellingBeeAudioButton
+          listenCount={listenCount}
+          onPlay={playWordAgain}
+          disabled={feedback !== 'neutral'}
+        />
 
-        <Text type="secondary" style={{ display: 'block', marginBottom: 20 }}>
-          {listenCount >= 4 ? "No listens remaining" : "Listen to the word and type it below"}
-        </Text>
-
-        <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type the word here..."
+        {/* Nội dung câu hỏi theo Mode được chọn */}
+        {inputMode === 'mc' ? (
+          <SpellingBeeMC
+            options={mcOptions}
+            selectedOption={selectedMCOption}
+            correctAnswer={currentCard.question}
+            onSelectOption={handleSelectMCOption}
             disabled={feedback !== 'neutral'}
-            autoComplete="off"
-            spellCheck="false"
-            style={{
-              width: '100%', maxWidth: 400, padding: '12px 15px', fontSize: 20, 
-              textAlign: 'center', borderRadius: 8, outline: 'none',
-              border: feedback === 'correct' ? '2px solid #52c41a' : 
-                      feedback === 'wrong' ? '2px solid #ff4d4f' : '1px solid #d9d9d9',
-              backgroundColor: feedback === 'neutral' ? '#fff' : '#f5f5f5',
-            }}
           />
-          {feedback === 'neutral' && (
-            <div style={{ marginTop: 20 }}>
-              <Button type="primary" htmlType="submit" size="large" style={{ minWidth: 120 }}>
-                Check
-              </Button>
-            </div>
-          )}
-        </form>
-
-        {/* Feedback Section */}
-        {feedback !== 'neutral' && (
-          <div style={{ 
-            marginTop: 30, padding: 20, borderRadius: 8,
-            backgroundColor: feedback === 'correct' ? '#f6ffed' : '#fff1f0',
-            border: feedback === 'correct' ? '1px solid #b7eb8f' : '1px solid #ffa39e'
-          }}>
-            <Title level={4} style={{ color: feedback === 'correct' ? '#52c41a' : '#ff4d4f', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 0 }}>
-              {feedback === 'correct' ? <CheckCircle /> : <XCircle />}
-              {feedback === 'correct' ? "Correct!" : "Incorrect"}
-            </Title>
-            
-            <div style={{ margin: '15px 0' }}>
-              <Text type="secondary">Word:</Text><br/>
-              <Text strong style={{ fontSize: 22 }}>{currentCard.question}</Text>
-            </div>
-
-            <div style={{ margin: '15px 0' }}>
-              <Text type="secondary">Definition:</Text><br/>
-              <Text strong style={{ fontSize: 18 }}>{currentCard.answer}</Text>
-            </div>
-
-            <Button 
-              type={feedback === 'correct' ? "primary" : "primary"}
-              danger={feedback === 'wrong'}
-              size="large" 
-              onClick={handleNext}
-              style={{ marginTop: 10, minWidth: 150 }}
-              autoFocus // Auto focuses Next button so Enter key works seamlessly
-            >
-              Next <ArrowRight size={16} style={{ marginLeft: 8 }} />
-            </Button>
-          </div>
+        ) : (
+          <SpellingBeeTyping
+            inputRef={inputRef}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            onSubmit={handleTypingSubmit}
+            feedback={feedback}
+            disabled={feedback !== 'neutral'}
+          />
         )}
+
+        {/* Khối phản hồi Đúng / Sai sau khi làm câu hỏi */}
+        <SpellingBeeFeedback
+          feedback={feedback}
+          currentCard={currentCard}
+          onNext={handleNext}
+        />
       </Card>
     </div>
   );
