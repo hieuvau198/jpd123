@@ -98,7 +98,7 @@ const SpellingBeeSession = ({ data, onBack }) => {
     }
   };
 
-  // Tự động chuyển câu hỏi: 2s với đúng, 5s với sai
+  // Tự động chuyển câu: 2s với đúng, 5s với sai
   const triggerAutoNext = (isCorrect) => {
     if (timerRef.current) clearTimeout(timerRef.current);
     const delay = isCorrect ? 2000 : 5000;
@@ -212,25 +212,30 @@ const SpellingBeeSession = ({ data, onBack }) => {
           disabled={feedback !== 'neutral'}
         />
 
-        {/* NGHĨA CỦA TỪ - LUÔN LUÔN HIỂN THỊ */}
-        <div style={{ marginBottom: feedback !== 'neutral' ? 8 : 24, padding: '0 16px' }}>
-          <Text style={{ fontSize: '1.25rem', color: '#262626', fontWeight: 600 }}>
-            {currentCard.answer}
-          </Text>
-        </div>
-
-        {/* HIỂN THỊ TỪ TIẾNG ANH (CHỈ KHI ĐÃ TRẢ LỜI XONG) */}
+        {/* PHẦN HIỂN THỊ KẾT QUẢ: Chỉ hiển thị chữ gốc + nghĩa SAU KHI ĐÃ CHỌN/ĐIỀN ĐÁP ÁN */}
         <div style={{ 
-            minHeight: feedback !== 'neutral' ? 40 : 0, 
-            marginBottom: feedback !== 'neutral' ? 20 : 0, 
-            transition: 'all 0.3s',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+          minHeight: 52, 
+          marginBottom: 20, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center' 
         }}>
-          {feedback !== 'neutral' && (
-            <Text strong style={{ fontSize: '1.8rem', color: feedback === 'correct' ? '#52c41a' : '#ff4d4f' }}>
-              {currentCard.question}
+          {feedback !== 'neutral' ? (
+            <Flex align="baseline" justify="center" gap={10} wrap="wrap">
+              {/* Chữ gốc tiếng Anh */}
+              <Text strong style={{ fontSize: '1.6rem', color: feedback === 'correct' ? '#52c41a' : '#ff4d4f' }}>
+                {currentCard.question}
+              </Text>
+              {/* Nghĩa ngắn gọn tiếng Việt đặt ngay cạnh */}
+              {currentCard.answer && (
+                <Text style={{ fontSize: '1.15rem', color: '#595959', fontWeight: 500 }}>
+                  ({currentCard.answer})
+                </Text>
+              )}
+            </Flex>
+          ) : (
+            <Text type="secondary" style={{ fontSize: '0.95rem', letterSpacing: 0.3 }}>
+              Nghe và chọn/điền từ chính xác
             </Text>
           )}
         </div>
@@ -255,9 +260,9 @@ const SpellingBeeSession = ({ data, onBack }) => {
           />
         )}
 
-        {/* Thanh trạng thái đếm ngược tự động */}
+        {/* Thông báo thời gian tự động chuyển câu */}
         {feedback !== 'neutral' && (
-          <div style={{ marginTop: 20 }}>
+          <div style={{ marginTop: 24 }}>
             <Text type="secondary" style={{ fontSize: 13 }}>
               {feedback === 'correct' ? 'Tự động tiếp tục sau 2s...' : 'Tự động tiếp tục sau 5s...'}
             </Text>
