@@ -1,48 +1,68 @@
 // src/components/flashcard/spellingbee/SpellingBeeTyping.jsx
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Input, Flex } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 
-const SpellingBeeTyping = ({ 
-  inputRef, 
-  inputValue, 
-  setInputValue, 
-  onSubmit, 
-  feedback, 
-  disabled 
+const SpellingBeeTyping = ({
+  inputRef,
+  inputValue,
+  setInputValue,
+  onSubmit,
+  feedback,
+  disabled
 }) => {
+  let statusBorder = '#d9d9d9';
+  let statusBg = '#ffffff';
+
+  if (feedback === 'correct') {
+    statusBorder = '#52c41a';
+    statusBg = '#f6ffed';
+  } else if (feedback === 'wrong') {
+    statusBorder = '#ff4d4f';
+    statusBg = '#fff1f0';
+  }
+
   return (
-    <form onSubmit={onSubmit} style={{ marginBottom: 10 }}>
-      <input
-        ref={inputRef}
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder="Nhập từ bạn nghe được..."
-        disabled={disabled}
-        autoComplete="off"
-        spellCheck="false"
-        style={{
-          width: '100%',
-          maxWidth: 400,
-          padding: '12px 15px',
-          fontSize: 20,
-          textAlign: 'center',
-          borderRadius: 8,
-          outline: 'none',
-          border: feedback === 'correct' ? '2px solid #52c41a' :
-                  feedback === 'wrong' ? '2px solid #ff4d4f' : '1px solid #d9d9d9',
-          backgroundColor: feedback === 'neutral' ? '#fff' : '#f5f5f5',
-          margin: '0 auto',
-          display: 'block',
-        }}
-      />
-      {feedback === 'neutral' && (
-        <div style={{ marginTop: 20 }}>
-          <Button type="primary" htmlType="submit" size="large" style={{ minWidth: 120 }}>
-            Kiểm tra
+    <form onSubmit={onSubmit} style={{ maxWidth: 440, margin: '0 auto' }}>
+      <Flex gap="small">
+        <Input
+          ref={inputRef}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Nhập từ bạn nghe được..."
+          disabled={disabled}
+          autoComplete="off"
+          spellCheck="false"
+          size="large"
+          style={{
+            fontSize: '1.2rem',
+            textAlign: 'center',
+            borderRadius: 12,
+            height: 52,
+            borderColor: statusBorder,
+            backgroundColor: statusBg,
+            fontWeight: 600,
+            borderWidth: '2px',
+          }}
+        />
+        {feedback === 'neutral' && (
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            icon={<SendOutlined />}
+            style={{
+              height: 52,
+              padding: '0 24px',
+              borderRadius: 12,
+              backgroundColor: '#1890ff',
+              fontWeight: 600
+            }}
+          >
+            Gửi
           </Button>
-        </div>
-      )}
+        )}
+      </Flex>
     </form>
   );
 };

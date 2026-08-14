@@ -4,28 +4,44 @@ import { Button, Row, Col } from 'antd';
 
 const SpellingBeeMC = ({ options, selectedOption, correctAnswer, onSelectOption, disabled }) => {
   return (
-    <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+    <Row gutter={[12, 12]}>
       {options.map((option, idx) => {
         const isSelected = selectedOption === option;
         const isCorrect = option === correctAnswer;
 
         let customStyle = {
-          height: 'auto',
-          minHeight: 56,
-          padding: '12px 16px',
-          fontSize: '1.15rem',
+          height: 56,
+          fontSize: '1.1rem',
           fontWeight: 600,
-          borderRadius: 10,
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
+          borderRadius: 12,
+          borderWidth: '2px',
+          borderColor: '#e8e8e8',
+          backgroundColor: '#fff',
+          color: '#262626',
           transition: 'all 0.2s ease',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
         };
 
         if (selectedOption !== null) {
           if (isCorrect) {
-            customStyle = { ...customStyle, backgroundColor: '#52c41a', color: '#fff', borderColor: '#52c41a' };
+            customStyle = {
+              ...customStyle,
+              backgroundColor: '#f6ffed',
+              borderColor: '#52c41a',
+              color: '#389e0d',
+            };
           } else if (isSelected && !isCorrect) {
-            customStyle = { ...customStyle, backgroundColor: '#ff4d4f', color: '#fff', borderColor: '#ff4d4f' };
+            customStyle = {
+              ...customStyle,
+              backgroundColor: '#fff1f0',
+              borderColor: '#ff4d4f',
+              color: '#cf1322',
+            };
+          } else {
+            customStyle = {
+              ...customStyle,
+              opacity: 0.5,
+            };
           }
         }
 
