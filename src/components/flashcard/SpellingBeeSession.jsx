@@ -212,23 +212,26 @@ const SpellingBeeSession = ({ data, onBack }) => {
           disabled={feedback !== 'neutral'}
         />
 
-        {/* Hiển thị nghĩa ngắn gọn + đáp án khi đã trả lời xong */}
-        <div style={{ minHeight: 48, marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {feedback !== 'neutral' ? (
-            <Flex align="center" justify="center" gap={10} wrap="wrap">
-              <Text strong style={{ fontSize: '1.4rem', color: feedback === 'correct' ? '#52c41a' : '#ff4d4f' }}>
-                {currentCard.question}
-              </Text>
-              <Text style={{ fontSize: '1.1rem', color: '#595959' }}>
-                ({currentCard.answer})
-              </Text>
-            </Flex>
-          ) : (
-            currentCard.answer && (
-              <Text type="secondary" style={{ fontSize: '1.05rem', fontStyle: 'italic' }}>
-                Nghĩa: {currentCard.answer}
-              </Text>
-            )
+        {/* NGHĨA CỦA TỪ - LUÔN LUÔN HIỂN THỊ */}
+        <div style={{ marginBottom: feedback !== 'neutral' ? 8 : 24, padding: '0 16px' }}>
+          <Text style={{ fontSize: '1.25rem', color: '#262626', fontWeight: 600 }}>
+            {currentCard.answer}
+          </Text>
+        </div>
+
+        {/* HIỂN THỊ TỪ TIẾNG ANH (CHỈ KHI ĐÃ TRẢ LỜI XONG) */}
+        <div style={{ 
+            minHeight: feedback !== 'neutral' ? 40 : 0, 
+            marginBottom: feedback !== 'neutral' ? 20 : 0, 
+            transition: 'all 0.3s',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+          {feedback !== 'neutral' && (
+            <Text strong style={{ fontSize: '1.8rem', color: feedback === 'correct' ? '#52c41a' : '#ff4d4f' }}>
+              {currentCard.question}
+            </Text>
           )}
         </div>
 
