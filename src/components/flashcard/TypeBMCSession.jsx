@@ -4,8 +4,8 @@ import { Card, Typography } from 'antd';
 import SessionResult from '../SessionResult';
 import TypeBHeader from './typeB/TypeBHeader';
 import TypeBCard from './typeB/TypeBCard';
+import TypeBSettingsModal from './typeB/TypeBSettingsModal';
 import { generateTypeBQuestions } from './typeB/typeBGenerator';
-import { speakText } from '../../utils/speechUtils';
 
 const { Text } = Typography;
 
@@ -16,9 +16,50 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [wrongIds, setWrongIds] = useState(new Set());
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
-  
+
+  // Voice Settings State
+  const [voices, setVoices] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [enVoiceURI, setEnVoiceURI] = useState(localStorage.getItem('enVoiceURI') || '');
+  const [viVoiceURI, setViVoiceURI] = useState(localStorage.getItem('viVoiceURI') || '');
+  const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
+  const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
+
   const timerRef = useRef(null);
 
+  // Load Voices
+  useEffect(() => {
+    const loadVoices = () => {
+      const available = window.speechSynthesis.getVoices();
+      setVoices(available);
+    };
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }, []);
+
+  // Hàm phát âm theo giọng đã cài đặt
+  const speakText = useCallback((text, lang) => {
+    if (!text || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.rate = 0.9;
+
+    const isEn = lang.includes('en');
+    const targetURI = isEn ? enVoiceURI : viVoiceURI;
+
+    if (targetURI && voices.length > 0) {
+      const selectedVoice = voices.find(v => v.voiceURI === targetURI);
+      if (selectedVoice) utterance.voice = selectedVoice;
+    } else if (voices.length > 0) {
+      const matchedVoice = voices.find(v => v.lang.toLowerCase().includes(lang.split('-')[0].toLowerCase()));
+      if (matchedVoice) utterance.voice = matchedVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  }, [enVoiceURI, viVoiceURI, voices]);
+
+  // Khởi tạo câu hỏi
   const initGame = useCallback(() => {
     if (!data?.questions) return;
     const combined = generateTypeBQuestions(data.questions);
@@ -39,13 +80,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     };
   }, [initGame]);
 
-  // Tự động phát âm câu hỏi khi xuất hiện
+  // Tự động phát âm câu hỏi
   useEffect(() => {
-    if (questions.length > 0 && !isFinished) {
+    if (questions.length > 0 && !isFinished && autoSpeakQuestion) {
       const currentQ = questions[currentIndex];
       speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US');
     }
-  }, [currentIndex, questions, isFinished]);
+  }, [currentIndex, questions, isFinished, autoSpeakQuestion, speakText]);
 
   const handleNext = (isCorrect) => {
     if (timerRef.current) {
@@ -98,8 +139,9 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       setWrongIds((prev) => new Set(prev).add(currentQ.id));
     }
 
-    // Đọc đáp án đúng
-    speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
+    if (autoSpeakAnswer) {
+      speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
+    }
 
     const delay = isCorrect ? 1000 : 5000;
     timerRef.current = setTimeout(() => {
@@ -131,6 +173,21 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   return (
     <div translate="no" className="notranslate" style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
+      {/* Settings Modal */}
+      <TypeBSettingsModal
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+        voices={voices}
+        enVoiceURI={enVoiceURI}
+        setEnVoiceURI={setEnVoiceURI}
+        viVoiceURI={viVoiceURI}
+        setViVoiceURI={setViVoiceURI}
+        autoSpeakQuestion={autoSpeakQuestion}
+        setAutoSpeakQuestion={setAutoSpeakQuestion}
+        autoSpeakAnswer={autoSpeakAnswer}
+        setAutoSpeakAnswer={setAutoSpeakAnswer}
+      />
+
       {/* Header */}
       <TypeBHeader
         onBack={onBack}
@@ -138,12 +195,13 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         currentIndex={currentIndex}
         totalQuestions={questions.length}
         currentScore={currentScore}
+        onOpenSettings={() => setShowSettings(true)}
       />
 
       {/* Question Card */}
-      <TypeBCard question={currentQ} />
+      <TypeBCard question={currentQ} onSpeak={speakText} />
 
-      {/* Answer Options Grid */}
+      {/* Options Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
         {currentQ.options.map((opt, idx) => {
           let bgColor = '#fff', borderColor = '#d9d9d9', textColor = '#333';

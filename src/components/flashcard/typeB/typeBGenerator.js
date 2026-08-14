@@ -8,9 +8,6 @@ export const shuffleArray = (array) => {
   return newArr;
 };
 
-/**
- * Sinh danh sách câu hỏi cho Type B Session
- */
 export const generateTypeBQuestions = (allCards = []) => {
   let defs = [];
   let reverseDefs = [];
@@ -51,7 +48,7 @@ export const generateTypeBQuestions = (allCards = []) => {
       });
     }
 
-    // 3. Phrase Phase (lấy hint riêng của phrase)
+    // 3. Phrase Phase (Ưu tiên hint của phrase)
     if (card.phrases && card.phrases.length > 0) {
       const p = shuffleArray(card.phrases)[0];
       phrases.push({
@@ -67,7 +64,7 @@ export const generateTypeBQuestions = (allCards = []) => {
       });
     }
 
-    // 4. Sentence Phase (lấy hint riêng của sentence)
+    // 4. Sentence Phase (Ưu tiên hint của sentence)
     if (card.sentences && card.sentences.length > 0) {
       const s = shuffleArray(card.sentences)[0];
       sentences.push({
