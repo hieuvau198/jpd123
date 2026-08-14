@@ -285,9 +285,8 @@ const SpellingBeeSession = ({ data, onBack }) => {
             </Flex>
           ) : (
             <Text type="secondary" style={{ fontSize: '0.95rem', letterSpacing: 0.3 }}>
-              {currentCard.isMisspellPhase
-                ? "Nghe và tìm từ được viết ĐÚNG chính tả"
-                : (currentCard.answer ? `Nghĩa: ${currentCard.answer}` : "")}
+              {/* Dont show meaning when user not answered yet */}
+              🥸🥸🥸 
             </Text>
           )}
         </div>
