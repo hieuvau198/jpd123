@@ -229,13 +229,13 @@ const SpellingBeeSession = ({ data, onBack }) => {
               {/* Nghĩa ngắn gọn tiếng Việt đặt ngay cạnh */}
               {currentCard.answer && (
                 <Text style={{ fontSize: '1.15rem', color: '#595959', fontWeight: 500 }}>
-                  ({currentCard.answer})
+                  😈({currentCard.answer})
                 </Text>
               )}
             </Flex>
           ) : (
             <Text type="secondary" style={{ fontSize: '0.95rem', letterSpacing: 0.3 }}>
-              Nghe và chọn/điền từ chính xác
+              🥸🥸🥸
             </Text>
           )}
         </div>
