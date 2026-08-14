@@ -23,6 +23,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [wrongIds, setWrongIds] = useState(new Set());
   const [showHint, setShowHint] = useState(false);
   const timerRef = useRef(null);
+
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
 
   // --- VOICE SETTINGS STATE ---
@@ -56,10 +57,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-
+    
     const isEn = lang.includes('en');
     const targetURI = isEn ? localStorage.getItem('enVoiceURI') : localStorage.getItem('viVoiceURI');
-
+    
     if (targetURI && voices.length > 0) {
       const selectedVoice = voices.find(v => v.voiceURI === targetURI);
       if (selectedVoice) utterance.voice = selectedVoice;
@@ -91,7 +92,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   const initGame = () => {
     const allCards = data.questions;
-
     let defs = [];
     let reverseDefs = []; 
     let phrases = [];
@@ -99,6 +99,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     let misspells = [];
 
     allCards.forEach((card, cIdx) => {
+      // 1. Definition Phase
       if (card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         defs.push({
@@ -110,9 +111,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
           aLang: 'vi-VN',
-          hint: card.hint
+          hint: card.hint || ''
         });
 
+        // 2. Reverse Definition Phase
         const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
         const distractors = shuffleArray(otherWords).slice(0, 3);
         
@@ -125,10 +127,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           correctAttemptsNeeded: 1,
           qLang: 'vi-VN',
           aLang: 'en-US',
-          hint: card.hint
+          hint: card.hint || ''
         });
       }
 
+      // 3. Phrases Phase (Sử dụng phrase hint tương ứng)
       if (card.phrases && card.phrases.length > 0) {
         const p = shuffleArray(card.phrases)[0];
         phrases.push({
@@ -140,10 +143,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
           aLang: 'vi-VN',
-          hint: card.hint
+          hint: p.hint || card.hint || ''
         });
       }
 
+      // 4. Sentences Phase (Sử dụng sentence hint tương ứng)
       if (card.sentences && card.sentences.length > 0) {
         const s = shuffleArray(card.sentences)[0];
         sentences.push({
@@ -155,10 +159,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           correctAttemptsNeeded: 1,
           qLang: 'en-US',
           aLang: 'vi-VN',
-          hint: card.hint
+          hint: s.hint || card.hint || ''
         });
       }
 
+      // 5. Misspell Phase
       if (card.misspell && card.misspell.length > 0 && card.defs && card.defs.length > 0) {
         const def = card.defs[0];
         misspells.push({
@@ -170,7 +175,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           correctAttemptsNeeded: 1,
           qLang: 'vi-VN',
           aLang: 'en-US',
-          hint: card.hint
+          hint: card.hint || ''
         });
       }
     });
@@ -265,7 +270,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         onBack={onBack}
         onRestart={initGame}
         practiceId={data.id} 
-        practiceType="Flashcard"      
+        practiceType="Flashcard"        
         practiceName={data.title} 
       />
     );
@@ -277,7 +282,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   return (
     <div translate="no" className="notranslate" style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
-      
+       
       {/* Settings Modal */}
       <Modal 
         title={
@@ -324,6 +329,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
             ))}
           </Select>
         </div>
+
         <div>
           <Text strong>Vietnamese Voice:</Text>
           <Select 
@@ -380,10 +386,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
           >
             Read Aloud 
           </Button>
+
           {currentQ.hint && (
             <Button 
               type="dashed" 
-              icon={<Lightbulb size={16} />} 
+              icon={<Lightbulb size={16} />}
               onClick={() => setShowHint(!showHint)}
             >
               Hint
@@ -422,7 +429,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
               }}
               bodyStyle={{ 
                 padding: '20px', height: '100%', display: 'flex', alignItems: 'center', 
-                justifyContent: 'center', textAlign: 'center'
+                justifyContent: 'center', textAlign: 'center' 
               }}
             >
               <Text strong style={{ fontSize: '1.1rem', color: textColor }}>{opt}</Text>
