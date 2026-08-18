@@ -1,6 +1,6 @@
 // src/components/flashcard/typeB/TypeBSettingsModal.jsx
 import React from 'react';
-import { Modal, Button, Typography, Select, Switch } from 'antd';
+import { Modal, Button, Typography, Switch } from 'antd';
 import { Settings } from 'lucide-react';
 
 const { Text } = Typography;
@@ -8,26 +8,17 @@ const { Text } = Typography;
 const TypeBSettingsModal = ({
   showSettings,
   setShowSettings,
-  voices = [],
-  enVoiceURI,
-  setEnVoiceURI,
-  viVoiceURI,
-  setViVoiceURI,
   autoSpeakQuestion,
   setAutoSpeakQuestion,
   autoSpeakAnswer,
   setAutoSpeakAnswer
 }) => {
-  // Lọc riêng danh sách giọng theo ngôn ngữ
-  const enVoices = voices.filter(v => v.lang.toLowerCase().includes('en'));
-  const viVoices = voices.filter(v => v.lang.toLowerCase().includes('vi'));
-
   return (
     <Modal
       title={
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Settings size={20} />
-          <span>Voice & Audio Settings</span>
+          <span>Audio Settings</span>
         </div>
       }
       open={showSettings}
@@ -39,8 +30,8 @@ const TypeBSettingsModal = ({
         </Button>
       ]}
     >
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text strong>Auto-Speak Question</Text>
           <Switch
             checked={autoSpeakQuestion}
@@ -60,48 +51,6 @@ const TypeBSettingsModal = ({
             }}
           />
         </div>
-      </div>
-
-      <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 16, marginBottom: 16 }}>
-        <Text strong>English Voice:</Text>
-        <Select
-          value={enVoiceURI || (enVoices[0]?.voiceURI || '')}
-          onChange={(val) => {
-            setEnVoiceURI(val);
-            localStorage.setItem('enVoiceURI', val);
-          }}
-          style={{ width: '100%', marginTop: 8 }}
-          showSearch
-          placeholder="Select English Voice"
-          optionFilterProp="children"
-        >
-          {enVoices.map((v) => (
-            <Select.Option key={v.voiceURI} value={v.voiceURI}>
-              {v.name} ({v.lang})
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
-
-      <div>
-        <Text strong>Vietnamese Voice:</Text>
-        <Select
-          value={viVoiceURI || (viVoices[0]?.voiceURI || '')}
-          onChange={(val) => {
-            setViVoiceURI(val);
-            localStorage.setItem('viVoiceURI', val);
-          }}
-          style={{ width: '100%', marginTop: 8 }}
-          showSearch
-          placeholder="Select Vietnamese Voice"
-          optionFilterProp="children"
-        >
-          {viVoices.map((v) => (
-            <Select.Option key={v.voiceURI} value={v.voiceURI}>
-              {v.name} ({v.lang})
-            </Select.Option>
-          ))}
-        </Select>
       </div>
     </Modal>
   );
