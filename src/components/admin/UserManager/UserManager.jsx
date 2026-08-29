@@ -4,14 +4,13 @@ import {
   Button, 
   Modal, 
   Space, 
-  Tag, 
   Popconfirm, 
   message, 
   Card, 
   Input, 
-  Select, 
   Form, 
-  Typography 
+  Typography,
+  Tooltip 
 } from 'antd';
 import { 
   UserPlus, 
@@ -20,17 +19,16 @@ import {
   History as HistoryIcon, 
   CheckSquare, 
   Search,
-  Users
+  Users,
+  Coins
 } from 'lucide-react';
-import { getAllUsers, getAllGroups, createUser, updateUser, deleteUser } from '../../../firebase/userService';
+import { getAllUsers, createUser, updateUser, deleteUser } from '../../../firebase/userService';
 import ProfileHistory from '../../profile/ProfileHistory';
 
-const { Title } = Typography;
-const { Option } = Select;
+const { Title, Text } = Typography;
 
 const UserManager = () => {
   const [users, setUsers] = useState([]);
-  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -46,12 +44,8 @@ const UserManager = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [usersData, groupsData] = await Promise.all([
-        getAllUsers(),
-        getAllGroups()
-      ]);
+      const usersData = await getAllUsers();
       setUsers(usersData);
-      setGroups(groupsData);
     } catch (error) {
       message.error("Failed to load user management data.");
     } finally {
@@ -72,16 +66,10 @@ const UserManager = () => {
 
   const handleOpenEditModal = (user) => {
     setEditingUser(user);
-    const userGroupIds = groups
-      .filter(g => g.studentIds && g.studentIds.includes(user.id))
-      .map(g => g.id);
-
     form.setFieldsValue({
       name: user.name,
       username: user.username,
       password: user.password,
-      role: user.role || 'Student',
-      groupIds: userGroupIds,
     });
     setIsModalVisible(true);
   };
@@ -123,148 +111,115 @@ const UserManager = () => {
     setSelectedUserForHistory(null);
   };
 
-  // Assign task placeholder/handler
+  // Assign task handler
   const handleAssignTasks = (user) => {
     message.info(`Assigning tasks for ${user.name || user.username}`);
   };
 
-  // --- Filtering ---
+  // Filter list by Name or ID
   const filteredUsers = users.filter(user => {
     const q = searchText.toLowerCase();
     const nameMatch = user.name?.toLowerCase().includes(q);
-    const usernameMatch = user.username?.toLowerCase().includes(q);
-    return nameMatch || usernameMatch;
+    const idMatch = user.id?.toLowerCase().includes(q);
+    return nameMatch || idMatch;
   });
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <strong>{text}</strong>,
-    },
-    {
-      title: 'Username',
-      dataIndex: 'username',
-      key: 'username',
-    },
-    {
-      title: 'Role',
-      dataIndex: 'role',
-      key: 'role',
-      render: (role) => (
-        <Tag color={role === 'Admin' ? 'geekblue' : 'green'}>
-          {role || 'Student'}
-        </Tag>
-      ),
-    },
-    {
-      title: 'Groups',
-      key: 'groups',
-      render: (_, record) => {
-        const userGroups = groups.filter(g => g.studentIds && g.studentIds.includes(record.id));
-        return (
-          <Space wrap size={[0, 4]}>
-            {userGroups.length > 0 ? (
-              userGroups.map(g => (
-                <Tag color="cyan" key={g.id}>
-                  {g.name}
-                </Tag>
-              ))
-            ) : (
-              <span style={{ color: '#aaa', fontSize: 12 }}>No group</span>
-            )}
-          </Space>
-        );
-      },
-    },
-    {
-      title: 'Coins',
-      dataIndex: 'personal_coins',
-      key: 'personal_coins',
-      render: (coins) => <span style={{ color: '#fa8c16', fontWeight: 600 }}>{coins || 0}</span>,
-    },
-    {
-      title: 'Level / Title',
-      key: 'level_title',
+      title: 'Student',
+      key: 'student_info',
       render: (_, record) => (
-        <span>
-          Lvl {record.level || 1} {record.title ? `(${record.title})` : ''}
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <Text strong style={{ fontSize: '15px', color: '#1f1f1f' }}>
+            {record.name || 'Unnamed Student'}
+          </Text>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fa8c16' }}>
+            <Coins size={15} />
+            <Text style={{ color: '#fa8c16', fontWeight: 600, fontSize: '13px' }}>
+              {record.personal_coins || 0} coins
+            </Text>
+          </div>
+        </div>
       ),
     },
     {
       title: 'Actions',
       key: 'actions',
+      width: 180,
+      align: 'right',
       render: (_, record) => (
-        <Space size="small" wrap>
-          {/* Assign Tasks Button */}
-          <Button 
-            type="primary" 
-            size="small"
-            icon={<CheckSquare size={14} />} 
-            onClick={() => handleAssignTasks(record)}
-          >
-            Assign Tasks
-          </Button>
-
-          {/* User History Button */}
-          <Button 
-            size="small"
-            icon={<HistoryIcon size={14} />} 
-            onClick={() => handleOpenHistory(record)}
-          >
-            History
-          </Button>
-
-          {/* Edit */}
-          <Button 
-            size="small"
-            icon={<Edit size={14} />} 
-            onClick={() => handleOpenEditModal(record)}
-          />
-
-          {/* Delete */}
-          <Popconfirm
-            title="Are you sure you want to delete this user?"
-            onConfirm={() => handleDeleteUser(record.id)}
-            okText="Yes"
-            cancelText="No"
-          >
+        <Space size="small">
+          {/* Assign Tasks Button (Icon Only) */}
+          <Tooltip title="Assign Tasks">
             <Button 
-              size="small" 
-              danger 
-              icon={<Trash2 size={14} />} 
+              type="primary" 
+              size="middle"
+              icon={<CheckSquare size={16} />} 
+              onClick={() => handleAssignTasks(record)}
             />
-          </Popconfirm>
+          </Tooltip>
+
+          {/* User History Button (Icon Only) */}
+          <Tooltip title="View Practice History">
+            <Button 
+              size="middle"
+              icon={<HistoryIcon size={16} />} 
+              onClick={() => handleOpenHistory(record)}
+            />
+          </Tooltip>
+
+          {/* Edit Button (Icon Only) */}
+          <Tooltip title="Edit Student">
+            <Button 
+              size="middle"
+              icon={<Edit size={16} />} 
+              onClick={() => handleOpenEditModal(record)}
+            />
+          </Tooltip>
+
+          {/* Delete Button (Icon Only) */}
+          <Tooltip title="Delete Student">
+            <Popconfirm
+              title="Are you sure you want to delete this user?"
+              onConfirm={() => handleDeleteUser(record.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button 
+                size="middle" 
+                danger 
+                icon={<Trash2 size={16} />} 
+              />
+            </Popconfirm>
+          </Tooltip>
         </Space>
       ),
     },
   ];
 
   return (
-    <div style={{ maxWidth: 1200, margin: '40px auto', padding: '0 20px' }}>
+    <div style={{ maxWidth: 800, margin: '40px auto', padding: '0 16px' }}>
       <Card style={{ borderRadius: 16, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
           <Title level={3} style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Users size={24} color="#1890ff" /> User Management
+            <Users size={22} color="#1890ff" /> Students
           </Title>
           <Space>
             <Input
-              placeholder="Search by name or username"
+              placeholder="Search student..."
               prefix={<Search size={16} style={{ color: '#aaa' }} />}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              style={{ width: 240 }}
+              style={{ width: 180 }}
               allowClear
             />
-            <Button 
-              type="primary" 
-              icon={<UserPlus size={16} />} 
-              onClick={handleOpenCreateModal}
-            >
-              Add User
-            </Button>
+            <Tooltip title="Add New Student">
+              <Button 
+                type="primary" 
+                icon={<UserPlus size={16} />} 
+                onClick={handleOpenCreateModal}
+              />
+            </Tooltip>
           </Space>
         </div>
 
@@ -274,13 +229,12 @@ const UserManager = () => {
           rowKey="id" 
           loading={loading}
           pagination={{ pageSize: 10 }}
-          scroll={{ x: true }}
         />
       </Card>
 
       {/* --- ADD / EDIT USER MODAL --- */}
       <Modal
-        title={editingUser ? "Edit User" : "Create New User"}
+        title={editingUser ? "Edit Student" : "Create New Student"}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onOk={() => form.submit()}
@@ -297,7 +251,7 @@ const UserManager = () => {
 
           <Form.Item 
             name="username" 
-            label="Username" 
+            label="Username / ID" 
             rules={[{ required: true, message: 'Please enter username' }]}
           >
             <Input placeholder="johndoe" disabled={!!editingUser} />
@@ -310,23 +264,6 @@ const UserManager = () => {
           >
             <Input.Password placeholder="Password" />
           </Form.Item>
-
-          <Form.Item name="role" label="Role" initialValue="Student">
-            <Select>
-              <Option value="Student">Student</Option>
-              <Option value="Admin">Admin</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="groupIds" label="Groups">
-            <Select mode="multiple" placeholder="Select groups" allowClear>
-              {groups.map(group => (
-                <Option key={group.id} value={group.id}>
-                  {group.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
         </Form>
       </Modal>
 
@@ -334,8 +271,8 @@ const UserManager = () => {
       <Modal
         title={
           selectedUserForHistory 
-            ? `Practice History: ${selectedUserForHistory.name || selectedUserForHistory.username}` 
-            : 'User History'
+            ? `History: ${selectedUserForHistory.name || selectedUserForHistory.username}` 
+            : 'Practice History'
         }
         open={isHistoryModalVisible}
         onCancel={handleCloseHistory}
@@ -344,12 +281,12 @@ const UserManager = () => {
             Close
           </Button>
         ]}
-        width={950}
+        width={900}
         centered
         destroyOnClose
       >
         {selectedUserForHistory && (
-          <div style={{ marginTop: 16 }}>
+          <div style={{ marginTop: 12 }}>
             <ProfileHistory user={selectedUserForHistory} />
           </div>
         )}
