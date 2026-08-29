@@ -4,11 +4,17 @@ import { ArrowLeft, Settings, Lightbulb } from 'lucide-react';
 import MCOptionsGrid from './MCOptionsGrid';
 
 const { Title, Text } = Typography;
+
 const shuffleArray = (array) => [...array].sort(() => 0.5 - Math.random());
 
 const StandardMCPhase = ({ 
-  data, onComplete, onBack, speakText, 
-  setShowSettings, autoSpeakQuestion, autoSpeakAnswer 
+  data, 
+  onComplete, 
+  onBack, 
+  speakText, 
+  setShowSettings, 
+  autoSpeakQuestion, 
+  autoSpeakAnswer 
 }) => {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,7 +23,9 @@ const StandardMCPhase = ({
   const [showHint, setShowHint] = useState(false);
   const timerRef = useRef(null);
 
-  useEffect(() => { setShowHint(false); }, [currentIndex]);
+  useEffect(() => { 
+    setShowHint(false); 
+  }, [currentIndex]);
 
   useEffect(() => {
     if (data && data.questions) {
@@ -74,10 +82,16 @@ const StandardMCPhase = ({
 
     if (!isCorrect) {
       updatedQ.correctAttemptsNeeded = 2;
+      // Reshuffle options when answered incorrectly
+      updatedQ.options = shuffleArray(updatedQ.options);
       needsRequeue = true;
     } else {
       updatedQ.correctAttemptsNeeded = (updatedQ.correctAttemptsNeeded || 1) - 1;
-      if (updatedQ.correctAttemptsNeeded > 0) needsRequeue = true;
+      if (updatedQ.correctAttemptsNeeded > 0) {
+        // Reshuffle options for the remaining retry attempt
+        updatedQ.options = shuffleArray(updatedQ.options);
+        needsRequeue = true;
+      }
     }
 
     if (needsRequeue) {
@@ -117,7 +131,6 @@ const StandardMCPhase = ({
   };
 
   if (questions.length === 0) return null;
-
   const currentQ = questions[currentIndex];
   const progressPercent = Math.round((currentIndex / questions.length) * 100);
   const currentScore = data?.questions?.length ? Math.max(0, Math.round(((data.questions.length - wrongIds.size) / data.questions.length) * 100)) : 0;

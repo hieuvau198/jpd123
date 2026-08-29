@@ -5,7 +5,7 @@ import SessionResult from '../SessionResult';
 import TypeBHeader from './typeB/TypeBHeader';
 import TypeBCard from './typeB/TypeBCard';
 import TypeBSettingsModal from './typeB/TypeBSettingsModal';
-import { generateTypeBQuestions } from './typeB/typeBGenerator';
+import { generateTypeBQuestions, shuffleArray } from './typeB/typeBGenerator';
 
 const { Text } = Typography;
 
@@ -21,6 +21,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
   const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
+
   const timerRef = useRef(null);
 
   const speakText = useCallback((text, lang = 'en-US') => {
@@ -71,15 +72,21 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
+
     const currentQ = questions[currentIndex];
     let updatedQ = { ...currentQ };
     let needsRequeue = false;
+
     if (!isCorrect) {
       updatedQ.correctAttemptsNeeded = 2;
+      // Reshuffle options when wrong
+      updatedQ.options = shuffleArray(updatedQ.options);
       needsRequeue = true;
     } else {
       updatedQ.correctAttemptsNeeded = (updatedQ.correctAttemptsNeeded || 1) - 1;
       if (updatedQ.correctAttemptsNeeded > 0) {
+        // Reshuffle options for the remaining retry attempt
+        updatedQ.options = shuffleArray(updatedQ.options);
         needsRequeue = true;
       }
     }
@@ -105,14 +112,18 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const handleAnswerClick = (ans) => {
     if (selectedAnswer !== null) return;
     setSelectedAnswer(ans);
+
     const currentQ = questions[currentIndex];
     const isCorrect = ans === currentQ.correctAnswer;
+
     if (!isCorrect) {
       setWrongIds((prev) => new Set(prev).add(currentQ.id));
     }
+
     if (autoSpeakAnswer) {
       speakText(currentQ.correctAnswer, currentQ.aLang || 'vi-VN');
     }
+
     const delay = isCorrect ? 1000 : 5000;
     timerRef.current = setTimeout(() => {
       handleNext(isCorrect);
@@ -151,6 +162,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         autoSpeakAnswer={autoSpeakAnswer}
         setAutoSpeakAnswer={setAutoSpeakAnswer}
       />
+
       <TypeBHeader
         onBack={onBack}
         phase={currentQ.phase}
@@ -159,7 +171,9 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         currentScore={currentScore}
         onOpenSettings={() => setShowSettings(true)}
       />
+
       <TypeBCard question={currentQ} onSpeak={speakText} />
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
         {currentQ.options.map((opt, idx) => {
           let bgColor = '#fff', borderColor = '#d9d9d9', textColor = '#333';
@@ -170,6 +184,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
               bgColor = '#fff2f0'; borderColor = '#ffccc7'; textColor = '#f5222d';
             }
           }
+
           return (
             <Card
               key={idx}
