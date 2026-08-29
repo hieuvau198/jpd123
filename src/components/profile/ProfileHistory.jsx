@@ -23,7 +23,7 @@ const ProfileHistory = ({ user }) => {
       setHistoryData(practicesArray);
       setLoading(false);
     };
-    
+
     fetchHistory();
   }, [user]);
 
@@ -55,7 +55,7 @@ const ProfileHistory = ({ user }) => {
       key: 'earnedCoins',
       render: (coins) => (
         <span style={{ color: '#faad14', fontWeight: 'bold' }}>
-          {coins || 0} 💰
+          {coins || 0}
         </span>
       ),
     },
@@ -70,7 +70,7 @@ const ProfileHistory = ({ user }) => {
   return (
     <Card 
       title={<Title level={4} style={{ margin: 0 }}>Practice History</Title>} 
-      style={{ flex: '1 1 100%', borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+      style={{ width: '100%', borderRadius: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
     >
       <Table 
         dataSource={historyData} 

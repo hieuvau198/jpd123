@@ -1,345 +1,359 @@
-// src/components/admin/UserManager/UserManager.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Typography, Card, Button, Table, message, Tag } from 'antd';
-// Added History icon import here:
-import { ArrowLeft, UserPlus, Edit, Target, Trophy, Award, Users, History } from 'lucide-react';
-import { getAllUsers, createUser, updateUser, deleteUser, getAllGroups } from '../../../firebase/userService';
-import { getUserMissions, createMission, updateMission, deleteMission } from '../../../firebase/missionService';
-
-// Import child components
-import UserModal from './UserModal';
-import UserMissionsModal from './UserMissionsModal';
-import MissionFormModal from './MissionFormModal';
-import UpdateUserIdsButton from './UpdateUserIdsButton'; 
-import UserFilter from './UserFilter';
-
-// Import grades from JSON
-import gradesData from '../../../data/system/grades.json';
+import { 
+  Table, 
+  Button, 
+  Modal, 
+  Space, 
+  Tag, 
+  Popconfirm, 
+  message, 
+  Card, 
+  Input, 
+  Select, 
+  Form, 
+  Typography 
+} from 'antd';
+import { 
+  UserPlus, 
+  Edit, 
+  Trash2, 
+  History as HistoryIcon, 
+  CheckSquare, 
+  Search,
+  Users
+} from 'lucide-react';
+import { getAllUsers, getAllGroups, createUser, updateUser, deleteUser } from '../../../firebase/userService';
+import ProfileHistory from '../../profile/ProfileHistory';
 
 const { Title } = Typography;
-
-// Helper to remove Vietnamese diacritics for searching
-const normalizeString = (str) => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D');
-};
+const { Option } = Select;
 
 const UserManager = () => {
-  const navigate = useNavigate();
-  
-  // User states
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isUserModalVisible, setIsUserModalVisible] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
-
-  // Filter & Search & Sort states
-  const [searchText, setSearchText] = useState('');
-  const [selectedGrades, setSelectedGrades] = useState([]);
-  const [sortBy, setSortBy] = useState('date'); 
-
-  // Missions logic states
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [missions, setMissions] = useState([]);
-  const [missionLoading, setMissionLoading] = useState(false);
-  const [isMissionsModalVisible, setIsMissionsModalVisible] = useState(false);
-  
-  // Mission Form states
-  const [isMissionFormVisible, setIsMissionFormVisible] = useState(false);
-  const [editingMission, setEditingMission] = useState(null);
   const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
-  const fetchGroups = async () => {
-  const data = await getAllGroups();
-  setGroups(data);
-};
-useEffect(() => {
-  fetchGroups();
-}, []);
+  // Form Modal State (Create / Edit)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [form] = Form.useForm();
 
-  // Change: Do not load all users on component mount to prevent big data request
-  useEffect(() => {
-    // Only fetch users from Firebase when the admin actually starts searching or filtering
-    if ((selectedGrades.length > 0 || searchText) && users.length === 0) {
-      loadUsers();
-    }
-  }, [selectedGrades, searchText]);
+  // User History Modal State
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
+  const [selectedUserForHistory, setSelectedUserForHistory] = useState(null);
 
-  const loadUsers = async () => {
+  const fetchData = async () => {
     setLoading(true);
-    const data = await getAllUsers();
-    setUsers(data);
-    setLoading(false);
-  };
-
-  // --- Filter and Sort Logic ---
-  const getProcessedUsers = () => {
-    // No load all by default: Return empty if no grades are selected and no search active
-    if (selectedGrades.length === 0 && !searchText) {
-      return [];
+    try {
+      const [usersData, groupsData] = await Promise.all([
+        getAllUsers(),
+        getAllGroups()
+      ]);
+      setUsers(usersData);
+      setGroups(groupsData);
+    } catch (error) {
+      message.error("Failed to load user management data.");
+    } finally {
+      setLoading(false);
     }
-
-    // 1. Filter
-    let processed = users.filter((user) => {
-      const matchesGrade = selectedGrades.length === 0 ? true : (selectedGrades.includes('All') || selectedGrades.includes(user.grade));
-      const normalizedSearchText = normalizeString(searchText).toLowerCase();
-      const normalizedUserName = normalizeString(user.name).toLowerCase();
-      const matchesName = normalizedSearchText === '' || normalizedUserName.includes(normalizedSearchText);
-      return matchesGrade && matchesName;
-    });
-
-    // 2. Sort
-    processed.sort((a, b) => {
-      if (sortBy === 'name') {
-        return normalizeString(a.name || '').localeCompare(normalizeString(b.name || ''));
-      } else if (sortBy === 'coin') {
-        return (b.personal_coins || 0) - (a.personal_coins || 0);
-      } else { 
-        return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
-      }
-    });
-
-    return processed;
   };
 
-  const processedUsers = getProcessedUsers();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // --- User Handlers ---
-  const handleShowUserModal = (record = null) => {
-  if (record) {
-    // Determine which groups currently contain this user ID
-    const userGroupIds = groups
-      .filter(g => g.studentIds && g.studentIds.includes(record.id))
-      .map(g => g.id);
-    setEditingUser({ ...record, groupIds: userGroupIds });
-  } else {
+  // --- Handlers for Create/Edit ---
+  const handleOpenCreateModal = () => {
     setEditingUser(null);
-  }
-  setIsUserModalVisible(true);
-};
+    form.resetFields();
+    setIsModalVisible(true);
+  };
+
+  const handleOpenEditModal = (user) => {
+    setEditingUser(user);
+    const userGroupIds = groups
+      .filter(g => g.studentIds && g.studentIds.includes(user.id))
+      .map(g => g.id);
+
+    form.setFieldsValue({
+      name: user.name,
+      username: user.username,
+      password: user.password,
+      role: user.role || 'Student',
+      groupIds: userGroupIds,
+    });
+    setIsModalVisible(true);
+  };
 
   const handleSaveUser = async (values) => {
-  setLoading(true);
-  try {
-    if (editingUser) {
-      await updateUser(editingUser.id, values);
-      message.success("User updated successfully");
-    } else {
-      await createUser(values);
-      message.success("User created successfully");
+    try {
+      if (editingUser) {
+        await updateUser(editingUser.id, values);
+        message.success("User updated successfully!");
+      } else {
+        await createUser(values);
+        message.success("User created successfully!");
+      }
+      setIsModalVisible(false);
+      fetchData();
+    } catch (error) {
+      message.error("Operation failed. Please try again.");
     }
-    setIsUserModalVisible(false);
-    loadUsers();
-    fetchGroups(); // Refresh groups state
-  } catch (error) {
-    message.error("Error saving user");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleDeleteUser = async (id) => {
-  setLoading(true);
-  try {
-    await deleteUser(id);
-    message.success("User deleted successfully");
-    loadUsers();
-    fetchGroups(); // Refresh groups state
-  } catch (error) {
-    message.error("Error deleting user");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // --- Mission List Handlers ---
-  const openMissionsList = async (user) => {
-    setSelectedUser(user);
-    setIsMissionsModalVisible(true);
-    await loadUserMissions(user.id);
-  };
-
-  const loadUserMissions = async (userId) => {
-    setMissionLoading(true);
-    const data = await getUserMissions(userId);
-    setMissions(data);
-    setMissionLoading(false);
-  };
-
-  const handleDeleteMission = async (id) => {
-    setMissionLoading(true);
     try {
-      await deleteMission(id);
-      message.success("Mission deleted!");
-      loadUserMissions(selectedUser.id);
+      await deleteUser(id);
+      message.success("User deleted successfully!");
+      fetchData();
     } catch (error) {
-      message.error("Error deleting mission");
-    } finally {
-      setMissionLoading(false);
+      message.error("Failed to delete user.");
     }
   };
 
-  // --- Mission Form Handlers ---
-  const handleShowMissionForm = (record = null) => {
-    setEditingMission(record);
-    setIsMissionFormVisible(true);
+  // --- Handlers for History Modal ---
+  const handleOpenHistory = (user) => {
+    setSelectedUserForHistory(user);
+    setIsHistoryModalVisible(true);
   };
 
-  const handleSaveMission = async (values) => {
-    setMissionLoading(true);
-    try {
-      const percentage = values.percentage || 0;
-      const maxCoins = values.max_coins || 0;
-      
-      const payload = {
-        ...values,
-        userId: selectedUser.id,
-        earning_coins: Math.floor((percentage / 100) * maxCoins),
-        startDate: values.startDate ? values.startDate.toISOString() : null,
-        endDate: values.endDate ? values.endDate.toISOString() : null,
-      };
-
-      if (editingMission) {
-        await updateMission(editingMission.id, payload);
-        message.success("Mission updated!");
-      } else {
-        await createMission(payload);
-        message.success("Mission added!");
-      }
-      setIsMissionFormVisible(false);
-      loadUserMissions(selectedUser.id);
-    } catch (error) {
-      message.error("Error saving mission");
-    } finally {
-      setMissionLoading(false);
-    }
+  const handleCloseHistory = () => {
+    setIsHistoryModalVisible(false);
+    setSelectedUserForHistory(null);
   };
 
-  const userColumns = [
-    { 
-      title: 'User',
+  // Assign task placeholder/handler
+  const handleAssignTasks = (user) => {
+    message.info(`Assigning tasks for ${user.name || user.username}`);
+  };
+
+  // --- Filtering ---
+  const filteredUsers = users.filter(user => {
+    const q = searchText.toLowerCase();
+    const nameMatch = user.name?.toLowerCase().includes(q);
+    const usernameMatch = user.username?.toLowerCase().includes(q);
+    return nameMatch || usernameMatch;
+  });
+
+  const columns = [
+    {
+      title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (_, record) => (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <div>
-            <Typography.Text strong>{record.name}</Typography.Text>
-            <div style={{ marginTop: 2, display: "flex", gap: 6, alignItems: "center" }}>
-              <Tag color={record.role === "Admin" ? "red" : "blue"}>{record.role}</Tag>
-              <Tag color='green'>{record.grade}</Tag>
-              <Tag color='purple' style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                 <Award size={12} /> {record.title || 'Noob'}
-              </Tag>
-            </div>
-            <div style={{ marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Trophy size={16} style={{ color: '#faad14' }} />
-              <Typography.Text type="secondary">
-                <span style={{ color: '#faad14', fontWeight: 'bold' }}>
-                  {record.personal_coins || 0}
-                </span>
-              </Typography.Text>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {record.role === 'Student' && (
-              <Button
-                type="primary"
-                size="small"
-                icon={<Target size={14} />}
-                onClick={() => openMissionsList(record)}
-              />
+      render: (text) => <strong>{text}</strong>,
+    },
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+      key: 'role',
+      render: (role) => (
+        <Tag color={role === 'Admin' ? 'geekblue' : 'green'}>
+          {role || 'Student'}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Groups',
+      key: 'groups',
+      render: (_, record) => {
+        const userGroups = groups.filter(g => g.studentIds && g.studentIds.includes(record.id));
+        return (
+          <Space wrap size={[0, 4]}>
+            {userGroups.length > 0 ? (
+              userGroups.map(g => (
+                <Tag color="cyan" key={g.id}>
+                  {g.name}
+                </Tag>
+              ))
+            ) : (
+              <span style={{ color: '#aaa', fontSize: 12 }}>No group</span>
             )}
-            <Button
-              type="default"
-              size="small"
-              icon={<Edit size={16} />}
-              onClick={() => handleShowUserModal(record)}
+          </Space>
+        );
+      },
+    },
+    {
+      title: 'Coins',
+      dataIndex: 'personal_coins',
+      key: 'personal_coins',
+      render: (coins) => <span style={{ color: '#fa8c16', fontWeight: 600 }}>{coins || 0}</span>,
+    },
+    {
+      title: 'Level / Title',
+      key: 'level_title',
+      render: (_, record) => (
+        <span>
+          Lvl {record.level || 1} {record.title ? `(${record.title})` : ''}
+        </span>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Space size="small" wrap>
+          {/* Assign Tasks Button */}
+          <Button 
+            type="primary" 
+            size="small"
+            icon={<CheckSquare size={14} />} 
+            onClick={() => handleAssignTasks(record)}
+          >
+            Assign Tasks
+          </Button>
+
+          {/* User History Button */}
+          <Button 
+            size="small"
+            icon={<HistoryIcon size={14} />} 
+            onClick={() => handleOpenHistory(record)}
+          >
+            History
+          </Button>
+
+          {/* Edit */}
+          <Button 
+            size="small"
+            icon={<Edit size={14} />} 
+            onClick={() => handleOpenEditModal(record)}
+          />
+
+          {/* Delete */}
+          <Popconfirm
+            title="Are you sure you want to delete this user?"
+            onConfirm={() => handleDeleteUser(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button 
+              size="small" 
+              danger 
+              icon={<Trash2 size={14} />} 
             />
-          </div>
-        </div>
-      )
-    }
+          </Popconfirm>
+        </Space>
+      ),
+    },
   ];
 
   return (
-    <div style={{ maxWidth: 1200, margin: '40px auto', padding: 20 }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/admin')}></Button>
+    <div style={{ maxWidth: 1200, margin: '40px auto', padding: '0 20px' }}>
+      <Card style={{ borderRadius: 16, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
+          <Title level={3} style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Users size={24} color="#1890ff" /> User Management
+          </Title>
+          <Space>
+            <Input
+              placeholder="Search by name or username"
+              prefix={<Search size={16} style={{ color: '#aaa' }} />}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 240 }}
+              allowClear
+            />
+            <Button 
+              type="primary" 
+              icon={<UserPlus size={16} />} 
+              onClick={handleOpenCreateModal}
+            >
+              Add User
+            </Button>
+          </Space>
         </div>
-        
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button icon={<Users size={16} />} onClick={() => navigate('/admin/groups')}>
-            Manage Groups
-          </Button>
-          {/* Add the new User History Button here */}
-          <Button icon={<History size={16} />} onClick={() => navigate('/admin/user-history')}>
-            User History
-          </Button>
-          <UpdateUserIdsButton onComplete={loadUsers} />
-          <Button type="primary" icon={<UserPlus size={16} />} onClick={() => handleShowUserModal()}>
-            New User
-          </Button>
-        </div>
-      </div>
 
-      <UserFilter 
-        searchText={searchText}
-        setSearchText={setSearchText}
-        selectedGrades={selectedGrades}
-        setSelectedGrades={setSelectedGrades}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        gradesData={gradesData}
-      />
-
-      <Card>
         <Table 
-          columns={userColumns} 
-          dataSource={processedUsers} 
+          columns={columns} 
+          dataSource={filteredUsers} 
           rowKey="id" 
-          loading={loading} 
-          scroll={{ x: true }} 
+          loading={loading}
           pagination={{ pageSize: 10 }}
+          scroll={{ x: true }}
         />
       </Card>
 
-      <UserModal 
-  visible={isUserModalVisible}
-  onCancel={() => setIsUserModalVisible(false)}
-  onSave={handleSaveUser}
-  onDelete={handleDeleteUser}
-  editingRecord={editingUser}
-  loading={loading}
-  groups={groups} // Add this prop
-/>
+      {/* --- ADD / EDIT USER MODAL --- */}
+      <Modal
+        title={editingUser ? "Edit User" : "Create New User"}
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        onOk={() => form.submit()}
+        destroyOnClose
+      >
+        <Form form={form} layout="vertical" onFinish={handleSaveUser}>
+          <Form.Item 
+            name="name" 
+            label="Full Name" 
+            rules={[{ required: true, message: 'Please enter name' }]}
+          >
+            <Input placeholder="John Doe" />
+          </Form.Item>
 
-      <UserMissionsModal 
-        visible={isMissionsModalVisible}
-        onCancel={() => setIsMissionsModalVisible(false)}
-        user={selectedUser}
-        missions={missions}
-        loading={missionLoading}
-        onAssignNew={() => handleShowMissionForm()}
-        onEdit={handleShowMissionForm}
-        onDelete={handleDeleteMission}
-        onRefresh={() => loadUserMissions(selectedUser.id)} 
-      />
+          <Form.Item 
+            name="username" 
+            label="Username" 
+            rules={[{ required: true, message: 'Please enter username' }]}
+          >
+            <Input placeholder="johndoe" disabled={!!editingUser} />
+          </Form.Item>
 
-      <MissionFormModal 
-        visible={isMissionFormVisible}
-        onCancel={() => setIsMissionFormVisible(false)}
-        onSave={handleSaveMission}
-        editingRecord={editingMission}
-        loading={missionLoading}
-        existingMissions={missions}
-      />
+          <Form.Item 
+            name="password" 
+            label="Password" 
+            rules={[{ required: true, message: 'Please enter password' }]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
+
+          <Form.Item name="role" label="Role" initialValue="Student">
+            <Select>
+              <Option value="Student">Student</Option>
+              <Option value="Admin">Admin</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="groupIds" label="Groups">
+            <Select mode="multiple" placeholder="Select groups" allowClear>
+              {groups.map(group => (
+                <Option key={group.id} value={group.id}>
+                  {group.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* --- USER PRACTICE HISTORY MODAL --- */}
+      <Modal
+        title={
+          selectedUserForHistory 
+            ? `Practice History: ${selectedUserForHistory.name || selectedUserForHistory.username}` 
+            : 'User History'
+        }
+        open={isHistoryModalVisible}
+        onCancel={handleCloseHistory}
+        footer={[
+          <Button key="close" type="primary" onClick={handleCloseHistory}>
+            Close
+          </Button>
+        ]}
+        width={950}
+        centered
+        destroyOnClose
+      >
+        {selectedUserForHistory && (
+          <div style={{ marginTop: 16 }}>
+            <ProfileHistory user={selectedUserForHistory} />
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
