@@ -1,4 +1,4 @@
-// src/pages/FlashcardList.jsx
+// src/pages/WordList.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Home, Loader2, Layers, Filter } from 'lucide-react';
@@ -6,7 +6,7 @@ import { getFlashcardsByTag } from '../firebase/flashcardService';
 import PracticeCard from '../components/PracticeCard';
 import availableTags from '../data/system/tags.json';
 
-const FlashcardList = () => {
+const WordList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false); 
 
@@ -99,4 +99,4 @@ const FlashcardList = () => {
   );
 };
 
-export default FlashcardList;
+export default WordList;

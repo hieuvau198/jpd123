@@ -20,7 +20,7 @@ const shuffleArray = (array) => {
 };
 
 // Accept initialNumbers as a prop
-const FlashcardSession = ({ data, onHome, initialNumbers }) => {
+const WordSession = ({ data, onHome, initialNumbers }) => {
   const [mode, setMode] = useState(null); 
   const [sessionData, setSessionData] = useState(null);
 
@@ -101,4 +101,4 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
   );
 };
 
-export default FlashcardSession;
+export default WordSession;

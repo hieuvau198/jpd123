@@ -12,8 +12,8 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import Home from './pages/Home';
 import Login from './pages/Login'; 
 import Profile from './pages/Profile'; 
-import FlashcardList from './pages/FlashcardList';
-import FlashcardDetail from './pages/FlashcardDetail';
+import WordList from './pages/WordList';
+import WordDetail from './pages/WordDetail';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
 import RepairList from './pages/RepairList';
@@ -62,8 +62,8 @@ export default function App() {
         <Route path="/admin/user-history" element={<ProtectedRoute><UserHistoryPage /></ProtectedRoute>} />
         
         {/* Flashcards */}
-        <Route path="/flashcards" element={<ProtectedRoute><FlashcardList /></ProtectedRoute>} />
-        <Route path="/flashcard/:id" element={<ProtectedRoute><FlashcardDetail /></ProtectedRoute>} />
+        <Route path="/flashcards" element={<ProtectedRoute><WordList /></ProtectedRoute>} />
+        <Route path="/flashcard/:id" element={<ProtectedRoute><WordDetail /></ProtectedRoute>} />
 
         {/* Quizzes */}
         <Route path="/quizzes" element={<ProtectedRoute><QuizList /></ProtectedRoute>} />

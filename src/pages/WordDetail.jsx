@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
-import FlashcardSession from '../components/flashcard/FlashcardSession';
+import WordSession from '../components/flashcard/WordSession';
 import { getFlashcardById } from '../firebase/flashcardService';
 
-const FlashcardDetail = () => {
+const WordDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -30,7 +30,7 @@ const FlashcardDetail = () => {
         // --- DATA NORMALIZATION FOR TYPE 'flashcard-b' ---
         if (res && res.type === 'flashcard-b' && res.words) {
           // Map the 'words' array into the standard 'questions' format 
-          // so FlashcardSession doesn't break.
+          // so WordSession doesn't break.
           res.questions = res.words.map((item, index) => ({
             id: index + 1,
             question: item.word,
@@ -71,7 +71,7 @@ const FlashcardDetail = () => {
   );
 
   return (
-    <FlashcardSession 
+    <WordSession 
       data={data} 
       onHome={handleBackToList}
       initialNumbers={initialNumbers} // Pass down the initial numbers
@@ -79,4 +79,4 @@ const FlashcardDetail = () => {
   );
 };
 
-export default FlashcardDetail;
+export default WordDetail;
