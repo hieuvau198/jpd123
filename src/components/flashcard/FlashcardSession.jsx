@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Typography, Flex, Checkbox, Card } from 'antd';
+import { Button, Typography, Flex, Checkbox, Card, Tooltip, Badge } from 'antd';
 import { 
   ArrowLeft, 
   ArrowRight, 
   RotateCw, 
   Volume2, 
   Layers, 
-  RotateCcw 
+  Shuffle,
+  Bookmark,
+  BookmarkCheck,
+  RotateCcw
 } from 'lucide-react';
-import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
 
@@ -21,87 +23,89 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-const FlashcardSession = ({ data, onHome, onBack }) => {
+const FlashcardSession = ({ data, onBack }) => {
   const isTypeB = useMemo(() => {
     return data?.type === 'flashcard-b' || (Array.isArray(data?.words) && data.words.length > 0);
   }, [data]);
 
-  // Bộ chọn nội dung cho Type-B
   const [selectedTypes, setSelectedTypes] = useState({
     words: true,
     phrases: false,
     sentences: false,
   });
   const [isConfigured, setIsConfigured] = useState(!isTypeB);
-
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
 
-  // Khởi tạo danh sách thẻ dựa trên lựa chọn
+  // Set of flagged card keys: persistently tracked until manually removed
+  const [flaggedKeys, setFlaggedKeys] = useState(new Set());
+
+  // Generate cards in original sequential order
   const buildCardsList = () => {
     if (!data) return [];
-
     if (isTypeB) {
       const result = [];
       const rawWords = data.words || [];
-
       rawWords.forEach((item, idx) => {
-        // Từ vựng
+        const baseKey = `w-${idx}-${item.word}`;
+
+        // Parent word
         if (selectedTypes.words && item.word) {
           const meaning = item.defs && item.defs.length > 0
             ? item.defs.map(d => d.m).join(', ')
             : (item.answer || '');
           result.push({
-            id: `word-${idx}`,
+            id: `${baseKey}-main`,
+            cardKey: `${baseKey}-main`,
             front: item.word,
             back: meaning,
             speak: item.word,
             ipa: item.ipa || '',
-            tag: 'Từ vựng'
+            tag: 'Từ vựng',
           });
         }
-
-        // Cụm từ
+        // Phrases under this word
         if (selectedTypes.phrases && Array.isArray(item.phrases)) {
           item.phrases.forEach((p, pIdx) => {
             result.push({
-              id: `phrase-${idx}-${pIdx}`,
+              id: `${baseKey}-phrase-${pIdx}`,
+              cardKey: `${baseKey}-phrase-${pIdx}`,
               front: p.text,
               back: p.m,
               speak: p.text,
-              tag: 'Cụm từ'
+              tag: 'Cụm từ',
             });
           });
         }
-
-        // Câu ví dụ
+        // Sentences under this word
         if (selectedTypes.sentences && Array.isArray(item.sentences)) {
           item.sentences.forEach((s, sIdx) => {
             result.push({
-              id: `sentence-${idx}-${sIdx}`,
+              id: `${baseKey}-sentence-${sIdx}`,
+              cardKey: `${baseKey}-sentence-${sIdx}`,
               front: s.text,
               back: s.m,
               speak: s.text,
-              tag: 'Câu'
+              tag: 'Câu ví dụ',
             });
           });
         }
       });
-      return shuffleArray(result);
+      return result;
     }
 
-    // Flashcard thông thường
+    // Default flashcard format
     const rawQuestions = data.questions || [];
-    return shuffleArray(rawQuestions.map((q, idx) => ({
+    return rawQuestions.map((q, idx) => ({
       id: q.id || `q-${idx}`,
+      cardKey: String(q.id || `q-${idx}`),
       front: q.question || q.word,
       back: q.answer || q.meaning,
       speak: q.speak || q.question || q.word,
       ipa: q.ipa || '',
-      tag: 'Từ vựng'
-    })));
+      tag: 'Flashcard',
+    }));
   };
 
   const handleStartPractice = () => {
@@ -110,7 +114,7 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     setCards(list);
     setCurrentIndex(0);
     setIsFlipped(false);
-    setIsFinished(false);
+    setFlaggedKeys(new Set());
     setIsConfigured(true);
   };
 
@@ -120,7 +124,6 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     }
   }, [data, isTypeB]);
 
-  // Đọc từ vựng
   const handleSpeech = (text) => {
     if (!text || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
@@ -130,12 +133,73 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     window.speechSynthesis.speak(utterance);
   };
 
+  const handleFlip = () => {
+    setIsFlipped(prev => !prev);
+  };
+
+  // Toggle 'Học lại' flag
+  const handleToggleFlag = () => {
+    if (!cards.length) return;
+    const currentCard = cards[currentIndex];
+    const key = currentCard.cardKey;
+    const isAlreadyFlagged = flaggedKeys.has(key);
+
+    if (isAlreadyFlagged) {
+      // Manual unflag: remove from active set and delete remaining queued repetitions
+      setFlaggedKeys(prev => {
+        const next = new Set(prev);
+        next.delete(key);
+        return next;
+      });
+
+      setCards(prevCards => {
+        const current = prevCards[currentIndex];
+        const ahead = prevCards.slice(currentIndex + 1).filter(c => c.cardKey !== key);
+        const behind = prevCards.slice(0, currentIndex);
+        return [...behind, current, ...ahead];
+      });
+    } else {
+      // Flag: mark it and schedule first repeat in next 5 cards
+      setFlaggedKeys(prev => new Set(prev).add(key));
+      setCards(prevCards => {
+        const updated = [...prevCards];
+        const clone = {
+          ...currentCard,
+          id: `${key}-repeat-${Date.now()}`
+        };
+        const insertPos = Math.min(currentIndex + 6, updated.length);
+        updated.splice(insertPos, 0, clone);
+        return updated;
+      });
+    }
+  };
+
+  // Move Next: auto re-queue flagged card 5 cards ahead if it is still marked for repeat
   const handleNext = () => {
     if (currentIndex < cards.length - 1) {
+      const currentCard = cards[currentIndex];
+      const isCardFlagged = flaggedKeys.has(currentCard.cardKey);
+
+      if (isCardFlagged) {
+        setCards(prevCards => {
+          const updated = [...prevCards];
+          const hasPendingAhead = updated.slice(currentIndex + 1).some(c => c.cardKey === currentCard.cardKey);
+          
+          // Re-insert 5 cards ahead if no duplicate is already positioned forward
+          if (!hasPendingAhead) {
+            const clone = {
+              ...currentCard,
+              id: `${currentCard.cardKey}-repeat-${Date.now()}`
+            };
+            const insertPos = Math.min(currentIndex + 6, updated.length);
+            updated.splice(insertPos, 0, clone);
+          }
+          return updated;
+        });
+      }
+
       setIsFlipped(false);
       setCurrentIndex(prev => prev + 1);
-    } else {
-      setIsFinished(true);
     }
   };
 
@@ -146,14 +210,23 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     }
   };
 
-  const handleFlip = () => {
-    setIsFlipped(prev => !prev);
+  const handleReshuffle = () => {
+    if (!cards.length) return;
+    setCards(shuffleArray([...cards]));
+    setCurrentIndex(0);
+    setIsFlipped(false);
   };
 
-  // Hỗ trợ phím tắt Space và mũi tên trái/phải
+  const handleResetOrder = () => {
+    setCards(buildCardsList());
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    setFlaggedKeys(new Set());
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!isConfigured || isFinished || cards.length === 0) return;
+      if (!isConfigured || cards.length === 0) return;
       if (e.code === 'Space') {
         e.preventDefault();
         handleFlip();
@@ -167,54 +240,40 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isConfigured, isFinished, currentIndex, cards.length]);
+  }, [isConfigured, currentIndex, cards, flaggedKeys]);
 
-  // Màn hình chọn nội dung luyện tập cho Type-B
   if (isTypeB && !isConfigured) {
     const isAnySelected = selectedTypes.words || selectedTypes.phrases || selectedTypes.sentences;
     return (
-      <div style={{ maxWidth: 540, margin: '60px auto', padding: '0 20px' }}>
-        <Card
-          style={{
-            borderRadius: 20,
-            boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-            border: 'none',
-            textAlign: 'center',
-            padding: '24px 16px'
-          }}
-        >
-          <Layers size={48} color="#1890ff" style={{ margin: '0 auto 16px' }} />
-          <Title level={3} style={{ marginBottom: 8 }}>Chọn nội dung học</Title>
-          <Text type="secondary" style={{ display: 'block', marginBottom: 28, fontSize: 14 }}>
-            Bộ thẻ này có thêm cụm từ và câu ví dụ. Bạn muốn luyện tập nội dung nào?
-          </Text>
-
-          <Flex vertical gap="middle" style={{ textAlign: 'left', maxWidth: 320, margin: '0 auto 32px' }}>
+      <div className="max-w-md mx-auto my-14 px-4">
+        <Card className="rounded-3xl shadow-2xl border-0 bg-slate-900/90 text-white backdrop-blur-xl text-center p-6 border border-white/10">
+          <Layers size={44} className="mx-auto text-cyan-400 mb-10" />
+          <Flex vertical gap="middle" className="text-left max-w-xs mx-auto mb-8">
             <Checkbox
               checked={selectedTypes.words}
               onChange={(e) => setSelectedTypes({ ...selectedTypes, words: e.target.checked })}
-              style={{ fontSize: 16 }}
+              className="text-base font-medium text-slate-200"
             >
               Từ vựng chính (Words)
             </Checkbox>
             <Checkbox
               checked={selectedTypes.phrases}
               onChange={(e) => setSelectedTypes({ ...selectedTypes, phrases: e.target.checked })}
-              style={{ fontSize: 16 }}
+              className="text-base font-medium text-slate-200"
             >
-              Cụm từ liên quan (Phrases)
+              Cụm liên quan (Phrases)
             </Checkbox>
             <Checkbox
               checked={selectedTypes.sentences}
               onChange={(e) => setSelectedTypes({ ...selectedTypes, sentences: e.target.checked })}
-              style={{ fontSize: 16 }}
+              className="text-base font-medium text-slate-200"
             >
-              Câu ví dụ (Sentences)
+              Câu hoàn chỉnh (Sentences)
             </Checkbox>
           </Flex>
-
+          <br />
           <Flex justify="center" gap="middle">
-            <Button size="large" onClick={onBack}>
+            <Button size="large" onClick={onBack} className="rounded-xl px-6 bg-white/10 text-white border-0 hover:bg-white/20">
               Quay lại
             </Button>
             <Button
@@ -222,9 +281,9 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
               size="large"
               disabled={!isAnySelected}
               onClick={handleStartPractice}
-              style={{ padding: '0 32px' }}
+              className="rounded-xl px-8 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold border-0"
             >
-              Bắt đầu học
+              Bắt đầu
             </Button>
           </Flex>
         </Card>
@@ -232,104 +291,101 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
     );
   }
 
-  // Kết thúc lượt học
-  if (isFinished) {
-    return (
-      <SessionResult
-        score={100}
-        onBack={onBack}
-        onRestart={() => {
-          setCards(buildCardsList());
-          setCurrentIndex(0);
-          setIsFlipped(false);
-          setIsFinished(false);
-        }}
-        practiceId={data.id}
-        practiceType="Flashcard"
-        practiceName={data.title}
-        backText="Quay về menu"
-        restartText="Học lại"
-        resultMessage={`Tuyệt vời! Bạn đã xem qua toàn bộ ${cards.length} thẻ!`}
-      />
-    );
-  }
-
   if (cards.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: 60 }}>
-        <Title level={4} style={{ color: 'white' }}>Không tìm thấy thẻ nào phù hợp!</Title>
-        <Button onClick={onBack} style={{ marginTop: 16 }}>Quay lại</Button>
+      <div className="text-center py-20">
+        <Title level={4} className="text-white">Không tìm thấy thẻ nào!</Title>
+        <Button onClick={onBack} className="mt-4 rounded-xl">Quay lại</Button>
       </div>
     );
   }
 
   const currentCard = cards[currentIndex];
+  const isCurrentFlagged = flaggedKeys.has(currentCard.cardKey);
 
   return (
-    <div style={{ maxWidth: 680, margin: '20px auto', padding: '0 20px' }}>
-      {/* Thanh công cụ phía trên */}
-      <Flex justify="space-between" align="center" style={{ marginBottom: 16 }}>
-        <Button icon={<ArrowLeft size={18} />} onClick={onBack}>
+    <div className="max-w-2xl mx-auto py-8 px-4">
+      {/* Top Header Controls Bar */}
+      <Flex justify="space-between" align="center" className="mb-8">
+        <Button 
+          icon={<ArrowLeft size={18} />} 
+          onClick={onBack}
+          className="rounded-full bg-black/40 hover:bg-black/60 text-white/90 shadow-md border border-white/10 font-medium backdrop-blur-md"
+        >
           Thoát
         </Button>
-        <div style={{ textAlign: 'center' }}>
-          <Text strong style={{ fontSize: 16, color: 'white' }}>
+
+        {/* Progress & Flag Counter Badges */}
+        <Flex align="center" gap="small">
+          <Badge 
+            count={flaggedKeys.size} 
+            overflowCount={99}
+            style={{ backgroundColor: '#f59e0b', color: '#fff', fontWeight: 600 }}
+          >
+            <div className="bg-white/85 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-amber-700 flex items-center gap-1 border border-amber-200">
+              <Bookmark size={13} className="fill-amber-500 text-amber-500" />
+              <span>Ghi nhớ</span>
+            </div>
+          </Badge>
+
+          <span className="bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold text-white/90 border border-white/10">
             {currentIndex + 1} / {cards.length}
-          </Text>
+          </span>
+
           {currentCard.tag && (
-            <span style={{
-              display: 'inline-block',
-              marginLeft: 8,
-              padding: '2px 8px',
-              fontSize: 12,
-              background: 'rgba(255,255,255,0.25)',
-              color: 'white',
-              borderRadius: 12
-            }}>
+            <span className="bg-indigo-600/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-indigo-100 border border-indigo-400/30">
               {currentCard.tag}
             </span>
           )}
-        </div>
-        <Button 
-          icon={<RotateCcw size={16} />} 
-          onClick={() => {
-            setCards(buildCardsList());
-            setCurrentIndex(0);
-            setIsFlipped(false);
-          }}
-          title="Xáo trộn lại"
-        />
+        </Flex>
+
+        {/* Action Controls */}
+        <Flex gap="small">
+          <Tooltip title="Thứ tự mặc định">
+            <Button
+              shape="circle"
+              icon={<RotateCcw size={16} />}
+              onClick={handleResetOrder}
+              className="bg-black/40 hover:bg-black/60 border border-white/10 text-white/80 shadow-sm backdrop-blur-md"
+            />
+          </Tooltip>
+          <Tooltip title="Xáo trộn lại toàn bộ">
+            <Button
+              shape="circle"
+              icon={<Shuffle size={16} />}
+              onClick={handleReshuffle}
+              className="bg-black/40 hover:bg-black/60 border border-white/10 text-cyan-400 shadow-sm backdrop-blur-md hover:text-cyan-300"
+            />
+          </Tooltip>
+        </Flex>
       </Flex>
 
-      {/* Thẻ 3D Flip */}
+      {/* 3D Flip Card Container with Enhanced Spacing */}
       <div 
-        className="perspective-container" 
-        style={{ width: '100%', height: 380, cursor: 'pointer', margin: '0 auto 24px' }}
+        className="perspective-container select-none mb-8 mt-2"
+        style={{ width: '100%', height: 390, cursor: 'pointer' }}
         onClick={handleFlip}
       >
         <div className={`card-inner ${isFlipped ? 'flipped' : ''}`}>
-          
-          {/* Mặt trước: Từ vựng / Nội dung chính */}
+          {/* Modern Front Face */}
           <div 
-            className="card-front" 
-            style={{
-              borderRadius: 24,
-              backgroundColor: '#ffffff',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.12)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              padding: '28px'
-            }}
+            className="card-front rounded-3xl p-8 bg-gradient-to-br from-slate-900/90 via-slate-800/95 to-slate-900/95 backdrop-blur-xl shadow-2xl flex flex-col justify-between border border-cyan-500/25 relative overflow-hidden"
           >
-            <Flex justify="space-between" align="center">
-              <Text type="secondary" style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                Mặt trước (Nhấn để lật)
-              </Text>
+            {/* Subtle glow highlight in corner */}
+            <div className="absolute top-0 right-0 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <Flex justify="space-between" align="center" className="relative z-10">
+              <div>
+                {isCurrentFlagged && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40">
+                    <BookmarkCheck size={13} /> Sẽ lặp lại
+                  </span>
+                )}
+              </div>
               <Button
                 type="text"
                 shape="circle"
-                icon={<Volume2 size={24} color="#1890ff" />}
+                icon={<Volume2 size={30} className="text-cyan-400 hover:text-cyan-300 hover:scale-110 transition-transform" />}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSpeech(currentCard.speak);
@@ -337,44 +393,40 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
               />
             </Flex>
 
-            <Flex vertical align="center" justify="center" style={{ flex: 1 }}>
-              <Title level={2} style={{ margin: 0, color: '#1890ff', textAlign: 'center' }}>
+            <Flex vertical align="center" justify="center" className="flex-1 px-4 relative z-10">
+              <Title level={2} className="!m-0 !text-cyan-300 text-center tracking-tight font-bold drop-shadow-sm">
                 {currentCard.front}
               </Title>
               {currentCard.ipa && (
-                <Text type="secondary" style={{ fontSize: 16, marginTop: 8, fontFamily: 'monospace' }}>
+                <Text className="text-slate-400 font-mono text-base mt-2 tracking-wide">
                   /{currentCard.ipa}/
                 </Text>
               )}
             </Flex>
 
-            <Text type="secondary" style={{ textAlign: 'center', fontSize: 12 }}>
-              Nhấn vào thẻ hoặc nhấn Space để xem nghĩa
-            </Text>
+            <div className="text-center text-xs text-slate-400 font-medium relative z-10 opacity-75">
+              Chạm vào thẻ hoặc nhấn Space để xoay
+            </div>
           </div>
 
-          {/* Mặt sau: Nghĩa */}
+          {/* Back Face */}
           <div 
-            className="card-back" 
-            style={{
-              borderRadius: 24,
-              backgroundColor: '#ffffff',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.12)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              padding: '28px',
-              border: '2px solid #52c41a'
-            }}
+            className="card-back rounded-3xl p-8 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl flex flex-col justify-between border border-indigo-500/30 relative overflow-hidden"
           >
-            <Flex justify="space-between" align="center">
-              <Text type="secondary" style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: 0.5, color: '#52c41a' }}>
-                Định nghĩa / Nghĩa
-              </Text>
+            <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <Flex justify="space-between" align="center" className="relative z-10">
+              <div>
+                {isCurrentFlagged && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40">
+                    <BookmarkCheck size={13} /> Sẽ lặp lại sau 5 thẻ
+                  </span>
+                )}
+              </div>
               <Button
                 type="text"
                 shape="circle"
-                icon={<Volume2 size={24} color="#52c41a" />}
+                icon={<Volume2 size={30} className="text-emerald-400 hover:text-emerald-300 hover:scale-110 transition-transform" />}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSpeech(currentCard.speak);
@@ -382,30 +434,28 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
               />
             </Flex>
 
-            <Flex vertical align="center" justify="center" style={{ flex: 1 }}>
-              <Title level={3} style={{ margin: 0, color: '#262626', textAlign: 'center', fontWeight: 600 }}>
+            <Flex vertical align="center" justify="center" className="flex-1 px-4 relative z-10">
+              <Title level={3} className="!m-0 !text-emerald-400 text-center font-semibold leading-relaxed drop-shadow-sm">
                 {currentCard.back}
               </Title>
-              <Text type="secondary" style={{ marginTop: 12, fontSize: 14 }}>
-                {currentCard.front}
-              </Text>
+              
             </Flex>
 
-            <Text type="secondary" style={{ textAlign: 'center', fontSize: 12 }}>
-              Nhấn vào thẻ hoặc nhấn Space để lật lại
-            </Text>
+            <div className="text-center text-xs text-slate-400 font-medium relative z-10 opacity-75">
+              Chạm vào thẻ hoặc nhấn Space để xoay lại
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Điều khiển bên dưới */}
-      <Flex justify="center" align="center" gap="large">
+      {/* Control Buttons Footer */}
+      <Flex justify="center" align="center" gap="middle" wrap="wrap">
         <Button
           size="large"
           icon={<ArrowLeft size={18} />}
           onClick={handlePrev}
           disabled={currentIndex === 0}
-          style={{ minWidth: 110, height: 48, borderRadius: 12, fontWeight: 500 }}
+          className="min-w-[100px] h-12 rounded-2xl bg-black/40 hover:bg-black/60 text-white font-medium border border-white/10 backdrop-blur-md shadow-md"
         >
           Trước
         </Button>
@@ -415,18 +465,34 @@ const FlashcardSession = ({ data, onHome, onBack }) => {
           size="large"
           icon={<RotateCw size={18} />}
           onClick={handleFlip}
-          style={{ minWidth: 130, height: 48, borderRadius: 12, fontWeight: 600, background: '#1890ff' }}
+          className="min-w-[125px] h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-semibold shadow-lg shadow-indigo-500/25 border-0 text-white"
         >
           Xoay
         </Button>
 
+        {/* Học lại (Toggle Flag) Button */}
+        <Button
+          size="large"
+          icon={<Bookmark size={17} className={isCurrentFlagged ? "fill-amber-400 text-amber-400" : ""} />}
+          onClick={handleToggleFlag}
+          className={`h-12 rounded-2xl font-semibold backdrop-blur-md shadow-md transition-all ${
+            isCurrentFlagged 
+              ? 'bg-amber-500/25 text-amber-300 border border-amber-400/50 hover:bg-amber-500/35' 
+              : 'bg-black/40 text-amber-300/90 border border-white/10 hover:bg-black/60'
+          }`}
+        >
+          {isCurrentFlagged ? 'Bỏ học lại' : 'Học lại'}
+        </Button>
+
+        {/* Next Button / Final Card Stop */}
         <Button
           size="large"
           icon={<ArrowRight size={18} />}
           onClick={handleNext}
-          style={{ minWidth: 110, height: 48, borderRadius: 12, fontWeight: 500 }}
+          disabled={currentIndex === cards.length - 1}
+          className="min-w-[100px] h-12 rounded-2xl bg-black/40 hover:bg-black/60 text-white font-medium border border-white/10 backdrop-blur-md shadow-md disabled:opacity-40"
         >
-          {currentIndex === cards.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
+          {currentIndex === cards.length - 1 ? 'Hết thẻ' : 'Tiếp theo'}
         </Button>
       </Flex>
     </div>
