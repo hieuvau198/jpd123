@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Tag, Progress, message } from 'antd';
+import React, { useState, useMemo } from 'react';
+import { Button, Tag, Progress, Checkbox, Card, message } from 'antd';
 import { 
   Volume2, 
   RotateCw, 
@@ -7,38 +7,190 @@ import {
   ChevronRight, 
   Home, 
   Clock,
-  CheckCircle2
+  Play,
+  Layers
 } from 'lucide-react';
 import { speakText } from '../../utils/speechUtils';
 import SessionResult from '../SessionResult';
 
-const FlashcardSession = ({ data, onHome, initialNumbers }) => {
-  // Initialize cards state so items can be dynamically inserted into the queue
-  const [cards, setCards] = useState(() => {
-    const rawList = data?.questions || [];
-    return initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-  });
+const buildCardQueue = (data, includePhrases, includeSentences, initialNumbers) => {
+  if (!data) return [];
 
+  // Case 1: flashcard-b type with structured words array
+  if (data.type === 'flashcard-b' && Array.isArray(data.words)) {
+    const expandedList = [];
+    let counter = 1;
+
+    data.words.forEach((item) => {
+      // 1. Base Word Card
+      const wordMeaning = Array.isArray(item.defs)
+        ? item.defs.map((d) => d.m || d.meaning || d).join(', ')
+        : (item.meaning || item.answer || '');
+
+      expandedList.push({
+        id: counter++,
+        typeBadge: 'Từ vựng',
+        word: item.word,
+        phonetic: item.phonetic || item.ipa || '',
+        meaning: wordMeaning,
+        speak: item.word
+      });
+
+      // 2. Phrase Cards (Optional)
+      if (includePhrases && Array.isArray(item.phrases)) {
+        item.phrases.forEach((phraseObj) => {
+          const phraseText = typeof phraseObj === 'string' 
+            ? phraseObj 
+            : (phraseObj.phrase || phraseObj.text || phraseObj.en);
+          const phraseMeaning = typeof phraseObj === 'string' 
+            ? '' 
+            : (phraseObj.meaning || phraseObj.m || phraseObj.vi || '');
+          if (phraseText) {
+            expandedList.push({
+              id: counter++,
+              typeBadge: 'Cụm từ',
+              word: phraseText,
+              meaning: phraseMeaning,
+              speak: phraseText
+            });
+          }
+        });
+      }
+
+      // 3. Sentence Cards (Optional)
+      if (includeSentences && Array.isArray(item.sentences)) {
+        item.sentences.forEach((sentObj) => {
+          const sentText = typeof sentObj === 'string' 
+            ? sentObj 
+            : (sentObj.sentence || sentObj.text || sentObj.en);
+          const sentMeaning = typeof sentObj === 'string' 
+            ? '' 
+            : (sentObj.meaning || sentObj.m || sentObj.vi || '');
+          if (sentText) {
+            expandedList.push({
+              id: counter++,
+              typeBadge: 'Câu',
+              word: sentText,
+              meaning: sentMeaning,
+              speak: sentText
+            });
+          }
+        });
+      }
+    });
+
+    return initialNumbers && initialNumbers > 0 
+      ? expandedList.slice(0, initialNumbers) 
+      : expandedList;
+  }
+
+  // Case 2: Standard questions array
+  const rawList = (data.questions || data.words || []).map((q, idx) => ({
+    id: idx + 1,
+    typeBadge: 'Từ vựng',
+    word: q.word || q.question || '',
+    meaning: q.meaning || q.answer || (q.defs ? q.defs.map(d => d.m).join(', ') : ''),
+    speak: q.speak || q.word || q.question || ''
+  }));
+
+  return initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : rawList;
+};
+
+const FlashcardSession = ({ data, onHome, initialNumbers }) => {
+  // Check if this set offers optional phrases or sentences
+  const hasExtraContent = useMemo(() => {
+    if (data?.type !== 'flashcard-b' || !Array.isArray(data?.words)) return false;
+    return data.words.some(w => (w.phrases && w.phrases.length > 0) || (w.sentences && w.sentences.length > 0));
+  }, [data]);
+
+  // Session configuration state
+  const [includePhrases, setIncludePhrases] = useState(true);
+  const [includeSentences, setIncludeSentences] = useState(false);
+  const [isConfigured, setIsConfigured] = useState(!hasExtraContent);
+
+  // Cards session state
+  const [cards, setCards] = useState(() => 
+    !hasExtraContent ? buildCardQueue(data, false, false, initialNumbers) : []
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
 
-  // Sync state if initial data changes
-  useEffect(() => {
-    const rawList = data?.questions || [];
-    const list = initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-    setCards(list);
+  // Start study session after choosing settings
+  const handleStartPractice = () => {
+    const generated = buildCardQueue(data, includePhrases, includeSentences, initialNumbers);
+    setCards(generated);
     setCurrentIndex(0);
     setIsFlipped(false);
     setIsFinished(false);
-  }, [data, initialNumbers]);
+    setIsConfigured(true);
+  };
+
+  // Selection view (shown before practice if extra content exists)
+  if (!isConfigured) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center p-4">
+        <Card className="w-full max-w-md rounded-3xl p-6 sm:p-8 shadow-2xl border-0 bg-white/95 backdrop-blur-md text-center">
+          <div className="w-14 h-14 mx-auto mb-4 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center">
+            <Layers size={28} />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Tùy chọn học tập</h2>
+          <p className="text-gray-500 text-sm mb-6">Chọn các loại nội dung bạn muốn luyện tập trong bộ thẻ này</p>
+
+          <div className="flex flex-col gap-3 text-left bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-6">
+            <label className="flex items-center justify-between p-2 rounded-xl hover:bg-white transition-colors cursor-pointer">
+              <span className="font-semibold text-gray-700">Từ vựng chính</span>
+              <Checkbox checked disabled />
+            </label>
+
+            <label className="flex items-center justify-between p-2 rounded-xl hover:bg-white transition-colors cursor-pointer">
+              <div>
+                <span className="font-semibold text-gray-700 block">Cụm từ liên quan (Phrases)</span>
+                <span className="text-xs text-gray-400">Tạo thẻ cho các cụm từ thuộc từ này</span>
+              </div>
+              <Checkbox 
+                checked={includePhrases} 
+                onChange={(e) => setIncludePhrases(e.target.checked)} 
+              />
+            </label>
+
+            <label className="flex items-center justify-between p-2 rounded-xl hover:bg-white transition-colors cursor-pointer">
+              <div>
+                <span className="font-semibold text-gray-700 block">Câu ví dụ (Sentences)</span>
+                <span className="text-xs text-gray-400">Tạo thẻ cho các câu mẫu thuộc từ này</span>
+              </div>
+              <Checkbox 
+                checked={includeSentences} 
+                onChange={(e) => setIncludeSentences(e.target.checked)} 
+              />
+            </label>
+          </div>
+
+          <div className="flex gap-3">
+            <Button size="large" onClick={onHome} className="flex-1 rounded-xl h-12">
+              Quay lại
+            </Button>
+            <Button 
+              type="primary" 
+              size="large" 
+              icon={<Play size={18} />} 
+              onClick={handleStartPractice}
+              className="flex-1 !bg-yellow-400 !text-black !font-bold hover:!bg-yellow-300 !border-none rounded-xl h-12 flex items-center justify-center"
+            >
+              Bắt đầu
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   if (!cards.length) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-white">
-        <p className="text-xl mb-4">No flashcards found in this set.</p>
-        <Button onClick={onHome}>Back</Button>
+        <p className="text-xl mb-4">Không có thẻ nào được tạo theo thiết lập đã chọn.</p>
+        <Button onClick={() => setIsConfigured(false)}>Chọn lại</Button>
       </div>
     );
   }
@@ -66,14 +218,12 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
     }
   };
 
-  // --- REPEAT AFTER 5 CARDS LOGIC ---
   const handleRepeatAfter5 = (e) => {
     if (e) e.stopPropagation();
 
     const targetInsertIndex = Math.min(currentIndex + 6, cards.length);
     const updatedCards = [...cards];
 
-    // Insert a cloned copy 5 cards ahead
     updatedCards.splice(targetInsertIndex, 0, {
       ...currentCard,
       _retryId: Date.now() + Math.random(),
@@ -81,13 +231,10 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
     });
 
     setCards(updatedCards);
-    message.success("Card queued to review after 5 cards!");
-
-    // Automatically transition to the next card
+    message.success("Thẻ sẽ được lặp lại sau 5 thẻ nữa!");
     handleNext();
   };
 
-  // --- Swipe / Sweep Gestures ---
   const handleTouchStart = (e) => {
     setTouchStartX(e.touches[0].clientX);
   };
@@ -98,20 +245,23 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
     const diff = touchStartX - touchEndX;
 
     if (diff > 50) {
-      handleNext(); // Swipe left
+      handleNext();
     } else if (diff < -50) {
-      handlePrev(); // Swipe right
+      handlePrev();
     }
     setTouchStartX(null);
   };
 
   const handleRestart = () => {
-    const rawList = data?.questions || [];
-    const list = initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-    setCards(list);
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setIsFinished(false);
+    if (hasExtraContent) {
+      setIsConfigured(false);
+    } else {
+      const generated = buildCardQueue(data, false, false, initialNumbers);
+      setCards(generated);
+      setCurrentIndex(0);
+      setIsFlipped(false);
+      setIsFinished(false);
+    }
   };
 
   if (isFinished) {
@@ -123,13 +273,13 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         practiceId={data.id}
         practiceType="Flashcard"
         practiceName={data.title}
-        resultMessage={`You have reviewed all cards in this session!`}
+        resultMessage={`Bạn đã hoàn thành xem toàn bộ ${cards.length} thẻ trong lượt học này!`}
       />
     );
   }
 
   const frontText = currentCard.word || currentCard.question || '';
-  const backText = currentCard.meaning || currentCard.answer || 'No definition available';
+  const backText = currentCard.meaning || currentCard.answer || 'Chưa có định nghĩa';
   const progressPercent = Math.round(((currentIndex + 1) / cards.length) * 100);
 
   return (
@@ -142,7 +292,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
           onClick={onHome} 
           className="!text-white hover:!bg-white/20"
         >
-          Exit
+          Thoát
         </Button>
         <span className="font-semibold text-lg drop-shadow">
           {currentIndex + 1} / {cards.length}
@@ -179,12 +329,12 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
                 )}
                 {currentCard.isReview && (
                   <Tag color="orange" className="text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <Clock size={12} /> Repeat
+                    <Clock size={12} /> Lặp lại
                   </Tag>
                 )}
               </div>
               <span className="text-xs text-gray-400 font-medium tracking-wider uppercase">
-                Tap card to reveal
+                Nhấn để xem nghĩa
               </span>
             </div>
 
@@ -205,7 +355,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
                   speakText(currentCard.speak || frontText);
                 }}
                 className="p-3 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors shadow-sm"
-                title="Listen"
+                title="Phát âm"
               >
                 <Volume2 size={22} />
               </button>
@@ -216,10 +366,10 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
           <div className="card-back bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-3xl shadow-2xl p-8 flex flex-col justify-between items-center text-center border border-indigo-500/30">
             <div className="w-full flex justify-between items-center">
               <Tag color="gold" className="text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                Meaning
+                Nghĩa
               </Tag>
               <span className="text-xs text-indigo-300 font-medium tracking-wider uppercase">
-                Tap to flip back
+                Nhấn để xoay lại
               </span>
             </div>
 
@@ -237,7 +387,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
                   speakText(currentCard.speak || frontText);
                 }}
                 className="p-3 bg-white/10 text-yellow-300 rounded-full hover:bg-white/20 transition-colors shadow-sm"
-                title="Listen"
+                title="Phát âm"
               >
                 <Volume2 size={22} />
               </button>
@@ -247,8 +397,8 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         </div>
       </div>
 
-      {/* Main Controls: Prev, Roll, Next */}
-      <div className="flex items-center justify-center gap-6 mt-8">
+      {/* Control Buttons */}
+      <div className="flex items-center justify-center gap-3 sm:gap-4 mt-8 flex-wrap">
         <Button
           size="large"
           shape="circle"
@@ -259,13 +409,23 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         />
 
         <Button
+          type="dashed"
+          size="large"
+          onClick={handleRepeatAfter5}
+          icon={<Clock size={16} />}
+          className="!text-white hover:!text-yellow-300 !border-white/50 hover:!border-yellow-400 !rounded-full !px-5 !h-12 !bg-black/30 hover:!bg-black/40 shadow-md transition-all font-semibold flex items-center gap-1.5"
+        >
+          Lặp lại
+        </Button>
+
+        <Button
           type="primary"
           size="large"
           onClick={handleFlip}
           icon={<RotateCw size={18} />}
           className="!bg-yellow-400 !text-black !font-bold hover:!bg-yellow-300 !border-none !px-6 !h-12 !rounded-full shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
         >
-          Roll Card
+          Xoay
         </Button>
 
         <Button
@@ -278,20 +438,8 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         />
       </div>
 
-      {/* Extra Action: Repeat Card Later Button */}
-      <div className="mt-4">
-        <Button
-          type="dashed"
-          onClick={handleRepeatAfter5}
-          icon={<Clock size={16} />}
-          className="!text-white hover:!text-yellow-300 !border-white/40 hover:!border-yellow-400 !rounded-full !px-5 !py-1 !h-auto !bg-black/20 hover:!bg-black/30 transition-all text-sm font-medium"
-        >
-          Repeat after 5 cards
-        </Button>
-      </div>
-
-      <p className="text-white/60 text-xs mt-3">
-        Swipe left or right to switch cards
+      <p className="text-white/60 text-xs mt-4">
+        Vuốt sang trái hoặc phải để chuyển thẻ
       </p>
     </div>
   );
