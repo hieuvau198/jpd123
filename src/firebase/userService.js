@@ -41,7 +41,7 @@ export const createUser = async (userData) => {
     
     const payload = {
       role: 'Student',
-      grade: 'Khác',
+      grade: userFields.grade || 'Khác',
       ...userFields,
       level: userFields.level ?? defaultTitleInfo.minLevel,
       title: userFields.title ?? defaultTitleInfo.title,
