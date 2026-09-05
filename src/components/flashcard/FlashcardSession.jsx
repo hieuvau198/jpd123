@@ -14,7 +14,7 @@ const shuffleArray = (array) => {
   return newArr;
 };
 
-const ViewSession = ({ data, onHome, onBack }) => {
+const FlashcardSession = ({ data, onHome, onBack }) => {
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -129,4 +129,4 @@ const ViewSession = ({ data, onHome, onBack }) => {
   );
 };
 
-export default ViewSession;
+export default FlashcardSession;

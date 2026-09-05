@@ -5,7 +5,7 @@ import MissingLetterSession from './MissingLetterSession';
 import MatchingSession from './MatchingSession'; 
 import TypingSession from './TypingSession';
 import SpellingBeeSession from './SpellingBeeSession';
-import ViewSession from './ViewSession';
+import FlashcardSession from './FlashcardSession';
 import MCSession from './MCSession';
 
 const { Title, Text } = Typography;
@@ -42,7 +42,7 @@ const WordSession = ({ data, onHome, initialNumbers }) => {
   if (!data) return null;
   if (!sessionData) return null;
 
-  if (mode === 'view') return <ViewSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
+  if (mode === 'view') return <FlashcardSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'missing') return <MissingLetterSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'matching') return <MatchingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;
   if (mode === 'speak') return <TypingSession data={sessionData} onHome={onHome} onBack={() => setMode(null)} />;

@@ -1,7 +1,7 @@
 // src/components/SessionResult.jsx
 import React, { useEffect, useState } from 'react';
 import { Button, Typography, Flex, Card, Spin, Modal, Result, Progress, Tag } from 'antd';
-import { ALL_LEVELS, getRatingInfo } from './flashcard/flashcardConstants';
+import { ALL_LEVELS, getRatingInfo } from './flashcard/wordConstants';
 import { getUserMissions, updateMission } from '../firebase/missionService'; 
 import { updateUser } from '../firebase/userService'; 
 import { updateUserHistory } from '../firebase/historyService';

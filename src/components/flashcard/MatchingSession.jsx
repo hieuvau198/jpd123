@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Typography, Flex, Result, message, Progress } from 'antd';
 import { ArrowLeft, Trophy } from 'lucide-react';
-import { ALL_LEVELS, getRatingInfo } from './flashcardConstants';
+import { ALL_LEVELS, getRatingInfo } from './wordConstants';
 import SessionResult from '../SessionResult';
 
 const { Title, Text } = Typography;
