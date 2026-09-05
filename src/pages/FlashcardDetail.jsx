@@ -22,21 +22,6 @@ const FlashcardDetail = () => {
       try {
         setLoading(true);
         const res = await getFlashcardById(id);
-
-        if (res) {
-          // Normalize default questions array for modes that expect .questions
-          if ((!res.questions || res.questions.length === 0) && Array.isArray(res.words)) {
-            res.questions = res.words.map((item, index) => ({
-              id: index + 1,
-              question: item.word,
-              speak: item.word,
-              answer: item.defs ? item.defs.map((d) => d.m || d.meaning || d).join(', ') : (item.meaning || item.answer || ''),
-              options: item.options || [],
-              ...item
-            }));
-          }
-        }
-
         setData(res);
       } catch (error) {
         console.error("Error fetching flashcard:", error);
