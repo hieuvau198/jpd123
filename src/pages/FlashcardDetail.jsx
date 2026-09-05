@@ -8,14 +8,10 @@ const FlashcardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  
-  // Explicitly fallback to null if not found
   const tag = searchParams.get('tag') || null;
-  
-  // Extract the "numbers" parameter if it exists safely
   const numbersParam = searchParams.get('numbers');
-  const initialNumbers = numbersParam && !isNaN(parseInt(numbersParam, 10)) 
-    ? parseInt(numbersParam, 10) 
+  const initialNumbers = numbersParam && !isNaN(parseInt(numbersParam, 10))
+    ? parseInt(numbersParam, 10)
     : null;
 
   const [data, setData] = useState(null);
@@ -26,19 +22,70 @@ const FlashcardDetail = () => {
       try {
         setLoading(true);
         const res = await getFlashcardById(id);
-        
-        // --- DATA NORMALIZATION FOR TYPE 'flashcard-b' ---
-        if (res && res.type === 'flashcard-b' && res.words) {
-          // Map the 'words' array into the standard 'questions' format 
-          // so FlashcardSession doesn't break.
-          res.questions = res.words.map((item, index) => ({
-            id: index + 1,
-            question: item.word,
-            speak: item.word,
-            // Combine definitions into a single readable answer string
-            answer: item.defs ? item.defs.map(d => d.m).join(', ') : '',
-            // Spread the original item so components can access phrases/sentences if needed
-            ...item 
+
+        if (res && res.type === 'flashcard-b' && Array.isArray(res.words)) {
+          const expandedQuestions = [];
+          let counter = 1;
+
+          res.words.forEach((item) => {
+            // 1. Base word card
+            const wordMeaning = Array.isArray(item.defs)
+              ? item.defs.map((d) => d.m || d.meaning || d).join(', ')
+              : (item.meaning || item.answer || '');
+
+            expandedQuestions.push({
+              id: counter++,
+              typeBadge: 'Word',
+              word: item.word,
+              phonetic: item.phonetic || item.ipa || '',
+              meaning: wordMeaning,
+              speak: item.word
+            });
+
+            // 2. Extra phrase cards
+            if (Array.isArray(item.phrases)) {
+              item.phrases.forEach((phraseObj) => {
+                const phraseText = typeof phraseObj === 'string' ? phraseObj : (phraseObj.phrase || phraseObj.text || phraseObj.en);
+                const phraseMeaning = typeof phraseObj === 'string' ? '' : (phraseObj.meaning || phraseObj.m || phraseObj.vi || '');
+                if (phraseText) {
+                  expandedQuestions.push({
+                    id: counter++,
+                    typeBadge: 'Phrase',
+                    word: phraseText,
+                    meaning: phraseMeaning,
+                    speak: phraseText
+                  });
+                }
+              });
+            }
+
+            // 3. Extra sentence cards
+            if (Array.isArray(item.sentences)) {
+              item.sentences.forEach((sentenceObj) => {
+                const sentText = typeof sentenceObj === 'string' ? sentenceObj : (sentenceObj.sentence || sentenceObj.text || sentenceObj.en);
+                const sentMeaning = typeof sentenceObj === 'string' ? '' : (sentenceObj.meaning || sentenceObj.m || sentenceObj.vi || '');
+                if (sentText) {
+                  expandedQuestions.push({
+                    id: counter++,
+                    typeBadge: 'Sentence',
+                    word: sentText,
+                    meaning: sentMeaning,
+                    speak: sentText
+                  });
+                }
+              });
+            }
+          });
+
+          res.questions = expandedQuestions;
+        } else if (res && (!res.questions || res.questions.length === 0) && Array.isArray(res.words)) {
+          // Standard fallback
+          res.questions = res.words.map((item, idx) => ({
+            id: idx + 1,
+            typeBadge: 'Word',
+            word: item.word,
+            meaning: item.defs ? item.defs.map((d) => d.m).join(', ') : (item.meaning || item.answer || ''),
+            speak: item.word
           }));
         }
 
@@ -50,9 +97,8 @@ const FlashcardDetail = () => {
         setLoading(false);
       }
     };
-    if (id) {
-        fetch();
-    }
+
+    if (id) fetch();
   }, [id]);
 
   const handleBackToList = () => {
@@ -60,7 +106,6 @@ const FlashcardDetail = () => {
   };
 
   if (loading) return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
-  
   if (!data) return (
     <Result
       status="404"
@@ -71,10 +116,10 @@ const FlashcardDetail = () => {
   );
 
   return (
-    <FlashcardSession 
-      data={data} 
+    <FlashcardSession
+      data={data}
       onHome={handleBackToList}
-      initialNumbers={initialNumbers} // Pass down the initial numbers
+      initialNumbers={initialNumbers}
     />
   );
 };
