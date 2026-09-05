@@ -1,38 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Tag, Progress, message } from 'antd';
+import React, { useState } from 'react';
+import { Button, Tag, Progress } from 'antd';
 import { 
   Volume2, 
   RotateCw, 
   ChevronLeft, 
   ChevronRight, 
   Home, 
-  Clock,
-  CheckCircle2
+  RefreshCw 
 } from 'lucide-react';
 import { speakText } from '../../utils/speechUtils';
 import SessionResult from '../SessionResult';
 
 const FlashcardSession = ({ data, onHome, initialNumbers }) => {
-  // Initialize cards state so items can be dynamically inserted into the queue
-  const [cards, setCards] = useState(() => {
-    const rawList = data?.questions || [];
-    return initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-  });
+  const rawList = data?.questions || [];
+  const cards = initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : rawList;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
-
-  // Sync state if initial data changes
-  useEffect(() => {
-    const rawList = data?.questions || [];
-    const list = initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-    setCards(list);
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setIsFinished(false);
-  }, [data, initialNumbers]);
 
   if (!cards.length) {
     return (
@@ -66,28 +52,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
     }
   };
 
-  // --- REPEAT AFTER 5 CARDS LOGIC ---
-  const handleRepeatAfter5 = (e) => {
-    if (e) e.stopPropagation();
-
-    const targetInsertIndex = Math.min(currentIndex + 6, cards.length);
-    const updatedCards = [...cards];
-
-    // Insert a cloned copy 5 cards ahead
-    updatedCards.splice(targetInsertIndex, 0, {
-      ...currentCard,
-      _retryId: Date.now() + Math.random(),
-      isReview: true,
-    });
-
-    setCards(updatedCards);
-    message.success("Card queued to review after 5 cards!");
-
-    // Automatically transition to the next card
-    handleNext();
-  };
-
-  // --- Swipe / Sweep Gestures ---
+  // --- Touch Gestures (Swipe / Sweep) ---
   const handleTouchStart = (e) => {
     setTouchStartX(e.touches[0].clientX);
   };
@@ -97,18 +62,16 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX - touchEndX;
 
+    // Minimum swipe threshold of 50px
     if (diff > 50) {
-      handleNext(); // Swipe left
+      handleNext(); // Swiped left -> next
     } else if (diff < -50) {
-      handlePrev(); // Swipe right
+      handlePrev(); // Swiped right -> prev
     }
     setTouchStartX(null);
   };
 
   const handleRestart = () => {
-    const rawList = data?.questions || [];
-    const list = initialNumbers && initialNumbers > 0 ? rawList.slice(0, initialNumbers) : [...rawList];
-    setCards(list);
     setCurrentIndex(0);
     setIsFlipped(false);
     setIsFinished(false);
@@ -123,7 +86,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         practiceId={data.id}
         practiceType="Flashcard"
         practiceName={data.title}
-        resultMessage={`You have reviewed all cards in this session!`}
+        resultMessage={`You have reviewed all ${cards.length} cards in this set!`}
       />
     );
   }
@@ -134,7 +97,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 flex flex-col items-center select-none">
-      {/* Header Info */}
+      {/* Top Bar */}
       <div className="w-full flex items-center justify-between mb-4 text-white">
         <Button 
           type="text" 
@@ -149,7 +112,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         </span>
       </div>
 
-      {/* Progress */}
+      {/* Progress Bar */}
       <div className="w-full mb-6">
         <Progress 
           percent={progressPercent} 
@@ -159,7 +122,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         />
       </div>
 
-      {/* 3D Flip Card */}
+      {/* 3D Flashcard Container */}
       <div
         className="perspective-container w-full h-80 sm:h-96 cursor-pointer"
         onClick={handleFlip}
@@ -171,20 +134,13 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
           {/* SIDE 1: Word Only */}
           <div className="card-front bg-white/95 rounded-3xl shadow-2xl p-8 flex flex-col justify-between items-center text-center border border-white/40">
             <div className="w-full flex justify-between items-center">
-              <div className="flex gap-1.5 items-center">
-                {currentCard.typeBadge && (
-                  <Tag color="blue" className="text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                    {currentCard.typeBadge}
-                  </Tag>
-                )}
-                {currentCard.isReview && (
-                  <Tag color="orange" className="text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <Clock size={12} /> Repeat
-                  </Tag>
-                )}
-              </div>
+              {currentCard.typeBadge ? (
+                <Tag color="blue" className="text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                  {currentCard.typeBadge}
+                </Tag>
+              ) : <div />}
               <span className="text-xs text-gray-400 font-medium tracking-wider uppercase">
-                Tap card to reveal
+                Tap card to reveal meaning
               </span>
             </div>
 
@@ -219,7 +175,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
                 Meaning
               </Tag>
               <span className="text-xs text-indigo-300 font-medium tracking-wider uppercase">
-                Tap to flip back
+                Tap card to see word
               </span>
             </div>
 
@@ -247,7 +203,7 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         </div>
       </div>
 
-      {/* Main Controls: Prev, Roll, Next */}
+      {/* Control Buttons (Roll, Prev, Next) */}
       <div className="flex items-center justify-center gap-6 mt-8">
         <Button
           size="large"
@@ -278,20 +234,8 @@ const FlashcardSession = ({ data, onHome, initialNumbers }) => {
         />
       </div>
 
-      {/* Extra Action: Repeat Card Later Button */}
-      <div className="mt-4">
-        <Button
-          type="dashed"
-          onClick={handleRepeatAfter5}
-          icon={<Clock size={16} />}
-          className="!text-white hover:!text-yellow-300 !border-white/40 hover:!border-yellow-400 !rounded-full !px-5 !py-1 !h-auto !bg-black/20 hover:!bg-black/30 transition-all text-sm font-medium"
-        >
-          Repeat after 5 cards
-        </Button>
-      </div>
-
-      <p className="text-white/60 text-xs mt-3">
-        Swipe left or right to switch cards
+      <p className="text-white/60 text-xs mt-4">
+        Swipe left or right to change cards
       </p>
     </div>
   );
