@@ -1,4 +1,5 @@
 // src/components/flashcard/typeB/typeBGenerator.js
+
 export const shuffleArray = (array) => {
   const newArr = [...array];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -8,7 +9,10 @@ export const shuffleArray = (array) => {
   return newArr;
 };
 
-export const generateTypeBQuestions = (allCards = []) => {
+export const generateTypeBQuestions = (
+  allCards = [],
+  selectedTypes = { words: true, phrases: true, sentences: true }
+) => {
   let defs = [];
   let reverseDefs = [];
   let phrases = [];
@@ -16,8 +20,8 @@ export const generateTypeBQuestions = (allCards = []) => {
   let misspells = [];
 
   allCards.forEach((card, cIdx) => {
-    // 1. Definition Phase
-    if (card.defs && card.defs.length > 0) {
+    // 1. Words (Definition, Reverse, & Misspell)
+    if (selectedTypes.words && card.defs && card.defs.length > 0) {
       const def = card.defs[0];
       defs.push({
         id: `${card.word}_def_${cIdx}`,
@@ -31,10 +35,8 @@ export const generateTypeBQuestions = (allCards = []) => {
         hint: card.hint || ''
       });
 
-      // 2. Reverse Phase
       const otherWords = allCards.filter(c => c.word !== card.word).map(c => c.word);
       const distractors = shuffleArray(otherWords).slice(0, 3);
-
       reverseDefs.push({
         id: `${card.word}_reverse_${cIdx}`,
         phase: 'Reverse',
@@ -46,10 +48,24 @@ export const generateTypeBQuestions = (allCards = []) => {
         aLang: 'en-US',
         hint: card.hint || ''
       });
+
+      if (card.misspell && card.misspell.length > 0) {
+        misspells.push({
+          id: `${card.word}_misspell_${cIdx}`,
+          phase: 'Misspell',
+          displayQuestion: def.m,
+          correctAnswer: card.word,
+          options: shuffleArray([card.word, ...card.misspell.slice(0, 3)]),
+          correctAttemptsNeeded: 1,
+          qLang: 'vi-VN',
+          aLang: 'en-US',
+          hint: card.hint || ''
+        });
+      }
     }
 
-    // 3. Phrase Phase (Ưu tiên hint của phrase)
-    if (card.phrases && card.phrases.length > 0) {
+    // 2. Phrases
+    if (selectedTypes.phrases && card.phrases && card.phrases.length > 0) {
       const p = shuffleArray(card.phrases)[0];
       phrases.push({
         id: `${card.word}_phrase_${cIdx}`,
@@ -64,8 +80,8 @@ export const generateTypeBQuestions = (allCards = []) => {
       });
     }
 
-    // 4. Sentence Phase (Ưu tiên hint của sentence)
-    if (card.sentences && card.sentences.length > 0) {
+    // 3. Sentences
+    if (selectedTypes.sentences && card.sentences && card.sentences.length > 0) {
       const s = shuffleArray(card.sentences)[0];
       sentences.push({
         id: `${card.word}_sentence_${cIdx}`,
@@ -77,22 +93,6 @@ export const generateTypeBQuestions = (allCards = []) => {
         qLang: 'en-US',
         aLang: 'vi-VN',
         hint: s.hint || card.hint || ''
-      });
-    }
-
-    // 5. Misspell Phase
-    if (card.misspell && card.misspell.length > 0 && card.defs && card.defs.length > 0) {
-      const def = card.defs[0];
-      misspells.push({
-        id: `${card.word}_misspell_${cIdx}`,
-        phase: 'Misspell',
-        displayQuestion: def.m,
-        correctAnswer: card.word,
-        options: shuffleArray([card.word, ...card.misspell.slice(0, 3)]),
-        correctAttemptsNeeded: 1,
-        qLang: 'vi-VN',
-        aLang: 'en-US',
-        hint: card.hint || ''
       });
     }
   });

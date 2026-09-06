@@ -1,15 +1,23 @@
 // src/components/flashcard/TypeBMCSession.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Card, Typography } from 'antd';
+import { Card, Typography, Checkbox, Button, Flex } from 'antd';
+import { Layers } from 'lucide-react';
 import SessionResult from '../SessionResult';
 import TypeBHeader from './typeB/TypeBHeader';
 import TypeBCard from './typeB/TypeBCard';
 import TypeBSettingsModal from './typeB/TypeBSettingsModal';
 import { generateTypeBQuestions, shuffleArray } from './typeB/typeBGenerator';
 
-const { Text } = Typography;
+const { Title, Text } = Typography;
 
 const TypeBMCSession = ({ data, onHome, onBack }) => {
+  const [selectedTypes, setSelectedTypes] = useState({
+    words: true,
+    phrases: false,
+    sentences: false,
+  });
+  const [isConfigured, setIsConfigured] = useState(false);
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
@@ -19,8 +27,12 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
   // Audio Settings State
   const [showSettings, setShowSettings] = useState(false);
-  const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
-  const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
+  const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(
+    localStorage.getItem('autoSpeakQuestion') !== 'false'
+  );
+  const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(
+    localStorage.getItem('autoSpeakAnswer') !== 'false'
+  );
 
   const timerRef = useRef(null);
 
@@ -37,35 +49,35 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }
   }, []);
 
-  const initGame = useCallback(() => {
+  const handleStartSession = (typesToUse = selectedTypes) => {
     if (!data?.questions) return;
-    const combined = generateTypeBQuestions(data.questions);
+    const combined = generateTypeBQuestions(data.questions, typesToUse);
     setQuestions(combined);
     setTotalUniqueQuestions(combined.length);
     setCurrentIndex(0);
     setWrongIds(new Set());
     setIsFinished(false);
     setSelectedAnswer(null);
-  }, [data]);
+    setIsConfigured(true);
+  };
 
   useEffect(() => {
-    initGame();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
     };
-  }, [initGame]);
+  }, []);
 
   useEffect(() => {
-    if (questions.length > 0 && !isFinished && autoSpeakQuestion) {
+    if (isConfigured && questions.length > 0 && !isFinished && autoSpeakQuestion) {
       const currentQ = questions[currentIndex];
       if (currentQ) {
         speakText(currentQ.displayQuestion, currentQ.qLang || 'en-US');
       }
     }
-  }, [currentIndex, questions, isFinished, autoSpeakQuestion, speakText]);
+  }, [currentIndex, questions, isFinished, autoSpeakQuestion, isConfigured, speakText]);
 
   const handleNext = (isCorrect) => {
     if (timerRef.current) {
@@ -79,13 +91,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
 
     if (!isCorrect) {
       updatedQ.correctAttemptsNeeded = 2;
-      // Reshuffle options when wrong
       updatedQ.options = shuffleArray(updatedQ.options);
       needsRequeue = true;
     } else {
       updatedQ.correctAttemptsNeeded = (updatedQ.correctAttemptsNeeded || 1) - 1;
       if (updatedQ.correctAttemptsNeeded > 0) {
-        // Reshuffle options for the remaining retry attempt
         updatedQ.options = shuffleArray(updatedQ.options);
         needsRequeue = true;
       }
@@ -130,7 +140,68 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }, delay);
   };
 
-  if (questions.length === 0) return null;
+  // --- Entry Screen: Content Selector ---
+  if (!isConfigured) {
+    const isAnySelected = selectedTypes.words || selectedTypes.phrases || selectedTypes.sentences;
+    return (
+      <div className="max-w-md mx-auto my-14 px-4">
+        <Card className="rounded-3xl shadow-2xl border-0 bg-slate-900/90 text-white backdrop-blur-xl text-center p-6 border border-white/10">
+          <Layers size={44} className="mx-auto text-cyan-400 mb-6" />
+          <Title level={3} style={{ color: '#fff', marginBottom: 20 }}>
+            Lựa chọn nội dung luyện tập
+          </Title>
+          <Flex vertical gap="middle" className="text-left max-w-xs mx-auto mb-8">
+            <Checkbox
+              checked={selectedTypes.words}
+              onChange={(e) => setSelectedTypes({ ...selectedTypes, words: e.target.checked })}
+              className="text-base font-medium text-slate-200"
+            >
+              Từ vựng chính (Words)
+            </Checkbox>
+            <Checkbox
+              checked={selectedTypes.phrases}
+              onChange={(e) => setSelectedTypes({ ...selectedTypes, phrases: e.target.checked })}
+              className="text-base font-medium text-slate-200"
+            >
+              Cụm liên quan (Phrases)
+            </Checkbox>
+            <Checkbox
+              checked={selectedTypes.sentences}
+              onChange={(e) => setSelectedTypes({ ...selectedTypes, sentences: e.target.checked })}
+              className="text-base font-medium text-slate-200"
+            >
+              Câu hoàn chỉnh (Sentences)
+            </Checkbox>
+          </Flex>
+          <Flex justify="center" gap="middle">
+            <Button size="large" onClick={onBack} className="rounded-xl px-6 bg-white/10 text-white border-0 hover:bg-white/20">
+              Quay lại
+            </Button>
+            <Button
+              type="primary"
+              size="large"
+              disabled={!isAnySelected}
+              onClick={() => handleStartSession(selectedTypes)}
+              className="rounded-xl px-8 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold border-0"
+            >
+              Bắt đầu
+            </Button>
+          </Flex>
+        </Card>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <div className="text-center py-20">
+        <Title level={4} className="text-white">Không tìm thấy câu hỏi phù hợp với lựa chọn!</Title>
+        <Button onClick={() => setIsConfigured(false)} className="mt-4 rounded-xl">
+          Chọn lại
+        </Button>
+      </div>
+    );
+  }
 
   if (isFinished) {
     const finalScore = Math.max(0, Math.round(((totalUniqueQuestions - wrongIds.size) / totalUniqueQuestions) * 100));
@@ -139,7 +210,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         score={finalScore}
         resultMessage={`"${data?.title || 'current'}": MC Type B - ${totalUniqueQuestions} questions!`}
         onBack={onBack}
-        onRestart={initGame}
+        onRestart={() => setIsConfigured(false)}
         practiceId={data.id}
         practiceType="Flashcard"
         practiceName={data.title}
@@ -164,7 +235,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
       />
 
       <TypeBHeader
-        onBack={onBack}
+        onBack={() => setIsConfigured(false)}
         phase={currentQ.phase}
         currentIndex={currentIndex}
         totalQuestions={questions.length}
