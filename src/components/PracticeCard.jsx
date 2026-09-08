@@ -1,3 +1,4 @@
+// src/components/PracticeCard.jsx
 import React from 'react';
 import { ChevronRight, BookOpen, Brain, Tag as TagIcon } from 'lucide-react';
 import SUBJECTS_DATA from '../data/system/subjects.json';
@@ -13,7 +14,24 @@ const getSubjectName = (subjectId) => {
   return sub ? sub.name : subjectId;
 };
 
+// Hàm tính tổng số câu hỏi hỗ trợ cả Quiz thường, Chemistry và Quiz-B
+const getQuestionCount = (practice) => {
+  if (Array.isArray(practice.questions)) return practice.questions.length;
+  if (Array.isArray(practice.reactions)) return practice.reactions.length;
+  
+  // Hỗ trợ Quiz-B: tính tổng question của tất cả các practice section
+  if (practice.typeChildren === 'quiz-b' && practice.practice?.sections) {
+    return practice.practice.sections.reduce((total, sec) => {
+      return total + (sec.questions?.length || 0);
+    }, 0);
+  }
+
+  return 0;
+};
+
 const PracticeCard = ({ practice, onClick }) => {
+  const questionCount = getQuestionCount(practice);
+
   return (
     <div 
       onClick={() => onClick(practice)}
@@ -21,7 +39,7 @@ const PracticeCard = ({ practice, onClick }) => {
     >
       {/* Decorative top border for hover effect */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-yellow-500 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
+      
       <div className="mb-4">
         <div className="flex justify-between items-start gap-2 mb-2">
           <h3 className="font-bold text-gray-800 text-lg leading-tight line-clamp-2 group-hover:text-red-600 transition-colors">
@@ -37,8 +55,8 @@ const PracticeCard = ({ practice, onClick }) => {
               {practice.type === 'flashcard' ? <BookOpen size={14} /> : <Brain size={14} />}
             </div>
             <span className="text-xs font-medium uppercase tracking-wide">
-  {(practice.questions?.length || practice.reactions?.length || 0)} questions
-</span>
+              {questionCount} questions
+            </span>
           </div>
 
           {practice.tags && practice.tags.length > 0 && (
