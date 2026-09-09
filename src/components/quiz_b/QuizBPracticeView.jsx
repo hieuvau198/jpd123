@@ -1,10 +1,7 @@
 // src/components/quiz_b/QuizBPracticeView.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Typography, Alert, Tag } from 'antd';
 import { CheckCircle, XCircle, ArrowRight, Brain } from 'lucide-react';
 import SessionResult from '../SessionResult';
-
-const { Title } = Typography;
 
 const shuffleArray = (arr) => {
   const cloned = [...arr];
@@ -19,14 +16,11 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const sections = practiceData?.sections || [];
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
   const [questionsQueue, setQuestionsQueue] = useState([]);
-  
-  // Lưu số câu đúng ở lần đầu cho từng section: { [secIndex]: score }
   const [sectionScores, setSectionScores] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isAllFinished, setIsAllFinished] = useState(false);
 
-  // Tổng số câu hỏi gốc của toàn bộ practice
   const totalOriginalQuestions = useMemo(() => {
     return sections.reduce((acc, sec) => acc + (sec.questions?.length || 0), 0);
   }, [sections]);
@@ -94,7 +88,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     setSelectedOption(null);
     setIsAnswered(false);
 
-    // Tự động chuyển thẳng sang block kế tiếp hoặc màn hình kết quả
     if (nextQueue.length === 0) {
       if (activeSectionIdx + 1 < sections.length) {
         setActiveSectionIdx((prev) => prev + 1);
@@ -133,17 +126,17 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   if (!currentQuestion) return null;
 
   return (
-    <div className="flex flex-col gap-5 w-full">
-      {/* Mục lục section chỉ hiển thị số: 1, 2, 3... */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200/50 touch-pan-x">
+    <div className="w-full flex flex-col gap-6">
+      {/* Thanh mục lục số góc cạnh */}
+      <div className="w-full flex items-center gap-1 overflow-x-auto px-4 pb-2 border-b border-slate-800 scrollbar-none">
         {sections.map((sec, idx) => (
           <button
             key={sec.section_id || idx}
             onClick={() => setActiveSectionIdx(idx)}
-            className={`w-10 h-10 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+            className={`w-10 h-10 rounded-none text-sm font-bold flex items-center justify-center transition-all flex-shrink-0 border ${
               activeSectionIdx === idx
-                ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-105'
-                : 'bg-white/80 text-slate-500 hover:bg-white hover:text-slate-900 border border-slate-200/60'
+                ? 'bg-[#29133b] text-fuchsia-300 border-fuchsia-400 shadow-[0_0_10px_rgba(232,121,249,0.3)]'
+                : 'bg-[#060a22] text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
             }`}
           >
             {idx + 1}
@@ -151,33 +144,35 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
         ))}
       </div>
 
-      {/* Main Practice Card */}
-      <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 shadow-[0_10px_30px_rgb(0,0,0,0.03)] border border-slate-100 flex flex-col">
-        {/* Hộp câu hỏi */}
-        <div className="p-5 sm:p-6 bg-slate-50/70 rounded-2xl mb-5 sm:mb-6 border border-slate-200/50">
-          <Title level={4} className="!m-0 text-slate-800 !text-base sm:!text-lg font-semibold leading-relaxed">
+      {/* Card câu hỏi tràn viền */}
+      <div className="w-full bg-[#05081f] border-y sm:border border-fuchsia-950/70 p-5 sm:p-8 flex flex-col gap-6 rounded-none shadow-xl">
+        {/* Khối nội dung câu hỏi */}
+        <div className="w-full p-5 sm:p-6 bg-[#090f33] border border-cyan-950/60 rounded-none">
+          <div className="text-slate-100 font-semibold text-base sm:text-xl leading-relaxed">
             {!currentQuestion._firstTry && (
-              <Tag color="orange" className="mr-2 mb-1 rounded-lg">Làm lại</Tag>
+              <span className="inline-block px-2.5 py-0.5 bg-amber-950/70 text-amber-300 border border-amber-500/40 text-xs uppercase font-mono mr-3">
+                Làm lại
+              </span>
             )}
             {currentQuestion.prompt}
-          </Title>
+          </div>
         </div>
 
-        {/* Các lựa chọn phương án trắc nghiệm */}
-        <div className="flex flex-col gap-3 mb-4">
+        {/* Lựa chọn trắc nghiệm góc cạnh tràn viền */}
+        <div className="flex flex-col gap-3">
           {currentQuestion.options?.map((opt) => {
             const isSelected = selectedOption === opt.id;
             const isCorrect = opt.id === currentQuestion.correct_option_id;
 
-            let optionClass = 'bg-white text-slate-700 border-slate-200/80 hover:border-purple-300 hover:bg-slate-50/50';
+            let optionClass = 'bg-[#090f33] border-slate-800 text-slate-200 hover:border-cyan-500/60 hover:bg-[#0c1547]';
 
             if (isAnswered) {
               if (isCorrect) {
-                optionClass = 'bg-emerald-50 text-emerald-800 border-emerald-500 font-medium shadow-xs';
+                optionClass = 'bg-[#063024] border-emerald-500 text-emerald-300 font-bold shadow-[0_0_12px_rgba(16,185,129,0.2)]';
               } else if (isSelected && !isCorrect) {
-                optionClass = 'bg-red-50 text-red-700 border-red-400';
+                optionClass = 'bg-[#3b0f1d] border-rose-500 text-rose-300';
               } else {
-                optionClass = 'bg-white/60 text-slate-400 border-slate-200/60 opacity-60';
+                optionClass = 'bg-[#040718] border-slate-900 text-slate-600 opacity-40';
               }
             }
 
@@ -186,18 +181,18 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                 key={opt.id}
                 disabled={isAnswered}
                 onClick={() => handleSelectOption(opt.id)}
-                className={`w-full min-h-[52px] p-3.5 px-4 text-left rounded-2xl border-2 transition-all duration-200 flex justify-between items-center text-sm sm:text-base leading-snug active:scale-[0.99] ${optionClass}`}
+                className={`w-full min-h-[52px] p-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base leading-snug ${optionClass}`}
               >
                 <span className="flex-1 pr-3">
-                  <strong className="mr-2 text-slate-400">{opt.id}.</strong>
+                  <strong className="mr-2 text-slate-400 font-mono">{opt.id}.</strong>
                   {opt.text}
                 </span>
 
                 {isAnswered && isCorrect && (
-                  <CheckCircle size={20} className="text-emerald-600 shrink-0" />
+                  <CheckCircle size={20} className="text-emerald-400 shrink-0" />
                 )}
                 {isAnswered && isSelected && !isCorrect && (
-                  <XCircle size={20} className="text-red-500 shrink-0" />
+                  <XCircle size={20} className="text-rose-400 shrink-0" />
                 )}
               </button>
             );
@@ -206,28 +201,27 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
 
         {/* Giải thích chi tiết */}
         {isAnswered && currentQuestion.explanation && (
-          <Alert
-            message={<span className="font-semibold text-xs sm:text-sm">Giải thích chi tiết</span>}
-            description={<span className="text-xs sm:text-sm leading-relaxed text-slate-600">{currentQuestion.explanation}</span>}
-            type="info"
-            showIcon
-            icon={<Brain size={18} className="text-blue-500" />}
-            className="my-3 rounded-2xl border border-blue-100 bg-blue-50/40"
-          />
+          <div className="w-full p-4 bg-[#0a133d] border border-cyan-500/40 text-cyan-200 text-sm flex gap-3 items-start">
+            <Brain size={20} className="text-cyan-400 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <div className="font-bold uppercase tracking-wider text-xs mb-1 text-cyan-300">
+                Giải thích chi tiết
+              </div>
+              <div className="leading-relaxed text-slate-300">{currentQuestion.explanation}</div>
+            </div>
+          </div>
         )}
 
         {/* Nút Tiếp tục */}
         {isAnswered && (
-          <div className="flex justify-end mt-4">
-            <Button
-              type="primary"
-              size="large"
-              icon={<ArrowRight size={18} />}
+          <div className="flex justify-end mt-2">
+            <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-8 rounded-2xl bg-slate-900 hover:bg-slate-800 border-none font-semibold h-12 text-base flex items-center justify-center gap-2 shadow-sm text-white"
+              className="w-full sm:w-auto px-10 py-3 rounded-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold border-none text-sm tracking-wider uppercase flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all"
             >
-              Tiếp tục
-            </Button>
+              <span>Tiếp tục</span>
+              <ArrowRight size={18} />
+            </button>
           </div>
         )}
       </div>

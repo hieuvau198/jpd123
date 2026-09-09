@@ -1,17 +1,17 @@
 // src/components/quiz_b/QuizBTheoryView.jsx
 import React, { useState } from 'react';
-import { Card, Typography, Button, Table, Alert, Flex } from 'antd';
-import { CheckCircle, XCircle, ArrowRight, HelpCircle, Sparkles } from 'lucide-react';
+import { Table, Typography } from 'antd';
+import { CheckCircle, XCircle, ArrowRight, Sparkles } from 'lucide-react';
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 
-// Bảng màu pastel nhẹ, thanh lịch cho các block kế tiếp
+// Bảng màu tối Cyber-Navy góc cạnh cho các block liên tiếp
 const BLOCK_THEMES = [
-  'bg-slate-50/70 border-slate-200/50 hover:border-slate-300/60',
-  'bg-indigo-50/30 border-indigo-100/70 hover:border-indigo-200/60',
-  'bg-emerald-50/30 border-emerald-100/70 hover:border-emerald-200/60',
-  'bg-amber-50/30 border-amber-100/70 hover:border-amber-200/60',
-  'bg-sky-50/30 border-sky-100/70 hover:border-sky-200/60',
+  'bg-[#080d2c] border-cyan-900/40 text-slate-200',
+  'bg-[#0e163d] border-indigo-900/50 text-slate-200',
+  'bg-[#121136] border-purple-900/40 text-slate-200',
+  'bg-[#1a0f2b] border-fuchsia-950/60 text-slate-200',
+  'bg-[#09152a] border-teal-950/60 text-slate-200',
 ];
 
 const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
@@ -20,15 +20,13 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
 
   if (!sections.length) {
     return (
-      <div className="text-center py-16 bg-white/70 backdrop-blur-md rounded-3xl border border-dashed border-slate-200 text-slate-400">
+      <div className="w-full text-center py-16 text-slate-500 border-y border-slate-800 bg-[#050921]">
         Chưa có nội dung lý thuyết.
       </div>
     );
   }
 
   const currentSection = sections[activeSectionIdx] || sections[0];
-
-  // Lọc tách riêng Quick Quiz ra khỏi khối lý thuyết nội dung chính
   const mainBlocks = (currentSection.blocks || []).filter((b) => b.type !== 'quick_quiz');
   const quickQuizBlocks = (currentSection.blocks || []).filter((b) => b.type === 'quick_quiz');
 
@@ -45,8 +43,8 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
               <span
                 key={sIdx}
                 style={{
-                  fontWeight: span.bold ? 600 : 400,
-                  color: span.color || '#1e293b',
+                  fontWeight: span.bold ? 700 : 400,
+                  color: span.color || '#e2e8f0',
                   fontSize: block.size === 'lg' ? '1.18rem' : block.size === 'sm' ? '0.92rem' : '1.02rem',
                   lineHeight: 1.75,
                 }}
@@ -63,12 +61,12 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
             <img
               src={block.url}
               alt={block.alt || 'Theory visual'}
-              className="rounded-2xl max-h-80 mx-auto object-contain shadow-sm border border-slate-100"
+              className="rounded-none max-h-80 mx-auto object-contain border border-slate-700"
             />
             {block.caption && (
-              <Text type="secondary" className="block mt-2.5 text-xs italic text-slate-500 font-medium">
+              <span className="block mt-2.5 text-xs italic text-slate-400 font-medium">
                 {block.caption}
-              </Text>
+              </span>
             )}
           </div>
         );
@@ -79,7 +77,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
 
         const columns = rawCols.map((col, cIdx) => ({
           title: (
-            <span className="font-semibold text-slate-700 tracking-wide text-xs uppercase" style={{ color: col.color || 'inherit' }}>
+            <span className="font-bold text-cyan-300 tracking-wider text-xs uppercase" style={{ color: col.color || 'inherit' }}>
               {col.text}
             </span>
           ),
@@ -89,7 +87,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
           render: (cell) => (
             <span
               className="text-sm sm:text-base leading-relaxed"
-              style={{ fontWeight: cell?.bold ? 600 : 400, color: cell?.color || '#334155' }}
+              style={{ fontWeight: cell?.bold ? 700 : 400, color: cell?.color || '#cbd5e1' }}
             >
               {cell?.text || cell || ''}
             </span>
@@ -106,15 +104,15 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
         });
 
         return (
-          <div key={bIdx} className="my-2 overflow-x-auto rounded-xl border border-slate-100">
-            {/* Hiển thị tự nhiên toàn bộ chiều dài, tuyệt đối không scroll dọc */}
+          <div key={bIdx} className="my-2 w-full overflow-x-auto border border-slate-800">
+            {/* Hiển thị toàn bộ chiều dài, không scroll dọc */}
             <Table
-              bordered={false}
+              bordered
               size="middle"
               pagination={false}
               columns={columns}
               dataSource={dataSource}
-              className="[&_.ant-table]:!bg-transparent [&_.ant-table-thead_th]:!bg-slate-100/60 [&_.ant-table-tbody_td]:!border-b [&_.ant-table-tbody_td]:!border-slate-100"
+              className="w-full rounded-none [&_.ant-table]:!bg-[#05081e] [&_.ant-table]:!rounded-none [&_.ant-table-thead_th]:!bg-[#0a1138] [&_.ant-table-thead_th]:!border-slate-800 [&_.ant-table-tbody_td]:!border-slate-800/70"
             />
           </div>
         );
@@ -126,17 +124,17 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Mục lục chỉ hiển thị số: 1, 2, 3... kiểu Minimal Circle Chips */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200/50">
+    <div className="w-full flex flex-col gap-6">
+      {/* Mục lục số góc cạnh */}
+      <div className="w-full flex items-center gap-1 overflow-x-auto px-4 pb-2 border-b border-slate-800 scrollbar-none">
         {sections.map((sec, idx) => (
           <button
             key={sec.section_id || idx}
             onClick={() => setActiveSectionIdx(idx)}
-            className={`w-10 h-10 rounded-2xl text-sm font-semibold flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
+            className={`w-10 h-10 rounded-none text-sm font-bold flex items-center justify-center transition-all flex-shrink-0 border ${
               activeSectionIdx === idx
-                ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-105'
-                : 'bg-white/80 text-slate-500 hover:bg-white hover:text-slate-900 border border-slate-200/60'
+                ? 'bg-[#15235c] text-cyan-300 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]'
+                : 'bg-[#060a22] text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
             }`}
           >
             {idx + 1}
@@ -144,100 +142,93 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
         ))}
       </div>
 
-      {/* CARD 1: KHỐI NỘI DUNG LÝ THUYẾT CHÍNH */}
-      <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 shadow-[0_10px_30px_rgb(0,0,0,0.03)] border border-slate-100 flex flex-col gap-4">
-        {/* Số thứ tự block lớn tối giản */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 font-bold text-sm flex items-center justify-center">
+      {/* Card Lý thuyết chính - Tràn viền và không bo góc */}
+      <div className="w-full bg-[#05081f] border-y sm:border border-cyan-950/70 p-5 sm:p-8 flex flex-col gap-5 rounded-none shadow-xl">
+        <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+          <div className="flex items-center gap-3">
+            <span className="px-3 py-1 bg-cyan-950/70 text-cyan-300 font-mono font-bold text-sm border border-cyan-500/30">
               #{activeSectionIdx + 1}
             </span>
-            <span className="text-slate-400 text-sm font-medium">Chuyên mục lý thuyết</span>
+            <span className="text-slate-400 text-xs tracking-wider uppercase font-semibold">Nội dung kiến thức</span>
           </div>
         </div>
 
-        {/* Nội dung các block với màu sắc luân phiên chống nhàm chán */}
-        <div className="flex flex-col gap-4 mt-1">
+        {/* Các block nội dung liền kề đổi màu nền */}
+        <div className="flex flex-col gap-4">
           {mainBlocks.map((blk, idx) => {
-            const themeClass = BLOCK_THEMES[idx % BLOCK_THEMES.length];
+            const theme = BLOCK_THEMES[idx % BLOCK_THEMES.length];
             return (
-              <div
-                key={idx}
-                className={`p-4 sm:p-5 rounded-2xl border transition-all duration-200 ${themeClass}`}
-              >
+              <div key={idx} className={`w-full p-4 sm:p-6 border rounded-none ${theme}`}>
                 {renderBlockContent(blk, idx)}
               </div>
             );
           })}
         </div>
 
-        {/* Nút Điều hướng trang lý thuyết */}
-        <Flex justify="space-between" align="center" className="mt-4 pt-4 border-t border-slate-100">
-          <Button
+        {/* Nút điều hướng */}
+        <div className="flex justify-between items-center mt-4 pt-4 border-t border-slate-800">
+          <button
             disabled={activeSectionIdx === 0}
             onClick={() => setActiveSectionIdx((prev) => prev - 1)}
-            className="rounded-xl h-10 px-5 font-medium border-slate-200 hover:border-slate-400"
+            className="px-6 py-2.5 rounded-none border border-slate-700 bg-[#080d2c] text-slate-300 hover:border-slate-500 disabled:opacity-30 disabled:pointer-events-none text-sm font-semibold"
           >
             Trước
-          </Button>
+          </button>
 
           {activeSectionIdx < sections.length - 1 ? (
-            <Button
-              type="primary"
+            <button
               onClick={() => setActiveSectionIdx((prev) => prev + 1)}
-              className="rounded-xl h-10 px-6 bg-blue-600 hover:bg-blue-500 font-medium border-none shadow-sm shadow-blue-500/20"
+              className="px-6 py-2.5 rounded-none border border-cyan-500 bg-[#0e1c53] text-cyan-300 hover:bg-[#13266f] text-sm font-semibold shadow-[0_0_10px_rgba(6,182,212,0.2)]"
             >
               Kế tiếp
-            </Button>
+            </button>
           ) : (
-            <Button
-              type="primary"
+            <button
               onClick={onGoToPractice}
-              icon={<ArrowRight size={16} />}
-              className="rounded-xl h-10 px-6 bg-slate-900 hover:bg-slate-800 font-semibold border-none shadow-sm text-white flex items-center gap-1.5"
+              className="px-6 py-2.5 rounded-none border border-fuchsia-500 bg-[#341349] text-fuchsia-200 hover:bg-[#43195f] text-sm font-semibold flex items-center gap-2 shadow-[0_0_12px_rgba(217,70,239,0.25)]"
             >
-              Bắt đầu Luyện tập
-            </Button>
+              <span>Luyện tập</span>
+              <ArrowRight size={16} />
+            </button>
           )}
-        </Flex>
+        </div>
       </div>
 
-      {/* CARD 2: PHÂN TÁCH RIÊNG CÂU HỎI TƯƠNG TÁC (QUICK QUIZ) Ở DƯỚI */}
+      {/* Khối Quick Quiz độc lập ở dưới - Tràn viền & góc cạnh */}
       {quickQuizBlocks.length > 0 && (
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="w-full flex flex-col gap-4">
           {quickQuizBlocks.map((block, bIdx) => {
             const selectedOpt = quickAnswers[block.question_id];
             const isAnswered = Boolean(selectedOpt);
             const isCorrect = selectedOpt === block.correct_option_id;
 
             return (
-              <Card
+              <div
                 key={bIdx}
-                className="rounded-3xl shadow-[0_10px_30px_rgb(245,158,11,0.06)] border border-amber-200/80 bg-gradient-to-br from-amber-50/60 via-white to-amber-50/20 overflow-hidden"
-                styles={{ body: { padding: '20px 24px' } }}
+                className="w-full bg-[#070b28] border-y sm:border border-amber-500/30 p-5 sm:p-7 rounded-none"
               >
-                <div className="flex items-center gap-2 text-amber-700 font-semibold text-xs tracking-wider uppercase mb-3">
-                  <Sparkles size={16} className="text-amber-500" />
-                  <span>Câu hỏi tương tác củng cố</span>
+                <div className="flex items-center gap-2 text-amber-400 font-bold text-xs tracking-widest uppercase mb-3">
+                  <Sparkles size={16} />
+                  <span>Câu hỏi củng cố</span>
                 </div>
 
-                <Paragraph className="!text-slate-800 font-medium !text-base sm:!text-lg leading-snug mb-5">
+                <Paragraph className="!text-slate-100 font-medium !text-base sm:!text-lg leading-snug mb-5">
                   {block.prompt}
                 </Paragraph>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {block.options?.map((opt) => {
                     const isSelected = selectedOpt === opt.id;
                     const isRightOpt = opt.id === block.correct_option_id;
 
-                    let btnClass = 'border-slate-200/80 bg-white/90 text-slate-700 hover:border-amber-300';
+                    let btnClass = 'border-slate-800 bg-[#090f36] text-slate-300 hover:border-cyan-500/50 hover:bg-[#0c1447]';
                     if (isAnswered) {
                       if (isRightOpt) {
-                        btnClass = 'border-emerald-500 bg-emerald-50 text-emerald-800 font-semibold shadow-xs';
+                        btnClass = 'border-emerald-500 bg-[#063024] text-emerald-300 font-bold shadow-[0_0_10px_rgba(16,185,129,0.2)]';
                       } else if (isSelected && !isRightOpt) {
-                        btnClass = 'border-red-400 bg-red-50 text-red-700';
+                        btnClass = 'border-rose-500 bg-[#380e1b] text-rose-300';
                       } else {
-                        btnClass = 'opacity-40 bg-white text-slate-400 border-slate-200';
+                        btnClass = 'opacity-30 border-slate-900 bg-[#040718] text-slate-600';
                       }
                     }
 
@@ -246,29 +237,32 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
                         key={opt.id}
                         disabled={isAnswered}
                         onClick={() => handleSelectQuickOption(block.question_id, opt.id)}
-                        className={`w-full p-3.5 px-4 text-left rounded-2xl border-2 transition-all duration-200 flex justify-between items-center text-sm sm:text-base ${btnClass}`}
+                        className={`w-full p-3.5 px-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base ${btnClass}`}
                       >
                         <span className="leading-snug">
-                          <strong className="mr-2 opacity-75">{opt.id}.</strong>
+                          <strong className="mr-2 text-slate-400">{opt.id}.</strong>
                           {opt.text}
                         </span>
-                        {isAnswered && isRightOpt && <CheckCircle size={18} className="text-emerald-600 shrink-0" />}
-                        {isAnswered && isSelected && !isRightOpt && <XCircle size={18} className="text-red-500 shrink-0" />}
+                        {isAnswered && isRightOpt && <CheckCircle size={18} className="text-emerald-400 shrink-0" />}
+                        {isAnswered && isSelected && !isRightOpt && <XCircle size={18} className="text-rose-400 shrink-0" />}
                       </button>
                     );
                   })}
                 </div>
 
                 {isAnswered && block.explanation && (
-                  <Alert
-                    type={isCorrect ? 'success' : 'info'}
-                    showIcon
-                    className="mt-5 rounded-2xl border border-slate-200/70"
-                    message={<span className="font-semibold">{isCorrect ? 'Chính xác!' : 'Giải thích'}</span>}
-                    description={<span className="text-slate-600">{block.explanation}</span>}
-                  />
+                  <div className={`mt-5 p-4 rounded-none border text-sm ${
+                    isCorrect 
+                      ? 'bg-[#04281f]/80 border-emerald-500/50 text-emerald-200' 
+                      : 'bg-[#151d45]/80 border-cyan-500/40 text-cyan-200'
+                  }`}>
+                    <div className="font-bold mb-1 uppercase text-xs tracking-wider">
+                      {isCorrect ? 'Chính xác' : 'Giải thích'}
+                    </div>
+                    <div>{block.explanation}</div>
+                  </div>
                 )}
-              </Card>
+              </div>
             );
           })}
         </div>

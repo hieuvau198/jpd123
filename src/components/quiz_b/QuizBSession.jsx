@@ -1,6 +1,5 @@
 // src/components/quiz_b/QuizBSession.jsx
 import React, { useState } from 'react';
-import { Button } from 'antd';
 import { ArrowLeft, BookOpen, Sparkles } from 'lucide-react';
 import QuizBTheoryView from './QuizBTheoryView';
 import QuizBPracticeView from './QuizBPracticeView';
@@ -9,45 +8,45 @@ const QuizBSession = ({ data, onHome }) => {
   const [activeTab, setActiveTab] = useState('theory');
 
   return (
-    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-8 mt-14 sm:mt-16 font-sans">
-      {/* Header thanh lịch, bo góc lớn và shadow mềm mại */}
-      <div className="flex justify-between items-center mb-6 bg-white/90 backdrop-blur-xl p-3 sm:p-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100/80">
-        <Button
-          type="text"
-          icon={<ArrowLeft size={19} className="text-slate-600 group-hover:-translate-x-0.5 transition-transform" />}
+    <div className="w-full min-h-screen bg-[#020617] text-slate-100 font-sans pb-16 pt-12">
+      {/* Header tràn viền góc cạnh */}
+      <div className="w-full border-b border-cyan-950/80 bg-[#070b24]/90 backdrop-blur-md px-4 py-3 flex justify-between items-center mb-6">
+        <button
           onClick={onHome}
-          className="group !w-11 !h-11 rounded-2xl bg-slate-50 hover:!bg-slate-100/90 border border-slate-200/50 flex items-center justify-center transition-all shadow-xs"
-        />
+          className="w-10 h-10 rounded-none border border-cyan-500/30 bg-[#0c1236] text-cyan-400 hover:border-cyan-400 flex items-center justify-center transition-all"
+        >
+          <ArrowLeft size={18} />
+        </button>
 
-        <div className="flex items-center gap-2 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/40">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('theory')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+            className={`flex items-center gap-2 px-5 py-2 rounded-none text-sm font-semibold border transition-all ${
               activeTab === 'theory'
-                ? 'bg-white text-slate-900 shadow-sm shadow-slate-200/80'
-                : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-[#121c4b] border-cyan-400 text-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.25)]'
+                : 'bg-[#070d29] border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
             }`}
           >
-            <BookOpen size={16} className={activeTab === 'theory' ? 'text-blue-600' : 'text-slate-400'} />
+            <BookOpen size={16} />
             <span>Lý thuyết</span>
           </button>
           
           <button
             onClick={() => setActiveTab('practice')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+            className={`flex items-center gap-2 px-5 py-2 rounded-none text-sm font-semibold border transition-all ${
               activeTab === 'practice'
-                ? 'bg-slate-900 text-white shadow-sm'
-                : 'text-slate-500 hover:text-slate-800'
+                ? 'bg-[#2a133b] border-fuchsia-400 text-fuchsia-300 shadow-[0_0_12px_rgba(232,121,249,0.25)]'
+                : 'bg-[#070d29] border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
             }`}
           >
-            <Sparkles size={16} className={activeTab === 'practice' ? 'text-amber-300' : 'text-slate-400'} />
+            <Sparkles size={16} />
             <span>Luyện tập</span>
           </button>
         </div>
       </div>
 
-      {/* View Content */}
-      <div className="transition-opacity duration-300">
+      {/* Nội dung tràn viền */}
+      <div className="w-full">
         {activeTab === 'theory' ? (
           <QuizBTheoryView
             sections={data?.theory?.sections || []}
