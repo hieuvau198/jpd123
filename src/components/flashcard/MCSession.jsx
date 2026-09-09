@@ -15,6 +15,9 @@ const MCSession = ({ data, onHome, onBack }) => {
   const [autoSpeakQuestion, setAutoSpeakQuestion] = useState(localStorage.getItem('autoSpeakQuestion') !== 'false');
   const [autoSpeakAnswer, setAutoSpeakAnswer] = useState(localStorage.getItem('autoSpeakAnswer') !== 'false');
 
+  const user = JSON.parse(localStorage.getItem('userSession') || '{}');
+const userPrefix = user?.name ? `${user.name} - ` : '';
+
   const speakText = (text, lang = 'en-US') => {
     if (!text || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     try {
@@ -54,8 +57,9 @@ const MCSession = ({ data, onHome, onBack }) => {
     return (
       <SessionResult
         score={finalScore}
-        resultMessage={`"${data?.title || 'current'}": Standard & Listening Completed!`}
-        onBack={onBack}
+        resultMessage={`${userPrefix}${data?.title || 'current'}: Standard & Listening Completed!`}
+backText="Trang chính"
+restartText="Làm lại"
         onRestart={handleRestart}
         practiceId={data.id}
         practiceType="Flashcard"
