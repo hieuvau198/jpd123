@@ -1,10 +1,10 @@
 // src/components/quiz_b/QuizBPracticeView.jsx
-import React, { useState, useEffect } from 'react';
-import { Card, Button, Typography, Flex, Alert, Tag } from 'antd';
-import { CheckCircle, XCircle, ArrowRight, RotateCcw, Brain } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Button, Typography, Alert, Tag } from 'antd';
+import { CheckCircle, XCircle, ArrowRight, Brain } from 'lucide-react';
 import SessionResult from '../SessionResult';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const shuffleArray = (arr) => {
   const cloned = [...arr];
@@ -18,22 +18,24 @@ const shuffleArray = (arr) => {
 const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const sections = practiceData?.sections || [];
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
-
-  // Queue của section hiện tại
   const [questionsQueue, setQuestionsQueue] = useState([]);
-  const [initialCount, setInitialCount] = useState(0);
-  const [firstTryScore, setFirstTryScore] = useState(0);
+  
+  // Lưu số câu đúng ở lần đầu cho từng section: { [secIndex]: score }
+  const [sectionScores, setSectionScores] = useState({});
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [isSectionFinished, setIsSectionFinished] = useState(false);
   const [isAllFinished, setIsAllFinished] = useState(false);
 
-  // Khởi tạo section được chọn
+  // Tổng số câu hỏi gốc của toàn bộ practice
+  const totalOriginalQuestions = useMemo(() => {
+    return sections.reduce((acc, sec) => acc + (sec.questions?.length || 0), 0);
+  }, [sections]);
+
   const loadSection = (idx) => {
     const sec = sections[idx];
     if (!sec || !sec.questions?.length) return;
-
     const config = sec.config || {};
+
     let rawList = sec.questions.map((q) => {
       let opts = q.options ? [...q.options] : [];
       if (config.shuffle_options) opts = shuffleArray(opts);
@@ -49,11 +51,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     }
 
     setQuestionsQueue(rawList);
-    setInitialCount(rawList.length);
-    setFirstTryScore(0);
     setSelectedOption(null);
     setIsAnswered(false);
-    setIsSectionFinished(false);
   };
 
   useEffect(() => {
@@ -70,7 +69,10 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
 
     const isCorrect = optId === currentQuestion.correct_option_id;
     if (isCorrect && currentQuestion._firstTry) {
-      setFirstTryScore((prev) => prev + 1);
+      setSectionScores((prev) => ({
+        ...prev,
+        [activeSectionIdx]: (prev[activeSectionIdx] || 0) + 1,
+      }));
     }
   };
 
@@ -80,7 +82,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     let nextQueue = [...questionsQueue];
     const finishedQ = nextQueue.shift();
 
-    // Nếu trả lời sai và có cấu hình lặp lại câu sai
     if (!isCorrect && secConfig.repeat_wrong_answers) {
       nextQueue.push({
         ...finishedQ,
@@ -93,32 +94,35 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     setSelectedOption(null);
     setIsAnswered(false);
 
+    // Tự động chuyển thẳng sang block kế tiếp hoặc màn hình kết quả
     if (nextQueue.length === 0) {
-      setIsSectionFinished(true);
-    }
-  };
-
-  const handleNextSection = () => {
-    if (activeSectionIdx + 1 < sections.length) {
-      setActiveSectionIdx((prev) => prev + 1);
-    } else {
-      setIsAllFinished(true);
+      if (activeSectionIdx + 1 < sections.length) {
+        setActiveSectionIdx((prev) => prev + 1);
+      } else {
+        setIsAllFinished(true);
+      }
     }
   };
 
   if (isAllFinished) {
+    const totalCorrect = Object.values(sectionScores).reduce((a, b) => a + b, 0);
+    const finalScore = totalOriginalQuestions > 0 
+      ? Math.round((totalCorrect / totalOriginalQuestions) * 100) 
+      : 100;
+
     return (
       <SessionResult
-        score={100}
+        score={finalScore}
         practiceId={quizId}
         practiceType="Quiz"
         practiceName={quizTitle}
-        backText="Quay lại danh sách"
-        restartText="Luyện lại"
-        resultMessage={`Chúc mừng! Bạn đã hoàn thành toàn bộ các phần: ${quizTitle}`}
+        backText="Quay lại"
+        restartText="Luyện tập lại"
+        resultMessage={`Đúng ${totalCorrect}/${totalOriginalQuestions} câu hỏi gốc trên toàn bộ bài.`}
         onBack={onHome}
         onRestart={() => {
           setIsAllFinished(false);
+          setSectionScores({});
           setActiveSectionIdx(0);
           loadSection(0);
         }}
@@ -126,168 +130,107 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     );
   }
 
-  if (isSectionFinished) {
-    const secPercent = initialCount > 0 ? Math.round((firstTryScore / initialCount) * 100) : 0;
-    const hasNextSection = activeSectionIdx + 1 < sections.length;
-
-    return (
-      <Card className="text-center p-4 sm:p-8 rounded-3xl shadow-lg border-0 bg-white max-w-xl mx-auto my-6 sm:my-8">
-        <CheckCircle size={52} className="text-green-500 mx-auto mb-4" />
-        <Title level={3} className="!text-xl sm:!text-2xl">
-          Hoàn thành {currentSection?.title}!
-        </Title>
-        <Text type="secondary" className="text-sm sm:text-base block mb-6">
-          Đúng trong lần đầu: <strong className="text-green-600 text-lg sm:text-xl">{firstTryScore}</strong> / {initialCount} ({secPercent}%)
-        </Text>
-        <div className="flex flex-col sm:flex-row justify-center gap-3 w-full max-w-md mx-auto">
-          <Button
-            icon={<RotateCcw size={16} />}
-            onClick={() => loadSection(activeSectionIdx)}
-            className="rounded-xl h-11 px-5 w-full sm:w-auto"
-          >
-            Luyện lại phần này
-          </Button>
-          <Button
-            type="primary"
-            onClick={handleNextSection}
-            className="bg-blue-600 hover:bg-blue-500 rounded-xl h-11 px-6 font-semibold w-full sm:w-auto"
-          >
-            {hasNextSection ? 'Sang phần tiếp theo' : 'Xem tổng kết'}
-          </Button>
-        </div>
-      </Card>
-    );
-  }
-
   if (!currentQuestion) return null;
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-5 w-full">
-      {/* Thanh tab các phần - Tối ưu cuộn cảm ứng cho mobile */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-gray-100 touch-pan-x">
+    <div className="flex flex-col gap-5 w-full">
+      {/* Mục lục section chỉ hiển thị số: 1, 2, 3... */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200/50 touch-pan-x">
         {sections.map((sec, idx) => (
           <button
             key={sec.section_id || idx}
             onClick={() => setActiveSectionIdx(idx)}
-            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex-shrink-0 ${
+            className={`w-10 h-10 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center transition-all duration-200 flex-shrink-0 ${
               activeSectionIdx === idx
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-105'
+                : 'bg-white/80 text-slate-500 hover:bg-white hover:text-slate-900 border border-slate-200/60'
             }`}
           >
-            {sec.title || `Phần ${idx + 1}`}
+            {idx + 1}
           </button>
         ))}
       </div>
 
-      {/* Practice Question Card */}
-      <Card 
-        className="rounded-2xl sm:rounded-3xl shadow-md border-0 bg-white"
-        styles={{ body: { padding: '16px 14px' } }}
-      >
-        <Flex justify="space-between" align="center" className="mb-3 sm:mb-4 gap-2">
-          <Tag color="purple" className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold uppercase truncate max-w-[200px]">
-            {currentSection?.title}
-          </Tag>
-          <Text strong className="text-gray-500 text-xs sm:text-sm whitespace-nowrap">
-            Còn lại: {questionsQueue.length} câu
-          </Text>
-        </Flex>
-
-        {currentSection?.description && (
-          <Text type="secondary" className="block text-xs mb-3 italic">
-            {currentSection.description}
-          </Text>
-        )}
-
-        {/* Câu hỏi */}
-        <div className="p-3.5 sm:p-5 bg-gray-50 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-gray-100">
-          <Title level={4} className="!m-0 text-slate-800 !text-base sm:!text-lg font-medium leading-relaxed">
+      {/* Main Practice Card */}
+      <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 shadow-[0_10px_30px_rgb(0,0,0,0.03)] border border-slate-100 flex flex-col">
+        {/* Hộp câu hỏi */}
+        <div className="p-5 sm:p-6 bg-slate-50/70 rounded-2xl mb-5 sm:mb-6 border border-slate-200/50">
+          <Title level={4} className="!m-0 text-slate-800 !text-base sm:!text-lg font-semibold leading-relaxed">
             {!currentQuestion._firstTry && (
-              <Tag color="orange" className="mr-2 mb-1">Làm lại câu sai</Tag>
+              <Tag color="orange" className="mr-2 mb-1 rounded-lg">Làm lại</Tag>
             )}
             {currentQuestion.prompt}
           </Title>
         </div>
 
-        {/* Các lựa chọn trắc nghiệm */}
-        <div className="flex flex-col gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+        {/* Các lựa chọn phương án trắc nghiệm */}
+        <div className="flex flex-col gap-3 mb-4">
           {currentQuestion.options?.map((opt) => {
             const isSelected = selectedOption === opt.id;
             const isCorrect = opt.id === currentQuestion.correct_option_id;
 
-            let btnStyle = {
-              height: 'auto',
-              minHeight: '48px',
-              padding: '10px 14px',
-              textAlign: 'left',
-              fontSize: '0.98rem',
-              borderRadius: '12px',
-              whiteSpace: 'normal',
-              wordBreak: 'break-word',
-            };
+            let optionClass = 'bg-white text-slate-700 border-slate-200/80 hover:border-purple-300 hover:bg-slate-50/50';
 
             if (isAnswered) {
               if (isCorrect) {
-                btnStyle = { ...btnStyle, backgroundColor: '#52c41a', color: '#fff', borderColor: '#52c41a' };
+                optionClass = 'bg-emerald-50 text-emerald-800 border-emerald-500 font-medium shadow-xs';
               } else if (isSelected && !isCorrect) {
-                btnStyle = { ...btnStyle, backgroundColor: '#ff4d4f', color: '#fff', borderColor: '#ff4d4f' };
+                optionClass = 'bg-red-50 text-red-700 border-red-400';
+              } else {
+                optionClass = 'bg-white/60 text-slate-400 border-slate-200/60 opacity-60';
               }
             }
 
             return (
-              <Button
+              <button
                 key={opt.id}
-                size="large"
-                block
-                style={btnStyle}
                 disabled={isAnswered}
                 onClick={() => handleSelectOption(opt.id)}
-                className="transition-all hover:border-purple-400"
+                className={`w-full min-h-[52px] p-3.5 px-4 text-left rounded-2xl border-2 transition-all duration-200 flex justify-between items-center text-sm sm:text-base leading-snug active:scale-[0.99] ${optionClass}`}
               >
-                <div className="flex justify-between items-center w-full gap-2 text-left">
-                  <span className="flex-1 leading-snug">
-                    <strong className="mr-1">{opt.id}.</strong> {opt.text}
-                  </span>
-                  {isAnswered && isCorrect && (
-                    <CheckCircle size={20} className="text-white flex-shrink-0" />
-                  )}
-                  {isAnswered && isSelected && !isCorrect && (
-                    <XCircle size={20} className="text-white flex-shrink-0" />
-                  )}
-                </div>
-              </Button>
+                <span className="flex-1 pr-3">
+                  <strong className="mr-2 text-slate-400">{opt.id}.</strong>
+                  {opt.text}
+                </span>
+
+                {isAnswered && isCorrect && (
+                  <CheckCircle size={20} className="text-emerald-600 shrink-0" />
+                )}
+                {isAnswered && isSelected && !isCorrect && (
+                  <XCircle size={20} className="text-red-500 shrink-0" />
+                )}
+              </button>
             );
           })}
         </div>
 
-        {/* Giải thích chi tiết sau khi làm */}
+        {/* Giải thích chi tiết */}
         {isAnswered && currentQuestion.explanation && (
           <Alert
-            message={<span className="font-bold text-xs sm:text-sm">Giải thích chi tiết</span>}
-            description={<span className="text-xs sm:text-sm">{currentQuestion.explanation}</span>}
+            message={<span className="font-semibold text-xs sm:text-sm">Giải thích chi tiết</span>}
+            description={<span className="text-xs sm:text-sm leading-relaxed text-slate-600">{currentQuestion.explanation}</span>}
             type="info"
             showIcon
-            icon={<Brain size={18} />}
-            className="mb-4 sm:mb-6 rounded-xl"
+            icon={<Brain size={18} className="text-blue-500" />}
+            className="my-3 rounded-2xl border border-blue-100 bg-blue-50/40"
           />
         )}
 
-        {/* Nút Next / Tiếp tục */}
+        {/* Nút Tiếp tục */}
         {isAnswered && (
-          <div className="flex justify-stretch sm:justify-end mt-2">
+          <div className="flex justify-end mt-4">
             <Button
               type="primary"
               size="large"
               icon={<ArrowRight size={18} />}
               onClick={handleNext}
-              className="w-full sm:w-auto px-8 rounded-xl bg-slate-900 hover:bg-slate-800 border-none font-semibold h-11 text-base flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 rounded-2xl bg-slate-900 hover:bg-slate-800 border-none font-semibold h-12 text-base flex items-center justify-center gap-2 shadow-sm text-white"
             >
               Tiếp tục
             </Button>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 };
