@@ -304,7 +304,7 @@ const FlashcardSession = ({ data, onBack }) => {
   const isCurrentFlagged = flaggedKeys.has(currentCard.cardKey);
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4">
+    <div className="max-w-2xl mx-auto py-8 px-4 mt-8">
       {/* Top Header Controls Bar */}
       <Flex justify="space-between" align="center" className="mb-8">
         <Button 
@@ -312,7 +312,7 @@ const FlashcardSession = ({ data, onBack }) => {
           onClick={onBack}
           className="rounded-full bg-black/40 hover:bg-black/60 text-white/90 shadow-md border border-white/10 font-medium backdrop-blur-md"
         >
-          Thoát
+          
         </Button>
 
         {/* Progress & Flag Counter Badges */}
@@ -361,92 +361,82 @@ const FlashcardSession = ({ data, onBack }) => {
       </Flex>
 
       {/* 3D Flip Card Container with Enhanced Spacing */}
-      <div 
-        className="perspective-container select-none mb-8 mt-2"
-        style={{ width: '100%', height: 390, cursor: 'pointer' }}
+      {/* Flashcard Container: Tràn viền ngang với một chút border radius để dễ nhìn */}
+      <div          
+        className="select-none mb-8 mt-2 relative w-full cursor-pointer px-2 sm:px-4"
+        style={{ minHeight: 390 }}
         onClick={handleFlip}
       >
-        <div className={`card-inner ${isFlipped ? 'flipped' : ''}`}>
-          {/* Modern Front Face */}
-          <div 
-            className="card-front rounded-3xl p-8 bg-gradient-to-br from-slate-900/90 via-slate-800/95 to-slate-900/95 backdrop-blur-xl shadow-2xl flex flex-col justify-between border border-cyan-500/25 relative overflow-hidden"
-          >
-            {/* Subtle glow highlight in corner */}
-            <div className="absolute top-0 right-0 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="w-full h-full min-h-[390px] p-6 sm:p-10 bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-950/95 backdrop-blur-xl shadow-2xl flex flex-col justify-between border border-cyan-500/25 relative overflow-hidden rounded-2xl sm:rounded-3xl">
+          {/* Subtle glow highlight in corner */}
+          <div className="absolute top-0 right-0 w-36 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <Flex justify="space-between" align="center" className="relative z-10 px-2 sm:px-4 mb-4">
+            <div>
+              {isCurrentFlagged && (
+                <span className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40">
+                  <BookmarkCheck size={13} /> Lưu
+                </span>
+              )}
+            </div>
+            <Button
+              type="text"
+              shape="circle"
+              icon={<Volume2 size={30} className="text-cyan-400 hover:text-cyan-300 hover:scale-110 transition-transform" />}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSpeech(currentCard.speak);
+              }}
+            />
+          </Flex>
 
-            <Flex justify="space-between" align="center" className="relative z-10">
-              <div>
-                {isCurrentFlagged && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40">
-                    <BookmarkCheck size={13} /> Sẽ lặp lại
-                  </span>
-                )}
-              </div>
-              <Button
-                type="text"
-                shape="circle"
-                icon={<Volume2 size={30} className="text-cyan-400 hover:text-cyan-300 hover:scale-110 transition-transform" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSpeech(currentCard.speak);
-                }}
-              />
-            </Flex>
-
-            <Flex vertical align="center" justify="center" className="flex-1 px-4 relative z-10">
-              <Title level={2} className="!m-0 !text-cyan-300 text-center tracking-tight font-bold drop-shadow-sm">
+          {/* Phần nội dung chính: Cố định vị trí các phần tử */}
+          <Flex vertical align="center" justify="center" className="flex-1 px-2 sm:px-4 relative z-10 w-full my-auto gap-4">
+            {/* Từ gốc (Front) */}
+            <div className="text-center w-full px-2">
+              <Title 
+                level={2} 
+                className="!m-0 !text-cyan-300 tracking-tight font-bold drop-shadow-sm break-words whitespace-normal text-2xl sm:text-3xl md:text-4xl"
+              >
                 {currentCard.front}
               </Title>
+            </div>
+            
+            {/* IPA */}
+            <div className="text-center w-full min-h-[24px] flex items-center justify-center">
               {currentCard.ipa && (
-                <Text className="text-slate-400 font-mono text-base mt-2 tracking-wide">
-                  /{currentCard.ipa}/
+                <Text className="text-slate-400 font-mono text-sm sm:text-base tracking-wide">
+                  /{currentCard.ipa}/[cite: 1]
                 </Text>
               )}
-            </Flex>
-
-            <div className="text-center text-xs text-slate-400 font-medium relative z-10 opacity-75">
-              Chạm vào thẻ hoặc nhấn Space để xoay
             </div>
-          </div>
 
-          {/* Back Face */}
-          <div 
-            className="card-back rounded-3xl p-8 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl flex flex-col justify-between border border-indigo-500/30 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            <Flex justify="space-between" align="center" className="relative z-10">
-              <div>
-                {isCurrentFlagged && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40">
-                    <BookmarkCheck size={13} /> Sẽ lặp lại sau 5 thẻ
-                  </span>
-                )}
+            {/* Text nghĩa (Back): Màu trắng tím (#e9d5ff). 
+                Luôn giữ chỗ trong DOM bằng visibility/opacity để card không bao giờ bị giật/nhảy khi bấm hiện/ẩn */}
+            <div className="text-center w-full px-2">
+              <div 
+                className={`transition-none w-full ${
+                  isFlipped ? 'opacity-100 visible' : 'opacity-0 invisible select-none'
+                }`}
+              >
+                <Title 
+                  level={2} 
+                  className="!m-0 !text-[#e9d5ff] font-bold drop-shadow-sm break-words whitespace-normal text-2xl sm:text-3xl md:text-4xl"
+                >
+                  {currentCard.back || ' '}
+                </Title>
               </div>
-              <Button
-                type="text"
-                shape="circle"
-                icon={<Volume2 size={30} className="text-emerald-400 hover:text-emerald-300 hover:scale-110 transition-transform" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSpeech(currentCard.speak);
-                }}
-              />
-            </Flex>
-
-            <Flex vertical align="center" justify="center" className="flex-1 px-4 relative z-10">
-              <Title level={3} className="!m-0 !text-emerald-400 text-center font-semibold leading-relaxed drop-shadow-sm">
-                {currentCard.back}
-              </Title>
-              
-            </Flex>
-
-            <div className="text-center text-xs text-slate-400 font-medium relative z-10 opacity-75">
-              Chạm vào thẻ hoặc nhấn Space để xoay lại
             </div>
-          </div>
+          </Flex>
+
+          
         </div>
       </div>
+
+
+
+
+
 
       {/* Control Buttons Footer */}
       <Flex justify="center" align="center" gap="middle" wrap="wrap">
@@ -457,7 +447,7 @@ const FlashcardSession = ({ data, onBack }) => {
           disabled={currentIndex === 0}
           className="min-w-[100px] h-12 rounded-2xl bg-black/40 hover:bg-black/60 text-white font-medium border border-white/10 backdrop-blur-md shadow-md"
         >
-          Trước
+          
         </Button>
 
         <Button
@@ -467,7 +457,7 @@ const FlashcardSession = ({ data, onBack }) => {
           onClick={handleFlip}
           className="min-w-[125px] h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-semibold shadow-lg shadow-indigo-500/25 border-0 text-white"
         >
-          Xoay
+          
         </Button>
 
         {/* Học lại (Toggle Flag) Button */}
@@ -481,7 +471,7 @@ const FlashcardSession = ({ data, onBack }) => {
               : 'bg-black/40 text-amber-300/90 border border-white/10 hover:bg-black/60'
           }`}
         >
-          {isCurrentFlagged ? 'Bỏ học lại' : 'Học lại'}
+          
         </Button>
 
         {/* Next Button / Final Card Stop */}
@@ -492,7 +482,7 @@ const FlashcardSession = ({ data, onBack }) => {
           disabled={currentIndex === cards.length - 1}
           className="min-w-[100px] h-12 rounded-2xl bg-black/40 hover:bg-black/60 text-white font-medium border border-white/10 backdrop-blur-md shadow-md disabled:opacity-40"
         >
-          {currentIndex === cards.length - 1 ? 'Hết thẻ' : 'Tiếp theo'}
+          {currentIndex === cards.length - 1 ? 'Hết' : ''}
         </Button>
       </Flex>
     </div>
