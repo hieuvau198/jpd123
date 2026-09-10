@@ -2,32 +2,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Home, Loader2, Library, Filter } from 'lucide-react';
-import { getQuizzesByTag, getAllQuizzes } from '../firebase/quizService'; 
+import { getQuizzesByTag } from '../firebase/quizService';
 import PracticeCard from '../components/PracticeCard';
 import availableTags from '../data/system/tags.json';
 
 const QuizList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams(); 
-  
-  // Mặc định nếu không có tag trên URL, có thể lấy 'all' hoặc tag đầu tiên
-  const selectedTag = searchParams.get('tag') || 'all';
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Default tag is 'english-core' if no tag is specified in URL params
+  const selectedTag = searchParams.get('tag') || 'english-core';
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       try {
-        let res = [];
-        if (selectedTag === 'all') {
-          // Lấy toàn bộ quiz (bao gồm cả quiz thường và quiz-b)
-          res = await getAllQuizzes();
-        } else {
-          // Lấy theo tag
-          res = await getQuizzesByTag(selectedTag);
-        }
-        setData(res || []);
+        const res = await getQuizzesByTag(selectedTag);
+        // Natural numerical sort by title (or fallback to id) matching WordList
+        const sortedRes = [...(res || [])].sort((a, b) => {
+          const textA = a.title || a.id || '';
+          const textB = b.title || b.id || '';
+          return textA.localeCompare(textB, undefined, { numeric: true, sensitivity: 'base' });
+        });
+        setData(sortedRes);
       } catch (error) {
         console.error("Error fetching quizzes:", error);
         setData([]);
@@ -35,7 +34,6 @@ const QuizList = () => {
         setLoading(false);
       }
     };
-
     fetch();
   }, [selectedTag]);
 
@@ -45,45 +43,27 @@ const QuizList = () => {
       <div className="flex flex-col gap-6 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <button 
-              onClick={() => navigate('/')}
-              className="flex items-center gap-2 text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-all mb-2 -ml-2 w-fit"
-            >
-              <Home size={18}/>
-              <span className="font-medium">Back Home</span>
-            </button>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
+            
+            <h2 className="mt-8 text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
               <Library className="text-yellow-300" />
-              Quiz Library
+              Grammar
             </h2>
           </div>
         </div>
 
-        {/* Tag Filter Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          <div className="flex items-center gap-2 text-white/80 mr-2">
-            <Filter size={20} />
-            <span className="text-sm font-medium whitespace-nowrap">Filter by:</span>
+        {/* Tag Filter Area (Styled identical to WordList) */}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1.5 text-white/80 mr-2">
+            <Filter size={18} />
+            <span className="text-sm font-medium">Bộ lọc:</span>
           </div>
-          
-          {/* Nút All */}
-          <button
-            onClick={() => setSearchParams({ tag: 'all' })}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
-              ${selectedTag === 'all' 
-                ? 'bg-yellow-400 text-black shadow-lg scale-105 font-bold' 
-                : 'bg-white/10 text-white hover:bg-white/20'}`}
-          >
-            All
-          </button>
-
           {availableTags.map((tag) => (
             <button
               key={tag.id}
               onClick={() => setSearchParams({ tag: tag.id })}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                ${selectedTag === tag.id 
-                  ? 'bg-yellow-400 text-black shadow-lg scale-105 font-bold' 
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                ${selectedTag === tag.id
+                  ? 'bg-yellow-400 text-black shadow-lg scale-105'
                   : 'bg-white/10 text-white hover:bg-white/20'}`}
             >
               {tag.name}
@@ -96,11 +76,15 @@ const QuizList = () => {
         <div className="flex justify-center items-center h-64">
           <Loader2 className="w-12 h-12 text-white animate-spin opacity-80" />
         </div>
+      ) : !selectedTag ? (
+        <div className="flex justify-center items-center h-64 text-white/60 text-lg">
+          Please select a category above to load quizzes.
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {data.length > 0 ? (
             data.map((item) => (
-              <PracticeCard 
+              <PracticeCard
                 key={item.id}
                 practice={item}
                 onClick={() => navigate(`/quiz/${item.id}${selectedTag ? `?tag=${selectedTag}` : ''}`)}
