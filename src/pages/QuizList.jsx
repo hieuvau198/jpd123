@@ -22,8 +22,8 @@ const QuizList = () => {
         const res = await getQuizzesByTag(selectedTag);
         // Natural numerical sort by title (or fallback to id) matching WordList
         const sortedRes = [...(res || [])].sort((a, b) => {
-          const textA = a.title || a.id || '';
-          const textB = b.title || b.id || '';
+          const textA = a.id || a.title ||  '';
+          const textB = b.id || b.title || '';
           return textA.localeCompare(textB, undefined, { numeric: true, sensitivity: 'base' });
         });
         setData(sortedRes);
