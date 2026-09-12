@@ -17,13 +17,15 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     sentences: false,
   });
   const [isConfigured, setIsConfigured] = useState(false);
-
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [wrongIds, setWrongIds] = useState(new Set());
   const [totalUniqueQuestions, setTotalUniqueQuestions] = useState(0);
+
+  // Theo dõi nếu câu hiện tại người dùng có bấm Hint
+  const [hintUsedCurrent, setHintUsedCurrent] = useState(false);
 
   // Audio Settings State
   const [showSettings, setShowSettings] = useState(false);
@@ -58,6 +60,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     setWrongIds(new Set());
     setIsFinished(false);
     setSelectedAnswer(null);
+    setHintUsedCurrent(false);
     setIsConfigured(true);
   };
 
@@ -90,10 +93,17 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     let needsRequeue = false;
 
     if (!isCorrect) {
+      // Câu sai: cần làm lại 2 lần và xáo trộn đáp án
       updatedQ.correctAttemptsNeeded = 2;
       updatedQ.options = shuffleArray(updatedQ.options);
       needsRequeue = true;
+    } else if (hintUsedCurrent) {
+      // Câu đúng nhưng CÓ BẤM HINT: lặp lại 1 lần để kiểm tra lại trí nhớ, không trừ điểm
+      updatedQ.correctAttemptsNeeded = 1;
+      updatedQ.options = shuffleArray(updatedQ.options);
+      needsRequeue = true;
     } else {
+      // Câu đúng thông thường: giảm số lần thử cần thiết
       updatedQ.correctAttemptsNeeded = (updatedQ.correctAttemptsNeeded || 1) - 1;
       if (updatedQ.correctAttemptsNeeded > 0) {
         updatedQ.options = shuffleArray(updatedQ.options);
@@ -114,6 +124,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     if (currentIndex + 1 < newLength) {
       setCurrentIndex((prev) => prev + 1);
       setSelectedAnswer(null);
+      setHintUsedCurrent(false); // Reset trạng thái hint cho câu tiếp theo
     } else {
       setIsFinished(true);
     }
@@ -122,10 +133,10 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   const handleAnswerClick = (ans) => {
     if (selectedAnswer !== null) return;
     setSelectedAnswer(ans);
-
     const currentQ = questions[currentIndex];
     const isCorrect = ans === currentQ.correctAnswer;
 
+    // Chỉ trừ điểm nếu chọn sai (bấm hint không bị thêm vào wrongIds)
     if (!isCorrect) {
       setWrongIds((prev) => new Set(prev).add(currentQ.id));
     }
@@ -140,7 +151,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
     }, delay);
   };
 
-  // --- Entry Screen: Content Selector ---
+  // Entry Screen: Content Selector
   if (!isConfigured) {
     const isAnySelected = selectedTypes.words || selectedTypes.phrases || selectedTypes.sentences;
     return (
@@ -195,7 +206,7 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
   if (questions.length === 0) {
     return (
       <div className="text-center py-20">
-        <Title level={4} className="text-white">Không tìm thấy câu hỏi phù hợp với lựa chọn!</Title>
+        <Title level={4} className="text-white">Không tìm thấy câu hỏi phù hợp!</Title>
         <Button onClick={() => setIsConfigured(false)} className="mt-4 rounded-xl">
           Chọn lại
         </Button>
@@ -233,7 +244,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         autoSpeakAnswer={autoSpeakAnswer}
         setAutoSpeakAnswer={setAutoSpeakAnswer}
       />
-
       <TypeBHeader
         onBack={() => setIsConfigured(false)}
         phase={currentQ.phase}
@@ -242,9 +252,11 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
         currentScore={currentScore}
         onOpenSettings={() => setShowSettings(true)}
       />
-
-      <TypeBCard question={currentQ} onSpeak={speakText} />
-
+      <TypeBCard 
+        question={currentQ} 
+        onSpeak={speakText} 
+        onUseHint={() => setHintUsedCurrent(true)}
+      />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
         {currentQ.options.map((opt, idx) => {
           let bgColor = '#fff', borderColor = '#d9d9d9', textColor = '#333';
@@ -255,7 +267,6 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
               bgColor = '#fff2f0'; borderColor = '#ffccc7'; textColor = '#f5222d';
             }
           }
-
           return (
             <Card
               key={idx}
@@ -270,13 +281,15 @@ const TypeBMCSession = ({ data, onHome, onBack }) => {
                 height: '100%',
                 minHeight: '120px'
               }}
-              bodyStyle={{
-                padding: '20px',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center'
+              styles={{
+                body: {
+                  padding: '20px',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center'
+                }
               }}
             >
               <Text strong style={{ fontSize: '1.1rem', color: textColor }}>

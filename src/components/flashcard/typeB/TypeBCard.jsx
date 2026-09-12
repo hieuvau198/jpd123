@@ -5,15 +5,23 @@ import { Lightbulb, Volume2 } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
-const TypeBCard = ({ question, onSpeak }) => {
+const TypeBCard = ({ question, onSpeak, onUseHint }) => {
   const [showHint, setShowHint] = useState(false);
 
-  // Tự động tắt hint khi chuyển sang câu mới
+  // Tự động tắt hint khi chuyển sang câu khác
   useEffect(() => {
     setShowHint(false);
   }, [question?.id]);
 
   if (!question) return null;
+
+  const handleToggleHint = () => {
+    const nextState = !showHint;
+    setShowHint(nextState);
+    if (nextState && onUseHint) {
+      onUseHint();
+    }
+  };
 
   return (
     <Card
@@ -26,7 +34,6 @@ const TypeBCard = ({ question, onSpeak }) => {
       }}
     >
       <Title level={2}>{question.displayQuestion}</Title>
-
       <Flex justify="center" gap="small" style={{ marginTop: 10 }}>
         <Button
           type="dashed"
@@ -35,18 +42,16 @@ const TypeBCard = ({ question, onSpeak }) => {
         >
           Read Aloud
         </Button>
-
         {question.hint && (
           <Button
             type="dashed"
             icon={<Lightbulb size={16} />}
-            onClick={() => setShowHint(!showHint)}
+            onClick={handleToggleHint}
           >
             Hint
           </Button>
         )}
       </Flex>
-
       {showHint && question.hint && (
         <div
           style={{
