@@ -1,130 +1,117 @@
 // src/components/admin/UserManager/UserModal.jsx
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, message } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
 import gradesData from '../../../data/system/grades.json';
 
 const { Option } = Select;
 
-const UserModal = ({ visible, onClose, onSubmit, user = null, groups = [] }) => {
+const UserModal = ({ open, onCancel, onSubmit, user = null, groups = [], loading = false }) => {
   const [form] = Form.useForm();
   const isEditing = Boolean(user);
 
   useEffect(() => {
-    if (visible) {
+    if (open) {
       if (user) {
+        const userGroupIds = groups
+          .filter((g) => g.studentIds && g.studentIds.includes(user.id))
+          .map((g) => g.id);
         form.setFieldsValue({
-          username: user.username || '',
-          name: user.name || '',
-          password: user.password || '',
+          name: user.name,
+          username: user.username,
+          password: user.password,
           role: user.role || 'Student',
-          grade: user.grade || 'Khác',
-          groupIds: user.groupIds || [],
+          grade: user.grade || gradesData[0],
+          groupIds: userGroupIds,
         });
       } else {
         form.resetFields();
         form.setFieldsValue({
           role: 'Student',
-          grade: 'Khác',
-          groupIds: [],
+          grade: gradesData[0],
         });
       }
     }
-  }, [visible, user, form]);
+  }, [open, user, groups, form]);
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
       await onSubmit(values);
-      onClose();
     } catch (error) {
-      if (error?.errorFields) {
-        return;
-      }
-      message.error(error.message || 'Failed to save user');
+      // Validate failed, form tự hiển thị lỗi
     }
   };
 
   return (
     <Modal
-      title={isEditing ? 'Edit User' : 'Create Student / User'}
-      open={visible}
+      title={isEditing ? 'Edit User' : 'Create User'}
+      open={open}
       onOk={handleOk}
-      onCancel={onClose}
-      destroyOnClose
-      okText={isEditing ? 'Update' : 'Create'}
+      onCancel={onCancel}
+      confirmLoading={loading}
+      destroyOnHidden
     >
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={{
-          role: 'Student',
-          grade: 'Khác',
-          groupIds: [],
-        }}
-      >
-        <Form.Item
-          name="username"
-          label="Username"
-          rules={[
-            { required: true, message: 'Please enter a username' },
-            { pattern: /^[a-zA-Z0-9_.-]+$/, message: 'Username cannot contain special characters or spaces' },
-          ]}
-        >
-          <Input placeholder="e.g. lop9thinhlh" disabled={isEditing} />
-        </Form.Item>
-
+      <Form form={form} layout="vertical">
         <Form.Item
           name="name"
           label="Full Name"
-          rules={[{ required: true, message: 'Please enter the user full name' }]}
+          rules={[{ required: true, message: 'Please enter full name' }]}
         >
-          <Input placeholder="e.g. Le Hung Thinh" />
+          <Input placeholder="Nguyễn Khánh Băng" />
+        </Form.Item>
+
+        <Form.Item
+          name="username"
+          label="Username"
+          rules={[{ required: true, message: 'Please enter username' }]}
+        >
+          <Input placeholder="khanhbang" disabled={isEditing} />
         </Form.Item>
 
         <Form.Item
           name="password"
           label="Password"
-          rules={[{ required: true, message: 'Please enter a password' }]}
+          rules={[{ required: true, message: 'Please enter password' }]}
         >
-          <Input.Password placeholder="Enter password" />
+          <Input.Password placeholder="Password" />
         </Form.Item>
 
-        <Form.Item
-          name="role"
-          label="Role"
-          rules={[{ required: true, message: 'Please select a role' }]}
-        >
-          <Select placeholder="Select role">
-            <Option value="Student">Student</Option>
-            <Option value="Admin">Admin</Option>
-          </Select>
-        </Form.Item>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <Form.Item
+            name="role"
+            label="Role"
+            rules={[{ required: true, message: 'Select a role' }]}
+          >
+            <Select>
+              <Option value="Student">Student</Option>
+              <Option value="Admin">Admin</Option>
+            </Select>
+          </Form.Item>
 
-        <Form.Item
-          name="grade"
-          label="Grade"
-          rules={[{ required: true, message: 'Please select a grade' }]}
-        >
-          <Select placeholder="Select grade">
-            {gradesData.map((grade) => (
-              <Option key={grade} value={grade}>
-                {grade}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        {groups && groups.length > 0 && (
-          <Form.Item name="groupIds" label="Assign Groups">
-            <Select mode="multiple" placeholder="Select groups" allowClear>
-              {groups.map((group) => (
-                <Option key={group.id} value={group.id}>
-                  {group.name || group.title || group.id}
+          <Form.Item
+            name="grade"
+            label="Grade"
+            rules={[{ required: true, message: 'Please select a grade' }]}
+          >
+            <Select placeholder="Select Grade" showSearch>
+              {gradesData.map((grade) => (
+                <Option key={grade} value={grade}>
+                  {grade}
                 </Option>
               ))}
             </Select>
           </Form.Item>
-        )}
+        </div>
+
+        <Form.Item name="groupIds" label="Groups">
+          <Select mode="multiple" placeholder="Assign to groups">
+            {groups.map((group) => (
+              <Option key={group.id} value={group.id}>
+                {group.name || group.id}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
       </Form>
     </Modal>
   );
