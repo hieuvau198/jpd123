@@ -1,6 +1,6 @@
 // src/components/flashcard/view/FlashcardCard.jsx
 import React from 'react';
-import { Flex, Button, Typography } from 'antd';
+import { Flex, Button, Typography, Tooltip } from 'antd';
 import { Volume2, BookmarkCheck } from 'lucide-react';
 
 const { Title, Text } = Typography;
@@ -23,15 +23,17 @@ const FlashcardCard = ({ currentCard, isFlipped, isFlagged, onFlip, onManualSpee
               </span>
             )}
           </div>
-          <Button
-            type="text"
-            shape="circle"
-            icon={<Volume2 size={30} className="text-cyan-400 hover:text-cyan-300 hover:scale-110 transition-transform" />}
-            onClick={(e) => {
-              e.stopPropagation();
-              onManualSpeech();
-            }}
-          />
+          <Tooltip title="Nghe phát âm">
+            <Button
+              type="text"
+              shape="circle"
+              icon={<Volume2 size={30} className="text-cyan-400 hover:text-cyan-300 hover:scale-110 transition-transform" />}
+              onClick={(e) => {
+                e.stopPropagation();
+                onManualSpeech();
+              }}
+            />
+          </Tooltip>
         </Flex>
 
         <Flex vertical align="center" justify="center" className="flex-1 px-2 sm:px-4 relative z-10 w-full my-auto gap-4">
