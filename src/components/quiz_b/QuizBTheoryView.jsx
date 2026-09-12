@@ -74,10 +74,9 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
       case 'table': {
         const rawCols = block.columns || (Array.isArray(block.headers?.[0]) ? block.headers[0] : block.headers) || [];
         const rawRows = block.rows || [];
-
         const columns = rawCols.map((col, cIdx) => ({
           title: (
-            <span className="font-bold text-cyan-300 tracking-wider text-xs uppercase" style={{ color: col.color || 'inherit' }}>
+            <span className="font-bold text-cyan tracking-wider text-xs uppercase" style={{ color: col.color || 'inherit' }}>
               {col.text}
             </span>
           ),
@@ -104,15 +103,16 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
         });
 
         return (
-          <div key={bIdx} className="my-2 w-full overflow-x-auto border border-slate-800">
-            {/* Hiển thị toàn bộ chiều dài, không scroll dọc */}
+          <div key={bIdx} className="my-2 w-full overflow-x-auto overflow-y-hidden border border-slate-800">
+            {/* Tắt scroll dọc, cho phép table bung đủ chiều cao tự nhiên */}
             <Table
               bordered
               size="middle"
               pagination={false}
               columns={columns}
               dataSource={dataSource}
-              className="w-full rounded-none [&_.ant-table]:!bg-[#05081e] [&_.ant-table]:!rounded-none [&_.ant-table-thead_th]:!bg-[#0a1138] [&_.ant-table-thead_th]:!border-slate-800 [&_.ant-table-tbody_td]:!border-slate-800/70"
+              scroll={{ x: 'max-content' }}
+              className="w-full rounded-none [&_.ant-table]:!bg-[#05081e] [&_.ant-table]:!rounded-none [&_.ant-table-body]:!overflow-y-hidden [&_.ant-table-content]:!overflow-y-hidden [&_.ant-table-thead_th]:!bg-[#0a1138] [&_.ant-table-thead_th]:!border-slate-800 [&_.ant-table-tbody_td]:!border-slate-800/70"
             />
           </div>
         );
