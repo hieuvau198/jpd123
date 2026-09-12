@@ -1,20 +1,39 @@
 // src/pages/QuizList.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Home, Loader2, Library, Filter } from 'lucide-react';
+import { Loader2, Library, Filter } from 'lucide-react';
 import { getQuizzesByTag } from '../firebase/quizService';
+import { getUserHistory } from '../firebase/historyService';
 import PracticeCard from '../components/PracticeCard';
 import availableTags from '../data/system/tags.json';
 
 const QuizList = () => {
   const [data, setData] = useState([]);
+  const [userHistory, setUserHistory] = useState({});
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  
   // Default tag is 'english-core' if no tag is specified in URL params
   const selectedTag = searchParams.get('tag') || 'english-core';
   const navigate = useNavigate();
 
+  // 1. Tải lịch sử làm bài của User hiện tại
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('userSession') || '{}');
+        if (storedUser?.id) {
+          const historyMap = await getUserHistory(storedUser.id);
+          setUserHistory(historyMap || {});
+        }
+      } catch (err) {
+        console.error("Failed to load user history in QuizList:", err);
+      }
+    };
+    fetchHistory();
+  }, []);
+
+  // 2. Tải danh sách bài trắc nghiệm / Grammar theo tag
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
@@ -22,7 +41,7 @@ const QuizList = () => {
         const res = await getQuizzesByTag(selectedTag);
         // Natural numerical sort by title (or fallback to id) matching WordList
         const sortedRes = [...(res || [])].sort((a, b) => {
-          const textA = a.id || a.title ||  '';
+          const textA = a.id || a.title || '';
           const textB = b.id || b.title || '';
           return textA.localeCompare(textB, undefined, { numeric: true, sensitivity: 'base' });
         });
@@ -43,7 +62,6 @@ const QuizList = () => {
       <div className="flex flex-col gap-6 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            
             <h2 className="mt-8 text-3xl sm:text-4xl font-bold text-white drop-shadow-md flex items-center gap-3">
               <Library className="text-yellow-300" />
               Grammar
@@ -51,11 +69,11 @@ const QuizList = () => {
           </div>
         </div>
 
-        {/* Tag Filter Area (Styled identical to WordList) */}
+        {/* Tag Filter Area */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1.5 text-white/80 mr-2">
             <Filter size={18} />
-            <span className="text-sm font-medium">Bộ lọc:</span>
+            <span className="text-sm font-medium">Bậc:</span>
           </div>
           {availableTags.map((tag) => (
             <button
@@ -87,6 +105,7 @@ const QuizList = () => {
               <PracticeCard
                 key={item.id}
                 practice={item}
+                userProgress={userHistory[item.id]}
                 onClick={() => navigate(`/quiz/${item.id}${selectedTag ? `?tag=${selectedTag}` : ''}`)}
               />
             ))

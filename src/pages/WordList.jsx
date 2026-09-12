@@ -1,29 +1,48 @@
 // src/pages/WordList.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Home, Loader2, Layers, Filter } from 'lucide-react';
-import { getFlashcardsByTag } from '../firebase/flashcardService'; 
+import { Loader2, Layers, Filter } from 'lucide-react';
+import { getFlashcardsByTag } from '../firebase/flashcardService';
+import { getUserHistory } from '../firebase/historyService';
 import PracticeCard from '../components/PracticeCard';
 import availableTags from '../data/system/tags.json';
 
 const WordList = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); 
+  const [userHistory, setUserHistory] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTag = searchParams.get('tag');
   const navigate = useNavigate();
 
+  // 1. Tải lịch sử làm bài của User hiện tại
   useEffect(() => {
-    const fetch = async () => {
+    const fetchHistory = async () => {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem('userSession') || '{}');
+        if (storedUser?.id) {
+          const historyMap = await getUserHistory(storedUser.id);
+          setUserHistory(historyMap || {});
+        }
+      } catch (err) {
+        console.error("Failed to load user history in WordList:", err);
+      }
+    };
+    fetchHistory();
+  }, []);
+
+  // 2. Tải danh sách từ vựng theo tag
+  useEffect(() => {
+    const fetchWords = async () => {
       if (!selectedTag) {
-        setData([]); 
+        setData([]);
         return;
       }
-      
+
       setLoading(true);
       const res = await getFlashcardsByTag(selectedTag);
-      // Natural numerical sort by title (or fallback to id)
+      // Sắp xếp tự nhiên theo tên hoặc id
       const sortedRes = [...(res || [])].sort((a, b) => {
         const textA = a.title || a.id || '';
         const textB = b.title || b.id || '';
@@ -32,7 +51,7 @@ const WordList = () => {
       setData(sortedRes);
       setLoading(false);
     };
-    fetch();
+    fetchWords();
   }, [selectedTag]);
 
   return (
@@ -48,20 +67,19 @@ const WordList = () => {
           </div>
         </div>
 
-        {/* Tag Filter Area (Wraps into rows instead of scrolling) */}
+        {/* Tag Filter Area */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1.5 text-white/80 mr-2">
             <Filter size={18} />
             <span className="text-sm font-medium">Filter by:</span>
           </div>
-
           {availableTags.map((tag) => (
             <button
               key={tag.id}
               onClick={() => setSearchParams({ tag: tag.id })}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all
-                ${selectedTag === tag.id 
-                  ? 'bg-yellow-400 text-black shadow-lg scale-105' 
+                ${selectedTag === tag.id
+                  ? 'bg-yellow-400 text-black shadow-lg scale-105'
                   : 'bg-white/10 text-white hover:bg-white/20'}`}
             >
               {tag.name}
@@ -85,6 +103,7 @@ const WordList = () => {
               <PracticeCard
                 key={item.id}
                 practice={item}
+                userProgress={userHistory[item.id]} // Truyền tiến độ của bài tập
                 onClick={() => navigate(`/flashcard/${item.id}${selectedTag ? `?tag=${selectedTag}` : ''}`)}
               />
             ))
