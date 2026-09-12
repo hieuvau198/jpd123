@@ -180,64 +180,101 @@ const SessionResult = ({
 
   return (
     <Spin spinning={isCheckingMission} tip="Saving your progress..." size="large">
-      <Flex justify="center" align="center" gap={80} wrap="wrap" style={{ minHeight: '80vh', padding: '40px 20px' }}>
-        <Flex vertical align="center" gap="large">
-          <img
-            src={rating.img}
-            alt={rating.title}
-            style={{ width: 350, height: 350, objectFit: 'cover', borderRadius: 16, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-          />
+      <div className="min-h-screen flex items-center justify-center p-4 sm:p-8">
+        {/* Isolated Session Result Card Frame */}
+        <div 
+          style={{
+            maxWidth: 1000,
+            width: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.96)',
+            backdropFilter: 'blur(16px)',
+            borderRadius: 24,
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12)',
+            border: '1px solid rgba(255, 255, 255, 0.6)',
+            padding: '40px 32px'
+          }}
+        >
+          <Flex justify="center" align="center" gap={60} wrap="wrap">
+            {/* Left Side: Performance Summary */}
+            <Flex vertical align="center" gap="large">
+              <img
+                src={rating.img}
+                alt={rating.title}
+                style={{
+                  width: 320,
+                  height: 320,
+                  objectFit: 'cover',
+                  borderRadius: 20,
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+                }}
+              />
+              {formattedPracticeHeader && (
+                <Title level={4} style={{ margin: 0, color: '#1890ff', textAlign: 'center' }}>
+                  {formattedPracticeHeader}
+                </Title>
+              )}
+              <Title level={2} style={{ margin: 0, color: '#1f1f1f' }}>
+                {rating.title}: {score}/100
+              </Title>
+              {practiceCoinsEarned > 0 && (
+                <Tag color="gold" style={{ fontSize: 16, padding: '4px 16px', marginTop: 4, borderRadius: 20 }}>
+                  +{practiceCoinsEarned} Coins Earned!
+                </Tag>
+              )}
+              {resultMessage && (
+                <Text style={{ fontSize: 16, marginTop: 8, textAlign: 'center', maxWidth: 380, color: '#595959' }}>
+                  {resultMessage}
+                </Text>
+              )}
+              <Flex gap="middle" style={{ marginTop: 16 }}>
+                <Button size="large" onClick={onBack} disabled={isCheckingMission}>
+                  {backText}
+                </Button>
+                <Button size="large" type="primary" onClick={onRestart} disabled={isCheckingMission}>
+                  {restartText}
+                </Button>
+              </Flex>
+            </Flex>
 
-          {formattedPracticeHeader && (
-            <Title level={4} style={{ margin: 0, color: '#1890ff', textAlign: 'center' }}>
-              {formattedPracticeHeader}
-            </Title>
-          )}
-
-          <Title level={2} style={{ margin: 0 }}> {rating.title}: {score}/100</Title>
-
-          {practiceCoinsEarned > 0 && (
-            <Tag color="gold" style={{ fontSize: 18, padding: '5px 15px', marginTop: 5, borderRadius: 20 }}>
-              +{practiceCoinsEarned} Coins Earned!
-            </Tag>
-          )}
-
-          {resultMessage && (
-            <Text style={{ fontSize: 18, marginTop: 10, textAlign: 'center', maxWidth: 400, color: '#555' }}>
-              {resultMessage}
-            </Text>
-          )}
-
-          <Flex gap="middle" style={{ marginTop: 20 }}>
-            <Button size="large" onClick={onBack} disabled={isCheckingMission}>{backText}</Button>
-            <Button size="large" type="primary" onClick={onRestart} disabled={isCheckingMission}>{restartText}</Button>
+            {/* Right Side: Tier Badges */}
+            <Flex vertical gap="middle" align="center">
+              <Text strong style={{ fontSize: 18, display: 'block', marginBottom: 6, color: '#262626' }}>
+                Ranking Levels
+              </Text>
+              <Flex vertical gap="small" style={{ maxHeight: '520px', overflowY: 'auto', paddingRight: 8 }}>
+                {ALL_LEVELS.map(lvl => (
+                  <Card
+                    key={lvl.title}
+                    size="small"
+                    style={{
+                      width: 260,
+                      opacity: rating.title === lvl.title ? 1 : 0.6,
+                      borderColor: rating.title === lvl.title ? '#1677ff' : '#e8e8e8',
+                      backgroundColor: rating.title === lvl.title ? '#f0f5ff' : '#ffffff',
+                      boxShadow: rating.title === lvl.title ? '0 4px 12px rgba(22, 119, 255, 0.15)' : 'none',
+                      borderRadius: 12
+                    }}
+                  >
+                    <Flex align="center" gap="middle">
+                      <img
+                        src={lvl.img}
+                        alt={lvl.title}
+                        style={{ width: 48, height: 48, objectFit: 'cover', borderRadius: 8 }}
+                      />
+                      <Flex vertical>
+                        <Text strong style={{ color: '#262626' }}>{lvl.title}</Text>
+                        <Text type="secondary" style={{ fontSize: 12 }}>
+                          {lvl.min === lvl.max ? '100' : `${lvl.min}-${lvl.max}`} pts
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  </Card>
+                ))}
+              </Flex>
+            </Flex>
           </Flex>
-        </Flex>
-
-        <Flex vertical gap="middle" align="center">
-          <Text strong style={{ fontSize: 20, display: 'block', marginBottom: 8 }}>Ranking Levels</Text>
-          <Flex vertical gap="small" style={{ maxHeight: '600px', overflowY: 'auto', paddingRight: 10 }}>
-            {ALL_LEVELS.map(lvl => (
-              <Card key={lvl.title} size="small" style={{
-                width: 250,
-                opacity: rating.title === lvl.title ? 1 : 0.5,
-                borderColor: rating.title === lvl.title ? '#1677ff' : '#f0f0f0',
-                backgroundColor: rating.title === lvl.title ? '#f0f5ff' : '#ffffff'
-              }}>
-                <Flex align="center" gap="middle">
-                  <img src={lvl.img} alt={lvl.title} style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 8 }} />
-                  <Flex vertical>
-                    <Text strong>{lvl.title}</Text>
-                    <Text type="secondary" style={{ fontSize: 12 }}>
-                      {lvl.min === lvl.max ? '100' : `${lvl.min}-${lvl.max}`} pts
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Card>
-            ))}
-          </Flex>
-        </Flex>
-      </Flex>
+        </div>
+      </div>
 
       <Modal
         open={showMissionModal}
@@ -245,7 +282,11 @@ const SessionResult = ({
         width={600}
         closable={false}
         maskClosable={false}
-        footer={[<Button key="awesome" type="primary" size="large" onClick={() => setShowMissionModal(false)}>Awesome!</Button>]}
+        footer={[
+          <Button key="awesome" type="primary" size="large" onClick={() => setShowMissionModal(false)}>
+            Awesome!
+          </Button>
+        ]}
       >
         <Result
           status="success"
