@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Button, Typography, Flex, Tooltip, Badge } from 'antd';
 import { ArrowLeft, Shuffle, Bookmark, RotateCcw } from 'lucide-react';
-
 import FlashcardTypeBSelector from './view/FlashcardTypeBSelector';
 import FlashcardCard from './view/FlashcardCard';
 import FlashcardControls from './view/FlashcardControls';
@@ -34,25 +33,14 @@ const FlashcardSession = ({ data, onBack }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [flaggedKeys, setFlaggedKeys] = useState(new Set());
 
-  // Phát âm tiếng Anh chuẩn (en-US)
-  const speakEnglish = useCallback((text) => {
+  // EXACT same speak implementation as TypeBMCSession
+  const speakWord = useCallback((text) => {
     if (!text || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    
     try {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
       utterance.rate = 0.9;
-
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        const enVoice = voices.find(v => v.lang.toLowerCase().includes('en-us'))
-          || voices.find(v => v.lang.toLowerCase().startsWith('en'));
-        if (enVoice) {
-          utterance.voice = enVoice;
-        }
-      }
-
       window.speechSynthesis.speak(utterance);
     } catch (e) {
       console.warn("Speech error:", e);
@@ -83,7 +71,6 @@ const FlashcardSession = ({ data, onBack }) => {
             cardKey: `${baseKey}-main`,
             front: item.word,
             back: meaning,
-            speak: item.word,
             ipa: item.ipa || '',
             tag: 'Từ chính',
           });
@@ -95,7 +82,6 @@ const FlashcardSession = ({ data, onBack }) => {
               cardKey: `${baseKey}-phrase-${pIdx}`,
               front: p.text,
               back: p.m,
-              speak: p.text,
               tag: 'Cụm từ',
             });
           });
@@ -107,8 +93,7 @@ const FlashcardSession = ({ data, onBack }) => {
               cardKey: `${baseKey}-sentence-${sIdx}`,
               front: s.text,
               back: s.m,
-              speak: s.text,
-              tag: 'Câu mẫu',
+              tag: 'Câu',
             });
           });
         }
@@ -122,7 +107,6 @@ const FlashcardSession = ({ data, onBack }) => {
       cardKey: String(q.id || `q-${idx}`),
       front: q.question || q.word,
       back: q.answer || q.meaning,
-      speak: q.speak || q.question || q.word,
       ipa: q.ipa || '',
       tag: 'Flashcard',
     }));
@@ -144,21 +128,19 @@ const FlashcardSession = ({ data, onBack }) => {
     }
   }, [data, isTypeB]);
 
-  // CHỈ tự động đọc từ gốc tiếng Anh khi card xuất hiện hoặc đổi câu
+  // Speak the exact word displayed on the front of the card
   useEffect(() => {
-    if (isConfigured && cards.length > 0 && cards[currentIndex]) {
-      const currentCard = cards[currentIndex];
-      speakEnglish(currentCard.speak || currentCard.front);
+    if (isConfigured && cards[currentIndex]) {
+      speakWord(cards[currentIndex].front);
     }
-  }, [currentIndex, isConfigured, cards, speakEnglish]);
+  }, [currentIndex, isConfigured, cards, speakWord]);
 
   const handleFlip = () => setIsFlipped(prev => !prev);
 
-  // Bấm nút volume chỉ phát âm từ tiếng Anh
+  // Manual volume click speaks the exact word displayed on the card
   const handleManualSpeech = () => {
-    const currentCard = cards[currentIndex];
-    if (currentCard) {
-      speakEnglish(currentCard.speak || currentCard.front);
+    if (cards[currentIndex]) {
+      speakWord(cards[currentIndex].front);
     }
   };
 
@@ -276,15 +258,15 @@ const FlashcardSession = ({ data, onBack }) => {
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 mt-8">
       <Flex justify="space-between" align="center" className="mb-8">
-        <Button 
-          icon={<ArrowLeft size={18} />} 
+        <Button
+          icon={<ArrowLeft size={18} />}
           onClick={onBack}
           className="rounded-full bg-black/40 hover:bg-black/60 text-white/90 shadow-md border border-white/10 font-medium backdrop-blur-md"
         />
-        
+
         <Flex align="center" gap="small">
-          <Badge 
-            count={flaggedKeys.size} 
+          <Badge
+            count={flaggedKeys.size}
             overflowCount={99}
             style={{ backgroundColor: '#f59e0b', color: '#fff', fontWeight: 600 }}
           >
@@ -312,7 +294,7 @@ const FlashcardSession = ({ data, onBack }) => {
               className="bg-black/40 hover:bg-black/60 border border-white/10 text-white/80 shadow-sm backdrop-blur-md"
             />
           </Tooltip>
-          <Tooltip title="Xáo trộn toàn bộ">
+          <Tooltip title="Xáo trộn">
             <Button
               shape="circle"
               icon={<Shuffle size={16} />}

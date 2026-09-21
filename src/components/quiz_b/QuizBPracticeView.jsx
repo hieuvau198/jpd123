@@ -12,6 +12,18 @@ const shuffleArray = (arr) => {
   return cloned;
 };
 
+// Helper to support both real '\n' and literal string '\n' breaks
+const renderTextWithNewlines = (content) => {
+  if (typeof content !== 'string') return content;
+  const normalized = content.replace(/\\n/g, '\n');
+  return normalized.split('\n').map((line, idx, arr) => (
+    <React.Fragment key={idx}>
+      {line}
+      {idx < arr.length - 1 && <br />}
+    </React.Fragment>
+  ));
+};
+
 const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const sections = practiceData?.sections || [];
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
@@ -28,8 +40,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const loadSection = (idx) => {
     const sec = sections[idx];
     if (!sec || !sec.questions?.length) return;
-    const config = sec.config || {};
 
+    const config = sec.config || {};
     let rawList = sec.questions.map((q) => {
       let opts = q.options ? [...q.options] : [];
       if (config.shuffle_options) opts = shuffleArray(opts);
@@ -73,6 +85,7 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const handleNext = () => {
     const isCorrect = selectedOption === currentQuestion.correct_option_id;
     const secConfig = currentSection?.config || {};
+
     let nextQueue = [...questionsQueue];
     const finishedQ = nextQueue.shift();
 
@@ -110,8 +123,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
         practiceType="Quiz"
         practiceName={quizTitle}
         backText="Quay lại"
-        restartText="Luyện tập lại"
-        resultMessage={`Đúng ${totalCorrect}/${totalOriginalQuestions} câu hỏi gốc trên toàn bộ bài.`}
+        restartText="Luyện lại"
+        resultMessage={`Đúng ${totalCorrect}/${totalOriginalQuestions} câu trên toàn bài.`}
         onBack={onHome}
         onRestart={() => {
           setIsAllFinished(false);
@@ -127,7 +140,7 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {/* Thanh mục lục số góc cạnh */}
+      {/* Section navigation tabs */}
       <div className="w-full flex items-center gap-1 overflow-x-auto px-4 pb-2 border-b border-slate-800 scrollbar-none">
         {sections.map((sec, idx) => (
           <button
@@ -144,28 +157,27 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
         ))}
       </div>
 
-      {/* Card câu hỏi tràn viền */}
+      {/* Main card area */}
       <div className="w-full bg-[#05081f] border-y sm:border border-fuchsia-950/70 p-5 sm:p-8 flex flex-col gap-6 rounded-none shadow-xl">
-        {/* Khối nội dung câu hỏi */}
+        {/* Question Content */}
         <div className="w-full p-5 sm:p-6 bg-[#090f33] border border-cyan-950/60 rounded-none">
-          <div className="text-slate-100 font-semibold text-base sm:text-xl leading-relaxed">
+          <div className="text-slate-100 font-semibold text-base sm:text-xl leading-relaxed whitespace-pre-wrap">
             {!currentQuestion._firstTry && (
               <span className="inline-block px-2.5 py-0.5 bg-amber-950/70 text-amber-300 border border-amber-500/40 text-xs uppercase font-mono mr-3">
                 Làm lại
               </span>
             )}
-            {currentQuestion.prompt}
+            {renderTextWithNewlines(currentQuestion.prompt)}
           </div>
         </div>
 
-        {/* Lựa chọn trắc nghiệm góc cạnh tràn viền */}
+        {/* Options */}
         <div className="flex flex-col gap-3">
           {currentQuestion.options?.map((opt) => {
             const isSelected = selectedOption === opt.id;
             const isCorrect = opt.id === currentQuestion.correct_option_id;
 
             let optionClass = 'bg-[#090f33] border-slate-800 text-slate-200 hover:border-cyan-500/60 hover:bg-[#0c1547]';
-
             if (isAnswered) {
               if (isCorrect) {
                 optionClass = 'bg-[#063024] border-emerald-500 text-emerald-300 font-bold shadow-[0_0_12px_rgba(16,185,129,0.2)]';
@@ -183,11 +195,10 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                 onClick={() => handleSelectOption(opt.id)}
                 className={`w-full min-h-[52px] p-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base leading-snug ${optionClass}`}
               >
-                <span className="flex-1 pr-3">
+                <span className="flex-1 pr-3 whitespace-pre-wrap">
                   <strong className="mr-2 text-slate-400 font-mono">{opt.id}.</strong>
-                  {opt.text}
+                  {renderTextWithNewlines(opt.text)}
                 </span>
-
                 {isAnswered && isCorrect && (
                   <CheckCircle size={20} className="text-emerald-400 shrink-0" />
                 )}
@@ -199,7 +210,7 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
           })}
         </div>
 
-        {/* Giải thích chi tiết */}
+        {/* Explanation */}
         {isAnswered && currentQuestion.explanation && (
           <div className="w-full p-4 bg-[#0a133d] border border-cyan-500/40 text-cyan-200 text-sm flex gap-3 items-start">
             <Brain size={20} className="text-cyan-400 shrink-0 mt-0.5" />
@@ -207,12 +218,14 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
               <div className="font-bold uppercase tracking-wider text-xs mb-1 text-cyan-300">
                 Giải thích chi tiết
               </div>
-              <div className="leading-relaxed text-slate-300">{currentQuestion.explanation}</div>
+              <div className="leading-relaxed text-slate-300 whitespace-pre-wrap">
+                {renderTextWithNewlines(currentQuestion.explanation)}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Nút Tiếp tục */}
+        {/* Next Button */}
         {isAnswered && (
           <div className="flex justify-end mt-2">
             <button
