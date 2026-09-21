@@ -5,7 +5,7 @@ import { CheckCircle, XCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 const { Text, Paragraph } = Typography;
 
-// Bảng màu tối Cyber-Navy góc cạnh cho các block liên tiếp
+// Bảng màu Cyber-Navy dành cho các block liền tiếp
 const BLOCK_THEMES = [
   'bg-[#080d2c] border-cyan-900/40 text-slate-200',
   'bg-[#0e163d] border-indigo-900/50 text-slate-200',
@@ -14,6 +14,18 @@ const BLOCK_THEMES = [
   'bg-[#09152a] border-teal-950/60 text-slate-200',
 ];
 
+// Helper nhận dạng cả '\n' thực tế lẫn chuỗi ký tự "\n" để xuống dòng
+const renderTextWithNewlines = (content) => {
+  if (typeof content !== 'string') return content;
+  const normalized = content.replace(/\\n/g, '\n');
+  return normalized.split('\n').map((line, idx, arr) => (
+    <React.Fragment key={idx}>
+      {line}
+      {idx < arr.length - 1 && <br />}
+    </React.Fragment>
+  ));
+};
+
 const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
   const [quickAnswers, setQuickAnswers] = useState({});
@@ -21,7 +33,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
   if (!sections.length) {
     return (
       <div className="w-full text-center py-16 text-slate-500 border-y border-slate-800 bg-[#050921]">
-        Chưa có nội dung lý thuyết.
+        Chưa có nội dung lý thuyết
       </div>
     );
   }
@@ -42,6 +54,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
             {block.spans?.map((span, sIdx) => (
               <span
                 key={sIdx}
+                className="whitespace-pre-wrap"
                 style={{
                   fontWeight: span.bold ? 700 : 400,
                   color: span.color || '#e2e8f0',
@@ -49,7 +62,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
                   lineHeight: 1.75,
                 }}
               >
-                {span.text}
+                {renderTextWithNewlines(span.text)}
               </span>
             ))}
           </div>
@@ -64,8 +77,8 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
               className="rounded-none max-h-80 mx-auto object-contain border border-slate-700"
             />
             {block.caption && (
-              <span className="block mt-2.5 text-xs italic text-slate-400 font-medium">
-                {block.caption}
+              <span className="block mt-2.5 text-xs italic text-slate-400 font-medium whitespace-pre-wrap">
+                {renderTextWithNewlines(block.caption)}
               </span>
             )}
           </div>
@@ -74,10 +87,11 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
       case 'table': {
         const rawCols = block.columns || (Array.isArray(block.headers?.[0]) ? block.headers[0] : block.headers) || [];
         const rawRows = block.rows || [];
+
         const columns = rawCols.map((col, cIdx) => ({
           title: (
-            <span className="font-bold text-cyan tracking-wider text-xs uppercase" style={{ color: col.color || 'inherit' }}>
-              {col.text}
+            <span className="font-bold text-cyan tracking-wider text-xs uppercase whitespace-pre-wrap" style={{ color: col.color || 'inherit' }}>
+              {renderTextWithNewlines(col.text)}
             </span>
           ),
           dataIndex: `col_${cIdx}`,
@@ -85,10 +99,10 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
           align: col.align || 'left',
           render: (cell) => (
             <span
-              className="text-sm sm:text-base leading-relaxed"
+              className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap"
               style={{ fontWeight: cell?.bold ? 700 : 400, color: cell?.color || '#cbd5e1' }}
             >
-              {cell?.text || cell || ''}
+              {renderTextWithNewlines(cell?.text || cell || '')}
             </span>
           ),
         }));
@@ -104,7 +118,6 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
 
         return (
           <div key={bIdx} className="my-2 w-full overflow-x-auto overflow-y-hidden border border-slate-800">
-            {/* Tắt scroll dọc, cho phép table bung đủ chiều cao tự nhiên */}
             <Table
               bordered
               size="middle"
@@ -125,7 +138,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {/* Mục lục số góc cạnh */}
+      {/* Mục lục section tabs */}
       <div className="w-full flex items-center gap-1 overflow-x-auto px-4 pb-2 border-b border-slate-800 scrollbar-none">
         {sections.map((sec, idx) => (
           <button
@@ -142,7 +155,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
         ))}
       </div>
 
-      {/* Card Lý thuyết chính - Tràn viền và không bo góc */}
+      {/* Card Lý thuyết chính */}
       <div className="w-full bg-[#05081f] border-y sm:border border-cyan-950/70 p-5 sm:p-8 flex flex-col gap-5 rounded-none shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
           <div className="flex items-center gap-3">
@@ -153,7 +166,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
           </div>
         </div>
 
-        {/* Các block nội dung liền kề đổi màu nền */}
+        {/* Các block nội dung */}
         <div className="flex flex-col gap-4">
           {mainBlocks.map((blk, idx) => {
             const theme = BLOCK_THEMES[idx % BLOCK_THEMES.length];
@@ -194,7 +207,7 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
         </div>
       </div>
 
-      {/* Khối Quick Quiz độc lập ở dưới - Tràn viền & góc cạnh */}
+      {/* Khối Quick Quiz */}
       {quickQuizBlocks.length > 0 && (
         <div className="w-full flex flex-col gap-4">
           {quickQuizBlocks.map((block, bIdx) => {
@@ -209,11 +222,11 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
               >
                 <div className="flex items-center gap-2 text-amber-400 font-bold text-xs tracking-widest uppercase mb-3">
                   <Sparkles size={16} />
-                  <span>Câu hỏi củng cố</span>
+                  <span>Củng cố</span>
                 </div>
 
-                <Paragraph className="!text-slate-100 font-medium !text-base sm:!text-lg leading-snug mb-5">
-                  {block.prompt}
+                <Paragraph className="!text-slate-100 font-medium !text-base sm:!text-lg leading-snug mb-5 whitespace-pre-wrap">
+                  {renderTextWithNewlines(block.prompt)}
                 </Paragraph>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -239,9 +252,9 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
                         onClick={() => handleSelectQuickOption(block.question_id, opt.id)}
                         className={`w-full p-3.5 px-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base ${btnClass}`}
                       >
-                        <span className="leading-snug">
+                        <span className="leading-snug whitespace-pre-wrap">
                           <strong className="mr-2 text-slate-400">{opt.id}.</strong>
-                          {opt.text}
+                          {renderTextWithNewlines(opt.text)}
                         </span>
                         {isAnswered && isRightOpt && <CheckCircle size={18} className="text-emerald-400 shrink-0" />}
                         {isAnswered && isSelected && !isRightOpt && <XCircle size={18} className="text-rose-400 shrink-0" />}
@@ -259,7 +272,9 @@ const QuizBTheoryView = ({ sections = [], onGoToPractice }) => {
                     <div className="font-bold mb-1 uppercase text-xs tracking-wider">
                       {isCorrect ? 'Chính xác' : 'Giải thích'}
                     </div>
-                    <div>{block.explanation}</div>
+                    <div className="whitespace-pre-wrap">
+                      {renderTextWithNewlines(block.explanation)}
+                    </div>
                   </div>
                 )}
               </div>
