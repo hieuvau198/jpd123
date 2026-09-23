@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import ProfileInfo from '../components/profile/ProfileInfo';
 import ProfileMissions from '../components/profile/ProfileMissions';
-import ProfileHistory from '../components/profile/ProfileHistory'; // <-- Add this import
+import ProfileHistory from '../components/profile/ProfileHistory';
+import ProfileSchedule from '../components/profile/ProfileSchedule';
 
 const Profile = ({ currentUser }) => {
   const [user, setUser] = useState(currentUser);
 
   useEffect(() => {
-    // Ensure we load the user object if currentUser prop is undefined on hard refresh
     if (!user) {
       try {
         const storedUser = JSON.parse(localStorage.getItem('userSession'));
@@ -20,17 +20,43 @@ const Profile = ({ currentUser }) => {
   }, [user, currentUser]);
 
   return (
-    <div style={{ padding: '40px 20px', maxWidth: 1100, margin: '0 auto', marginTop: 20 }}>
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+    <div style={{ 
+      padding: '24px 12px', 
+      maxWidth: 1100, 
+      margin: '0 auto', 
+      marginTop: 20,
+      boxSizing: 'border-box',
+      width: '100%',
+      overflowX: 'hidden'
+    }}>
+      <div style={{ 
+        display: 'flex', 
+        gap: '16px', 
+        flexWrap: 'wrap',
+        width: '100%'
+      }}>
         <ProfileInfo user={user} />
-        <ProfileMissions currentUser={user} />
+
+        {/* Khối chứa Lịch học + Nhiệm vụ: Thêm minWidth: 0 và width: 100% để triệt tiêu overflow */}
+        <div style={{ 
+          flex: '1 1 500px', 
+          minWidth: 0, 
+          maxWidth: '100%', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '16px' 
+        }}>
+          <ProfileSchedule user={user} />
+          <div style={{ width: '100%', minWidth: 0 }}>
+            <ProfileMissions currentUser={user} />
+          </div>
+        </div>
       </div>
       
-      {/* --- ADD THIS DIV BLOCK FOR THE HISTORY --- */}
-      <div style={{ display: 'flex', marginTop: '20px' }}>
+      {/* Khối Lịch sử làm bài */}
+      <div style={{ display: 'flex', marginTop: '16px', width: '100%', minWidth: 0 }}>
         <ProfileHistory user={user} />
       </div>
-      {/* ------------------------------------------ */}
     </div>
   );
 };

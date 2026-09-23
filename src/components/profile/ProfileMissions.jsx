@@ -1,6 +1,6 @@
+// src/components/profile/ProfileMissions.jsx
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Tag, Typography } from 'antd'; // Removed Button
-// You can remove the PlayCircle import if you aren't using it elsewhere
+import { Card, Table, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { Trophy } from 'lucide-react';
@@ -8,7 +8,6 @@ import { getUserMissions } from '../../firebase/missionService';
 
 const { Title } = Typography;
 
-// Helper to truncate long names to exactly 5 words (First 4 + ... + Last 1)
 const truncateName = (name) => {
   if (!name) return 'Unknown Mission';
   const words = name.trim().split(/\s+/);
@@ -27,7 +26,6 @@ const ProfileMissions = ({ currentUser }) => {
 
   useEffect(() => {
     let userId = currentUser?.id;
-    
     if (!userId) {
       try {
         const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -36,7 +34,6 @@ const ProfileMissions = ({ currentUser }) => {
         userId = localStorage.getItem('userId');
       }
     }
-
     if (userId) {
       fetchMissions(userId);
     }
@@ -56,16 +53,15 @@ const ProfileMissions = ({ currentUser }) => {
 
   const handleGoToPractice = (mission) => {
     const routeMap = {
-      'Flashcard': '/flashcard', 
-      'Quiz': '/quiz',           
+      'Flashcard': '/flashcard',
+      'Quiz': '/quiz',
       'Phonetic': '/phonetic',
-      'Repair': '/repair',       
-      'Speak': '/speak',         
+      'Repair': '/repair',
+      'Speak': '/speak',
       'Defense': '/challenge',
       'Chem Quiz': '/chem-quiz',
       'Chem Reaction': '/chem-reaction'
     };
-    
     const basePath = routeMap[mission.type];
     if (basePath) {
       const queryParam = mission.targetQuestions ? `?numbers=${mission.targetQuestions}` : '';
@@ -73,29 +69,27 @@ const ProfileMissions = ({ currentUser }) => {
     }
   };
 
-  // 1. Removed the 'Action' column entirely
   const columns = [
-    { 
-      title: 'Nhiệm Vụ', 
-      dataIndex: 'name', 
-      key: 'name', 
+    {
+      title: 'Nhiệm vụ',
+      dataIndex: 'name',
+      key: 'name',
       render: (text, record) => {
-        const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage))) 
-          ? Math.round(Number(record.percentage)) 
+        const pctValue = (typeof record.percentage === 'number' || !isNaN(Number(record.percentage)))
+          ? Math.round(Number(record.percentage))
           : record.percentage;
-
         return (
-          <div>
-            <Typography.Text strong style={{ fontSize: 'clamp(12px, 3vw, 16px)' }}>
+          <div style={{ minWidth: 0, wordBreak: 'break-word' }}>
+            <Typography.Text strong style={{ fontSize: 'clamp(12px, 3vw, 15px)', display: 'block', lineHeight: 1.3 }}>
               {truncateName(text || record.practiceId)}
             </Typography.Text>
-            <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center' }}>
-              <Tag color="blue" style={{ fontSize: 'clamp(9px, 3vw, 11px)' }}>
-                {record.targetQuestions || 0} / {record.totalQuestions || 0}
+            <div style={{ marginTop: '4px', display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Tag color="blue" style={{ fontSize: '10px', lineHeight: '18px', padding: '0 4px', margin: 0 }}>
+                {record.targetQuestions || 0}/{record.totalQuestions || 0}
               </Tag>
-              <Tag 
+              <Tag
                 color={record.status === 'Đã chinh phục' ? 'green' : (record.status === 'Đang làm' ? 'orange' : 'default')}
-                style={{ fontSize: 'clamp(9px, 3vw, 11px)' }}
+                style={{ fontSize: '10px', lineHeight: '18px', padding: '0 4px', margin: 0 }}
               >
                 {record.status} {pctValue}%
               </Tag>
@@ -105,53 +99,42 @@ const ProfileMissions = ({ currentUser }) => {
       }
     },
     {
-  title: 'Coin',
-  key: 'coins',
-  align: 'right',
-  render: (_, record) => (
-    <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', alignItems: 'center',whiteSpace: 'nowrap' }}>
-      
-      <Typography.Text 
-  strong 
-  style={{ 
-    color: '#faad14',
-    fontSize: 'clamp(10px, 3vw, 14px)'
-  }}
->
-  {record.earning_coins || 0}
-</Typography.Text>
-
-<Typography.Text 
-  strong 
-  style={{ 
-    color: '#faad14',
-    fontSize: 'clamp(10px, 3vw, 14px)'
-  }}
->
-  /{record.max_coins || 0}
-</Typography.Text>
-    </div>
-  )
-}
+      title: 'Coin',
+      key: 'coins',
+      align: 'right',
+      width: 70,
+      render: (_, record) => (
+        <div style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+          <Typography.Text strong style={{ color: '#faad14', fontSize: '13px' }}>
+            {record.earning_coins || 0}/{record.max_coins || 0}
+          </Typography.Text>
+        </div>
+      )
+    }
   ];
 
   return (
-    <Card 
-      style={{ flex: '2 1 600px', borderRadius: 12 }} 
+    <Card
+      style={{
+        width: '100%',
+        maxWidth: '100%',
+        borderRadius: 12,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+        boxSizing: 'border-box'
+      }}
+      styles={{ body: { padding: '8px 12px' } }}
     >
-      <Table 
-        columns={columns} 
-        dataSource={missions} 
-        rowKey="id" 
-        loading={loading} 
-        size="middle" 
-        scroll={{ x: true }}
-        pagination={{ pageSize: 5 }}
-        locale={{ emptyText: "You have no assigned missions right now." }}
-        // 2. Added onRow to make the entire row clickable
+      <Table
+        columns={columns}
+        dataSource={missions}
+        rowKey="id"
+        loading={loading}
+        size="small"
+        pagination={{ pageSize: 5, size: 'small' }}
+        locale={{ emptyText: "Hiện chưa có nhiệm vụ nào." }}
         onRow={(record) => ({
           onClick: () => handleGoToPractice(record),
-          style: { cursor: 'pointer' } // Changes cursor to pointer on hover
+          style: { cursor: 'pointer' }
         })}
       />
     </Card>

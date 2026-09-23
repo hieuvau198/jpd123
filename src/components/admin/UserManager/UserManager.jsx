@@ -12,7 +12,7 @@ import {
   Typography,
   Tooltip
 } from 'antd';
-import { UserPlus, Edit2, Trash2, Users, Coins, Search, History } from 'lucide-react';
+import { UserPlus, Edit2, Trash2, Users, Coins, Search, History, Calendar } from 'lucide-react';
 import {
   getAllUsers,
   createUser,
@@ -23,6 +23,7 @@ import {
 import gradesData from '../../../data/system/grades.json';
 import UserModal from './UserModal';
 import UserHistoryModal from './UserHistoryModal';
+import StudentScheduleModal from '../Schedule/StudentScheduleModal';
 
 const { Title, Text } = Typography;
 
@@ -51,6 +52,10 @@ const UserManager = () => {
   const [selectedUserForHistory, setSelectedUserForHistory] = useState(null);
 
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  // Modal quản lý lịch học
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
+  const [selectedStudentForSchedule, setSelectedStudentForSchedule] = useState(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -213,9 +218,10 @@ const UserManager = () => {
     cols.push({
       title: 'Action',
       key: 'action',
-      width: 110,
+      width: 140,
       render: (_, record) => (
         <Space size="small">
+          {/* Nút Xem lịch sử bài làm */}
           <Tooltip title="Xem lịch sử bài làm">
             <Button
               type="text"
@@ -226,6 +232,20 @@ const UserManager = () => {
               }}
             />
           </Tooltip>
+
+          {/* NÚT QUẢN LÝ LỊCH HỌC: Chỉ có icon, không có chữ */}
+          <Tooltip title="Lịch học">
+            <Button
+              type="text"
+              icon={<Calendar size={16} color="#722ed1" />}
+              onClick={() => {
+                setSelectedStudentForSchedule(record);
+                setScheduleModalVisible(true);
+              }}
+            />
+          </Tooltip>
+
+          {/* Nút Chỉnh sửa */}
           <Tooltip title="Chỉnh sửa">
             <Button
               type="text"
@@ -233,6 +253,8 @@ const UserManager = () => {
               onClick={() => handleOpenUserModal(record)}
             />
           </Tooltip>
+
+          {/* Nút Xóa */}
           <Popconfirm
             title="Delete this user?"
             onConfirm={() => handleDelete(record.id)}
@@ -301,6 +323,16 @@ const UserManager = () => {
         onClose={() => {
           setHistoryModalOpen(false);
           setSelectedUserForHistory(null);
+        }}
+      />
+
+      {/* Component Quản lý Lịch Học của Học Sinh */}
+      <StudentScheduleModal
+        visible={scheduleModalVisible}
+        student={selectedStudentForSchedule}
+        onClose={() => {
+          setScheduleModalVisible(false);
+          setSelectedStudentForSchedule(null);
         }}
       />
     </div>
