@@ -11,6 +11,7 @@ import {
   where,
   addDoc,
   updateDoc,
+  writeBatch,
   serverTimestamp
 } from 'firebase/firestore';
 
@@ -151,6 +152,59 @@ export const deleteStudentSlot = async (id) => {
     return true;
   } catch (error) {
     console.error('Lỗi khi xóa slot học sinh:', error);
+    throw error;
+  }
+};
+
+
+/**
+ * Đồng bộ tất cả thay đổi của học sinh cùng lúc (Tạo mới, Cập nhật, Xóa)
+ * @param {string} studentId
+ * @param {Array} currentSlots Danh sách slot hiện tại trong bộ nhớ tạm
+ * @param {Array} deletedIds Danh sách ID của các slot bị xóa
+ */
+export const syncStudentSlots = async (studentId, currentSlots, deletedIds = []) => {
+  try {
+    const batch = writeBatch(db);
+
+    // 1. Xử lý các slot cần xóa
+    deletedIds.forEach((id) => {
+      // Chỉ xóa trên firestore nếu id không phải là id tạm thời (temp_...)
+      if (!id.startsWith('temp_')) {
+        const slotRef = doc(db, SLOTS_COLLECTION, id);
+        batch.delete(slotRef);
+      }
+    });
+
+    // 2. Xử lý các slot thêm mới hoặc cập nhật
+    currentSlots.forEach((slot) => {
+      const payload = {
+        defaultSlotId: slot.defaultSlotId || '',
+        studentId: studentId,
+        studentName: slot.studentName || '',
+        date: slot.date,
+        status: slot.status || 'pending',
+        note: slot.note || '',
+        updatedAt: serverTimestamp(),
+      };
+
+      if (slot.id && !slot.id.startsWith('temp_')) {
+        // Cập nhật slot đã có sẵn trên Firestore
+        const docRef = doc(db, SLOTS_COLLECTION, slot.id);
+        batch.update(docRef, payload);
+      } else {
+        // Tạo document mới cho slot vừa thêm
+        const docRef = doc(collection(db, SLOTS_COLLECTION));
+        payload.createdAt = serverTimestamp();
+        batch.set(docRef, payload);
+      }
+    });
+
+    await batch.commit();
+    clearSlotCache();
+    return { success: true };
+  } catch (error) {
+    console.error('Lỗi khi đồng bộ danh sách slot:', error);
     throw error;
   }
 };
