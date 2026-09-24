@@ -46,7 +46,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     const config = sec.config || {};
     let rawList = sec.questions.map((q) => {
       let opts = q.options ? [...q.options] : [];
-      if (config.shuffle_options) opts = shuffleArray(opts);
+      // Mặc định luôn trộn lẫn các đáp án
+      opts = shuffleArray(opts);
       return {
         ...q,
         options: opts,
@@ -89,7 +90,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
       );
 
       setWrongQuestions((prev) => {
-        // Tránh trùng lặp nếu câu hỏi đã tồn tại
         const exists = prev.some((item) => item.questionId === (currentQuestion.id || currentQuestion.prompt));
         if (exists) return prev;
 
@@ -116,10 +116,11 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     const finishedQ = nextQueue.shift();
 
     if (!isCorrect && secConfig.repeat_wrong_answers) {
+      // Khi câu sai lặp lại: bắt buộc trộn lẫn đáp án một lần nữa
       nextQueue.push({
         ...finishedQ,
         _firstTry: false,
-        options: secConfig.shuffle_options ? shuffleArray(finishedQ.options) : finishedQ.options,
+        options: shuffleArray(finishedQ.options || []),
       });
     }
 
@@ -163,13 +164,13 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
           }}
         />
 
-        {/* Danh sách chi tiết các câu làm sai */}
+        {/* Danh sách các câu làm sai */}
         {wrongQuestions.length > 0 && (
           <div className="w-full max-w-4xl px-4 py-8 mb-12 flex flex-col gap-5">
             <div className="flex items-center gap-2 text-rose-400 border-b border-rose-950/80 pb-3">
               <AlertCircle size={22} />
               <h3 className="text-xl font-bold text-white m-0">
-                Làm sai {wrongQuestions.length} câu
+                Danh sách câu làm sai ({wrongQuestions.length} câu)
               </h3>
             </div>
 
@@ -187,7 +188,7 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                     {renderTextWithNewlines(item.prompt)}
                   </div>
 
-                  {/* Chi tiết đáp án học sinh chọn & đáp án chuẩn */}
+                  {/* Chi tiết đáp án học sinh chọn & đáp án chuẩn (Đã bỏ tiền tố ID ký tự A,B,C,D) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-sm">
                     {/* Đáp án đã chọn */}
                     <div className="p-3 bg-[#3b0f1d]/50 border border-rose-500/40 rounded-lg flex flex-col gap-1">
@@ -195,9 +196,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                         <XCircle size={14} /> Đáp án bạn đã chọn:
                       </span>
                       <div className="text-slate-200 whitespace-pre-wrap">
-                        <strong className="font-mono mr-1 text-rose-300">
-                          {item.chosenOptId}.
-                        </strong>
                         {renderTextWithNewlines(item.chosenOptText)}
                       </div>
                     </div>
@@ -208,15 +206,12 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                         <CheckCircle size={14} /> Đáp án chính xác:
                       </span>
                       <div className="text-slate-200 whitespace-pre-wrap">
-                        <strong className="font-mono mr-1 text-emerald-300">
-                          {item.correctOptId}.
-                        </strong>
                         {renderTextWithNewlines(item.correctOptText)}
                       </div>
                     </div>
                   </div>
 
-                  {/* Giải thích nếu có */}
+                  {/* Giải thích chi tiết */}
                   {item.explanation && (
                     <div className="mt-1 p-3 bg-[#0a133d] border border-cyan-500/30 text-cyan-200 text-xs rounded-lg flex gap-2.5 items-start">
                       <Brain size={16} className="text-cyan-400 shrink-0 mt-0.5" />
@@ -272,26 +267,22 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
           </div>
         </div>
 
-        {/* Options */}
+        {/* Options (Đã bỏ hiển thị ký tự A,B,C,D) */}
         <div className="flex flex-col gap-3">
           {currentQuestion.options?.map((opt) => {
             const isSelected = selectedOption === opt.id;
             const isCorrect = opt.id === currentQuestion.correct_option_id;
 
-            // Mặc định: nền xanh navy và text sáng rõ ràng
             let optionClass =
               'bg-[#090f33] border-slate-800 text-slate-200 hover:border-cyan-500/60 hover:bg-[#0c1547]';
 
             if (isAnswered) {
               if (isCorrect) {
-                // Đáp án đúng: Viền & nền xanh lá nổi bật
                 optionClass =
                   'bg-[#063024] border-emerald-500 text-emerald-300 font-bold shadow-[0_0_12px_rgba(16,185,129,0.2)]';
               } else if (isSelected && !isCorrect) {
-                // Đáp án chọn sai: Viền & nền đỏ cảnh báo
                 optionClass = 'bg-[#3b0f1d] border-rose-500 text-rose-300';
               } else {
-                // Các đáp án khác KHÔNG bị làm tối, giữ độ hiển thị bình thường để học sinh dễ so sánh
                 optionClass = 'bg-[#090f33] border-slate-800 text-slate-300';
               }
             }
@@ -303,8 +294,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                 onClick={() => handleSelectOption(opt.id)}
                 className={`w-full min-h-[52px] p-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base leading-snug ${optionClass}`}
               >
+                {/* Chỉ hiển thị nội dung đáp án, không có chữ cái A. B. C. D. */}
                 <span className="flex-1 pr-3 whitespace-pre-wrap">
-                  <strong className="mr-2 text-slate-400 font-mono">{opt.id}.</strong>
                   {renderTextWithNewlines(opt.text)}
                 </span>
                 {isAnswered && isCorrect && (
