@@ -5,7 +5,8 @@ import { Card, Typography, Row, Col } from 'antd';
 import { 
   BookOpen, FileQuestion, Wrench, Mic, Swords, 
   FlaskConical, Beaker, Sparkles, Puzzle,
-  FileText
+  FileText,
+  BookMarked
 } from 'lucide-react';
 import HallOfFame from '../components/HallOfFame'; 
 
@@ -57,6 +58,15 @@ const Home = () => {
                 </Card>
               </Link>
             </Col>
+
+            <Col xs={24} sm={12} md={8}>
+  <Link to="/reading" style={{ textDecoration: 'none' }}>
+    <Card hoverable style={{ textAlign: 'center', height: '100%', borderRadius: 16, border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+      <BookMarked size={48} color="#fa8c16" style={{ marginBottom: 16 }} />
+      <Title level={3} style={{ color: '#fa8c16', margin: 0 }}>Reading</Title>
+    </Card>
+  </Link>
+</Col>
 
             
 

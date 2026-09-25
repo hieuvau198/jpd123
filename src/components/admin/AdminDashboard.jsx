@@ -10,6 +10,7 @@ import DefenseManager from './DefenseManager';
 import PhoneticManager from './PhoneticManager'; 
 import ChemistryManager from './ChemistryManager';
 import ChemReactionManager from './ChemReactionManager';
+import ReadingManager from './ReadingManager';
 
 import { getAllChemistry, getChemistryByTag, saveChemistrySet, deleteChemistrySet } from '../../firebase/chemistryService';
 import { getAllQuizzes, getQuizzesByTag, saveQuizSet, deleteQuizSet } from '../../firebase/quizService';
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
   const tabItems = [
     { key: 'flashcard', label: 'Flashcards', children: <FlashcardManager icon={<FileJson color="#faad14" size={24} />} color="blue" uploadText="Import Flashcards (JSON)" uploadColor="#1890ff" /> },
     { key: 'quiz', label: 'Quizzes', children: <GenericManager type="quiz" icon={<FileQuestion color="#52c41a" size={24} />} color="green" uploadText="Import Quizzes (JSON)" uploadColor="#52c41a" fetchFn={getAllQuizzes} fetchByTagFn={getQuizzesByTag} saveFn={saveQuizSet} deleteFn={deleteQuizSet} /> },
+    { key: 'reading', label: 'Readings', children: <ReadingManager icon={<FileText color="#fa541c" size={24} />} color="volcano" uploadText="Import Readings (JSON)" uploadColor="#fa541c" /> },
     { key: 'phonetic', label: 'Phonetic', children: <PhoneticManager icon={<Volume2 color="#fa541c" size={24} />} color="volcano" uploadText="Import Phonetics (JSON)" uploadColor="#fa541c" /> },
     { key: 'repair', label: 'Repair', children: <GenericManager type="repair" icon={<Wrench color="#722ed1" size={24} />} color="purple" uploadText="Import Repair Sets (JSON)" uploadColor="#722ed1" fetchFn={getAllRepairs} saveFn={saveRepairSet} deleteFn={deleteRepairSet} /> },
     { key: 'speak', label: 'Speak', children: <GenericManager type="speak" icon={<Mic color="#eb2f96" size={24} />} color="magenta" uploadText="Import Speak Sets (JSON)" uploadColor="#eb2f96" fetchFn={getAllSpeaks} saveFn={saveSpeakSet} deleteFn={deleteSpeakSet} /> },

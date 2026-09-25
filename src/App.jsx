@@ -16,6 +16,9 @@ import WordList from './pages/WordList';
 import WordDetail from './pages/WordDetail';
 import QuizList from './pages/QuizList';
 import QuizDetail from './pages/QuizDetail';
+import ReadingList from './pages/ReadingList'; // <-- Thêm import
+import ReadingDetail from './pages/ReadingDetail'; // <-- Thêm import này
+
 import RepairList from './pages/RepairList';
 import RepairDetail from './pages/RepairDetail';
 import SpeakList from './pages/SpeakList';
@@ -68,6 +71,9 @@ export default function App() {
         {/* Quizzes */}
         <Route path="/quizzes" element={<ProtectedRoute><QuizList /></ProtectedRoute>} />
         <Route path="/quiz/:id" element={<ProtectedRoute><QuizDetail /></ProtectedRoute>} />
+
+        <Route path="/reading" element={<ProtectedRoute><ReadingList /></ProtectedRoute>} />
+        <Route path="/reading/:id" element={<ProtectedRoute><ReadingDetail /></ProtectedRoute>} />
 
         {/* Repairs */}
         <Route path="/repairs" element={<ProtectedRoute><RepairList /></ProtectedRoute>} />
