@@ -77,13 +77,13 @@ const SessionResult = ({
         let updatePayload = null;
         let pendingMission = null;
 
-        if (['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz'].includes(practiceType)) {
-          const missions = await getUserMissions(user.id, true);
-          pendingMission = missions.find(m => {
-            const matchesId = m.practiceId === practiceId || m.flashcardId === practiceId || m.quizId === practiceId;
-            const isPending = m.status !== 'Đã chinh phục';
-            return matchesId && isPending;
-          });
+        if (['Flashcard', 'Quiz', 'Phonetic', 'Repair', 'Chem Quiz', 'Reading'].includes(practiceType)) {
+  const missions = await getUserMissions(user.id, true);
+  pendingMission = missions.find(m => {
+    const matchesId = m.practiceId === practiceId || m.readingId === practiceId;
+    const isPending = m.status !== 'đã chinh phục';
+    return matchesId && isPending;
+  });
 
           if (pendingMission) {
             const newPercentage = score;

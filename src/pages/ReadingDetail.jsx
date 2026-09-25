@@ -1,10 +1,12 @@
 // src/pages/ReadingDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Spin, Button, Typography, Tabs } from 'antd';
+import { Spin, Button, Typography, Tabs, Modal } from 'antd';
+import { Eye } from 'lucide-react';
 import { getReadingById } from '../firebase/readingService';
 import ReadingSessionHeader from '../components/reading/ReadingSessionHeader';
-import { SECTION_REGISTRY, getSectionHandler } from '../components/reading/sections';
+import { getSectionHandler } from '../components/reading/sections';
+import SessionResult from '../components/SessionResult';
 
 const { Title } = Typography;
 
@@ -14,11 +16,14 @@ const ReadingDetail = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Map lưu câu trả lời theo sectionId: { [secId]: answers }
+  // Map lưu trữ đáp án: { [secId]: answers }
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [scoreResult, setScoreResult] = useState(null);
   const [activeTab, setActiveTab] = useState('0');
+
+  // Trạng thái hiển thị Popup bảng kết quả SessionResult
+  const [showResultModal, setShowResultModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,11 +32,11 @@ const ReadingDetail = () => {
         const res = await getReadingById(id);
         if (res) {
           setData(res);
-          // Khởi tạo state câu trả lời mặc định nếu cần
+          // Khởi tạo state câu trả lời mặc định nếu có sắp xếp câu
           const initial = {};
-          (res.sections || []).forEach(sec => {
+          (res.sections || []).forEach((sec) => {
             if (sec.type === 'sentence-ordering' && sec.scrambled_items) {
-              initial[sec.id] = sec.scrambled_items.map(i => i.id);
+              initial[sec.id] = sec.scrambled_items.map((i) => i.id);
             }
           });
           setAnswers(initial);
@@ -63,14 +68,14 @@ const ReadingDetail = () => {
   }
 
   const handleSectionAnswerChange = (secId, value) => {
-    setAnswers(prev => ({ ...prev, [secId]: value }));
+    setAnswers((prev) => ({ ...prev, [secId]: value }));
   };
 
   const handleSubmit = () => {
     let totalQuestions = 0;
     let totalCorrect = 0;
 
-    (data.sections || []).forEach(sec => {
+    (data.sections || []).forEach((sec) => {
       const handler = getSectionHandler(sec.type);
       if (handler?.calculateScore) {
         const result = handler.calculateScore(sec, answers);
@@ -82,11 +87,22 @@ const ReadingDetail = () => {
     const score = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 100;
     setScoreResult({ score, totalCorrect, totalQuestions });
     setSubmitted(true);
+    setShowResultModal(true); // Tự động mở popup kết quả khi nộp bài
   };
 
   const handleReset = () => {
     setSubmitted(false);
     setScoreResult(null);
+    setShowResultModal(false);
+
+    // Reset lại thứ tự mặc định cho sentence-ordering nếu có
+    const initial = {};
+    (data.sections || []).forEach((sec) => {
+      if (sec.type === 'sentence-ordering' && sec.scrambled_items) {
+        initial[sec.id] = sec.scrambled_items.map((i) => i.id);
+      }
+    });
+    setAnswers(initial);
   };
 
   const sections = data.sections || [];
@@ -100,6 +116,7 @@ const ReadingDetail = () => {
         onBack={() => navigate('/reading')}
         onSubmit={handleSubmit}
         onReset={handleReset}
+        onShowResult={() => setShowResultModal(true)}
       />
 
       <div className="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-lg">
@@ -109,12 +126,11 @@ const ReadingDetail = () => {
           items={sections.map((sec, idx) => {
             const handler = getSectionHandler(sec.type);
             const SectionComponent = handler?.component;
-
             return {
               key: String(idx),
               label: (
                 <span className="font-semibold text-sm">
-                  Section {idx + 1}: {handler?.name || sec.title || 'Bài tập'}
+                  Phần {idx + 1}: {handler?.name || sec.title || 'Bài tập'}
                 </span>
               ),
               children: (
@@ -130,7 +146,7 @@ const ReadingDetail = () => {
                     />
                   ) : (
                     <div className="text-gray-400 py-6">
-                      Dạng câu hỏi <code>{sec.type}</code> chưa được hỗ trợ.
+                      Dạng bài tập <code>{sec.type}</code> chưa được hỗ trợ.
                     </div>
                   )}
                 </div>
@@ -139,6 +155,45 @@ const ReadingDetail = () => {
           })}
         />
       </div>
+
+      {/* POPUP HIỂN THỊ SESSION RESULT */}
+      <Modal
+        open={showResultModal}
+        onCancel={() => setShowResultModal(false)}
+        footer={null}
+        width="100%"
+        style={{ maxWidth: 1050, top: 20 }}
+        styles={{ body: { padding: 0, backgroundColor: 'transparent' } }}
+        destroyOnClose={false}
+      >
+        {scoreResult && (
+          <div className="relative">
+            {/* Nút Xem lại bài làm nổi bật phía trên */}
+            <div className="flex justify-end p-3 bg-white/80 rounded-t-2xl">
+              <Button
+                type="dashed"
+                icon={<Eye size={16} />}
+                onClick={() => setShowResultModal(false)}
+                className="font-medium text-slate-700 hover:text-blue-600"
+              >
+                Xem lại chi tiết bài làm
+              </Button>
+            </div>
+
+            <SessionResult
+              score={scoreResult.score}
+              onBack={() => navigate('/reading')}
+              onRestart={handleReset}
+              backText="Danh sách Bài"
+              restartText="Làm lại bài"
+              resultMessage={`Bạn đã hoàn thành bài đọc "${data.title}" với kết quả đúng ${scoreResult.totalCorrect}/${scoreResult.totalQuestions} câu!`}
+              practiceId={data.id}
+              practiceType="Reading"
+              practiceName={data.title}
+            />
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

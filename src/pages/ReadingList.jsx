@@ -31,13 +31,7 @@ const ReadingList = () => {
   return (
     <div className="min-h-screen p-4 sm:p-8 max-w-7xl mx-auto mt-8">
       <div className="flex flex-col gap-4 mb-8">
-        <Button
-          icon={<ArrowLeft size={16} />}
-          onClick={() => navigate('/')}
-          className="w-fit bg-white/20 hover:bg-white/40 text-white border-0"
-        >
-          Trang chủ
-        </Button>
+        
 
         <div className="flex items-center gap-3">
           <BookOpen size={36} className="text-amber-300" />
