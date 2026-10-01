@@ -1,6 +1,14 @@
 // src/components/quiz_b/QuizBPracticeView.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { CheckCircle, XCircle, ArrowRight, Brain, AlertCircle } from 'lucide-react';
+import { 
+  CheckCircle, 
+  XCircle, 
+  ArrowRight, 
+  Brain, 
+  AlertCircle, 
+  Lightbulb, 
+  BookA 
+} from 'lucide-react';
 import SessionResult from '../SessionResult';
 
 const shuffleArray = (arr) => {
@@ -33,7 +41,11 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [isAllFinished, setIsAllFinished] = useState(false);
 
-  // Danh sách các câu làm sai (chỉ ghi nhận ở lần đầu tiên _firstTry)
+  // State đóng/mở Gợi ý và Từ vựng
+  const [showHint, setShowHint] = useState(false);
+  const [showVocab, setShowVocab] = useState(false);
+
+  // Danh sách các câu làm sai (chỉ ghi nhận lần đầu tiên _firstTry)
   const [wrongQuestions, setWrongQuestions] = useState([]);
 
   const totalOriginalQuestions = useMemo(() => {
@@ -46,7 +58,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     const config = sec.config || {};
     let rawList = sec.questions.map((q) => {
       let opts = q.options ? [...q.options] : [];
-      // Mặc định luôn trộn lẫn các đáp án
       opts = shuffleArray(opts);
       return {
         ...q,
@@ -60,6 +71,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     setQuestionsQueue(rawList);
     setSelectedOption(null);
     setIsAnswered(false);
+    setShowHint(false);
+    setShowVocab(false);
   };
 
   useEffect(() => {
@@ -69,12 +82,18 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   const currentQuestion = questionsQueue[0];
   const currentSection = sections[activeSectionIdx];
 
+  // Tự động đóng hint & vocab mỗi khi câu hỏi thay đổi
+  useEffect(() => {
+    setShowHint(false);
+    setShowVocab(false);
+  }, [currentQuestion?.question_id, currentQuestion?.prompt]);
+
   const handleSelectOption = (optId) => {
     if (isAnswered) return;
     setSelectedOption(optId);
     setIsAnswered(true);
-    const isCorrect = optId === currentQuestion.correct_option_id;
 
+    const isCorrect = optId === currentQuestion.correct_option_id;
     if (isCorrect && currentQuestion._firstTry) {
       setSectionScores((prev) => ({
         ...prev,
@@ -82,21 +101,20 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
       }));
     }
 
-    // Ghi nhận câu sai lần đầu vào danh sách tổng kết cuối bài
     if (!isCorrect && currentQuestion._firstTry) {
       const chosenOpt = currentQuestion.options?.find((o) => o.id === optId);
       const rightOpt = currentQuestion.options?.find(
         (o) => o.id === currentQuestion.correct_option_id
       );
-
       setWrongQuestions((prev) => {
-        const exists = prev.some((item) => item.questionId === (currentQuestion.id || currentQuestion.prompt));
+        const exists = prev.some(
+          (item) => item.questionId === (currentQuestion.question_id || currentQuestion.prompt)
+        );
         if (exists) return prev;
-
         return [
           ...prev,
           {
-            questionId: currentQuestion.id || currentQuestion.prompt,
+            questionId: currentQuestion.question_id || currentQuestion.prompt,
             prompt: currentQuestion.prompt,
             chosenOptId: optId,
             chosenOptText: chosenOpt?.text || '',
@@ -116,7 +134,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     const finishedQ = nextQueue.shift();
 
     if (!isCorrect && secConfig.repeat_wrong_answers) {
-      // Khi câu sai lặp lại: bắt buộc trộn lẫn đáp án một lần nữa
       nextQueue.push({
         ...finishedQ,
         _firstTry: false,
@@ -127,6 +144,8 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
     setQuestionsQueue(nextQueue);
     setSelectedOption(null);
     setIsAnswered(false);
+    setShowHint(false);
+    setShowVocab(false);
 
     if (nextQueue.length === 0) {
       if (activeSectionIdx + 1 < sections.length) {
@@ -164,7 +183,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
           }}
         />
 
-        {/* Danh sách các câu làm sai */}
         {wrongQuestions.length > 0 && (
           <div className="w-full max-w-4xl px-4 py-8 mb-12 flex flex-col gap-5">
             <div className="flex items-center gap-2 text-rose-400 border-b border-rose-950/80 pb-3">
@@ -173,45 +191,36 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                 Danh sách câu làm sai ({wrongQuestions.length} câu)
               </h3>
             </div>
-
             <div className="flex flex-col gap-4">
               {wrongQuestions.map((item, index) => (
                 <div
                   key={index}
                   className="bg-[#05081f] border border-rose-950/70 p-5 rounded-xl shadow-lg flex flex-col gap-3.5"
                 >
-                  {/* Nội dung câu hỏi */}
                   <div className="text-slate-100 font-medium text-base whitespace-pre-wrap leading-relaxed">
                     <span className="font-mono text-rose-400 font-bold mr-2">
                       #{index + 1}.
                     </span>
                     {renderTextWithNewlines(item.prompt)}
                   </div>
-
-                  {/* Chi tiết đáp án học sinh chọn & đáp án chuẩn (Đã bỏ tiền tố ID ký tự A,B,C,D) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-sm">
-                    {/* Đáp án đã chọn */}
                     <div className="p-3 bg-[#3b0f1d]/50 border border-rose-500/40 rounded-lg flex flex-col gap-1">
                       <span className="text-rose-400 font-semibold text-xs uppercase flex items-center gap-1.5">
-                        <XCircle size={14} /> Đáp án bạn đã chọn:
+                        <XCircle size={14} /> Bạn chọn
                       </span>
                       <div className="text-slate-200 whitespace-pre-wrap">
                         {renderTextWithNewlines(item.chosenOptText)}
                       </div>
                     </div>
-
-                    {/* Đáp án đúng */}
                     <div className="p-3 bg-[#063024]/50 border border-emerald-500/40 rounded-lg flex flex-col gap-1">
                       <span className="text-emerald-400 font-semibold text-xs uppercase flex items-center gap-1.5">
-                        <CheckCircle size={14} /> Đáp án chính xác:
+                        <CheckCircle size={14} /> Đáp án chính xác
                       </span>
                       <div className="text-slate-200 whitespace-pre-wrap">
                         {renderTextWithNewlines(item.correctOptText)}
                       </div>
                     </div>
                   </div>
-
-                  {/* Giải thích chi tiết */}
                   {item.explanation && (
                     <div className="mt-1 p-3 bg-[#0a133d] border border-cyan-500/30 text-cyan-200 text-xs rounded-lg flex gap-2.5 items-start">
                       <Brain size={16} className="text-cyan-400 shrink-0 mt-0.5" />
@@ -233,6 +242,12 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
   }
 
   if (!currentQuestion) return null;
+
+  const hasHint = Boolean(currentQuestion.hint);
+  const hasVocab = Boolean(
+    (Array.isArray(currentQuestion.vocabulary) && currentQuestion.vocabulary.length > 0) ||
+    (typeof currentQuestion.vocabulary === 'string' && currentQuestion.vocabulary.trim())
+  );
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -256,23 +271,99 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
       {/* Main card area */}
       <div className="w-full bg-[#05081f] border-y sm:border border-fuchsia-950/70 p-5 sm:p-8 flex flex-col gap-6 rounded-none shadow-xl">
         {/* Question Content */}
-        <div className="w-full p-5 sm:p-6 bg-[#090f33] border border-cyan-950/60 rounded-none">
+        <div className="w-full p-5 sm:p-6 bg-[#090f33] border border-cyan-950/60 rounded-none flex flex-col gap-4">
           <div className="text-slate-100 font-semibold text-base sm:text-xl leading-relaxed whitespace-pre-wrap">
             {!currentQuestion._firstTry && (
               <span className="inline-block px-2.5 py-0.5 bg-amber-950/70 text-amber-300 border border-amber-500/40 text-xs uppercase font-mono mr-3">
-                Lặp lại câu sai
+                Làm lại câu sai
               </span>
             )}
             {renderTextWithNewlines(currentQuestion.prompt)}
           </div>
+
+          {/* 2 Nút Gợi ý & Từ vựng */}
+          {(hasHint || hasVocab) && (
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-cyan-950/60">
+              {hasHint && (
+                <button
+                  type="button"
+                  onClick={() => setShowHint((prev) => !prev)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-all ${
+                    showHint
+                      ? 'bg-amber-500/20 text-amber-300 border-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.25)]'
+                      : 'bg-[#060a24] text-amber-400/80 border-amber-500/30 hover:border-amber-400 hover:text-amber-300'
+                  }`}
+                >
+                  <Lightbulb size={14} className={showHint ? 'fill-amber-400' : ''} />
+                  <span>Gợi ý</span>
+                </button>
+              )}
+
+              {hasVocab && (
+                <button
+                  type="button"
+                  onClick={() => setShowVocab((prev) => !prev)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-all ${
+                    showVocab
+                      ? 'bg-teal-500/20 text-teal-300 border-teal-400 shadow-[0_0_8px_rgba(20,184,166,0.25)]'
+                      : 'bg-[#060a24] text-teal-400/80 border-teal-500/30 hover:border-teal-400 hover:text-teal-300'
+                  }`}
+                >
+                  <BookA size={14} />
+                  <span>Từ vựng</span>
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Khung hiển thị Gợi ý */}
+          {showHint && hasHint && (
+            <div className="p-3.5 bg-[#1f1906] border border-amber-500/50 rounded text-amber-200 text-sm flex items-start gap-2.5 animate-fadeIn">
+              <Lightbulb size={16} className="text-amber-400 shrink-0 mt-0.5" />
+              <div className="leading-relaxed whitespace-pre-wrap">
+                <span className="font-bold text-amber-300 uppercase tracking-wider text-xs block mb-1">
+                  Gợi ý giải bài:
+                </span>
+                {renderTextWithNewlines(currentQuestion.hint)}
+              </div>
+            </div>
+          )}
+
+          {/* Khung hiển thị Từ vựng */}
+          {showVocab && hasVocab && (
+            <div className="p-3.5 bg-[#041a18] border border-teal-500/50 rounded text-teal-100 text-sm flex items-start gap-2.5 animate-fadeIn">
+              <BookA size={16} className="text-teal-400 shrink-0 mt-0.5" />
+              <div className="flex-1 leading-relaxed">
+                <span className="font-bold text-teal-300 uppercase tracking-wider text-xs block mb-1.5">
+                  Từ vựng quan trọng:
+                </span>
+                {Array.isArray(currentQuestion.vocabulary) ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                    {currentQuestion.vocabulary.map((v, vIdx) => (
+                      <div
+                        key={vIdx}
+                        className="px-2.5 py-1.5 bg-[#082a26] border border-teal-800/60 text-xs flex justify-between items-center"
+                      >
+                        <span className="font-bold text-teal-200">{v.word}</span>
+                        <span className="text-slate-300">{v.meaning}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="whitespace-pre-wrap text-slate-200">
+                    {renderTextWithNewlines(currentQuestion.vocabulary)}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Options (Đã bỏ hiển thị ký tự A,B,C,D) */}
+        {/* Options */}
         <div className="flex flex-col gap-3">
           {currentQuestion.options?.map((opt) => {
             const isSelected = selectedOption === opt.id;
             const isCorrect = opt.id === currentQuestion.correct_option_id;
-
             let optionClass =
               'bg-[#090f33] border-slate-800 text-slate-200 hover:border-cyan-500/60 hover:bg-[#0c1547]';
 
@@ -294,7 +385,6 @@ const QuizBPracticeView = ({ practiceData, quizId, quizTitle, onHome }) => {
                 onClick={() => handleSelectOption(opt.id)}
                 className={`w-full min-h-[52px] p-4 text-left rounded-none border transition-all flex justify-between items-center text-sm sm:text-base leading-snug ${optionClass}`}
               >
-                {/* Chỉ hiển thị nội dung đáp án, không có chữ cái A. B. C. D. */}
                 <span className="flex-1 pr-3 whitespace-pre-wrap">
                   {renderTextWithNewlines(opt.text)}
                 </span>
