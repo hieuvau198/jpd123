@@ -85,7 +85,7 @@ const HallOfFame = () => {
           }}
         >
           <Trophy size={24} style={{ color: "#fadb14" }} />
-          Hall of Fame
+          🗿🗿🗿
         </Title>
         
         {/* Title List Button overlayed on the right */}

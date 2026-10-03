@@ -1,0 +1,32 @@
+[
+  {
+    "id": "thpt",
+    "name": "THPT",
+    "aliases": ["thpt", "thpt reading", "reading thpt", "ôn thi thpt"]
+  },
+  {
+    "id": "reading-a1",
+    "name": "Level A1",
+    "aliases": ["a1", "reading-a1", "level a1"]
+  },
+  {
+    "id": "reading-a2",
+    "name": "Level A2",
+    "aliases": ["a2", "reading-a2", "level a2"]
+  },
+  {
+    "id": "reading-b1",
+    "name": "Level B1",
+    "aliases": ["b1", "reading-b1", "level b1"]
+  },
+  {
+    "id": "reading-b2",
+    "name": "Level B2",
+    "aliases": ["b2", "reading-b2", "level b2"]
+  },
+  {
+    "id": "reading-c1",
+    "name": "Level C1",
+    "aliases": ["c1", "reading-c1", "level c1"]
+  }
+]

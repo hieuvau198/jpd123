@@ -45,7 +45,11 @@ import DocumentDetail from './pages/DocumentDetail';
 
 export default function App() {
   return (
-    <main>
+    <main className="relative min-h-screen">
+      <div className="snow-container" aria-hidden="true">
+        <div className="snow-layer-1" />
+        <div className="snow-layer-2" />
+      </div>
       <NavBar />
       
       <Routes>

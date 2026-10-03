@@ -11,22 +11,149 @@
 
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  
-  /* --- TET HOLIDAY THEME --- */
-  background: linear-gradient(-45deg, #e256dd, #ffcc00, #d57e7e, #dc98dc);
+  font-family: 'Roboto', sans-serif; /* */
+  -webkit-font-smoothing: antialiased; /*[cite: 1] */
+  min-height: 100vh; /*[cite: 1] */
+  position: relative;
+  /* Phase 1 (Daytime): Subdued, clear cerulean & soft morning teal (no glaring neon) */
+  background: linear-gradient(-45deg, #1b74b8, #3a97a8, #5babb0, #2c8eb5);
   background-size: 400% 400%;
-  animation: tetHoliday 6s ease infinite;
-  
-  min-height: 100vh;
-  /* Removed fixed white color to allow cards to handle their own text colors */
+  animation: dynamicMovement 12s ease infinite;
 }
 
-@keyframes tetHoliday {
+/* Phase 2 (Sunset / Dusk): Golden Hour Horizon (Option 5) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(-45deg, #227093, #33d9b2, #ffb142, #706fd3);
+  background-size: 400% 400%;
+  opacity: 0;
+  animation: 
+    themeSunset 360s ease-in-out infinite,
+    dynamicMovement 15s ease infinite;
+  pointer-events: none;
+}
+
+/* Phase 3 (Nighttime): Deep Nordic Slate & Midnight Navy (Option 4) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(-45deg, #0d1b3e, #1a2f68, #07152b, #1e4a52);
+  background-size: 400% 400%;
+  opacity: 0;
+  animation: 
+    themeNight 360s ease-in-out infinite,
+    dynamicMovement 18s ease infinite;
+  pointer-events: none;
+}
+
+/* Ambient gradient wave */
+@keyframes dynamicMovement {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Sunset phase active: 2:00 -> 4:00 (33.3% to 66.6%) */
+@keyframes themeSunset {
+  0%, 25% {
+    opacity: 0;
+  }
+  33.3%, 58% {
+    opacity: 1;
+  }
+  66.6%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Night phase active: 4:00 -> 6:00 (66.6% to 100%) */
+@keyframes themeNight {
+  0%, 58% {
+    opacity: 0;
+  }
+  66.6%, 92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* snow */
+/* --- ULTRA-LIGHTWEIGHT GPU SNOW EFFECT --- */
+
+/* Snow Container fixed above the background but behind interactive content */
+.snow-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* Allows clicks to pass through without interference */
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Layer 1: Foreground Snow (larger flakes, drifts faster) */
+.snow-layer-1 {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-image: 
+    radial-gradient(3px 3px at 20px 30px, rgba(255, 255, 255, 0.95), transparent),
+    radial-gradient(4px 4px at 100px 150px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(3px 3px at 200px 80px, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(5px 5px at 320px 240px, rgba(255, 255, 255, 0.95), transparent),
+    radial-gradient(3px 3px at 450px 180px, rgba(255, 255, 255, 0.8), transparent);
+  background-size: 550px 550px;
+  animation: snowDriftSlow 14s linear infinite;
+  will-change: transform;
+}
+
+/* Layer 2: Background Snow (smaller flakes, softer opacity, drifts slower for depth) */
+.snow-layer-2 {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background-image: 
+    radial-gradient(2px 2px at 50px 90px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 150px 290px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 280px 120px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2.5px 2.5px at 390px 350px, rgba(255, 255, 255, 0.65), transparent);
+  background-size: 420px 420px;
+  animation: snowDriftFast 22s linear infinite;
+  will-change: transform;
+}
+
+@keyframes snowDriftSlow {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(15px, 50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes snowDriftFast {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-20px, 50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 100%, 0);
+  }
 }
 
 /* Flashcard Flip 3D Context */
