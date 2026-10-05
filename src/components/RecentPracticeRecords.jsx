@@ -35,7 +35,7 @@ const RecentPracticeRecords = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const PAGE_SIZE = 10;
-  const MAX_PAGES = 4; // Tối đa 4 trang
+  const MAX_PAGES = 10; // Tối đa 4 trang
 
   useEffect(() => {
     const fetchData = async () => {
