@@ -1,4 +1,9 @@
 [
+    {
+    "id": "thcs",
+    "name": "THCS",
+    "aliases": ["thcs", "thcs reading", "reading thcs", "ôn thi thcs"]
+  },
   {
     "id": "thpt",
     "name": "THPT",
