@@ -4,14 +4,12 @@ import { Card, Button, Typography, Spin, message } from 'antd';
 import { 
   ArrowLeft, 
   RefreshCw, 
-  CheckCircle, 
-  XCircle, 
-  GripVertical, 
-  Trophy, 
   ArrowRight,
   List as ListIcon,
   Check,
-  X
+  X,
+  RotateCcw,
+  Trophy
 } from 'lucide-react';
 import { getRepairById } from '../firebase/repairService';
 
@@ -20,19 +18,17 @@ const { Title, Text } = Typography;
 const RepairDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
   const [repairSet, setRepairSet] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  // --- SESSION STATE ---
-  // Store the state of ALL questions: { words: [], status: 'pending'|'correct'|'incorrect', isChecked: false }
+
+  // --- SESSION STATE CHO TOÀN BỘ CÂU HỎI ---
   const [sessionState, setSessionState] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
 
-  // --- LOCAL UI STATE (Current Question) ---
-  const [words, setWords] = useState([]); 
-  const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+  // --- LOCAL UI STATE (Câu hiện tại) ---
+  const [availableTokens, setAvailableTokens] = useState([]); // Danh sách từ chưa chọn
+  const [selectedTokens, setSelectedTokens] = useState([]);   // Danh sách từ đã bấm chọn vào câu
   const [isChecked, setIsChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
@@ -43,32 +39,38 @@ const RepairDetail = () => {
   const loadData = async () => {
     setLoading(true);
     const data = await getRepairById(id);
-    if (data) {
+    if (data && data.questions) {
       setRepairSet(data);
       initializeSession(data.questions);
     } else {
-      message.error("Repair set not found");
+      message.error("Không tìm thấy bộ bài tập sắp xếp!");
       navigate('/repairs');
     }
     setLoading(false);
   };
 
-  // Initialize the session state for all questions
+  // Khởi tạo trạng thái danh sách câu
   const initializeSession = (questions) => {
-    const initialState = questions.map(q => {
-      // Prepare initial shuffled words
-      let initialWords = [];
+    const initialState = questions.map((q, qIdx) => {
+      let rawList = [];
       if (Array.isArray(q.question)) {
-        initialWords = [...q.question];
-      } else {
-        initialWords = q.question.includes('/') 
-          ? q.question.split('/').map(w => w.trim()) 
-          : q.question.split(' ');
+        rawList = [...q.question];
+      } else if (typeof q.question === 'string') {
+        rawList = q.question.includes('/')
+          ? q.question.split('/').map(w => w.trim())
+          : q.question.split(' ').map(w => w.trim());
       }
-      
+
+      // Gán id duy nhất cho từng từ để tránh lỗi khi có từ trùng lặp
+      const pool = rawList.filter(Boolean).map((word, wIdx) => ({
+        id: `q${qIdx}-w${wIdx}-${word}`,
+        word: word
+      }));
+
       return {
-        words: initialWords,
-        status: 'pending', // pending, correct, incorrect
+        available: pool,
+        selected: [],
+        status: 'pending', // pending | correct | incorrect
         isChecked: false
       };
     });
@@ -77,72 +79,93 @@ const RepairDetail = () => {
     loadQuestionState(0, initialState);
   };
 
-  // Load a specific question's state into the UI
+  // Tải câu hỏi theo index
   const loadQuestionState = (index, currentSessionState = sessionState) => {
     const state = currentSessionState[index];
-    setWords([...state.words]);
+    if (!state) return;
+    setAvailableTokens([...state.available]);
+    setSelectedTokens([...state.selected]);
     setIsChecked(state.isChecked);
     setIsCorrect(state.status === 'correct');
     setCurrentIndex(index);
   };
 
-  // --- DRAG AND DROP HANDLERS ---
-  const onDragStart = (e, index) => {
-    setDraggedItemIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index);
-  };
-
-  const onDragOver = (e) => e.preventDefault();
-
-  const onDrop = (e, dropIndex) => {
-    e.preventDefault();
-    if (draggedItemIndex === null || isChecked) return;
-
-    const newWords = [...words];
-    const itemToMove = newWords[draggedItemIndex];
-    
-    newWords.splice(draggedItemIndex, 1);
-    newWords.splice(dropIndex, 0, itemToMove);
-
-    setWords(newWords);
-    setDraggedItemIndex(null);
-
-    // Sync changes to session state immediately so they persist if we navigate away
-    updateSessionState(currentIndex, { words: newWords });
-  };
-
   const updateSessionState = (index, updates) => {
-    const newState = [...sessionState];
-    newState[index] = { ...newState[index], ...updates };
-    setSessionState(newState);
+    setSessionState(prev => {
+      const newState = [...prev];
+      newState[index] = { ...newState[index], ...updates };
+      return newState;
+    });
   };
 
-  // In src/pages/RepairDetail.jsx
+  // Bấm chọn 1 từ từ kho từ -> Nhảy vào câu
+  const handleSelectWord = (token) => {
+    if (isChecked) return;
+    const newAvailable = availableTokens.filter(t => t.id !== token.id);
+    const newSelected = [...selectedTokens, token];
 
+    setAvailableTokens(newAvailable);
+    setSelectedTokens(newSelected);
+    updateSessionState(currentIndex, { available: newAvailable, selected: newSelected });
+  };
+
+  // Bấm vào từ trong câu -> Trả lại về kho từ
+  const handleRemoveWord = (token) => {
+    if (isChecked) return;
+    const newSelected = selectedTokens.filter(t => t.id !== token.id);
+    const newAvailable = [...availableTokens, token];
+
+    setSelectedTokens(newSelected);
+    setAvailableTokens(newAvailable);
+    updateSessionState(currentIndex, { available: newAvailable, selected: newSelected });
+  };
+
+  // Nút xóa hết từ đã chọn để xếp lại
+  const handleResetCurrent = () => {
+    if (isChecked) return;
+    const currentQ = repairSet.questions[currentIndex];
+    let rawList = [];
+    if (Array.isArray(currentQ.question)) {
+      rawList = [...currentQ.question];
+    } else {
+      rawList = currentQ.question.includes('/')
+        ? currentQ.question.split('/').map(w => w.trim())
+        : currentQ.question.split(' ').map(w => w.trim());
+    }
+    const pool = rawList.filter(Boolean).map((word, wIdx) => ({
+      id: `q${currentIndex}-w${wIdx}-${word}`,
+      word: word
+    }));
+
+    setAvailableTokens(pool);
+    setSelectedTokens([]);
+    updateSessionState(currentIndex, { available: pool, selected: [] });
+  };
+
+  // Kiểm tra đáp án
   const checkAnswer = () => {
-    // 1. Join with spaces first
-    // 2. Use Regex to remove any whitespace (\s+) found immediately before punctuation ([,!.?;:])
-    const currentSentence = words.join(' ')
-      .replace(/\s+([,!.?;:])/g, '$1') 
+    if (selectedTokens.length === 0) {
+      message.warning("Vui lòng chọn từ để hoàn thành câu!");
+      return;
+    }
+
+    const currentSentence = selectedTokens
+      .map(t => t.word)
+      .join(' ')
+      .replace(/\s+([,!.?;:])/g, '$1')
       .trim();
 
-    const correctSentence = repairSet.questions[currentIndex].answer.trim();
-    
-    // Log for debugging if needed
-    // console.log("User constructed:", currentSentence);
-    // console.log("Target answer:", correctSentence);
+    const targetAnswer = (repairSet.questions[currentIndex].answer || '').trim();
+    const correct = currentSentence === targetAnswer;
 
-    const correct = currentSentence === correctSentence;
-    
     setIsCorrect(correct);
     setIsChecked(true);
-    
-    // Save result
+
     updateSessionState(currentIndex, {
       status: correct ? 'correct' : 'incorrect',
       isChecked: true,
-      words: words // Ensure final order is saved
+      available: availableTokens,
+      selected: selectedTokens
     });
   };
 
@@ -164,54 +187,59 @@ const RepairDetail = () => {
     initializeSession(repairSet.questions);
   };
 
-  // --- SCORE CALCULATION ---
   const calculateScore = () => {
     const correctCount = sessionState.filter(s => s.status === 'correct').length;
     const total = repairSet.questions.length;
-    // Convert to scale of 10
-    const scoreOn10 = ((correctCount / total) * 10).toFixed(1); 
-    // Remove .0 if it exists
+    const scoreOn10 = ((correctCount / total) * 10).toFixed(1);
     return scoreOn10.endsWith('.0') ? scoreOn10.slice(0, -2) : scoreOn10;
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><Spin size="large" /></div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
-  // --- COMPLETED VIEW ---
+  // --- MÀN HÌNH KẾT QUẢ KHI LÀM XONG ---
   if (completed) {
     const finalScore = calculateScore();
     const numericScore = parseFloat(finalScore);
-    
-    let messageText = "Good Job!";
+    let messageText = "Làm tốt lắm!";
     let colorClass = "text-blue-500";
-    if (numericScore === 10) { messageText = "Perfect!"; colorClass = "text-green-500"; }
-    else if (numericScore < 5) { messageText = "Keep Practicing!"; colorClass = "text-orange-500"; }
+    if (numericScore === 10) { messageText = "Xuất sắc!"; colorClass = "text-green-500"; }
+    else if (numericScore < 5) { messageText = "Cần luyện tập thêm!"; colorClass = "text-orange-500"; }
 
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-xl rounded-3xl text-center p-8 border-0 bg-white/90 backdrop-blur-sm">
+        <Card className="w-full max-w-md shadow-xl rounded-3xl text-center p-8 border-0 bg-white/95 backdrop-blur-sm">
           <div className="mb-6 flex justify-center">
             <div className={`p-6 rounded-full bg-opacity-10 ${numericScore === 10 ? 'bg-green-500' : 'bg-blue-500'}`}>
               <Trophy size={64} className={colorClass} />
             </div>
           </div>
-          
           <Title level={2} className="!mb-2">{messageText}</Title>
           <Text className="text-gray-500 text-lg block mb-8">
-            Score: <span className={`font-bold text-3xl ${colorClass}`}>{finalScore}</span> / 10
+            Điểm số: <span className={`font-bold text-3xl ${colorClass}`}>{finalScore}</span> / 10
           </Text>
-
           <div className="flex flex-col gap-3">
             <Button 
               type="primary" 
               size="large" 
-              onClick={restart} 
+              onClick={restart}
               className="h-12 bg-indigo-600 hover:bg-indigo-500 border-none rounded-xl font-semibold shadow-lg shadow-indigo-200"
               icon={<RefreshCw size={18} />}
             >
-              Practice Again
+              Luyện tập lại
             </Button>
-            <Button size="large" type="text" onClick={() => navigate('/repairs')} className="h-12 text-gray-500 hover:bg-gray-100 rounded-xl">
-              Back to List
+            <Button 
+              size="large" 
+              type="text" 
+              onClick={() => navigate('/repairs')} 
+              className="h-12 text-gray-500 hover:bg-gray-100 rounded-xl"
+            >
+              Quay về danh sách
             </Button>
           </div>
         </Card>
@@ -219,150 +247,211 @@ const RepairDetail = () => {
     );
   }
 
-  // --- MAIN LAYOUT ---
+  const currentQ = repairSet.questions[currentIndex];
+
   return (
     <div className="min-h-screen flex flex-col items-center py-6 px-4 font-sans max-w-7xl mx-auto">
-      
       {/* HEADER */}
       <div className="w-full flex justify-between items-center mb-6 px-2">
         <Button 
           type="text" 
           icon={<ArrowLeft size={20} />} 
           onClick={() => navigate('/repairs')}
-          className="hover:bg-white/50 rounded-full text-slate-600"
+          className="hover:bg-white/50 rounded-full text-white/90"
         >
-          Exit
+          Thoát
         </Button>
-        <Title level={4} className="!m-0 text-slate-700 hidden sm:block">{repairSet.title}</Title>
-        <div className="w-[80px]"></div> {/* Spacer for alignment */}
+        <Title level={4} className="!m-0 text-white font-bold hidden sm:block">
+          {repairSet.title}
+        </Title>
+        <div className="w-[80px]"></div>
       </div>
 
       <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
-        
-        {/* LEFT COLUMN: GAME AREA */}
+        {/* KHUNG LÀM BÀI CHÍNH */}
         <div className="flex flex-col gap-6">
           <Card 
-            className="shadow-lg rounded-3xl border-0 overflow-hidden relative bg-white/95 backdrop-blur-sm min-h-[500px] flex flex-col"
-            bodyStyle={{ padding: '2.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}
+            className="shadow-lg rounded-3xl border-0 overflow-hidden relative bg-white/95 backdrop-blur-sm min-h-[520px] flex flex-col"
+            styles={{ body: { padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' } }}
           >
-             <div className="flex justify-between items-center mb-8">
-                <Text className="text-slate-400 font-medium text-lg">Question {currentIndex + 1}</Text>
-                {isChecked && (
-                  <span className={`px-3 py-1 rounded-full text-sm font-bold ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {isCorrect ? "Correct" : "Incorrect"}
-                  </span>
-                )}
-             </div>
-
-            <div className="text-center mb-8">
-              <Title level={3} className="!mb-2 !text-slate-800">Construct the Sentence</Title>
-              {!isChecked && <Text className="text-slate-400">Drag words to order</Text>}
+            {/* Thanh thông tin câu */}
+            <div className="flex justify-between items-center mb-4">
+              <Text className="text-slate-400 font-semibold text-base">
+                Câu {currentIndex + 1} / {repairSet.questions.length}
+              </Text>
+              {isChecked && (
+                <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                  isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                }`}>
+                  {isCorrect ? "Chính xác" : "Chưa chính xác"}
+                </span>
+              )}
             </div>
 
-            {/* Draggable Area */}
-            <div className="flex-grow flex items-center justify-center">
-              <div className="flex flex-wrap gap-3 justify-center content-center transition-all p-4 bg-slate-50/50 rounded-2xl w-full border border-dashed border-slate-200 min-h-[120px]">
-                {words.map((word, index) => (
-                  <div
-                    key={`${index}-${word}`}
-                    draggable={!isChecked}
-                    onDragStart={(e) => onDragStart(e, index)}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={(e) => onDrop(e, index)}
-                    className={`
-                      group relative flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-lg cursor-grab select-none transition-all duration-200 transform
-                      ${isChecked 
-                        ? (isCorrect 
-                            ? 'bg-green-100 border-2 border-green-500 text-green-700' 
-                            : 'bg-red-50 border-2 border-red-400 text-red-700')
-                        : 'bg-white border-2 border-slate-200 border-b-4 text-slate-700 hover:-translate-y-1 hover:border-indigo-300 hover:text-indigo-600 active:border-b-2 active:translate-y-[2px] shadow-sm'
-                      }
-                      ${draggedItemIndex === index ? 'opacity-40 scale-95' : 'opacity-100'}
-                      ${isChecked ? 'cursor-default' : ''}
-                    `}
+            {/* HIỂN THỊ NGHĨA TIẾNG VIỆT CỦA CÂU */}
+            {currentQ.meaning && (
+              <div className="mb-6 p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-center">
+                <span className="text-xs uppercase font-bold text-indigo-500 tracking-wider block mb-1">
+                  Nghĩa của câu
+                </span>
+                <span className="text-lg font-medium text-slate-800">
+                  {currentQ.meaning}
+                </span>
+              </div>
+            )}
+
+            {/* KHUNG 1: CÂU ĐANG GHÉP (TỪ ĐÃ CHỌN) */}
+            <div className="flex flex-col gap-2 mb-6">
+              <div className="flex justify-between items-center px-1">
+                <Text className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  Câu của bạn:
+                </Text>
+                {!isChecked && selectedTokens.length > 0 && (
+                  <button 
+                    onClick={handleResetCurrent}
+                    className="text-xs text-indigo-600 hover:text-indigo-800 flex items-center gap-1 font-semibold"
                   >
-                    {!isChecked && (
-                      <GripVertical size={16} className="text-slate-300 group-hover:text-indigo-300 transition-colors" />
-                    )}
-                    {word}
-                  </div>
-                ))}
+                    <RotateCcw size={12} /> Đặt lại
+                  </button>
+                )}
+              </div>
+              <div className={`min-h-[90px] p-4 rounded-2xl flex flex-wrap gap-2.5 items-center border-2 transition-all ${
+                isChecked
+                  ? isCorrect
+                    ? 'bg-emerald-50/50 border-emerald-400'
+                    : 'bg-rose-50/50 border-rose-400'
+                  : 'bg-slate-50 border-dashed border-slate-300'
+              }`}>
+                {selectedTokens.length === 0 ? (
+                  <span className="text-slate-400 text-sm italic mx-auto">
+                    Bấm các từ bên dưới để ghép vào đây
+                  </span>
+                ) : (
+                  selectedTokens.map((token) => (
+                    <button
+                      key={token.id}
+                      type="button"
+                      disabled={isChecked}
+                      onClick={() => handleRemoveWord(token)}
+                      className={`px-4 py-2 rounded-xl font-bold text-base transition-all transform active:scale-95 shadow-sm border ${
+                        isChecked
+                          ? isCorrect
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                            : 'bg-rose-100 text-rose-800 border-rose-300'
+                          : 'bg-indigo-600 text-white border-indigo-600 hover:bg-rose-500 hover:border-rose-500 hover:text-white cursor-pointer'
+                      }`}
+                      title={!isChecked ? "Bấm để bỏ từ này ra" : ""}
+                    >
+                      {token.word}
+                    </button>
+                  ))
+                )}
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="mt-10 h-24 flex flex-col justify-end">
+            {/* KHUNG 2: DANH SÁCH TẤT CẢ CÁC TỪ LỰA CHỌN */}
+            <div className="flex flex-col gap-2 flex-grow">
+              <Text className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
+                Từ gợi ý (Bấm vào từ để chọn):
+              </Text>
+              <div className="p-4 rounded-2xl bg-slate-100/70 border border-slate-200 min-h-[110px] flex flex-wrap gap-2.5 items-center content-start">
+                {availableTokens.length === 0 ? (
+                  <span className="text-slate-400 text-sm italic mx-auto">
+                    Đã chọn hết tất cả các từ
+                  </span>
+                ) : (
+                  availableTokens.map((token) => (
+                    <button
+                      key={token.id}
+                      type="button"
+                      disabled={isChecked}
+                      onClick={() => handleSelectWord(token)}
+                      className={`px-4 py-2.5 rounded-xl font-bold text-base transition-all transform hover:-translate-y-0.5 active:translate-y-0 border-2 border-b-4 ${
+                        isChecked
+                          ? 'opacity-40 cursor-not-allowed bg-white border-slate-200 text-slate-400'
+                          : 'bg-white border-slate-200 border-b-slate-300 text-slate-700 hover:border-indigo-400 hover:text-indigo-600 shadow-sm cursor-pointer'
+                      }`}
+                    >
+                      {token.word}
+                    </button>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* KHU VỰC THAO TÁC / ĐÁP ÁN */}
+            <div className="mt-8 flex flex-col justify-end">
               {isChecked ? (
-                <div className="animate-fade-in flex flex-col items-center w-full">
+                <div className="flex flex-col items-center w-full">
                   {!isCorrect && (
-                     <div className="mb-4 text-center">
-                       <Text className="text-slate-400 block text-sm">Correct Answer:</Text>
-                       <Text className="text-slate-800 font-medium text-lg">{repairSet.questions[currentIndex].answer}</Text>
-                     </div>
+                    <div className="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-center w-full">
+                      <Text className="text-slate-500 block text-xs uppercase font-bold tracking-wider mb-1">
+                        Đáp án chính xác:
+                      </Text>
+                      <Text className="text-emerald-700 font-bold text-lg">
+                        {currentQ.answer}
+                      </Text>
+                    </div>
                   )}
-                  
+
                   <div className="flex gap-4 w-full">
-                     {/* If it's the last question, show 'Finish' button */}
-                     {currentIndex === repairSet.questions.length - 1 ? (
-                        <Button 
-                          type="primary"
-                          size="large" 
-                          onClick={() => setCompleted(true)}
-                          className="flex-1 h-12 text-lg font-semibold rounded-xl bg-slate-800 text-white hover:bg-slate-700 border-none"
-                        >
-                          See Results
-                        </Button>
-                     ) : (
-                        <Button 
-                          type="primary" // Always primary color for 'Next' flow
-                          size="large" 
-                          onClick={nextQuestion}
-                          className={`flex-1 h-12 text-lg font-semibold rounded-xl border-none shadow-md
-                            ${isCorrect ? 'bg-green-500 hover:bg-green-600' : 'bg-slate-800 hover:bg-slate-700'}
-                          `}
-                          icon={<ArrowRight size={20} />}
-                        >
-                          Next Question
-                        </Button>
-                     )}
+                    {currentIndex === repairSet.questions.length - 1 ? (
+                      <Button 
+                        type="primary"
+                        size="large"
+                        onClick={() => setCompleted(true)}
+                        className="flex-1 h-12 text-base font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white border-none shadow-md"
+                      >
+                        Xem kết quả tổng kết
+                      </Button>
+                    ) : (
+                      <Button 
+                        type="primary"
+                        size="large"
+                        onClick={nextQuestion}
+                        className={`flex-1 h-12 text-base font-bold rounded-xl border-none shadow-md ${
+                          isCorrect ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-slate-900 hover:bg-slate-800'
+                        }`}
+                        icon={<ArrowRight size={18} />}
+                      >
+                        Câu tiếp theo
+                      </Button>
+                    )}
                   </div>
                 </div>
               ) : (
                 <Button 
-                  type="primary" 
-                  size="large" 
-                  onClick={checkAnswer} 
-                  className="w-full h-12 bg-indigo-600 hover:bg-indigo-500 border-none rounded-xl text-lg font-semibold shadow-lg shadow-indigo-200 transition-all hover:-translate-y-0.5"
+                  type="primary"
+                  size="large"
+                  onClick={checkAnswer}
+                  className="w-full h-12 bg-indigo-600 hover:bg-indigo-500 border-none rounded-xl text-base font-bold shadow-lg shadow-indigo-200"
                 >
-                  Check Answer
+                  Kiểm tra câu
                 </Button>
               )}
             </div>
           </Card>
         </div>
 
-        {/* RIGHT COLUMN: PROGRESS SIDEBAR */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-slate-100 lg:sticky lg:top-6">
-          <div className="flex items-center gap-2 mb-6 text-slate-600 font-semibold">
+        {/* SIDEBAR TIẾN TRÌNH CÂU HỎI */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-md border border-slate-100 lg:sticky lg:top-6">
+          <div className="flex items-center gap-2 mb-6 text-slate-700 font-bold">
             <ListIcon size={20} />
-            <span>Progress</span>
+            <span>Tiến trình</span>
           </div>
 
-          <div className="grid grid-cols-5 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-5 lg:grid-cols-4 gap-2.5">
             {sessionState.map((state, idx) => {
               let btnClass = "bg-slate-100 text-slate-500 hover:bg-slate-200 border-slate-200";
               let icon = null;
 
-              // Active Question Styling
               if (idx === currentIndex) {
                 btnClass = "ring-2 ring-offset-2 ring-indigo-500 bg-white text-indigo-600 border-indigo-200 font-bold";
-              } 
-              // Completed Question Styling
-              else if (state.status === 'correct') {
-                btnClass = "bg-green-100 text-green-600 border-green-200";
+              } else if (state.status === 'correct') {
+                btnClass = "bg-emerald-100 text-emerald-600 border-emerald-200";
                 icon = <Check size={14} strokeWidth={3} />;
               } else if (state.status === 'incorrect') {
-                btnClass = "bg-red-50 text-red-500 border-red-200";
+                btnClass = "bg-rose-100 text-rose-500 border-rose-200";
                 icon = <X size={14} strokeWidth={3} />;
               }
 
@@ -370,10 +459,7 @@ const RepairDetail = () => {
                 <button
                   key={idx}
                   onClick={() => goToQuestion(idx)}
-                  className={`
-                    aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-medium transition-all border
-                    ${btnClass}
-                  `}
+                  className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm font-semibold transition-all border ${btnClass}`}
                 >
                   {icon || (idx + 1)}
                 </button>
@@ -382,21 +468,20 @@ const RepairDetail = () => {
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-100">
-             <div className="flex justify-between items-center text-sm text-slate-500 mb-2">
-                <span>Completed</span>
-                <span className="font-semibold text-slate-700">
-                  {sessionState.filter(s => s.status !== 'pending').length} / {repairSet.questions.length}
-                </span>
-             </div>
-             <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                <div 
-                  className="bg-indigo-500 h-full transition-all duration-500" 
-                  style={{ width: `${(sessionState.filter(s => s.status !== 'pending').length / repairSet.questions.length) * 100}%` }}
-                ></div>
-             </div>
+            <div className="flex justify-between items-center text-sm text-slate-500 mb-2">
+              <span>Đã hoàn thành</span>
+              <span className="font-bold text-slate-800">
+                {sessionState.filter(s => s.status !== 'pending').length} / {repairSet.questions.length}
+              </span>
+            </div>
+            <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div 
+                className="bg-indigo-600 h-full transition-all duration-300"
+                style={{ width: `${(sessionState.filter(s => s.status !== 'pending').length / repairSet.questions.length) * 100}%` }}
+              ></div>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
   );
