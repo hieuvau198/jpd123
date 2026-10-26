@@ -1,0 +1,6 @@
+[
+  { "id": "p20", "label": "Khởi động", "percentage": 30 },
+  { "id": "p50", "label": "Vừa sức", "percentage": 50 },
+  { "id": "p75", "label": "Tăng tốc", "percentage": 75 },
+  { "id": "p100", "label": "Toàn bộ", "percentage": 100 }
+]

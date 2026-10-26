@@ -1,55 +1,98 @@
+// src/pages/RepairDetail.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'; // Thêm useSearchParams
 import { Card, Button, Typography, Spin, message } from 'antd';
 import { 
   ArrowLeft, 
   RefreshCw, 
-  ArrowRight,
-  List as ListIcon,
-  Check,
-  X,
-  RotateCcw,
-  Trophy
+  ArrowRight, 
+  List as ListIcon, 
+  Check, 
+  X, 
+  RotateCcw, 
+  Trophy 
 } from 'lucide-react';
 import { getRepairById } from '../firebase/repairService';
 
 const { Title, Text } = Typography;
 
+// Hàm shuffle ngẫu nhiên Fisher-Yates
+const shuffleQuestions = (array) => {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+};
+
 const RepairDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Nhận tham số percent hoặc numbers
+  const percentParam = searchParams.get('percent');
+  const numbersParam = searchParams.get('numbers');
+
   const [repairSet, setRepairSet] = useState(null);
+  const [activeQuestions, setActiveQuestions] = useState([]); // Danh sách câu hỏi đã được chọn ngẫu nhiên
   const [loading, setLoading] = useState(true);
 
-  // --- SESSION STATE CHO TOÀN BỘ CÂU HỎI ---
+  // --- SESSION STATE CHO TOÀN BỘ PHIÊN LÀM BÀI ---
   const [sessionState, setSessionState] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
 
   // --- LOCAL UI STATE (Câu hiện tại) ---
-  const [availableTokens, setAvailableTokens] = useState([]); // Danh sách từ chưa chọn
-  const [selectedTokens, setSelectedTokens] = useState([]);   // Danh sách từ đã bấm chọn vào câu
+  const [availableTokens, setAvailableTokens] = useState([]);
+  const [selectedTokens, setSelectedTokens] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, [id]);
+  // Hàm chọn ngẫu nhiên câu hỏi theo cấu hình % hoặc số lượng
+  const pickRandomQuestions = (rawQuestions) => {
+    if (!rawQuestions || rawQuestions.length === 0) return [];
+    
+    let targetCount = rawQuestions.length;
+
+    if (percentParam) {
+      const pct = parseFloat(percentParam);
+      if (!isNaN(pct) && pct > 0 && pct <= 100) {
+        targetCount = Math.max(1, Math.round((rawQuestions.length * pct) / 100));
+      }
+    } else if (numbersParam) {
+      const num = parseInt(numbersParam, 10);
+      if (!isNaN(num) && num > 0) {
+        targetCount = Math.min(rawQuestions.length, num);
+      }
+    }
+
+    // Xáo trộn và lấy đủ số câu theo target
+    const shuffled = shuffleQuestions(rawQuestions);
+    return shuffled.slice(0, targetCount);
+  };
 
   const loadData = async () => {
     setLoading(true);
     const data = await getRepairById(id);
     if (data && data.questions) {
       setRepairSet(data);
-      initializeSession(data.questions);
+      const chosen = pickRandomQuestions(data.questions);
+      setActiveQuestions(chosen);
+      initializeSession(chosen);
     } else {
-      message.error("Không tìm thấy bộ bài tập sắp xếp!");
+      message.error("Không tìm thấy bài tập!");
       navigate('/repairs');
     }
     setLoading(false);
   };
 
-  // Khởi tạo trạng thái danh sách câu
+  useEffect(() => {
+    loadData();
+  }, [id, percentParam, numbersParam]);
+
+  // Khởi tạo session state dựa trên danh sách câu đã chọn
   const initializeSession = (questions) => {
     const initialState = questions.map((q, qIdx) => {
       let rawList = [];
@@ -61,7 +104,6 @@ const RepairDetail = () => {
           : q.question.split(' ').map(w => w.trim());
       }
 
-      // Gán id duy nhất cho từng từ để tránh lỗi khi có từ trùng lặp
       const pool = rawList.filter(Boolean).map((word, wIdx) => ({
         id: `q${qIdx}-w${wIdx}-${word}`,
         word: word
@@ -70,7 +112,7 @@ const RepairDetail = () => {
       return {
         available: pool,
         selected: [],
-        status: 'pending', // pending | correct | incorrect
+        status: 'pending',
         isChecked: false
       };
     });
@@ -79,7 +121,6 @@ const RepairDetail = () => {
     loadQuestionState(0, initialState);
   };
 
-  // Tải câu hỏi theo index
   const loadQuestionState = (index, currentSessionState = sessionState) => {
     const state = currentSessionState[index];
     if (!state) return;
@@ -98,32 +139,27 @@ const RepairDetail = () => {
     });
   };
 
-  // Bấm chọn 1 từ từ kho từ -> Nhảy vào câu
   const handleSelectWord = (token) => {
     if (isChecked) return;
     const newAvailable = availableTokens.filter(t => t.id !== token.id);
     const newSelected = [...selectedTokens, token];
-
     setAvailableTokens(newAvailable);
     setSelectedTokens(newSelected);
     updateSessionState(currentIndex, { available: newAvailable, selected: newSelected });
   };
 
-  // Bấm vào từ trong câu -> Trả lại về kho từ
   const handleRemoveWord = (token) => {
     if (isChecked) return;
     const newSelected = selectedTokens.filter(t => t.id !== token.id);
     const newAvailable = [...availableTokens, token];
-
     setSelectedTokens(newSelected);
     setAvailableTokens(newAvailable);
     updateSessionState(currentIndex, { available: newAvailable, selected: newSelected });
   };
 
-  // Nút xóa hết từ đã chọn để xếp lại
   const handleResetCurrent = () => {
     if (isChecked) return;
-    const currentQ = repairSet.questions[currentIndex];
+    const currentQ = activeQuestions[currentIndex];
     let rawList = [];
     if (Array.isArray(currentQ.question)) {
       rawList = [...currentQ.question];
@@ -132,6 +168,7 @@ const RepairDetail = () => {
         ? currentQ.question.split('/').map(w => w.trim())
         : currentQ.question.split(' ').map(w => w.trim());
     }
+
     const pool = rawList.filter(Boolean).map((word, wIdx) => ({
       id: `q${currentIndex}-w${wIdx}-${word}`,
       word: word
@@ -142,7 +179,6 @@ const RepairDetail = () => {
     updateSessionState(currentIndex, { available: pool, selected: [] });
   };
 
-  // Kiểm tra đáp án
   const checkAnswer = () => {
     if (selectedTokens.length === 0) {
       message.warning("Vui lòng chọn từ để hoàn thành câu!");
@@ -155,12 +191,11 @@ const RepairDetail = () => {
       .replace(/\s+([,!.?;:])/g, '$1')
       .trim();
 
-    const targetAnswer = (repairSet.questions[currentIndex].answer || '').trim();
+    const targetAnswer = (activeQuestions[currentIndex].answer || '').trim();
     const correct = currentSentence === targetAnswer;
 
     setIsCorrect(correct);
     setIsChecked(true);
-
     updateSessionState(currentIndex, {
       status: correct ? 'correct' : 'incorrect',
       isChecked: true,
@@ -175,21 +210,25 @@ const RepairDetail = () => {
 
   const nextQuestion = () => {
     const nextIdx = currentIndex + 1;
-    if (nextIdx < repairSet.questions.length) {
+    if (nextIdx < activeQuestions.length) {
       goToQuestion(nextIdx);
     } else {
       setCompleted(true);
     }
   };
 
+  // Làm lại: Bốc lại 1 set ngẫu nhiên mới với tỷ lệ ban đầu
   const restart = () => {
     setCompleted(false);
-    initializeSession(repairSet.questions);
+    const newPicked = pickRandomQuestions(repairSet.questions);
+    setActiveQuestions(newPicked);
+    initializeSession(newPicked);
   };
 
   const calculateScore = () => {
     const correctCount = sessionState.filter(s => s.status === 'correct').length;
-    const total = repairSet.questions.length;
+    const total = activeQuestions.length;
+    if (total === 0) return "0";
     const scoreOn10 = ((correctCount / total) * 10).toFixed(1);
     return scoreOn10.endsWith('.0') ? scoreOn10.slice(0, -2) : scoreOn10;
   };
@@ -202,11 +241,10 @@ const RepairDetail = () => {
     );
   }
 
-  // --- MÀN HÌNH KẾT QUẢ KHI LÀM XONG ---
   if (completed) {
     const finalScore = calculateScore();
     const numericScore = parseFloat(finalScore);
-    let messageText = "Làm tốt lắm!";
+    let messageText = "Hoàn thành bài tập!";
     let colorClass = "text-blue-500";
     if (numericScore === 10) { messageText = "Xuất sắc!"; colorClass = "text-green-500"; }
     else if (numericScore < 5) { messageText = "Cần luyện tập thêm!"; colorClass = "text-orange-500"; }
@@ -236,7 +274,7 @@ const RepairDetail = () => {
             <Button 
               size="large" 
               type="text" 
-              onClick={() => navigate('/repairs')} 
+              onClick={() => navigate('/repairs')}
               className="h-12 text-gray-500 hover:bg-gray-100 rounded-xl"
             >
               Quay về danh sách
@@ -247,7 +285,8 @@ const RepairDetail = () => {
     );
   }
 
-  const currentQ = repairSet.questions[currentIndex];
+  const currentQ = activeQuestions[currentIndex];
+  if (!currentQ) return null;
 
   return (
     <div className="min-h-screen flex flex-col items-center py-6 px-4 font-sans max-w-7xl mx-auto">
@@ -261,9 +300,16 @@ const RepairDetail = () => {
         >
           Thoát
         </Button>
-        <Title level={4} className="!m-0 text-white font-bold hidden sm:block">
-          {repairSet.title}
-        </Title>
+        <div className="flex items-center gap-2">
+          <Title level={4} className="!m-0 text-white font-bold hidden sm:block">
+            {repairSet.title}
+          </Title>
+          {percentParam && (
+            <span className="bg-indigo-500/80 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">
+              {percentParam}% ({activeQuestions.length} câu)
+            </span>
+          )}
+        </div>
         <div className="w-[80px]"></div>
       </div>
 
@@ -277,7 +323,7 @@ const RepairDetail = () => {
             {/* Thanh thông tin câu */}
             <div className="flex justify-between items-center mb-4">
               <Text className="text-slate-400 font-semibold text-base">
-                Câu {currentIndex + 1} / {repairSet.questions.length}
+                Câu {currentIndex + 1} / {activeQuestions.length}
               </Text>
               {isChecked && (
                 <span className={`px-3 py-1 rounded-full text-sm font-bold ${
@@ -288,11 +334,11 @@ const RepairDetail = () => {
               )}
             </div>
 
-            {/* HIỂN THỊ NGHĨA TIẾNG VIỆT CỦA CÂU */}
+            {/* NGHĨA TIẾNG VIỆT */}
             {currentQ.meaning && (
               <div className="mb-6 p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-center">
                 <span className="text-xs uppercase font-bold text-indigo-500 tracking-wider block mb-1">
-                  Nghĩa của câu
+                  Nghĩa
                 </span>
                 <span className="text-lg font-medium text-slate-800">
                   {currentQ.meaning}
@@ -300,31 +346,31 @@ const RepairDetail = () => {
               </div>
             )}
 
-            {/* KHUNG 1: CÂU ĐANG GHÉP (TỪ ĐÃ CHỌN) */}
+            {/* KHUNG 1: CÂU ĐANG GHÉP */}
             <div className="flex flex-col gap-2 mb-6">
               <div className="flex justify-between items-center px-1">
                 <Text className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Câu của bạn:
+                  Câu của bạn
                 </Text>
                 {!isChecked && selectedTokens.length > 0 && (
                   <button 
                     onClick={handleResetCurrent}
                     className="text-xs text-indigo-600 hover:text-indigo-800 flex items-center gap-1 font-semibold"
                   >
-                    <RotateCcw size={12} /> Đặt lại
+                    <RotateCcw size={12} /> Làm lại câu này
                   </button>
                 )}
               </div>
               <div className={`min-h-[90px] p-4 rounded-2xl flex flex-wrap gap-2.5 items-center border-2 transition-all ${
                 isChecked
-                  ? isCorrect
-                    ? 'bg-emerald-50/50 border-emerald-400'
+                  ? isCorrect 
+                    ? 'bg-emerald-50/50 border-emerald-400' 
                     : 'bg-rose-50/50 border-rose-400'
                   : 'bg-slate-50 border-dashed border-slate-300'
               }`}>
                 {selectedTokens.length === 0 ? (
                   <span className="text-slate-400 text-sm italic mx-auto">
-                    Bấm các từ bên dưới để ghép vào đây
+                    Bấm các từ bên dưới để ghép thành câu
                   </span>
                 ) : (
                   selectedTokens.map((token) => (
@@ -334,13 +380,13 @@ const RepairDetail = () => {
                       disabled={isChecked}
                       onClick={() => handleRemoveWord(token)}
                       className={`px-4 py-2 rounded-xl font-bold text-base transition-all transform active:scale-95 shadow-sm border ${
-                        isChecked
-                          ? isCorrect
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                        isChecked 
+                          ? isCorrect 
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
                             : 'bg-rose-100 text-rose-800 border-rose-300'
                           : 'bg-indigo-600 text-white border-indigo-600 hover:bg-rose-500 hover:border-rose-500 hover:text-white cursor-pointer'
                       }`}
-                      title={!isChecked ? "Bấm để bỏ từ này ra" : ""}
+                      title={!isChecked ? "Bấm để trả về" : ""}
                     >
                       {token.word}
                     </button>
@@ -349,15 +395,15 @@ const RepairDetail = () => {
               </div>
             </div>
 
-            {/* KHUNG 2: DANH SÁCH TẤT CẢ CÁC TỪ LỰA CHỌN */}
+            {/* KHUNG 2: DANH SÁCH TỪ CHỌN */}
             <div className="flex flex-col gap-2 flex-grow">
               <Text className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
-                Từ gợi ý (Bấm vào từ để chọn):
+                Kho từ vựng
               </Text>
               <div className="p-4 rounded-2xl bg-slate-100/70 border border-slate-200 min-h-[110px] flex flex-wrap gap-2.5 items-center content-start">
                 {availableTokens.length === 0 ? (
                   <span className="text-slate-400 text-sm italic mx-auto">
-                    Đã chọn hết tất cả các từ
+                    Đã chọn hết các từ
                   </span>
                 ) : (
                   availableTokens.map((token) => (
@@ -379,23 +425,22 @@ const RepairDetail = () => {
               </div>
             </div>
 
-            {/* KHU VỰC THAO TÁC / ĐÁP ÁN */}
+            {/* KHU VỰC THAO TÁC / NỘP BÀI */}
             <div className="mt-8 flex flex-col justify-end">
               {isChecked ? (
                 <div className="flex flex-col items-center w-full">
                   {!isCorrect && (
                     <div className="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-center w-full">
                       <Text className="text-slate-500 block text-xs uppercase font-bold tracking-wider mb-1">
-                        Đáp án chính xác:
+                        Đáp án chính xác
                       </Text>
                       <Text className="text-emerald-700 font-bold text-lg">
                         {currentQ.answer}
                       </Text>
                     </div>
                   )}
-
                   <div className="flex gap-4 w-full">
-                    {currentIndex === repairSet.questions.length - 1 ? (
+                    {currentIndex === activeQuestions.length - 1 ? (
                       <Button 
                         type="primary"
                         size="large"
@@ -433,18 +478,16 @@ const RepairDetail = () => {
           </Card>
         </div>
 
-        {/* SIDEBAR TIẾN TRÌNH CÂU HỎI */}
+        {/* SIDEBAR TIẾN TRÌNH */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-md border border-slate-100 lg:sticky lg:top-6">
           <div className="flex items-center gap-2 mb-6 text-slate-700 font-bold">
             <ListIcon size={20} />
             <span>Tiến trình</span>
           </div>
-
           <div className="grid grid-cols-5 lg:grid-cols-4 gap-2.5">
             {sessionState.map((state, idx) => {
               let btnClass = "bg-slate-100 text-slate-500 hover:bg-slate-200 border-slate-200";
               let icon = null;
-
               if (idx === currentIndex) {
                 btnClass = "ring-2 ring-offset-2 ring-indigo-500 bg-white text-indigo-600 border-indigo-200 font-bold";
               } else if (state.status === 'correct') {
@@ -454,7 +497,6 @@ const RepairDetail = () => {
                 btnClass = "bg-rose-100 text-rose-500 border-rose-200";
                 icon = <X size={14} strokeWidth={3} />;
               }
-
               return (
                 <button
                   key={idx}
@@ -471,13 +513,13 @@ const RepairDetail = () => {
             <div className="flex justify-between items-center text-sm text-slate-500 mb-2">
               <span>Đã hoàn thành</span>
               <span className="font-bold text-slate-800">
-                {sessionState.filter(s => s.status !== 'pending').length} / {repairSet.questions.length}
+                {sessionState.filter(s => s.status !== 'pending').length} / {activeQuestions.length}
               </span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
               <div 
                 className="bg-indigo-600 h-full transition-all duration-300"
-                style={{ width: `${(sessionState.filter(s => s.status !== 'pending').length / repairSet.questions.length) * 100}%` }}
+                style={{ width: `${(sessionState.filter(s => s.status !== 'pending').length / activeQuestions.length) * 100}%` }}
               ></div>
             </div>
           </div>
