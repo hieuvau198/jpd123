@@ -2,19 +2,33 @@
 import React from 'react';
 import { Popover } from 'antd';
 
+// Helper nhận dạng chuỗi "\n" (literal) và ký tự xuống dòng thật '\n' thành thẻ <br />
+const renderTextWithBreaks = (content, keyPrefix = 'txt') => {
+  if (typeof content !== 'string') return content;
+  const normalized = content.replace(/\\n/g, '\n');
+  return normalized.split('\n').map((line, idx, arr) => (
+    <React.Fragment key={`${keyPrefix}-${idx}`}>
+      {line}
+      {idx < arr.length - 1 && <br />}
+    </React.Fragment>
+  ));
+};
+
 const InteractiveText = ({ text = '', glossary = {} }) => {
   if (!text) return null;
+
+  // Trường hợp không có glossary: trả về text đã được chuyển đổi xuống dòng
   if (!glossary || Object.keys(glossary).length === 0) {
-    return <span>{text}</span>;
+    return <span className="leading-relaxed">{renderTextWithBreaks(text, 'plain')}</span>;
   }
 
-  // Sắp xếp các key trong glossary theo độ dài giảm dần (để ưu tiên bắt cụm từ dài trước)
+  // Sắp xếp các từ khóa trong glossary theo độ dài giảm dần để ưu tiên cụm từ dài trước
   const sortedKeys = Object.keys(glossary).sort((a, b) => b.length - a.length);
 
-  // Tạo Regex pattern bắt các cụm từ và từ đơn
+  // Tạo Regex pattern
   const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regexPattern = new RegExp(
-    `\\b(${sortedKeys.map(k => escapeRegExp(k)).join('|')})\\b`,
+    `\\b(${sortedKeys.map((k) => escapeRegExp(k)).join('|')})\\b`,
     'gi'
   );
 
@@ -26,14 +40,16 @@ const InteractiveText = ({ text = '', glossary = {} }) => {
     const matchedText = match[0];
     const matchIndex = match.index;
 
-    // Đẩy phần text thường trước match
+    // Đẩy phần văn bản thông thường trước match (có xử lý xuống dòng)
     if (matchIndex > lastIndex) {
-      parts.push(text.slice(lastIndex, matchIndex));
+      parts.push(
+        renderTextWithBreaks(text.slice(lastIndex, matchIndex), `pre-${lastIndex}`)
+      );
     }
 
-    // Tìm key tương ứng trong glossary (không phân biệt hoa thường)
+    // Tìm từ khóa tương ứng trong glossary
     const lowerKey = matchedText.toLowerCase();
-    const matchedKey = sortedKeys.find(k => k.toLowerCase() === lowerKey) || lowerKey;
+    const matchedKey = sortedKeys.find((k) => k.toLowerCase() === lowerKey) || lowerKey;
     const vocabInfo = glossary[matchedKey];
 
     if (vocabInfo) {
@@ -52,7 +68,7 @@ const InteractiveText = ({ text = '', glossary = {} }) => {
           }
           content={
             <div className="max-w-xs text-sm text-gray-700">
-              {vocabInfo.m}
+              {renderTextWithBreaks(vocabInfo.m, `glossary-def-${matchIndex}`)}
             </div>
           }
           trigger="click"
@@ -69,8 +85,11 @@ const InteractiveText = ({ text = '', glossary = {} }) => {
     lastIndex = regexPattern.lastIndex;
   }
 
+  // Đẩy phần văn bản còn lại sau từ khóa cuối cùng (có xử lý xuống dòng)
   if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex));
+    parts.push(
+      renderTextWithBreaks(text.slice(lastIndex), `post-${lastIndex}`)
+    );
   }
 
   return <span className="leading-relaxed">{parts}</span>;
